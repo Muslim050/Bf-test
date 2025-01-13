@@ -1,0 +1,64 @@
+.custom_grid {
+  display: grid;
+  grid-template-columns: auto; /* Фиксированная ширина столбцов */
+  grid-template-rows: repeat(2, auto); /* Автоматическая высота строк */
+  grid-column-gap: 20px; /* Разрыв между столбцами, если нужно */
+  grid-row-gap: 20px; /* Разрыв между строками, если нужно */
+  justify-content: center;
+}
+.div1,
+.div2,
+.div3,
+.div4 {
+  width: 400px; /* Фиксированная ширина карточек */
+  background: #bacff7;
+  background-opacity: 20%;
+  padding: 24px; /* Общий padding для всех карточек */
+  border-radius: 8px; /* Скругленные углы */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+}
+
+.div1 {
+  grid-area: 1 / 1 / 2 / 2;
+}
+.div2 {
+  grid-area: 2 / 1 / 3 / 2;
+}
+.div3 {
+  grid-area: 1 / 2 / 2 / 3;
+}
+.div4 {
+  grid-area: 2 / 2 / 3 / 3;
+}
+.cardWrapper {
+  transition: all 0.5s ease;
+
+  &:hover {
+    &::before {
+      transition: all 0.5s ease;
+
+      content: url('../SeventhPage/Blestki.svg');
+      width: 135px;
+      height: 122%;
+      position: absolute;
+      top: -5px;
+
+      left: 50%;
+      transform: translate(-50%, 0); /* Центрирование элемента */
+    }
+  }
+}
+
+.sparkles {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(50px);
+  opacity: 0;
+  left: 0;
+  top: 0;
+}

@@ -1,0 +1,18 @@
+.wrapperSite.loading .h-screen {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.wrapperSite.loaded .h-screen {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.wrapperSite.loaded > * {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.wrapperSite.loading > * {
+  opacity: 0;
+}

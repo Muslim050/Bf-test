@@ -1,0 +1,102 @@
+.cardWrapper {
+  flex-wrap: nowrap;
+}
+
+.cardFirst {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardSecond {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1024px) {
+  .cardWrapper {
+    flex-wrap: wrap;
+  }
+  .cardSecond {
+    flex-direction: row;
+    height: 380px;
+  }
+}
+
+@media (max-width: 848px) {
+  .cardWrapper {
+    flex-wrap: wrap;
+  }
+  .cardSecond {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+.sparkles {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(50px);
+  opacity: 0;
+  left: -100px;
+  top: -100px;
+}
+
+.card {
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+
+  .dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    opacity: 0;
+  }
+
+  &:hover .dot {
+    opacity: 1;
+  }
+}
+
+.dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #0066ff;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  opacity: 0; /* Скрываем точку по умолчанию */
+  transition: opacity 0.3s ease-in-out; /* Плавный переход видимости */
+}
+
+.cardWrapper {
+  transition: all 0.5s ease;
+
+  &:hover {
+    &::before {
+      transition: all 0.5s ease;
+
+      content: url('../SeventhPage/Blestki.svg');
+      width: 135px;
+      height: 122%;
+      position: absolute;
+      top: -5px;
+
+      left: 50%;
+      transform: translate(-50%, 0); /* Центрирование элемента */
+    }
+  }
+}

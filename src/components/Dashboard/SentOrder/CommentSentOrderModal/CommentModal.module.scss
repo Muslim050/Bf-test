@@ -1,0 +1,27 @@
+.button {
+  display: flex;
+  justify-content: end;
+  color: #53545c;
+  margin: 0 5px;
+  position: relative;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    color: #53545c;
+    background-color: inherit;
+    font-weight: 500;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 6.5px 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 11px;
+    border: 1.5px solid #53545c;
+
+    &:hover {
+      background-color: #e2e2e2;
+      box-shadow: 0 0 5px #e2e2e2;
+    }
+  }
+}

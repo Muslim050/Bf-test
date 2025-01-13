@@ -1,0 +1,142 @@
+//.tableChart__td {
+//  color: #2C2D33;
+//  line-height: 16.94px;
+//  font-weight: 400;
+//  font-size: 14px;
+//}
+//
+//.tableChart__tdd {
+//  color: #2C2D33;
+//  line-height: 16.94px;
+//  font-weight: 400;
+//  font-size: 11px;
+//  text-align: center;
+//}
+//
+//
+//.tableChart {
+//  border-collapse: collapse;
+//
+//  &__th {
+//    color: #2C2D33;
+//    line-height: 16.94px;
+//    font-weight: 400;
+//    font-size: 14px;
+//  }
+//}
+//
+//@media only screen and (max-width: 760px),
+//(min-device-width: 768px) and (max-width: 1024px) {
+//
+//  table,
+//  thead,
+//  tbody,
+//  th,
+//  td,
+//  tr {
+//    display: block;
+//  }
+//
+//  thead tr {
+//    position: absolute;
+//    top: -9999px;
+//    left: -9999px;
+//  }
+//
+//  tr {
+//    border-bottom: 2px solid #ccc;
+//  }
+//
+//  .table_td {
+//    border: none;
+//    border-bottom: 1px solid #eee;
+//    position: relative;
+//    padding-left: 50%;
+//  }
+//
+//  td:before {
+//    position: absolute;
+//    top: 6px;
+//    left: 6px;
+//    width: 45%;
+//    padding-right: 10px;
+//    white-space: nowrap;
+//  }
+//
+//  .table_td:nth-of-type(1):before {
+//    content: "Показы";
+//  }
+//
+//  .table_td:nth-of-type(2):before {
+//    content: "Кол-во лайков";
+//  }
+//
+//  .table_td:nth-of-type(3):before {
+//    content: "Кол-во дизлайков";
+//  }
+//
+//  .table_td:nth-of-type(4):before {
+//    content: "Кол-во комментариев";
+//  }
+//
+//  .table_td:nth-of-type(5):before {
+//    content: "Среднее кол-во минут просмотров";
+//  }
+//
+//  .table_td:nth-of-type(6):before {
+//    content: "Аналитика";
+//  }
+//}
+//
+//.list__item__open {
+//  background: #efefef;
+//  border-radius: 10px;
+//}
+//
+//.dopBtn {
+//  display: flex;
+//  align-items: center;
+//  color: #6d6e77;
+//  font-weight: 400;
+//  line-height: 14.52px;
+//  border-radius: 8px;
+//  font-size: 12px;
+//  cursor: pointer;
+//  padding: 3.5px 12px;
+//  transition: box-shadow 0.3s ease, color 0.3s ease;
+//  margin-right: 5px;
+//
+//  &:hover {
+//    box-shadow: 0 0 5px #e8e8e9;
+//  }
+//
+//
+//  .arrow {
+//    display: inline-block;
+//    width: 16px;
+//    height: 16px;
+//    overflow: hidden;
+//    vertical-align: middle;
+//  }
+//
+//  .arrow__icon {
+//    display: block;
+//    width: 100%;
+//    height: 100%;
+//    transition: transform 0.3s ease-in-out;
+//  }
+//
+//  .arrow__rotate {
+//    transform: rotate(180deg);
+//  }
+//
+//  &:hover {
+//    background-color: #d6d6d6;
+//  }
+//}
+//
+//@media only screen and (max-width: 1024px) {
+//  .list__item__open {
+//    display: contents;
+//  }
+//}

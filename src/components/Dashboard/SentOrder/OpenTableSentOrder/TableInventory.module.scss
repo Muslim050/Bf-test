@@ -1,0 +1,456 @@
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-width: 1024px) {
+  .tableWrapper,
+  thead,
+  tbody,
+  th,
+  .table_td,
+  tr {
+    display: block;
+    position: relative;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    border-bottom: 2px solid #ccc;
+  }
+
+  .table_td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td:before {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+
+  .table_td:nth-of-type(1):before {
+    content: '№';
+  }
+
+  .table_td:nth-of-type(2):before {
+    content: 'Канал';
+  }
+
+  .table_td:nth-of-type(3):before {
+    content: 'Контент';
+  }
+
+  .table_td:nth-of-type(4):before {
+    content: 'Формат';
+  }
+
+  .table_td:nth-of-type(5):before {
+    content: 'Тайм код';
+  }
+
+  .table_td:nth-of-type(6):before {
+    content: 'Прогноз';
+  }
+
+  .table_td:nth-of-type(7):before {
+    content: 'Хронометраж';
+  }
+
+  .table_td:nth-of-type(8):before {
+    content: 'Категория';
+  }
+
+  .table_td:nth-of-type(9):before {
+    content: 'Дата начала';
+  }
+
+  .table_td:nth-of-type(10):before {
+    content: 'Статус';
+  }
+}
+
+.btn__connect {
+  background-color: #f15555;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 14.52px;
+
+  &:hover {
+    background-color: #ff0000;
+  }
+}
+
+.btn__connectR {
+  background-color: #5570f1;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 14.52px;
+
+  &:hover {
+    background-color: #284bfc;
+  }
+}
+
+.btn__google {
+}
+
+.table__status {
+  background-color: #deeee8;
+  color: #519c66;
+  padding: 3.5px 12px;
+  border-radius: 12px;
+  // border: 1px solid #519C66;
+  font-size: 12px;
+  line-height: 14.52px;
+}
+
+.table__tr_th_estatus {
+  background-color: #ffcece;
+  color: #d52828;
+  padding: 3.5px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 14.52px;
+}
+
+.btn__google {
+  border-radius: 10px;
+
+  &__wrapper {
+    background: white;
+    display: inline-block;
+    padding: 3px;
+    margin-bottom: -3px;
+
+    border-radius: 10px;
+    border: 1px solid #0062ffc7;
+
+    &:hover {
+      background: #73a7fcc7;
+    }
+  }
+}
+
+.linkVideo {
+  display: flex;
+  align-items: center;
+  color: white;
+  background-color: var(--primary_color);
+  font-weight: 500;
+  border-radius: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 7px 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: #556ff1a9;
+    box-shadow: 0 0 5px var(--primary_color);
+  }
+}
+
+.linkVideo svg path {
+  stroke: var(--primary_color);
+  /* Новый цвет SVG */
+}
+
+.linkVideo:hover svg path {
+  stroke: #ffffff;
+  /* Новый цвет SVG */
+}
+
+.linkFile {
+  display: flex;
+  align-items: center;
+  color: var(--primary_color);
+  border: 2px solid var(--primary_color);
+  font-weight: 500;
+  border-radius: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 7px 16px;
+  width: max-content;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: #556ff1a9;
+    box-shadow: 0 0 5px var(--primary_color);
+    color: white;
+  }
+}
+
+.linkFile svg path {
+  stroke: var(--primary_color);
+  /* Новый цвет SVG */
+}
+
+.linkFile:hover svg path {
+  stroke: #ffffff;
+  /* Новый цвет SVG */
+}
+
+// &__table_btn_wrapper {
+//   display: flex;
+//   justify-content: space-between;
+// }
+
+// &__table_btn {
+//   display: flex;
+//   align-items: center;
+//   color: white;
+//   background-color: #6d5dd397;
+//   font-weight: 600;
+//   border: 2px solid #6c5dd3;
+//   border-radius: 30px;
+//   // padding: 10px 15px 10px 15px;
+//   font-size: 15px;
+//   cursor: pointer;
+//   padding: 8px;
+//   transition: background-color 0.3s ease, color 0.3s ease;
+
+//   &:hover {
+//     background-color: #6c5dd3;
+//   }
+// }
+
+// .table {
+//   width: 100%;
+//   color: var(--text-color, );
+//   text-align: left;
+//   border-collapse: collapse;
+
+//   &__thead {
+//     color: #717377;
+//     font-size: 12px;
+//     line-height: 16px;
+//     text-transform: uppercase;
+//     border-bottom: 2px solid var(--border-color, );
+
+//   }
+
+//   &__th {
+//     padding: 12px 24px 12px 24px;
+//   }
+
+//   &__tr {
+//     justify-content: space-between;
+//     align-items: center;
+//     border-bottom: 2px solid var(--border-color, );
+//     grid-template-columns: repeat(12, minmax(0, 1fr));
+
+//     &.open {
+//       .table-row-expanded {
+//         height: auto;
+//       }
+//     }
+//   }
+
+//   &__expanded {
+//     background-color: #f5f5f5;
+//     height: 0;
+//     transition: height 0.3s ease-in-out;
+
+//     td {
+//       padding: 0;
+//     }
+//   }
+
+// .table__tr_th {
+//   color: var(--text-color, );
+//   font-size: 14px;
+//   white-space: nowrap;
+//   padding: 16px 24px 16px 24px;
+//   line-height: 20px;
+
+//   &__file {
+//     display: inline-block;
+//     font-size: 14px;
+//     padding: 6px 15px;
+//     border-radius: 15px;
+//     background-color: #0040dd;
+//     cursor: pointer;
+//     color: white;
+
+//   }
+
+.doprow {
+  background-color: var(--tablebg-color);
+  overflow-x: auto;
+}
+
+.table__tr_th__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 15px;
+  border-radius: 15px;
+
+  &.unused {
+    background-color: #ff3b2f;
+    color: white;
+  }
+
+  &.open {
+    background-color: #a2845e;
+    color: white;
+  }
+
+  &.pre_booked {
+    background-color: #009993;
+    color: white;
+  }
+
+  &.booked {
+    background-color: #248a3d;
+    color: white;
+  }
+
+  &.in_use {
+    background-color: #03c800;
+    color: white;
+  }
+}
+
+// }
+// }
+.dopBtn {
+  display: flex;
+  align-items: center;
+  color: #8b8d97;
+  font-weight: 400;
+  line-height: 14.52px;
+  // border: 2px solid #0b84ff;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 3.5px 12px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  margin-right: 5px;
+
+  &:hover {
+    box-shadow: 0 0 5px #e8e8e9;
+  }
+
+  .arrow {
+    display: inline-block;
+
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+
+  .arrow__icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .arrow__rotate {
+    transform: rotate(180deg);
+  }
+
+  &:hover {
+    background-color: #d6d6d6;
+  }
+}
+
+.doprow {
+  background-color: var(--tablebg-color);
+  overflow-x: auto;
+}
+
+.list__item__open {
+  // max-height: 1000px;
+  transition: max-height 0.5s ease-in;
+  background-color: var(--tablebg-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-bottom: 2px solid var(--border-color);
+
+  background: #efefef;
+  border-radius: 10px;
+}
+
+.tooltiptext {
+  visibility: hidden;
+  /* другие стили */
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.table_td:hover .tooltiptext {
+  visibility: visible;
+  left: -40px;
+  bottom: 15px;
+  transform: translateX(-28%);
+  background-color: #4e4e4e;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.hidden {
+  display: none;
+}
+
+.profile {
+  display: flex;
+  font-size: 14px;
+  position: relative;
+
+  &__wrapper {
+    // width: 32px;
+    // height: 32px;
+    padding: 15px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 8px;
+    background: rgb(255, 242, 226);
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 0 5px rgb(250, 203, 145);
+    }
+  }
+}
+
+.profile__wrapper__tooltip {
+  position: absolute;
+  bottom: -45px;
+  right: 3px;
+  background-color: #fff;
+  box-shadow: 0 0 5px #bbbbbb;
+  padding: 10px;
+  border-radius: 12px;
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.profile__wrapper__tooltip {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+  /* Отменяем задержку */
+}

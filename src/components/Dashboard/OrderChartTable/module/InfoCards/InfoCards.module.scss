@@ -1,0 +1,39 @@
+.infoCart {
+  color: #45464E;
+  font-size: 15px;
+  line-height: 16px;
+  font-weight: 400;
+  background: #FFF2E2;
+  padding: 7px;
+  border-radius: 8px;
+  margin-right: 5px;
+  border: 2px solid #ffdeb5;
+
+  &__text {
+    // color: #45464E;
+    // font-size: 20px;
+    // line-height: 30px;
+    // font-weight: 500;
+  }
+}
+
+
+.infoCards_bottom_th {
+  background: #6780f994;
+  color: #45464E;
+  border-radius: 10px;
+  background: #FFF2E2;
+
+  &__toptext {
+    color: #45464E;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 400;
+    background: #FFF2E2;
+    border-radius: 8px;
+  }
+
+  &__bottomtext {
+    line-height: 30px;
+  }
+}

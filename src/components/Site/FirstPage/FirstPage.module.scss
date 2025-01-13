@@ -1,0 +1,157 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+  padding: 20px 0px 70px 0px;
+
+  .swiperSlide {
+    font-size: 18px;
+    background: #fff;
+    width: auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  [class^='swiper-button-'] {
+    top: 90%;
+    margin-top: 25px;
+    width: auto;
+  }
+  [class^='swiper-wrapper'] {
+    display: flex;
+  }
+
+  [class^='swiper-slide-active'] {
+    background: red;
+    padding: 10px;
+  }
+
+  [class*='swiper-pagination-bullets'] {
+    bottom: auto !important;
+  }
+
+  [class*='swiper-pagination-bullet-active'] {
+    width: 20px;
+    border-radius: 5px;
+    background-color: #84579e;
+  }
+}
+
+@media (max-width: 1100px) {
+  .phone-image {
+    position: static !important;
+    transform: none !important;
+  }
+  .isSecondPagePhone {
+    z-index: unset !important;
+  }
+  .phoneCart {
+    bottom: 0 !important;
+  }
+}
+
+@media (max-width: 845px) {
+  .phoneWrapperCart {
+    justify-content: center !important;
+  }
+}
+
+.hover_with_before::before {
+  content: url('../SeventhPage/Blestki.svg');
+  width: 135px;
+  height: 122%;
+  position: absolute;
+  transition: all 0.5s ease;
+
+  opacity: 0;
+}
+
+.hover_with_before:hover::before {
+  opacity: 1;
+}
+
+.sparkles {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(50px);
+  opacity: 0;
+  left: -100px;
+  top: -100px;
+}
+
+.cardWrapper {
+  transition: all 0.5s ease;
+
+  &:hover {
+    &::before {
+      transition: all 0.5s ease;
+
+      content: url('../SeventhPage/Blestki.svg');
+      width: 135px;
+      height: 122%;
+      position: absolute;
+      top: -11px;
+
+      left: 50%;
+      transform: translate(-50%, 0); /* Центрирование элемента */
+    }
+  }
+}
+
+.sparkles {
+  position: absolute;
+  z-index: 100;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(50px);
+  opacity: 0;
+  left: -100px;
+  top: -100px;
+}
+
+.sparklesBTN {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(50px);
+  opacity: 0;
+  left: -100px;
+  top: -50px;
+}
+
+.wrapperCard {
+  background: transparent;
+  &:hover {
+    box-shadow: inset 0px 1.65868px 1.65868px rgba(216, 236, 248, 0.3),
+      inset 0px 39.8082px 79.6164px rgba(168, 216, 245, 0.06);
+
+    border-radius: 10px;
+    &::before {
+      transition: all 0.5s ease;
+
+      content: url('../SeventhPage/Blestki.svg');
+      width: 135px;
+      height: 122%;
+      position: absolute;
+      top: -5px;
+
+      right: 50%;
+      left: 50%;
+
+      transform: translate(-50%, 0); /* Центрирование элемента */
+    }
+  }
+}

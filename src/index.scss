@@ -1,0 +1,420 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'src/assets/fonts';
+
+:root {
+  background: #020308;
+}
+.custom-cursor {
+  cursor: url('src/assets/cursor.svg'), auto;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  // font-family: 'SFProDisplay', sans-serif;
+  font-family: 'HelveticaNeue', sans-serif;
+}
+@layer base {
+  :root {
+    --background: #090e35;
+    --foreground: 222.2 84% 4.9%;
+    // font-family: 'SFProDisplay', sans-serif;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    cursor: url('src/assets/cursor.svg'), auto;
+  }
+}
+
+.glass-background {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.17) 0%,
+    rgba(184, 184, 184, 0.0289) 100%
+  );
+}
+.glass-backgroundNav {
+  background: var(--bg-color);
+}
+
+@media (max-width: 640px) {
+  .sidebar-container {
+    position: absolute;
+    z-index: 999;
+    left: -65px;
+    width: auto;
+  }
+  .sidebar-container-open {
+    position: absolute;
+    z-index: 999;
+    left: 0px;
+    width: auto;
+    background: var(--bg-color);
+
+  }
+}
+
+
+
+//@media (max-width: 640px) {
+//  .sidebar-container {
+//    position: fixed;
+//    bottom: 0;
+//    left: 0;
+//    right: 0;
+//    width: 100%;
+//    height: auto;
+//    display: flex;
+//    justify-content: center; /* Центрирование элементов */
+//    padding: 10px; /* Пустое пространство вокруг элементов */
+//  }
+//}
+//@media (max-width: 640px) {
+//  .border_container {
+//    position: absolute;
+//  }
+//}
+
+.border_design {
+  border-radius: 22px; /* Adjust the radius as needed */
+  padding: 10px; /* Adjust padding as necessary */
+  position: relative; /* Required for pseudo-element positioning */
+  z-index: 1; /* Ensure this element is above the pseudo-element */
+}
+//.border_container::before {
+//  content: '';
+//  position: absolute;
+//  top: 0;
+//  left: 0;
+//  right: 0;
+//  bottom: 0;
+//  border-radius: 22px; /* Adjust the radius to match your-element */
+//  padding: 1px; /* Adjust padding to ensure border is visible */
+//  background: linear-gradient(
+//    284.15deg,
+//    var(--bg-color) 43.93%,
+//    rgba(255, 255, 255, 0.3) 89.26%
+//  );
+//  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+//  -webkit-mask-composite: destination-out;
+//  mask-composite: exclude;
+//  z-FilterMain.jsx: 0; /* Ensure this element is below your-element */
+//}
+//Border
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.video {
+  width: 100%;
+  height: auto;
+}
+
+//FirstPage
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  display: none;
+}
+
+.slide {
+  text-align: center;
+  padding: 10px;
+}
+.slider-container {
+  position: relative;
+  z-index: 10;
+}
+.mySwiper {
+  width: 205px;
+}
+.mySwiperFirst {
+  width: 100%;
+  position: relative;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: transparent;
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.firstBorder {
+  box-shadow: inset 0 24px 48px 0 rgba(168, 216, 245, 0.06);
+  border-radius: 20px; /* Пример значения, измените на необходимое */
+}
+.secondBorder {
+  box-shadow: inset 0 1px 1px 0 rgba(216, 236, 248, 0.3);
+  border-radius: 20px; /* Пример значения, измените на необходимое */
+}
+//FirstPage
+
+// FourthPage
+.sectionFourth {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.sectionFourthGgreen {
+  background-color: transparent;
+  min-height: 10vh;
+}
+
+.sectionFourthBlue {
+  background-color: transparent;
+}
+
+.imgFourth {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 20;
+}
+
+.dog-2 {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+// FourthPage
+
+//POPOVER
+.PopoverContent[data-side='left'] {
+  animation-name: slideDown;
+}
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+//POPOVER
+
+// LOADER
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  height: 80vh;
+  align-items: center;
+
+  .spinner {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border: 7px solid var(--bg-color);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+}
+
+.loader {
+  width: 30px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(farthest-side, #0066ff 94%, #0000) top/8px 8px
+      no-repeat,
+    conic-gradient(#0000 30%, #0066ff);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  animation: l13 1s infinite linear;
+}
+@keyframes l13 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+// LOADER
+
+// Для смены цвета
+@keyframes changeColor {
+  0% {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+  25% {
+    background-color: rgba(0, 255, 0, 0.5);
+  }
+  50% {
+    background-color: rgba(0, 0, 255, 0.5);
+  }
+  75% {
+    background-color: rgba(255, 255, 0, 0.5);
+  }
+  100% {
+    background-color: rgba(255, 0, 255, 0.5);
+  }
+}
+
+.hover\:random-bg:hover {
+  animation: changeColor 5s infinite;
+}
+// Для смены цвета
+
+.card {
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+
+  .dot {
+    opacity: 0; /* Скрываем точку по умолчанию */
+    transition: opacity 0.3s ease-in-out; /* Плавный переход видимости */
+  }
+
+  &:hover .dot {
+    opacity: 1;
+  }
+}
+
+.dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #0066ff;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  opacity: 0; /* Скрываем точку по умолчанию */
+  transition: opacity 0.3s ease-in-out; /* Плавный переход видимости */
+}
+
+.setka {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.animated-element {
+  will-change: transform, opacity;
+}
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}

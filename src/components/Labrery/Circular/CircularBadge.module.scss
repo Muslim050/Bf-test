@@ -1,0 +1,23 @@
+.circularBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9bb74;
+  color: rgb(0, 0, 0);
+  border-radius: 50%;
+  width: 23px;
+  height: 23px;
+  font-size: 13px;
+}
+
+.circularTable {
+  display: flex;
+  background-color: #05c800;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+}

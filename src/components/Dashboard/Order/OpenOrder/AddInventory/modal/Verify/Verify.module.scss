@@ -1,0 +1,87 @@
+.modalWindow__input {
+  border: 0;
+  color: #ABAFB1;
+  font-size: 16px;
+  line-height: 1.25rem;
+  border-radius: 8px;
+  width: 100%;
+  background-color: #F6F7FB;
+  padding: 16px;
+  height: 52px;
+  border: 1px solid white;
+
+  &:focus {
+    outline: none !important;
+    border: 1px solid #efeff0;
+    box-shadow: 0 0 5px #e8e8e9;
+  }
+
+}
+
+
+.modalWindow__input_error {
+  font-size: 12px;
+  color: red;
+}
+
+
+
+
+
+.linkWrapper {
+  color: var(--text-color, );
+  font-size: 14px;
+  white-space: nowrap;
+  padding: 16px 24px 16px 24px;
+  line-height: 20px;
+
+  &__file {
+    display: flex;
+    font-size: 14px;
+    line-height: 16.94px;
+    padding: 3.5px 11px;
+    background: #F2F3F3;
+    cursor: pointer;
+    color: #294fe9;
+    border: 1px solid white;
+    border-radius: 8px;
+
+
+    &:hover {
+      border: 1px solid #294fe9;
+      border-radius: 8px;
+      box-shadow: 0 0 5px #CEE5DD;
+
+      svg path {
+        stroke: #294fe9;
+      }
+    }
+
+
+  }
+
+  &__dis {
+    display: flex;
+    font-size: 14px;
+    line-height: 16.94px;
+    padding: 2px 11px;
+    background-color: #F2F4F5;
+    cursor: pointer;
+    color: #53545C;
+    border: 1px solid white;
+    border-radius: 8px;
+
+
+    &:hover {
+      border: 1px solid #8B8D97;
+      border-radius: 8px;
+      box-shadow: 0 0 5px #e8e8e9;
+
+      svg path {
+        stroke: #53545C;
+      }
+    }
+  }
+
+
+}

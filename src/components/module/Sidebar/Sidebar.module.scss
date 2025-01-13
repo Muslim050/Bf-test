@@ -1,0 +1,26 @@
+.whitegrad {
+  display: block;
+  position: relative;
+  padding: 1.3rem;
+  max-width: 800px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.whitegrad::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  border: 2px solid transparent;
+
+  background: linear-gradient(
+      284.15deg,
+      #090e35 43.93%,
+      rgba(255, 255, 255, 0.3) 89.26%
+    )
+    border-box;
+
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
