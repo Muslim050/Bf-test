@@ -70,8 +70,6 @@ const OpenOrderTable = ({  expandedRows }) => {
     setCurrentOrder
   } = useAddSentPublisher(expandedRows, onceOrder);
 
-
-  console.log (onceOrder)
   React.useEffect(() => {
     fetchGetOrder()
   }, [dispatch, expandedRows, setOnceOrder, pagination.pageIndex, pagination.pageSize])

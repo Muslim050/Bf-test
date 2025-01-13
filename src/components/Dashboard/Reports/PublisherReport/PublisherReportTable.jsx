@@ -83,7 +83,10 @@ function PublisherReportTable() {
   const [selectedMonth, setSelectedMonth] = React.useState('')
 
   React.useEffect(() => {
-    dispatch(fetchPublisher())
+    dispatch(fetchPublisher({
+      page:1,
+      pageSize: 100
+    }))
   }, [dispatch])
 
   React.useEffect(() => {

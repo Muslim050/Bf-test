@@ -60,7 +60,10 @@ const EditSendPublisherModal = ({
     setChannelModal(response.data.data)
   }
   React.useEffect(() => {
-    dispatch(fetchPublisher())
+    dispatch(fetchPublisher({
+      page: 1, // API использует нумерацию с 1
+      pageSize: 200,
+    }))
   }, [dispatch])
   const [cpm, setCpm] = React.useState([])
   const [budgett, setBudgett] = React.useState(0)
@@ -156,7 +159,10 @@ const EditSendPublisherModal = ({
   }
 
   React.useEffect(() => {
-    fetchChannel()
+    fetchChannel({
+      page: 1, // API использует нумерацию с 1
+      pageSize: 200,
+    })
   }, [publisherID])
 
   const fetchCpm = async () => {

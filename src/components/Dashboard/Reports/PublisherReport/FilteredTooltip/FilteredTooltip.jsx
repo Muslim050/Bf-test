@@ -61,7 +61,7 @@ function FilteredTooltip({
   selectedPublisherName,
 }) {
   const user = Cookies.get('role')
-
+  console.log (publisher.results)
   return (
     <div className="flex flex-col gap-2">
       {user === 'admin' && (
@@ -83,7 +83,7 @@ function FilteredTooltip({
             </div>
             <SelectContent className="w-full">
               <SelectGroup>
-                {publisher.results.map((option) => (
+                {publisher?.results?.map((option) => (
                   <SelectItem
                     style={{ color: 'var(--text-color )' }}
                     key={option.id}
@@ -137,7 +137,7 @@ function FilteredTooltip({
         </div>
         <SelectContent className="w-full">
           <SelectGroup>
-            {channel.results.map((option) => (
+            {channel?.results?.map((option) => (
               <SelectItem
                 style={{ color: 'var(--text-color )' }}
                 key={option.id}

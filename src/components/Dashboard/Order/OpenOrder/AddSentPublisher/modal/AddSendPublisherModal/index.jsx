@@ -45,24 +45,31 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   const [budgett, setBudgett] = React.useState(0)
   const [isOrderCreated, setIsOrderCreated] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
-  console.log (channelModal)
   const selectedPublisher = (value) => {
     setPublisherID(value)
   }
   const fetchChannel = async () => {
     try {
-      let url = new URL(`${backendURL}/publisher/channel${
-        publisherID ? `?publisher_id=${publisherID}` : ''
-      }`)
-      const params = new URLSearchParams()
-      url.search = params.toString()
-      const response = await axiosInstance.get(url)
-      setChannelModal(response.data.data)
+      const url = new URL(`${backendURL}/publisher/channel/`);
+      const params = new URLSearchParams();
+
+      // Добавляем параметры запроса
+      params.append('page', '1');
+      params.append('page_size', '200');
+      if (publisherID) {
+        params.append('publisher_id', publisherID);
+      }
+
+      // Присваиваем параметры в строку запроса
+      url.search = params.toString();
+
+      const response = await axiosInstance.get(url.toString());
+      setChannelModal(response.data.data);
     } catch (error) {
-      console.error('Error fetching channel data:', error)
+      console.error('Error fetching channel data:', error);
       // Обработка ошибок
     }
-  }
+  };
 
   const fetchCpm = async () => {
     const response = await axiosInstance.get(
@@ -185,10 +192,18 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
     fetchCpm()
   }, [onceOrder])
   React.useEffect(() => {
-    dispatch(fetchPublisher({}))
+    dispatch(fetchPublisher({
+      page:1,
+      pageSize: 200
+    }))
   }, [dispatch])
   React.useEffect(() => {
-    fetchChannel().then(() => setLoading(false))
+    fetchChannel(
+      {
+        page:1,
+        pageSize: 200
+      }
+    ).then(() => setLoading(false))
   }, [publisherID])
 
   return (
