@@ -52,7 +52,7 @@ export default function AddVideo({
     const response = await axiosInstance.get(
       `${backendURL}/publisher/channel/`
     )
-    setChannelModal(response.data.data)
+    setChannelModal(response.data.data.results)
   }
 
   React.useEffect(() => {
@@ -292,7 +292,7 @@ export default function AddVideo({
               inputMode="numeric"
               onChange={timeC}
               defaultValue="00:00:00"
-              disabled={item.format === 'preroll' || item.format === 'tv_preroll' || item.format === 'tv_preroll'}
+              disabled={item.format === 'preroll' || item.format === 'tv_preroll' || item.format === 'top_preroll'}
               className={`border ${
                 errors?.promo_start_at ? 'border-red-500' : 'border-gray-300'
               }   transition-all duration-300 text-sm `}

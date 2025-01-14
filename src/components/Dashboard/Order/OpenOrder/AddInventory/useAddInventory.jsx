@@ -1,6 +1,6 @@
 
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -40,6 +40,15 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   }
   // Модальное окно OrderModal
   const dispatch = useDispatch()
+  console.log (onceOrder)
+  useEffect (() => {
+    fetchGetOrder()
+  }, []);
+  const [currentOnceOrder, setCurrentOnceOrder] = useState(onceOrder);
+
+  useEffect(() => {
+    setCurrentOnceOrder(onceOrder); // Обновляем состояние каждый раз, когда onceOrder меняется
+  }, [onceOrder]);
 
   const handleDeactivateInventory = (inventory_id) => {
     const confirmDeactivate = window.confirm(
@@ -170,43 +179,47 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         header: () => <span>Время публикаций</span>,
       },
       {
-        accessorFn: (row) => row.video_content?.publication_time, // Преобразование в число
+        accessorFn: (row) => row?.online_views, // Преобразование в число
         id: 'Показы',
-        cell: ({ row }) =>
-          <>
-            {row.original.online_views || row.original.total_online_views ? (
+        cell: ({ row }) => {
+          const onlineViews = row.original.online_views;
+          const totalOnlineViews = row.original.total_online_views;
+          console.log (onceOrder.target_country)
+          // Проверка на наличие значений
+          if (onlineViews || totalOnlineViews) {
+            return (
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '5px',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
                 <div
                   style={{
-                    display: 'flex',
-                    gap: '5px',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
+                    marginLeft: '2px',
+                    fontSize: '15px',
+                    background: `${
+                      onceOrder?.target_country ? '#606afc' : 'transparent'
+                    }`,
+                    padding: '0px 6px',
+                    borderRadius: '10px',
+                    color: `${onceOrder?.target_country ? 'white' : 'white'}`,
                   }}
                 >
-                  <div
-                    style={{
-                      marginLeft: '2px',
-                      fontSize: '15px',
-                      background: `${
-                        onceOrder.target_country ? '#606afc' : 'transparent'
-                      }`,
-                      padding: '0px 6px',
-                      borderRadius: '10px',
-
-                      color: `${onceOrder.target_country ? 'white' : 'white'}`,
-                    }}
-                  >
-                    <FormatterView data={row.online_views} />
-                  </div>
-                  {onceOrder.target_country && (
-                    <FormatterView data={row.total_online_views} />
-                  )}
+                  <FormatterView data={onlineViews} />
                 </div>
-            ) : (
-              <>----</>
-            )}
-          </>,
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+                { onceOrder?.target_country && totalOnlineViews && (
+                  <FormatterView data={totalOnlineViews} />
+                )}
+              </div>
+            );
+          }
+
+          return <>----</>;
+        },
+        filterFn: 'includesStringSensitive', // Нормальный фильтр (чувствительный к регистру)
         header: () => <span>Показы</span>,
       },
       {
@@ -261,7 +274,7 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         header: () => <span>Статус / Действия</span>,
       },
     ],
-    []
+    [onceOrder]
   )
 
   const table = useReactTable ({
