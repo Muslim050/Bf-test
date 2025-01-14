@@ -143,7 +143,7 @@ function Login() {
                   ref={mainTitleRef}
                   className="font-normal	text-6xl	text-white 2xl:text-5xl xl:text-4xl  lg:text-3xl"
                 >
-                  test Увеличьте охваты вашего бренда с помощью брендированной
+                  Увеличьте охваты вашего бренда с помощью брендированной
                   рекламы
                 </div>
                 <div
