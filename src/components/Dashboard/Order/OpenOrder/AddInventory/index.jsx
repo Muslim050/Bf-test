@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import InfoCartButton from './components/InfoCartButton.jsx'
 import TablePagination from "@/components/module/TablePagination/index.jsx";
 import Pagination from "@/components/module/Pagination/index.jsx";
