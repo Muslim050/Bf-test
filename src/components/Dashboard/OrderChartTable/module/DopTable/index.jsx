@@ -18,6 +18,7 @@ import AgeData from '@/components/Dashboard/OrderChartTable/module/DopTable/Data
 import GeoData from '@/components/Dashboard/OrderChartTable/module/DopTable/Data/GeoData.jsx'
 import GenderData from '@/components/Dashboard/OrderChartTable/module/DopTable/Data/GenderData.jsx'
 import m from "@/components/Dashboard/Order/OrderTable/styles/OrderTable.module.scss";
+import DeviceData from "@/components/Dashboard/OrderChartTable/module/DopTable/Data/DeviceData.jsx";
 
 const DopTable = ({ statistic, data, expandedRows }) => {
   return (
@@ -59,7 +60,9 @@ const DopTable = ({ statistic, data, expandedRows }) => {
           >
             <FormatterView data={statistic.online_view_count} />
           </TableCell>
+          <DeviceData statistic={statistic} />
           <GenderData statistic={statistic} />
+
           <AgeData statistic={statistic} />
           <GeoData statistic={statistic} />
         </Table>
