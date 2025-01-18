@@ -1,20 +1,22 @@
 import React from 'react'
 import { TableHead } from '@/components/ui/table.jsx'
+import { ShieldQuestion } from 'lucide-react'
+import { MonitorPlay } from 'lucide-react';
 
-function OrderChartAge({ statistic, getOrder }) {
+function TheadDevaice({ statistic }) {
   const uniqueGenders = Array.from(
-    new Set(statistic.age_group_percentages.map((age) => age.age_group)),
+    new Set(statistic.device_type_views?.map((gen) => gen.device_type)),
   )
 
   return (
     <>
       {uniqueGenders.length > 0
-        ? uniqueGenders.map((genderData, index) => (
+        ? uniqueGenders.map((gender, index) => (
             <TableHead
               key={index}
               className="font-normal text-[#FFFFFF] text-sm text-center "
             >
-              {genderData.substring(3)}
+              {gender}
             </TableHead>
           ))
         : null}
@@ -22,4 +24,4 @@ function OrderChartAge({ statistic, getOrder }) {
   )
 }
 
-export default OrderChartAge
+export default TheadDevaice

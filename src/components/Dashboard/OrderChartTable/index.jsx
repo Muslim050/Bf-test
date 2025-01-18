@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import style from './OrderChartTable.module.scss'
@@ -39,7 +39,7 @@ function OrderChart() {
   } = useOrderChart()
   const [expandedRows, setExpandedRows] = React.useState('')
   const data = useSelector((state) => state.statistics.statistics.results)
-  console.log (data)
+
   const handleRowClick = (videoLink) => {
     setExpandedRows((prevExpandedRow) =>
       prevExpandedRow === videoLink ? '' : videoLink,
@@ -50,30 +50,19 @@ function OrderChart() {
   let totalBudget = 0
   let totalData = []
 
+  useEffect (() => {
+    if (orderData?.name && orderData?.advertiser?.name) {
+      document.title = `${orderData?.name} / ${orderData?.advertiser.name}`
+    }
+  }, [orderData]);
   return (
     <>
       {loading ? (
-        // <div className="loaderWrapper">
-        //   <div className="text-white">Загрузка статистики &nbsp;</div>
-        //   <div className="spinner"></div>
-        // </div>
         <PreLoadDashboard onComplete={() => setLoading(false)} loading={loading} text={'Загрузка статистики'} />
-
         ) : (
         <div>
-          {/* <div
-            className="rounded-[22px] overflow-auto h-screen p-4"
-            style={{
-              background:
-                'linear-gradient(90deg, rgba(255, 255, 255, 0.156) 0%, rgba(255, 255, 255, 0.051) 99.67%)',
-            }}
-          > */}
           <div className="flex items-center gap-4 justify-between ">
             <div className="flex items-center gap-3">
-              {/* <Button
-                  variant="link"
-                  className="text-white hover:text-gray-800 p-1"
-                > */}
               <Link to={'/order'}>
                 <ChevronLeft className="w-8 h-6 hover:text-brandPrimary-1" />
               </Link>
