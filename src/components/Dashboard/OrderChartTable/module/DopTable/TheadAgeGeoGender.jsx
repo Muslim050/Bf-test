@@ -58,14 +58,6 @@ function TheadAgeGeoGender({ statistic }) {
       </TableCell>
 
 
-      {deviceColSpan ? (
-        <TableCell
-          className="border-x border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
-          colSpan={deviceColSpan}
-        >
-          Девайсы
-        </TableCell>
-      ) : null}
 
 
       {genderColSpan ? (
@@ -88,10 +80,20 @@ function TheadAgeGeoGender({ statistic }) {
 
       {geoColSpan ? (
         <TableCell
-          className=" text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center rounded-tr-[22px]"
+          className=" text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center "
           colSpan={geoColSpan}
         >
           Гео
+        </TableCell>
+      ) : null}
+
+
+      {deviceColSpan ? (
+        <TableCell
+          className="rounded-tr-[22px] border-l border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
+          colSpan={deviceColSpan}
+        >
+          Девайсы
         </TableCell>
       ) : null}
     </>

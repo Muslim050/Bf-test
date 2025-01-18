@@ -56,15 +56,16 @@ const DopTable = ({ statistic, data, expandedRows }) => {
 
           <TableCell
             data-label="Показов"
-            className="text-white text-sm	font-bold text-center"
+            className="text-white text-sm	font-bold !rounded-none text-center"
           >
             <FormatterView data={statistic.online_view_count} />
           </TableCell>
-          <DeviceData statistic={statistic} />
           <GenderData statistic={statistic} />
 
           <AgeData statistic={statistic} />
           <GeoData statistic={statistic} />
+          <DeviceData statistic={statistic} />
+
         </Table>
         {/* )} */}
       </div>

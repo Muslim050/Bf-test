@@ -75,7 +75,7 @@ const SidebarNew = ({isCollapsed,setIsCollapsed}) => {
         </div>
         <div className='flex flex-col justify-between h-full  '>
           <div>
-            <div className="gap-x-4 pr-6 items-center p-2 flex ">
+            <div className="gap-x-4  items-center p-2 flex ">
               <div className="flex items-center">
                 <div
                   className={`${!isCollapsed ? 'w-[56px] h-[56px]' : ' w-[48px] h-[48px]'} relative  rounded-full bg-[var(--bg-color)]`}></div>
@@ -92,7 +92,7 @@ const SidebarNew = ({isCollapsed,setIsCollapsed}) => {
               {!isCollapsed && (
                 <div
                   className={`font-bold text-[16px]  transition-opacity duration-300 ${
-                    !isCollapsed ? 'opacity-100' : 'opacity-0'
+                    !isCollapsed ? 'opacity-100 pr-6' : 'opacity-0'
                   }`}
                 >
                   Brandformance
