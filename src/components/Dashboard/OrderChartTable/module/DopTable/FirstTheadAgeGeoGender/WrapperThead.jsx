@@ -7,12 +7,13 @@ import TheadDevaice
 function WrapperThead({ statistic }) {
   return (
     <>
-      <TheadDevaice statistic={statistic} />
 
       <TheadGender statistic={statistic} />
 
       <TheadAge statistic={statistic} />
       <TheadGeo statistic={statistic} />
+      <TheadDevaice statistic={statistic} />
+
     </>
   )
 }
