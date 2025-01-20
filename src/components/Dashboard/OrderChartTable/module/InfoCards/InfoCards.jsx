@@ -49,9 +49,9 @@ export function InfoCardsTop({ orderData }) {
         </div>
       </div>
 
-      <div className='flex gap-1 items-center text-xl font-semibold'>
-        You <span className='bg-red-600 px-1 py-1 rounded-2xl'>Tube</span>
-        <p className='text-xl font-medium'>
+      <div className='flex gap-1 items-center text-lg	 font-semibold'>
+        You <span className='bg-red-600 px-1 py-1 rounded-xl'>Tube</span>
+        <p className='text-lg	 font-medium'>
           Analytics
         </p>
       </div>

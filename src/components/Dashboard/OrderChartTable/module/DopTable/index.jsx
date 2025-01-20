@@ -46,7 +46,7 @@ const DopTable = ({ statistic, data, expandedRows }) => {
           <TableHeader>
             {/* Колонки подробная инфа ГЕО Возраст ПОЛ */}
             <TableRow className="text-white text-sm	font-bold	bg-[#FFFFFF2B]  text-center ">
-              <TableHead className="text-white text-center !rounded-t-none  ">
+              <TableHead className="text-white text-center first:rounded-l-none ">
                 <Eye className="flex justify-center w-full" />
               </TableHead>
               <WrapperThead statistic={statistic} />

@@ -10,8 +10,8 @@ import {
 function TheadAgeGeoGender({ statistic }) {
   const removeDuplicates = (arr) => Array.from(new Set(arr))
   const uniqueDevaice =
-    statistic && statistic.device_type_views
-      ? removeDuplicates(statistic?.device_type_views.map((gen) => gen.device_type))
+    statistic && statistic.device_type_percentages
+      ? removeDuplicates(statistic?.device_type_percentages.map((gen) => gen.device_type))
       : []
 
   const uniqueGenders =

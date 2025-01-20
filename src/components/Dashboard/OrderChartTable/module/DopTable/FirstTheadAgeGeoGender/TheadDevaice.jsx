@@ -1,38 +1,37 @@
 import React from 'react'
 import { TableHead } from '@/components/ui/table.jsx'
-import { ShieldQuestion } from 'lucide-react'
-import { MonitorPlay } from 'lucide-react';
 import { Tablet } from 'lucide-react';
 import { Tv } from 'lucide-react';
 import { Monitor } from 'lucide-react';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
-import {truncate} from "@/utils/other.js";
+import { ShieldQuestion } from 'lucide-react';
 
 function TheadDevaice({ statistic }) {
   const uniqueDeviceTypes = Array.from(
-    new Set(statistic.device_type_views?.map((gen) => gen.device_type))
-  );
+    new Set(statistic.device_type_percentages?.map((gen) => gen.device_type))
+  ).map((device_type) => {
+    return statistic.device_type_percentages.find((gen) => gen.device_type === device_type);
+  });
+
 
   // Задаем желаемый порядок
-  const desiredOrder = ['MOBILE', 'TV', 'TABLET', 'DESKTOP'];
+  const desiredOrder = ['MOBILE', 'TV', 'TABLET', 'DESKTOP', 'OTHER'];
 
   // Сортируем типы устройств в соответствии с желаемым порядком
-  const sortedDeviceTypes = [...uniqueDeviceTypes].sort((a, b) => {
-    return desiredOrder.indexOf(a) - desiredOrder.indexOf(b);
+  const sortedDeviceTypes = uniqueDeviceTypes.sort((a, b) => {
+    return desiredOrder.indexOf(a.device_type) - desiredOrder.indexOf(b.device_type);
   });
-  console.log (sortedDeviceTypes)
-
   return (
     <>
       {sortedDeviceTypes.length > 0
-        ? sortedDeviceTypes.map((gender, index) => (
+        ? sortedDeviceTypes.map((device, index) => (
             <TableHead
               key={index}
               className="font-normal text-[#FFFFFF] text-sm text-center !rounded-none"
             >
              <div className='flex justify-center'>
                {
-                 gender === 'DESKTOP' &&<TooltipProvider>
+                 device.device_type === 'DESKTOP' &&<TooltipProvider>
                    <Tooltip>
                      <TooltipTrigger asChild className="cursor-pointer">
                        <Monitor/>
@@ -43,7 +42,7 @@ function TheadDevaice({ statistic }) {
                    </Tooltip>
                  </TooltipProvider>
                }
-               {gender === 'TV' &&
+               {device.device_type === 'TV' &&
                  <TooltipProvider>
                    <Tooltip>
                      <TooltipTrigger asChild className="cursor-pointer">
@@ -54,7 +53,7 @@ function TheadDevaice({ statistic }) {
                      </TooltipContent>
                    </Tooltip>
                  </TooltipProvider>}
-               {gender === 'MOBILE' &&
+               {device.device_type === 'MOBILE' &&
                  <TooltipProvider>
                    <Tooltip>
                      <TooltipTrigger asChild className="cursor-pointer">
@@ -78,7 +77,7 @@ function TheadDevaice({ statistic }) {
 
                }
                {
-                 gender === 'TABLET' && <TooltipProvider>
+                 device.device_type === 'TABLET' && <TooltipProvider>
                    <Tooltip>
                      <TooltipTrigger asChild className="cursor-pointer">
                        <Tablet/>
@@ -88,6 +87,22 @@ function TheadDevaice({ statistic }) {
                      </TooltipContent>
                    </Tooltip>
                  </TooltipProvider>
+               }
+
+               {device.percentage > 0 &&
+                 <>
+                   {
+                     device.device_type === 'OTHER' &&<TooltipProvider>
+                       <Tooltip>
+                         <TooltipTrigger asChild className="cursor-pointer">
+                           <ShieldQuestion/>
+                         </TooltipTrigger>
+                         <TooltipContent sideOffset={0}>
+                           <p>Other</p>
+                         </TooltipContent>
+                       </Tooltip>
+                     </TooltipProvider>
+                   }</>
                }
              </div>
 
