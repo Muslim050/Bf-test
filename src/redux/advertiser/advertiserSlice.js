@@ -62,6 +62,7 @@ export const addAdvertiser = createAsyncThunk(
 
       return response.data.data;
     } catch (error) {
+      console.log (error)
       return rejectWithValue(error.response);
     }
   }
@@ -110,10 +111,9 @@ export const editAdvertiser = createAsyncThunk(
     try {
       // Создаём объект FormData
       const formData = new FormData();
-      formData.append('advertising_agency', data.agency);
       formData.append('name', data.name);
       formData.append('email', data.email);
-      formData.append('phone_number', data.phone);
+      formData.append('phone_number', data.phone_number);
       formData.append('cpm_preroll', data.cpm_preroll);
       formData.append('cpm_preroll_uz', data.cpm_preroll_uz);
       formData.append('cpm_tv_preroll', data.cpm_tv_preroll);
@@ -127,7 +127,7 @@ export const editAdvertiser = createAsyncThunk(
       }
 
       // Выполняем запрос с заголовком `Content-Type: multipart/form-data`
-      const response = await axiosInstance.post(
+      const response = await axiosInstance.patch(
         `${backendURL}/advertiser/${id}/`,
         formData,
         {
@@ -164,7 +164,6 @@ const advertiserSlice = createSlice({
         state.error = action.error.message
       })
       .addCase(addAdvertiser.fulfilled, (state, action) => {
-        state.advertisers.push(action.payload)
         state.status = 'succeeded'
       })
       .addCase(removeAdvertiser.pending, (state) => {

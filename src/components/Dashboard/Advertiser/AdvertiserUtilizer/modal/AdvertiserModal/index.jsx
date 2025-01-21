@@ -38,8 +38,9 @@ import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import InputField
   from "@/components/Dashboard/Advertiser/AdvertiserUtilizer/modal/AdvertiserModal/components/InputField.jsx";
 import axiosInstance from "@/api/api.js";
-import {TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.jsx";
+import {TableBody, TableCell, TableHead, TableRow} from "@/components/ui/table.jsx";
 import {fetchAdvertiserAgency} from "@/redux/AgencySlice/advertiserAgency/advertiserAgencySlice.js";
+import {truncate} from "@/utils/other.js";
 
 export default function AdvertiserModal({ onClose }) {
   const [isLogin, setIsLogin] = React.useState(false)
@@ -120,20 +121,19 @@ export default function AdvertiserModal({ onClose }) {
     };
 
     try {
-      setIsLogin(true)
-      const adv = await dispatch(addAdvertiser({ data: advertiserData })).unwrap()
-      toast.success('Пользователь рекламодателя успешно создан!')
-      onClose()
-
+      setIsLogin(true);
+      const adv = await dispatch(addAdvertiser({ data: advertiserData })).unwrap();
+      toast.success('Рекламодатель успешно создан!');
+      onClose();
       setTimeout(() => {
-        window.location.reload()
-      }, 1500)
-      setIsLogin(false)
+        window.location.reload();
+      }, 1500);
     } catch (error) {
-      setIsLogin(false)
-      toast.error(error?.data?.error?.message)
+      toast.error(error?.message || 'Произошла ошибка при создании рекламодателя');
+    } finally {
+      setIsLogin(false);
     }
-  }
+  };
   return (
     <>
       <DialogContent
@@ -441,7 +441,7 @@ export default function AdvertiserModal({ onClose }) {
                     </div>
                 }
               </div>
-              {selectedFile && <p className='text-sm text-white'>Вы выбрали файл:{selectedFile.name} </p>}
+              {selectedFile && <p className='text-sm text-white'>Вы выбрали файл:{truncate(selectedFile.name, 20)} </p>}
               {preview && <div>
                 <Avatar className='size-20'>
                   <AvatarImage src={preview} alt="@shadcn"/>

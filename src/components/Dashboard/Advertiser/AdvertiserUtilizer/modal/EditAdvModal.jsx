@@ -20,8 +20,9 @@ import { Monitor, MonitorPlay, MonitorUp } from 'lucide-react';
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.jsx";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.jsx";
 import {TableBody, TableCell, TableHead, TableRow} from "@/components/ui/table.jsx";
+import {truncate} from "@/utils/other.js";
 
-export default function EditAdvModal({ onClose, currentAdvertiser, fetchCpm }) {
+export default function EditAdvModal({ closeDialog, currentAdvertiser, fetchCpm }) {
   const dispatch = useDispatch()
   const [isEditingCreated, setEditingCreated] = React.useState(false)
   const id = currentAdvertiser.id
@@ -46,8 +47,6 @@ export default function EditAdvModal({ onClose, currentAdvertiser, fetchCpm }) {
       inputRef.current.value = ""; // Сбрасываем значение поля ввода
     }
   };
-
-
   const {
     formState: { errors, isValid },
     handleSubmit,
@@ -81,9 +80,12 @@ export default function EditAdvModal({ onClose, currentAdvertiser, fetchCpm }) {
     try {
       const adv = await dispatch(editAdvertiser({id, data: advertiserData })).unwrap()
       toast.success('Изминения успешно обновлены!')
-      onClose()
+      closeDialog(); // Закрытие модального окна
       setTimeout(() => {
-        dispatch(fetchAdvertiser())
+        dispatch(fetchAdvertiser({
+          page: 1,
+          pageSize: 20
+        }))
       }, 1000)
     } catch (error) {
       toast.error(error?.data?.error?.message)
@@ -378,7 +380,7 @@ export default function EditAdvModal({ onClose, currentAdvertiser, fetchCpm }) {
                     </div>
                 }
               </div>
-              {selectedFile && <p className='text-sm text-white'>Вы выбрали файл:{selectedFile.name} </p>}
+              {selectedFile && <p className='text-sm text-white'>Вы выбрали файл:{truncate(selectedFile.name, 10)} </p>}
               {preview && <div>
                 <Avatar className='size-20'>
                   <AvatarImage src={preview} alt="@shadcn"/>

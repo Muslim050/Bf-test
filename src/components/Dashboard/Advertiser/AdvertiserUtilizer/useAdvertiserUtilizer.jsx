@@ -13,7 +13,13 @@ import {Button} from "@/components/ui/button.jsx";
 import { Pencil } from 'lucide-react';
 import backendURL from "@/utils/url.js";
 import axiosInstance from "@/api/api.js";
-
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
+import {truncate} from "@/utils/other.js";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
 export const useAdvertiserUtilizer = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -48,7 +54,16 @@ export const useAdvertiserUtilizer = () => {
       {
         accessorFn: row => row.name,
         id: 'Наименование Компании',
-        cell: info => info.getValue(),
+        cell: ({ row }) =>
+          <div  className='flex items-center gap-2'>
+          {row.original.logo &&
+            <Avatar>
+              <AvatarImage src={row.original.logo} alt="@shadcn" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          }
+            <div>{row.original.name}</div>
+          </div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>Наименование Компании</span>,
       },

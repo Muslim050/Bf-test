@@ -54,7 +54,6 @@ const AdvertiserAndUsers = () => {
     loading
   } = useAdvertiserUser();
 
-
   return (
     <div className="mb-4 mt-2">
       <Tabs defaultValue="advertiser">
@@ -164,10 +163,10 @@ const AdvertiserAndUsers = () => {
 
 
       {/*Редактирование*/}
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={(isOpen) => setOpen(isOpen)}>
         {open && (
           <EditAdvModal
-            onClose={() => setOpen (false)}
+            closeDialog={() => setOpen(false)} // Передаём функцию напрямую
             currentAdvertiser={currentAdv}
             fetchCpm={fetchCpm}
           />
