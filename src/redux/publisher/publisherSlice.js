@@ -158,9 +158,7 @@ const publisherSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
-      .addCase(addPublisher.fulfilled, (state, action) => {
-        state.publisher.push(action.payload.data)
-      })
+     
       .addCase(deletePublisher.fulfilled, (state, action) => {
         state.publisher = state.publisher.filter(
           (user) => user.id !== action.payload,

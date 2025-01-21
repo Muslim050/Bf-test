@@ -107,7 +107,6 @@ export default function AddVideo({
     }
   }
   const onSubmit = async (data) => {
-    console.log (data)
     try {
       const response = await axiosInstance.post(
         `${backendURL}/inventory/assign-to-order-with-new-video`,

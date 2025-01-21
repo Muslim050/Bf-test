@@ -15,7 +15,7 @@ function TheadDevaice({ statistic }) {
 
 
   // Задаем желаемый порядок
-  const desiredOrder = ['MOBILE', 'TV', 'TABLET', 'DESKTOP', 'OTHER'];
+  const desiredOrder = ['TV', 'MOBILE', 'TABLET', 'DESKTOP', 'OTHER'];
 
   // Сортируем типы устройств в соответствии с желаемым порядком
   const sortedDeviceTypes = uniqueDeviceTypes.sort((a, b) => {

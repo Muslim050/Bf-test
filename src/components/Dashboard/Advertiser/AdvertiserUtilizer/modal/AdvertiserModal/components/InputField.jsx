@@ -3,8 +3,8 @@ import {Input} from "@/components/ui/input.jsx";
 
 
 const InputField = ({ label, name, register, rules, placeholder, error }) => (
-  <div className="grid w-full mb-4">
-    <Label className="text-sm text-white pb-2">
+  <div className="grid w-full mb-2">
+    <Label className="text-sm text-white pb-1">
       {label} <span className="text-red-500">*</span>
     </Label>
     <Input

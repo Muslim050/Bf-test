@@ -1,11 +1,10 @@
 import React from 'react'
 import { TableCell } from '@/components/ui/table.jsx'
-import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
 
 function DeviceData({ statistic }) {
   const uniqueGenders = statistic?.device_type_percentages
 
-  const desiredOrder = ['MOBILE', 'TV', 'TABLET', 'DESKTOP', 'OTHER'];
+  const desiredOrder = ['TV', 'MOBILE', 'TABLET', 'DESKTOP', 'OTHER'];
   const sortedData = [...uniqueGenders].sort((a, b) => {
     return desiredOrder.indexOf(a.device_type) - desiredOrder.indexOf(b.device_type);
   });

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { Controller, useForm } from 'react-hook-form'
 import {
@@ -34,21 +34,19 @@ import {
 import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import axiosInstance from "@/api/api.js";
+import {fetchPublisher} from "@/redux/publisher/publisherSlice.js";
 
 export default function ChannelModal({ onClose }) {
   const dispatch = useDispatch()
+  const { publisher } = useSelector((state) => state.publisher)
 
-  const [publisherModal, setPublisherModal] = React.useState([])
 
-  const fetchPubl = async () => {
-    let url = new URL(`${backendURL}/publisher/`)
-
-    const response = await axiosInstance.get(url)
-    setPublisherModal(response.data.data.results)
-  }
 
   React.useEffect(() => {
-    fetchPubl()
+    dispatch(fetchPublisher({
+      page: 1, // API использует нумерацию с 1
+      pageSize: 200,
+    }))
   }, [])
 
   const {
@@ -73,7 +71,10 @@ export default function ChannelModal({ onClose }) {
       toast.success('Канал успешно создан!')
       onClose()
       setTimeout(() => {
-        dispatch(fetchChannel())
+        dispatch(fetchChannel({
+          page: 1,
+          pageSizeL: 200
+        }))
       }, 1000)
     } catch (error) {
       toast.error(error?.data?.error?.message)
@@ -119,7 +120,7 @@ export default function ChannelModal({ onClose }) {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Выбрать паблишера</SelectLabel>
-                        {publisherModal.map((adv) => (
+                        {publisher.results.map((adv) => (
                           <SelectItem key={adv.id} value={adv.id.toString()}>
                             {adv.name}
                           </SelectItem>
