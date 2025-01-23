@@ -151,6 +151,24 @@ export const useOrder = () => {
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>№</span>,
       },
+
+      {
+        accessorFn: (row) => row.format, // Преобразование в число
+        id: '-',
+        cell: ({ row }) =>
+          <>
+            {row.original.advertiser.logo &&
+              <Avatar>
+                <AvatarImage src={row.original.advertiser.logo} alt="@shadcn"/>
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            }
+            </>,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1"></span>,
+        enableSorting: false,
+        enableFiltering: false,
+      },
       {
         accessorFn: (row) => row.name, // Преобразование в число
         id: 'Кампания',
@@ -161,12 +179,6 @@ export const useOrder = () => {
                 <Tooltip>
                   <TooltipTrigger asChild className="cursor-pointer">
                     <div className='flex items-center gap-2'>
-                      {row.original.advertiser.logo &&
-                        <Avatar>
-                          <AvatarImage src={row.original.advertiser.logo} alt="@shadcn"/>
-                          <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
-                      }
                       <div>{truncate (row.original.name, 20)}</div>
                     </div>
                   </TooltipTrigger>
@@ -178,12 +190,6 @@ export const useOrder = () => {
               </TooltipProvider>
             ) : (
               <div className='flex items-center gap-2'>
-                {row.original.advertiser.logo &&
-                  <Avatar>
-                    <AvatarImage src={row.original.advertiser.logo} alt="@shadcn"/>
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                }
                 <div>{truncate (row.original.name, 20)}</div>
               </div>
             )}</>,

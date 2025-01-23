@@ -59,6 +59,7 @@ export const addPublisherUsers = createAsyncThunk(
           },
         },
       )
+      console.log (response)
       return response.data
     } catch (error) {
       return rejectWithValue(error.response)
@@ -86,7 +87,6 @@ const publisherUsersSlice = createSlice({
         state.error = action.error.message
       })
       .addCase(addPublisherUsers.fulfilled, (state, action) => {
-        state.publisherUsers.push(action.payload.data)
         state.status = 'succeeded'
       })
   },

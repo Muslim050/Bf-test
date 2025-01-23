@@ -33,22 +33,18 @@ import {
 } from '@radix-ui/react-tooltip'
 import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
-import axiosInstance from "@/api/api.js";
 import {fetchPublisher} from "@/redux/publisher/publisherSlice.js";
+import {addChannelUsers, fetchChannelUsers} from "@/redux/channelUsers/channelUsersSlice.js";
 
 export default function ChannelModal({ onClose }) {
   const dispatch = useDispatch()
   const { publisher } = useSelector((state) => state.publisher)
-
-
-
   React.useEffect(() => {
     dispatch(fetchPublisher({
       page: 1, // API использует нумерацию с 1
       pageSize: 200,
     }))
   }, [])
-
   const {
     register,
     formState: { errors, isValid },
@@ -68,16 +64,16 @@ export default function ChannelModal({ onClose }) {
   const onSubmit = async (data) => {
     try {
       const channel = await dispatch(addChannel({ data })).unwrap()
-      toast.success('Канал успешно создан!')
-      onClose()
+      toast.success('Канал успешно создан!');
+      onClose();
       setTimeout(() => {
         dispatch(fetchChannel({
           page: 1,
-          pageSizeL: 200
+          pageSize: 20
         }))
       }, 1000)
     } catch (error) {
-      toast.error(error?.data?.error?.message)
+      toast.error(error?.message || 'Произошла ошибка при создании рекламодателя');
     }
   }
 
@@ -120,7 +116,7 @@ export default function ChannelModal({ onClose }) {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Выбрать паблишера</SelectLabel>
-                        {publisher.results.map((adv) => (
+                        {publisher?.results?.map((adv) => (
                           <SelectItem key={adv.id} value={adv.id.toString()}>
                             {adv.name}
                           </SelectItem>

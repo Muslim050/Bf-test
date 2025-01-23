@@ -79,9 +79,6 @@ const channelSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
-      .addCase(addChannel.fulfilled, (state, action) => {
-        state.channel.push(action.payload.data)
-      })
 
     // .addCase(updateUser.fulfilled, (state, action) => {
     //   const { id, firstName, lastName, email } = action.payload;

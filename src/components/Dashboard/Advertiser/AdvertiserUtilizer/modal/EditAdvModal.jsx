@@ -62,7 +62,7 @@ export default function EditAdvModal({ closeDialog, currentAdvertiser, fetchCpm 
       cpm_top_preroll_uz: currentAdvertiser.cpm_top_preroll_uz,
       cpm_tv_preroll: currentAdvertiser.cpm_tv_preroll,
       cpm_tv_preroll_uz: currentAdvertiser.cpm_tv_preroll_uz,
-      // selectedFile: selectedFile
+      selectedFile: selectedFile
     },
     mode: 'onChange',
   })
@@ -75,7 +75,7 @@ export default function EditAdvModal({ closeDialog, currentAdvertiser, fetchCpm 
   const onSubmit = async (data) => {
     const advertiserData = {
       ...data,
-      // selectedFile, // Передаём файл из состояния
+      selectedFile, // Передаём файл из состояния
     };
     try {
       const adv = await dispatch(editAdvertiser({id, data: advertiserData })).unwrap()

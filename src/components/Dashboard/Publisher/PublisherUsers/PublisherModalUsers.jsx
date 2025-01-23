@@ -27,6 +27,7 @@ import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import Cookies from 'js-cookie'
 import {addPublisherUsers, fetchPublisherUsers} from "@/redux/publisherUsers/publisherUsersSlice.js";
 import {addPublisher, fetchPublisher} from "@/redux/publisher/publisherSlice.js";
+import {addChannelUsers, fetchChannelUsers} from "@/redux/channelUsers/channelUsersSlice.js";
 
 export default function PublisherModalUsers({ onClose }) {
   const dispatch = useDispatch()
@@ -74,21 +75,21 @@ export default function PublisherModalUsers({ onClose }) {
     mode: 'onChange',
   })
 
+
   const onSubmit = async (data) => {
     try {
-      const publisher = await dispatch(addPublisherUsers({ data })).unwrap()
-      toast.success('Пользователь паблишера успешно создан!')
-      onClose()
+      const publisher = await dispatch(addPublisherUsers({ data })).unwrap(); // Попытка выполнить запрос
+      toast.success('Пользователь паблишера успешно создан!'); // Успех
+      onClose(); // Закрыть модальное окно
       setTimeout(() => {
-        dispatch(fetchPublisherUsers({
-          page: 1, // API использует нумерацию с 1
-          pageSize: 20,
-        }))
-      }, 1000)
+        window.location.reload(); // Перезагрузка страницы
+      }, 1500);
     } catch (error) {
-      toast.error(error?.data?.error?.message)
+      console.error("Ошибка:", error); // Диагностируйте, что именно происходит
+      toast.error(error?.data?.error?.message || "Произошла ошибка при создании пользователя"); // Покажите fallback сообщение
     }
-  }
+  };
+
   const handleTogglePasswordOld = () => {
     setShowPasswordOld(!showPasswordOld)
   }
@@ -96,6 +97,7 @@ export default function PublisherModalUsers({ onClose }) {
   return (
     <>
       <DialogContent
+        aria-hidden={false} // Ensure aria-hidden is explicitly set to false
         className="w-[450px] p-4"
         onInteractOutside={(e) => {
           e.preventDefault()

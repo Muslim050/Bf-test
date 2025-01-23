@@ -39,12 +39,15 @@ const TablePagination = ({flexRender,table, renderSubComponent, text }) => {
                             onClick={header.column.getToggleSortingHandler()}
                           >
                             {flexRender(header.column.columnDef.header, header.getContext())}
-                            <span className="ml-2">
-                            {{
-                              asc: <ChevronUp className="size-4" />,
-                              desc: <ChevronDown className="size-4" />,
-                            }[header.column.getIsSorted()] ?? <ChevronsUpDown className="size-4" />}
-                          </span>
+                            {header.column.columnDef.enableSorting && (
+                              <span className="ml-2">
+                                {{
+                                  asc: <ChevronUp className="size-4" />,
+                                  desc: <ChevronDown className="size-4" />,
+                                }[header.column.getIsSorted()] ?? <ChevronsUpDown className="size-4" />}
+                              </span>
+                            )}
+
                           </div>
                         )}
                       </div>

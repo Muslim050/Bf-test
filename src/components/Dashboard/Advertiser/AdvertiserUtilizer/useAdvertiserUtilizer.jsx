@@ -52,18 +52,27 @@ export const useAdvertiserUtilizer = () => {
         header: () => <span>№</span>,
       },
       {
+        accessorFn: (row) => row.format, // Преобразование в число
+        id: '-',
+        cell: ({ row }) =>
+          <>
+            {row.original.logo &&
+              <Avatar>
+                <AvatarImage src={row.original.logo} alt="@shadcn"/>
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            }
+          </>,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1"></span>,
+        enableSorting: false,
+        enableFiltering: false,
+      },
+      {
         accessorFn: row => row.name,
         id: 'Наименование Компании',
         cell: ({ row }) =>
-          <div  className='flex items-center gap-2'>
-          {row.original.logo &&
-            <Avatar>
-              <AvatarImage src={row.original.logo} alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          }
-            <div>{row.original.name}</div>
-          </div>,
+            <div>{row.original.name}</div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>Наименование Компании</span>,
       },
