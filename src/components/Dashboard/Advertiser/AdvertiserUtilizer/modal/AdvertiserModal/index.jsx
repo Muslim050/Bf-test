@@ -38,9 +38,9 @@ import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import InputField
   from "@/components/Dashboard/Advertiser/AdvertiserUtilizer/modal/AdvertiserModal/components/InputField.jsx";
 import axiosInstance from "@/api/api.js";
-import {TableBody, TableCell, TableHead, TableRow} from "@/components/ui/table.jsx";
+// import {TableBody, TableCell, TableHead, TableRow} from "@/components/ui/table.jsx";
 import {fetchAdvertiserAgency} from "@/redux/AgencySlice/advertiserAgency/advertiserAgencySlice.js";
-import {truncate} from "@/utils/other.js";
+// import {truncate} from "@/utils/other.js";
 
 export default function AdvertiserModal({ onClose }) {
   const [isLogin, setIsLogin] = React.useState(false)
@@ -84,7 +84,7 @@ export default function AdvertiserModal({ onClose }) {
       cpm_tv_preroll_uz: '',
       cpm_top_preroll: '',
       cpm_top_preroll_uz: '',
-      selectedFile: selectedFile
+      // selectedFile: selectedFile
     },
     mode: 'onChange',
   })
@@ -117,7 +117,7 @@ export default function AdvertiserModal({ onClose }) {
   const onSubmit = async (data) => {
     const advertiserData = {
       ...data,
-      selectedFile, // Передаём файл из состояния
+      // selectedFile, // Передаём файл из состояния
     };
 
     try {
@@ -412,7 +412,7 @@ export default function AdvertiserModal({ onClose }) {
                 )}
               />
             </div>
-            {/**/}
+            {/*LOGO*/}
             <Label className="text-sm	text-white pb-1">
               Выбрать лого
               <span className="text-red-500 ml-0.5">*</span>
@@ -503,7 +503,7 @@ export default function AdvertiserModal({ onClose }) {
               </div>
 
             </div>
-
+{/*LOGO*/}
 
             <Button
               type='submit'

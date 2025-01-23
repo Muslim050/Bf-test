@@ -32,7 +32,7 @@ export const useChannelUtilizer = () => {
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
   });
-
+  console.log (linkGoogle)
   const authGoogle = (pubId) => {
     dispatch(googleAuth(pubId))
     // setConnectG(false)
@@ -139,8 +139,7 @@ export const useChannelUtilizer = () => {
             {user === 'admin' ? (
               ''
             ) : (
-              <TableCell
-                data-label="ID"
+              <div
                 className={`font-normal text-${textColor} text-sm `}
               >
                 <div
@@ -290,7 +289,7 @@ export const useChannelUtilizer = () => {
                   </>
 
                 </div>
-              </TableCell>
+              </div>
             )}
           </>
         ),
@@ -298,7 +297,7 @@ export const useChannelUtilizer = () => {
         header: () => !hasRole('admin') && <span>Статус</span>,
       },
     ],
-    []
+    [googleAu, linkGoogle]
   )
   const filteredColumns = columns.filter((column) => {
     // Если колонка зависит от роли admin, проверяем условие

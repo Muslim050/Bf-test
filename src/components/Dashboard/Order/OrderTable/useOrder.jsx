@@ -26,6 +26,7 @@ import toast from 'react-hot-toast'
 import {fetchOrder, setOrderStatus} from "@/redux/order/orderSlice.js";
 import {fetchViewStatus, finishOrder} from "@/redux/orderStatus/orderStatusSlice.js";
 import {OpenSvg} from "@/assets/icons-ui.jsx";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.jsx";
 
 
 export const useOrder = () => {
@@ -159,7 +160,15 @@ export const useOrder = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild className="cursor-pointer">
-                    <div>{truncate(row.original.name, 20)}</div>
+                    <div className='flex items-center gap-2'>
+                      {row.original.advertiser.logo &&
+                        <Avatar>
+                          <AvatarImage src={row.original.advertiser.logo} alt="@shadcn"/>
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                      }
+                      <div>{truncate (row.original.name, 20)}</div>
+                    </div>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>ID: {row.original.id}</p>
@@ -168,7 +177,15 @@ export const useOrder = () => {
                 </Tooltip>
               </TooltipProvider>
             ) : (
-              <div>{truncate(row.original.name, 20)}</div>
+              <div className='flex items-center gap-2'>
+                {row.original.advertiser.logo &&
+                  <Avatar>
+                    <AvatarImage src={row.original.advertiser.logo} alt="@shadcn"/>
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                }
+                <div>{truncate (row.original.name, 20)}</div>
+              </div>
             )}</>,
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Кампания</span>
