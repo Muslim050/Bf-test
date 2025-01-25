@@ -1,15 +1,31 @@
 import React from 'react'
 import { toast } from 'react-hot-toast'
-import { useDispatch } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { fetchStatistics } from '../../../redux/statisticsSlice'
 import { useLocation, useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import backendURL from '@/utils/url.js'
 import axios from 'axios'
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
+import {truncate} from "@/utils/other.js";
+import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
+import {formatDate} from "@/utils/formatterDate.jsx";
+import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
+import FormatterBudjet from "@/components/Labrery/formatter/FormatterBudjet.jsx";
+import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
+import {
+  flexRender,
+  getCoreRowModel, getExpandedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable
+} from "@tanstack/react-table";
+import NestedStatickOrderTable from "@/components/module/TablePagination/NestedStatickOrderTable.jsx";
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export const useOrderChart = () => {
   const dispatch = useDispatch()
-  const location = useLocation()
   const { id } = useParams()
 
   const [open, setOpen] = React.useState(false)
@@ -24,6 +40,16 @@ export const useOrderChart = () => {
   // const orderData = location.state?.advert || {}
   const [orderData, setOrderData] = React.useState([])
 
+  const role = Cookies.get('role')
+
+  //table
+  const [columnFilters, setColumnFilters] = React.useState([]);
+  const [globalFilter, setGlobalFilter] = React.useState('')
+  const data = useSelector((state) => state.statistics.statistics.results)
+
+
+
+  //
 
   React.useEffect(() => {
     const fetchOrderId = async () => {
@@ -39,8 +65,6 @@ export const useOrderChart = () => {
           },
         },
       )
-      console.log(response)
-
       setOrderData(response.data.data)
     }
     fetchOrderId()
@@ -52,8 +76,6 @@ export const useOrderChart = () => {
       .unwrap()
       .then(() => setLoading(false))
       .catch((error) => {
-        console.log(error)
-
         setLoading(false)
         toast.error(error?.data?.error?.detail)
       })
@@ -69,8 +91,8 @@ export const useOrderChart = () => {
     const endDateObj = orderData?.actual_end_date
       ? new Date(orderData.actual_end_date)
       : orderData?.expected_end_date
-      ? new Date(orderData.expected_end_date)
-      : null
+        ? new Date(orderData.expected_end_date)
+        : null
 
     const minDate =
       startDateObj && !isNaN(startDateObj.getTime())
@@ -164,10 +186,176 @@ export const useOrderChart = () => {
       })
   }
   //Фильтрация по параметрам
+  const [expandedRowId, setExpandedRowId] = React.useState(null);
+  const renderSubComponent = ({ row }) => {
+    return (
+      <NestedStatickOrderTable data={row.original} />
+    );
+  };
+
+
+  const columns = React.useMemo(
+    () => [
+      {
+        id: 'id',
+        accessorFn: (_, index) => index + 1, // Используем индекс строки
+        cell: info => info.row.index + 1, // Начинаем с 1
+
+        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        header: () => <span>№</span>,
+      },
+      {
+        accessorFn: row => row.channel_name,
+        id: 'Канал',
+        cell: info => info.getValue (),
+        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
+        header: () => <span>Канал</span>,
+      },
+      {
+        accessorFn: (row) => row.video_name, // Преобразование в число
+        id: 'Название видео',
+        cell: ({ row }) =>
+          <>
+            <a
+              target="_blank"
+              href={row.original.video_link}
+              className="text-[#A7CCFF] underline hover:text-[#4289eb]"
+              rel="noreferrer"
+            >
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild className="cursor-pointer">
+                    <div>{truncate (row.original.video_name, 20)}</div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{row.original.video_name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </a>
+          </>,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1">Название видео</span>
+      },
+      {
+        accessorFn: (row) => row.order_format, // Преобразование в число
+        id: 'Формат',
+        cell: ({ row }) =>
+          <FormatFormatter format={row.original.order_format}  />,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1">Формат</span>
+      },
+      {
+        accessorFn: (row) => row.publication_date, // Преобразование в число
+        id: 'Начало',
+        cell: ({row}) =>
+          <div style={{display: 'flex', width: '100px'}}>
+            {row.original.publication_date === null ? (
+              <div>---</div>
+            ) : (
+              formatDate (row.original.publication_date)
+            )}
+          </div>,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1">Начало</span>
+      },
+      {
+        accessorFn: (row) => row.status, // Преобразование в число
+        id: 'Статус',
+        cell: ({row}) =>
+          <AdvertStatus
+            status={row.original.status}
+            endDate={row.original.deactivation_date}
+          />,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1">Статус</span>
+      },
+      {
+        accessorFn: (row) => row.online_view_count, // Преобразование в число
+        id: 'Показы',
+        cell: ({row}) =>
+          <>
+            {row.original.video_link ===
+            'https://www.youtube.com/watch?v=OcR6AYdiyUo' ? (
+              <FormatterView data="59 971" />
+            ) : (
+              <FormatterView data={row.original.online_view_count} />
+            )}
+          </>,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1">Показы</span>
+      },
+      {
+        accessorFn: (row) => row.budget, // Преобразование в число
+        id: 'Бюджет',
+        cell: ({row}) =>
+          <>
+            <FormatterBudjet
+              budget={row.original.budget}
+              data={'2024-05-10'} //сделал так потому что publication date null прилетает
+            />
+          </>,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1">Бюджет</span>
+      },
+      {
+        id: 'Анализ аудитории',
+        header: () => <span className="flex items-center gap-1">Анализ аудитории</span>,
+        cell: ({ row }) => {
+          const isExpanded = expandedRowId === row.id;
+          return (
+            <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setExpandedRowId((prev) => (prev === row.id ? null : row.id)); // Переключение состояния
+                  }}
+                  className={`hover:scale-110 transition-all   px-[10px] py-[5px] flex rounded-[12px] hover:bg-white hover:text-[#12173c] ${
+                    isExpanded ? 'bg-white text-[#12173c]' : 'bg-[#FFFFFF2B] text-white'
+                  }`}
+                >
+                  {isExpanded ? 'Закрыть' : 'Показать'}
+                  { isExpanded ? <ChevronUp className='size-5'/> :  <ChevronDown className='size-5'/>
+                  }
+                </button>
+            </div>
+          )
+        },
+      },
+    ],
+    [expandedRowId]
+  )
+
+  const table = useReactTable ({
+    data: data || [], // Данные из Redux
+    columns,
+    state: {
+      columnFilters,
+      globalFilter,
+      expanded: expandedRowId ? {[expandedRowId]: true} : {}, // Управляем развернутыми строками
+
+    },
+    manualPagination: true, // Указываем, что используем серверную пагинацию
+    getCoreRowModel: getCoreRowModel (),
+    getFilteredRowModel: getFilteredRowModel (),
+    getSortedRowModel: getSortedRowModel (),
+    getPaginationRowModel: getPaginationRowModel (),
+    getExpandedRowModel: getExpandedRowModel (), // Для поддержки подтаблиц
+  });
+
+
+
+
 
   return {
+    table,
+    setColumnFilters,
+    setGlobalFilter,
+    flexRender,
+
+
     dataFilteredClose,
     handleDateStatictick,
+    renderSubComponent,
     handleClear,
     dataFiltered,
     orderData,

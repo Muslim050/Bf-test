@@ -153,7 +153,6 @@ export const useOrder = () => {
       },
 
       {
-        accessorFn: (row) => row.format, // Преобразование в число
         id: '-',
         cell: ({ row }) =>
           <>

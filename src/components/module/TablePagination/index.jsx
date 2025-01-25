@@ -7,21 +7,21 @@ import {ThemeContext} from "@/utils/ThemeContext.jsx";
 const TablePagination = ({flexRender,table, renderSubComponent, text }) => {
   const { textColor } = React.useContext(ThemeContext)
   React.useEffect(() => {
-    if (table.getState().columnFilters[0]?.id === 'fullName') {
-      if (table.getState().sorting[0]?.id !== 'fullName') {
-        table.setSorting([{ id: 'fullName', desc: false }])
+    if (table?.getState().columnFilters[0]?.id === 'fullName') {
+      if (table?.getState().sorting[0]?.id !== 'fullName') {
+        table?.setSorting([{ id: 'fullName', desc: false }])
       }
     }
-  }, [table.getState().columnFilters[0]?.id])
-  const isDataEmpty = table.getPrePaginationRowModel().rows.length === 0;
-  const isFilteredEmpty = table.getRowModel().rows.length === 0;
+  }, [table?.getState().columnFilters[0]?.id])
+  const isDataEmpty = table?.getPrePaginationRowModel().rows.length === 0;
+  const isFilteredEmpty = table?.getRowModel().rows.length === 0;
   return (
     <>
       {!isDataEmpty ? (
         <Table
           className={`${style.responsive_table} border_design rounded-lg`}>
           <TableHeader className="bg-[#FFFFFF2B] rounded-t-lg justify-between">
-            {table.getHeaderGroups().map(headerGroup => (
+            {table?.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <TableHead
@@ -38,15 +38,13 @@ const TablePagination = ({flexRender,table, renderSubComponent, text }) => {
                             }`}
                             onClick={header.column.getToggleSortingHandler()}
                           >
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            {header.column.columnDef.enableSorting && (
-                              <span className="ml-2">
+                            {flexRender && flexRender(header.column.columnDef.header, header.getContext())}
+                            {header.column.columnDef.enableSorting === false ? null : <span className="ml-2">
                                 {{
-                                  asc: <ChevronUp className="size-4" />,
-                                  desc: <ChevronDown className="size-4" />,
-                                }[header.column.getIsSorted()] ?? <ChevronsUpDown className="size-4" />}
-                              </span>
-                            )}
+                                  asc: <ChevronUp className="size-4"/>,
+                                  desc: <ChevronDown className="size-4"/>,
+                                }[header.column.getIsSorted ()] ?? <ChevronsUpDown className="size-4"/>}
+                              </span>}
 
                           </div>
                         )}
@@ -58,7 +56,7 @@ const TablePagination = ({flexRender,table, renderSubComponent, text }) => {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.map(row => (
+            {table?.getRowModel ().rows.map (row => (
               <>
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map(cell => (
