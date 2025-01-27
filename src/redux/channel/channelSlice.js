@@ -51,6 +51,8 @@ export const addChannel = createAsyncThunk(
           email: data.email,
           phone_number: data.phone,
           channel_id: data.channelId,
+          commission_rate: data.commission_rate,
+
         }
       )
       return response.data

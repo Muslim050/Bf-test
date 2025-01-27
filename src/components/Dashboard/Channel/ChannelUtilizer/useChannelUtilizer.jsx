@@ -334,9 +334,31 @@ export const useChannelUtilizer = () => {
             )}
           </>
         ),
+        enableSorting: false,
         filterFn: 'includesString',
         header: () => !hasRole('admin') && <span>Статус</span>,
       },
+      {
+        accessorFn: (row) => row.commission_rate, // Преобразование в число
+        id: 'Процент комиссии канала',
+        cell: ({ row }) => (
+          <>
+            {user === 'admin' && (
+              <div
+                className={`font-normal text-${textColor} text-sm `}
+              >
+                {
+                  row.original?.commission_rate && <>
+                    {row.original?.commission_rate} %</>
+                }
+              </div>
+            )}
+          </>
+        ),
+        filterFn: 'includesString',
+        header: () => hasRole('admin') && <span>% комиссии</span>,
+      },
+
     ],
     [googleAu, linkGoogle]
   )

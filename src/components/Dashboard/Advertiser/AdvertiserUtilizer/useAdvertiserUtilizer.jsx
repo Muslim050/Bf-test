@@ -121,7 +121,7 @@ export const useAdvertiserUtilizer = () => {
           ) : null,
       },
       {
-        accessorFn: row => row.cpm_tv_preroll,
+        accessorFn: row => row.cpm_top_preroll,
         id: 'Top Preroll',
         cell: info => info.getValue (),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
@@ -131,7 +131,7 @@ export const useAdvertiserUtilizer = () => {
           ) : null,
       },
       {
-        accessorFn: row => row.cpm_tv_preroll_uz,
+        accessorFn: row => row.cpm_top_preroll_uz,
         id: 'Top Preroll UZ',
         cell: info => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
