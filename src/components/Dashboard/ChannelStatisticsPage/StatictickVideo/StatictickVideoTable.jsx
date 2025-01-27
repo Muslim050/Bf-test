@@ -15,6 +15,8 @@ import {
 import AgeData from './components/DopTable/Data/AgeData'
 import GenderData from './components/DopTable/Data/GenderData'
 import GeoData from './components/DopTable/Data/GeoData'
+import DeviceData
+  from "@/components/Dashboard/ChannelStatisticsPage/StatictickVideo/components/DopTable/Data/DeviceData.jsx";
 
 function StatictickVideoTable({ data, loading, error }) {
   const [expandedRows, setExpandedRows] = React.useState('')
@@ -158,6 +160,8 @@ function StatictickVideoTable({ data, loading, error }) {
                                           <GenderData statistic={statistic} />
                                           <AgeData statistic={statistic} />
                                           <GeoData statistic={statistic} />
+                                          <DeviceData statistic={statistic} />
+
                                         </Table>
                                       </div>
                                     )}

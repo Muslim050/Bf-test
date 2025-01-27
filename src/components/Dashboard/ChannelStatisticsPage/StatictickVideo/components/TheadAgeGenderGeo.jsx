@@ -24,9 +24,17 @@ function TheadAgeGenderGeo({ data }) {
       )
     : []
 
+  const uniqueDevaice =data
+    ? removeDuplicates(
+      data.flatMap((obj) => obj.device_type_percentages.map((geo) => geo.device_type)),
+    )
+    : []
+
   const genderColSpan = uniqueGenders.length
   const ageColSpan = uniqueAge.length
   const geoColSpan = uniqueGeo.length
+  const deviceColSpan = uniqueDevaice.length
+
   return (
     <>
       <TableCell
@@ -39,9 +47,15 @@ function TheadAgeGenderGeo({ data }) {
       <TableCell colSpan={ageColSpan} className="text-center">
         Возраст
       </TableCell>
-      <TableCell colSpan={geoColSpan} className="rounded-tr-[20px] text-center">
+      <TableCell colSpan={geoColSpan} className=" text-center">
         Гео
       </TableCell>
+
+      {deviceColSpan ? (
+        <TableCell colSpan={deviceColSpan} className="rounded-tr-[20px] text-center">
+        Девайсы
+        </TableCell>
+      ) : null}
     </>
   )
 }

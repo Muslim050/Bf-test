@@ -85,7 +85,6 @@ function FilteredTooltip({
               <SelectGroup>
                 {publisher?.results?.map((option) => (
                   <SelectItem
-                    style={{ color: 'var(--text-color )' }}
                     key={option.id}
                     value={JSON.stringify(option)}
                   >
@@ -139,7 +138,6 @@ function FilteredTooltip({
           <SelectGroup>
             {channel?.results?.map((option) => (
               <SelectItem
-                style={{ color: 'var(--text-color )' }}
                 key={option.id}
                 value={JSON.stringify(option)}
               >
@@ -217,7 +215,6 @@ function FilteredTooltip({
               <SelectItem
                 key={index}
                 value={option.value}
-                style={{color: 'var(--text-color )'}}
               >
                 <div className='!flex items-center gap-1'>
                   {option.icon &&

@@ -34,10 +34,8 @@ function TheadAgeGeoGender({ statistic }) {
 
   const genderColSpan = uniqueGenders.length
   const deviceColSpan = uniqueDevaice.length
-
   const ageColSpan = uniqueAge.length
   const geoColSpan = uniqueGeo.length
-  console.log (deviceColSpan)
   return (
     <>
 
