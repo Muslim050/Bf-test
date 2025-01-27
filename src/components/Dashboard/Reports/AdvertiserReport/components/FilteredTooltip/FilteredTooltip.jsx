@@ -63,7 +63,6 @@ function FilteredTooltip({
             <SelectGroup>
               {advdata.results.map((option) => (
                 <SelectItem
-                  style={{ color: 'var(--text-color )' }}
                   key={option.id}
                   value={JSON.stringify(option)}
                   className='rounded-[18px]'

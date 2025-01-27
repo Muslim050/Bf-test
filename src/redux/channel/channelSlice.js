@@ -51,6 +51,8 @@ export const addChannel = createAsyncThunk(
           email: data.email,
           phone_number: data.phone,
           channel_id: data.channelId,
+          commission_rate: data.commission_rate,
+
         }
       )
       return response.data
@@ -78,9 +80,6 @@ const channelSlice = createSlice({
       .addCase(fetchChannel.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
-      })
-      .addCase(addChannel.fulfilled, (state, action) => {
-        state.channel.push(action.payload.data)
       })
 
     // .addCase(updateUser.fulfilled, (state, action) => {

@@ -22,18 +22,8 @@ import DeviceData from "@/components/Dashboard/OrderChartTable/module/DopTable/D
 
 const DopTable = ({ statistic, data, expandedRows }) => {
   return (
-    <TableCell
-      colSpan="9"
-      style={{ background: '#FFFFFF4D' }}
-      // className={`${style.list__item} ${
-      //   expandedRows === statistic.video_link
-      //     ? style.list__item__open
-      //     : ''
-      // }`}
-      className={`${style.dopTable} rounded-[22px] !h-[100%]`}
-    >
-      <div               style={{ background: 'var(--bg-color)' }}
-                         className=" p-[5px] rounded-[22px] h-[100%]">
+    <div>
+      <div style={{ background: 'var(--bg-color)' }} className=" p-2 rounded-b-3xl h-[100%]">
         <Table className="rounded-[22px] h-[100%]">
           <TableHeader style={{ border: 0 }}>
             {/* Колонки  ГЕО Возраст ПОЛ доп таблица  */}
@@ -69,7 +59,7 @@ const DopTable = ({ statistic, data, expandedRows }) => {
         </Table>
         {/* )} */}
       </div>
-    </TableCell>
+    </div>
   )
 }
 

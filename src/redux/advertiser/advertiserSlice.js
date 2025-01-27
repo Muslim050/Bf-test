@@ -31,27 +31,43 @@ export const addAdvertiser = createAsyncThunk(
   'advertiser/addAdvertiser',
   async ({ data }, { rejectWithValue }) => {
     try {
+      // Создаём объект FormData
+      const formData = new FormData();
+      formData.append('advertising_agency', data.agency);
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('phone_number', data.phone);
+      formData.append('cpm_preroll', data.cpm_preroll);
+      formData.append('cpm_preroll_uz', data.cpm_preroll_uz);
+      formData.append('cpm_tv_preroll', data.cpm_tv_preroll);
+      formData.append('cpm_tv_preroll_uz', data.cpm_tv_preroll_uz);
+      formData.append('cpm_top_preroll', data.cpm_top_preroll);
+      formData.append('cpm_top_preroll_uz', data.cpm_top_preroll_uz);
+
+      // Добавляем файл, если он есть
+      if (data.selectedFile) {
+        formData.append('logo', data.selectedFile); // Добавляем файл в FormData
+      }
+
+      // Выполняем запрос с заголовком `Content-Type: multipart/form-data`
       const response = await axiosInstance.post(
         `${backendURL}/advertiser/`,
+        formData,
         {
-          advertising_agency: data.agency,
-          name: data.name,
-          email: data.email,
-          phone_number: data.phone,
-          cpm_preroll: data.cpm_preroll,
-          cpm_preroll_uz: data.cpm_preroll_uz,
-          cpm_tv_preroll: data.cpm_tv_preroll,
-          cpm_tv_preroll_uz: data.cpm_tv_preroll_uz,
-          cpm_top_preroll: data.cpm_top_preroll,
-          cpm_top_preroll_uz: data.cpm_top_preroll_uz,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         }
-      )
-      return response.data.data
+      );
+
+      return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response)
+      console.log (error)
+      return rejectWithValue(error.response);
     }
-  },
-)
+  }
+);
+
 
 export const removeAdvertiser = createAsyncThunk(
   'advertiser/removeAdvertiser',
@@ -65,29 +81,68 @@ export const removeAdvertiser = createAsyncThunk(
   },
 )
 
+// export const editAdvertiser = createAsyncThunk(
+//   'advertiser/editAdvertiser',
+//   async ({ id, data }, { rejectWithValue }) => {
+//     try {
+//       const response = await axiosInstance.patch(
+//         `${backendURL}/advertiser/${id}/`,
+//         {
+//           name: data.name,
+//           email: data.email,
+//           phone_number: data.phone_number,
+//           cpm_preroll: data.cpm_preroll,
+//           cpm_preroll_uz: data.cpm_preroll_uz,
+//           cpm_top_preroll: data.cpm_top_preroll,
+//           cpm_top_preroll_uz: data.cpm_top_preroll_uz,
+//           cpm_tv_preroll: data.cpm_tv_preroll,
+//           cpm_tv_preroll_uz: data.cpm_tv_preroll_uz,
+//         })
+//       return response.data.data
+//     } catch (error) {
+//       return rejectWithValue(error.response)
+//     }
+//   },
+// )
+
 export const editAdvertiser = createAsyncThunk(
   'advertiser/editAdvertiser',
   async ({ id, data }, { rejectWithValue }) => {
     try {
+      // Создаём объект FormData
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('phone_number', data.phone_number);
+      formData.append('cpm_preroll', data.cpm_preroll);
+      formData.append('cpm_preroll_uz', data.cpm_preroll_uz);
+      formData.append('cpm_tv_preroll', data.cpm_tv_preroll);
+      formData.append('cpm_tv_preroll_uz', data.cpm_tv_preroll_uz);
+      formData.append('cpm_top_preroll', data.cpm_top_preroll);
+      formData.append('cpm_top_preroll_uz', data.cpm_top_preroll_uz);
+
+      // Добавляем файл, если он есть
+      if (data.selectedFile) {
+        formData.append('logo', data.selectedFile); // Добавляем файл в FormData
+      }
+
+      // Выполняем запрос с заголовком `Content-Type: multipart/form-data`
       const response = await axiosInstance.patch(
         `${backendURL}/advertiser/${id}/`,
+        formData,
         {
-          name: data.name,
-          email: data.email,
-          phone_number: data.phone_number,
-          cpm_preroll: data.cpm_preroll,
-          cpm_preroll_uz: data.cpm_preroll_uz,
-          cpm_top_preroll: data.cpm_top_preroll,
-          cpm_top_preroll_uz: data.cpm_top_preroll_uz,
-          cpm_tv_preroll: data.cpm_tv_preroll,
-          cpm_tv_preroll_uz: data.cpm_tv_preroll_uz,
-        })
-      return response.data.data
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response)
+      return rejectWithValue(error.response);
     }
-  },
-)
+  }
+);
 
 const advertiserSlice = createSlice({
   name: 'advertiser',
@@ -109,7 +164,6 @@ const advertiserSlice = createSlice({
         state.error = action.error.message
       })
       .addCase(addAdvertiser.fulfilled, (state, action) => {
-        state.advertisers.push(action.payload)
         state.status = 'succeeded'
       })
       .addCase(removeAdvertiser.pending, (state) => {

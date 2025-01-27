@@ -79,7 +79,7 @@ function AdvertiserReportTable() {
                 <PopoverTrigger asChild className="">
                   <Button
                     variant="ghost"
-                    className=" flex justify-end  bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
+                    className=" flex justify-end mt-3 bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
                   >
                     <SlidersHorizontal className="w-4 h-4 mr-2" /> Фильтр
                   </Button>

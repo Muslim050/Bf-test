@@ -42,6 +42,25 @@ function DataDopTable({ dataChannel }) {
           </TableCell>
         </>
       ))}
+      {dataChannel?.device_type_percentages?.map((geo, index) => (
+        <>
+          <TableCell
+            key={index}
+            data-label="Гео"
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            {
+              geo.percentage > 0 &&
+              <div className='flex justify-center'>
+                {geo.percentage}%
+              </div>
+            }
+
+          </TableCell>
+        </>
+      ))}
     </>
   )
 }

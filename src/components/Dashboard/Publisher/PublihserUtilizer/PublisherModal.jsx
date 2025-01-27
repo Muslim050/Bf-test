@@ -34,7 +34,10 @@ export default function PublisherModal({onClose}) {
       toast.success('Паблишер успешно создан!')
       onClose()
       setTimeout(() => {
-        dispatch(fetchPublisher())
+        dispatch(fetchPublisher({
+          page: 1, // API использует нумерацию с 1
+          pageSize: 20,
+        }))
       }, 1000)
     } catch (error) {
       toast.error(error?.data?.error?.message)
@@ -131,7 +134,7 @@ export default function PublisherModal({onClose}) {
               isValid
                 ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
                 : 'bg-[#616161]'
-            } w-full   h-[44px] text-white rounded-lg	mt-8`}
+            } w-full   h-[44px] text-white rounded-2xl	mt-8`}
             disabled={!isValid}
           >
             Создать

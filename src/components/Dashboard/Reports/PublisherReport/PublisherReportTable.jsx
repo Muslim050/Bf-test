@@ -85,13 +85,16 @@ function PublisherReportTable() {
   React.useEffect(() => {
     dispatch(fetchPublisher({
       page:1,
-      pageSize: 100
+      pageSize: 200
     }))
   }, [dispatch])
 
   React.useEffect(() => {
     if (selectedPublisher) {
-      dispatch(fetchChannel(selectedPublisher))
+      dispatch(fetchChannel({
+        page:1,
+        pageSize: 200,
+      selectedPublisher}))
     }
   }, [selectedPublisher, dispatch])
 
@@ -354,7 +357,7 @@ function PublisherReportTable() {
                 <PopoverTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
+                    className="bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white mt-3"
                   >
                     <SlidersHorizontal className="w-4 h-4 mr-2"/> Фильтр
                   </Button>
@@ -425,6 +428,12 @@ function PublisherReportTable() {
                   <div className="flex items-center gap-2">
                     <div className="w-2.5	h-6	bg-[#D1C5FF] rounded-[4px]"></div>
                     <h4 className="font-medium text-white">Отчет</h4>
+                    <div className='flex gap-1 items-center text-lg	 font-semibold'>
+                      You <span className='bg-red-600 px-1 py-1 rounded-xl'>Tube</span>
+                      <p className='text-lg	 font-medium'>
+                        Analytics
+                      </p>
+                    </div>
                   </div>
                   <div className="rounded-[22px]">
                     <InfoCardsTop

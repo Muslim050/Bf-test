@@ -86,7 +86,8 @@ const useAdvertiserReport = () => {
   };
 
   React.useEffect(() => {
-    dispatch(fetchAdvertiser({}));
+    dispatch(fetchAdvertiser({ page:1,
+      pageSize: 200}));
   }, [dispatch]);
 
   React.useEffect(() => {

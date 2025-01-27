@@ -13,7 +13,13 @@ import {Button} from "@/components/ui/button.jsx";
 import { Pencil } from 'lucide-react';
 import backendURL from "@/utils/url.js";
 import axiosInstance from "@/api/api.js";
-
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
+import {truncate} from "@/utils/other.js";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
 export const useAdvertiserUtilizer = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -46,9 +52,27 @@ export const useAdvertiserUtilizer = () => {
         header: () => <span>№</span>,
       },
       {
+        accessorFn: (row) => row.format, // Преобразование в число
+        id: '-',
+        cell: ({ row }) =>
+          <>
+            {row.original.logo &&
+              <Avatar>
+                <AvatarImage src={row.original.logo} alt="@shadcn"/>
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            }
+          </>,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1"></span>,
+        enableSorting: false,
+        enableFiltering: false,
+      },
+      {
         accessorFn: row => row.name,
         id: 'Наименование Компании',
-        cell: info => info.getValue(),
+        cell: ({ row }) =>
+            <div>{row.original.name}</div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>Наименование Компании</span>,
       },
@@ -97,7 +121,7 @@ export const useAdvertiserUtilizer = () => {
           ) : null,
       },
       {
-        accessorFn: row => row.cpm_tv_preroll,
+        accessorFn: row => row.cpm_top_preroll,
         id: 'Top Preroll',
         cell: info => info.getValue (),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
@@ -107,7 +131,7 @@ export const useAdvertiserUtilizer = () => {
           ) : null,
       },
       {
-        accessorFn: row => row.cpm_tv_preroll_uz,
+        accessorFn: row => row.cpm_top_preroll_uz,
         id: 'Top Preroll UZ',
         cell: info => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive

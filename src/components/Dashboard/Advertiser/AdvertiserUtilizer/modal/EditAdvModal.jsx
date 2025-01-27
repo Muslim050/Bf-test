@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -17,11 +17,36 @@ import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import { toast } from 'react-hot-toast'
 import { Monitor, MonitorPlay, MonitorUp } from 'lucide-react';
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.jsx";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.jsx";
+import {TableBody, TableCell, TableHead, TableRow} from "@/components/ui/table.jsx";
+import {truncate} from "@/utils/other.js";
 
-export default function EditAdvModal({ onClose, currentAdvertiser, fetchCpm }) {
+export default function EditAdvModal({ closeDialog, currentAdvertiser, fetchCpm }) {
   const dispatch = useDispatch()
   const [isEditingCreated, setEditingCreated] = React.useState(false)
   const id = currentAdvertiser.id
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [preview, setPreview] = useState(null); // Для хранения URL предпросмотра
+  const inputRef = useRef(null); // Создаем ссылку на Input
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+
+    if (file) {
+      setPreview(URL.createObjectURL(file)); // Создаем URL для предпросмотра
+    } else {
+      setPreview(null); // Сбрасываем предпросмотр, если файл не выбран
+    }
+  };
+  const handleClear = () => {
+    setSelectedFile(null); // Сбрасываем файл
+    setPreview(null); // Удаляем предпросмотр
+    if (inputRef.current) {
+      inputRef.current.value = ""; // Сбрасываем значение поля ввода
+    }
+  };
   const {
     formState: { errors, isValid },
     handleSubmit,
@@ -37,6 +62,7 @@ export default function EditAdvModal({ onClose, currentAdvertiser, fetchCpm }) {
       cpm_top_preroll_uz: currentAdvertiser.cpm_top_preroll_uz,
       cpm_tv_preroll: currentAdvertiser.cpm_tv_preroll,
       cpm_tv_preroll_uz: currentAdvertiser.cpm_tv_preroll_uz,
+      selectedFile: selectedFile
     },
     mode: 'onChange',
   })
@@ -47,12 +73,19 @@ export default function EditAdvModal({ onClose, currentAdvertiser, fetchCpm }) {
   }, [currentAdvertiser, fetchCpm])
 
   const onSubmit = async (data) => {
+    const advertiserData = {
+      ...data,
+      selectedFile, // Передаём файл из состояния
+    };
     try {
-      const adv = await dispatch(editAdvertiser({id, data })).unwrap()
+      const adv = await dispatch(editAdvertiser({id, data: advertiserData })).unwrap()
       toast.success('Изминения успешно обновлены!')
-      onClose()
+      closeDialog(); // Закрытие модального окна
       setTimeout(() => {
-        dispatch(fetchAdvertiser())
+        dispatch(fetchAdvertiser({
+          page: 1,
+          pageSize: 20
+        }))
       }, 1000)
     } catch (error) {
       toast.error(error?.data?.error?.message)
@@ -319,6 +352,99 @@ export default function EditAdvModal({ onClose, currentAdvertiser, fetchCpm }) {
               </div>
               {/**/}
             </div>
+
+            <Label className="text-sm	text-white pb-1">
+              Выбрать лого
+              <span className="text-red-500 ml-0.5">*</span>
+            </Label>
+            <div className='flex justify-between w-[100%] pt-1 gap-3'>
+              <div className={`grid w-[100%] ${selectedFile ? 'hidden' : 'h-[76px]'}`}>
+                {
+                  selectedFile ? null :
+                    <div
+                      className='border-dashed border-2 border-[#A7CCFF] rounded-2xl p-2 flex flex-col justify-center items-center h-[76px] relative'>
+                      <input
+                        type="file"
+                        accept='image/*'
+                        onChange={handleFileChange}
+                        ref={inputRef}
+                        className='hidden'
+                      />
+                      <Button
+                        type="button" // Заменено с type="submit" на type="button"
+
+                        onClick={() => inputRef.current.click()}
+                        className='bg-blue-500 text-white px-4 py-2 rounded-2xl'
+                      >
+                        Загрузить файл
+                      </Button>
+                    </div>
+                }
+              </div>
+              {selectedFile && <p className='text-sm text-white'>Вы выбрали файл:{truncate(selectedFile.name, 10)} </p>}
+              {preview && <div>
+                <Avatar className='size-20'>
+                  <AvatarImage src={preview} alt="@shadcn"/>
+                  <AvatarFallback>{preview}</AvatarFallback>
+                </Avatar>
+              </div>}
+              <div className='flex flex-col gap-2 justify-between'>
+                {(selectedFile || preview) && (
+                  <Button
+                    type="button"
+                    onClick={handleClear}
+                    className='bg-red-400 h-full hover:bg-red-500  border-2 border-red-500  hover:border-red-500  hover:text-white text-white rounded-2xl cursor-pointer'                  >
+                    Очистить
+                  </Button>
+                )}
+                {(selectedFile || preview) && (
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className='bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA]  hover:border-[#0265EA] hover:text-white text-white rounded-2xl  h-full cursor-pointer'>Предпросмотр</Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto rounded-2xl h-auto bg-gray-500">
+                      <div className="grid gap-4 mb-3">
+                        <div className="space-y-2">
+                          <h4 className="font-medium leading-none text-sm text-white">Предпросмотр</h4>
+                        </div>
+                      </div>
+                      <TableRow >
+                        <TableHead className='flex bg-[#FFFFFF2B] !rounded-lg justify-between items-center text-white text-sm px-4'>
+                          Наименование Компании
+
+                        </TableHead>
+
+                      </TableRow>
+
+
+
+                      <TableBody>
+
+                        <TableRow>
+                          <TableCell
+                            className={`font-normal text-sm text-white flex justify-around items-center `}
+                          >
+                            {preview && <div>
+                              <Avatar className='size-12'>
+                                <AvatarImage src={preview} alt="@shadcn"/>
+                                <AvatarFallback>{preview}</AvatarFallback>
+                              </Avatar>
+                            </div>}
+                            {currentAdvertiser.name}
+
+                          </TableCell>
+
+                        </TableRow>
+                      </TableBody>
+                    </PopoverContent>
+                  </Popover>
+                )}
+
+              </div>
+
+            </div>
+
+
             <div>
               <Button
                 className={`${

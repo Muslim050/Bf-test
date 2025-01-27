@@ -180,7 +180,7 @@ export const useReceived = () => {
                 className={`hover:text-brandPrimary-1 transition-all ease-in-out 
                   ${ row.original.order_status === 'in_review' ? null : row.original.inventory_count ? null : 'text-red-500'}
                   ${
-                  expandedRowId === row.original.id
+                  expandedRowId === row.id
                     ? 'rotate-90 text-brandPrimary-1 scale-125'
                     : 'rotate-0'
                 }`}

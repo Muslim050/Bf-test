@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { Controller, useForm } from 'react-hook-form'
 import MaskedInput from 'react-text-mask'
@@ -27,34 +27,26 @@ import {
 } from '@/components/ui/select.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
-import Cookies from 'js-cookie'
+import {fetchChannel} from "@/redux/channel/channelSlice.js";
+import {addPublisher, fetchPublisher} from "@/redux/publisher/publisherSlice.js";
 
 export default function ChannelModalUsers({ onClose }) {
   const dispatch = useDispatch()
   const [showPasswordOld, setShowPasswordOld] = React.useState(false)
-
-  const [channelModal, setChannelModal] = React.useState([])
+  const { channel } = useSelector((state) => state.channel)
   const handleTogglePasswordOld = () => {
     setShowPasswordOld(!showPasswordOld)
   }
-  const fetchChannel = async () => {
-    const token = Cookies.get('token')
-    const response = await axios.get(
-      `${backendURL}/publisher/channel/`,
-
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    )
-    setChannelModal(response.data.data.results)
-  }
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 1, // Начинаем с 0
+    pageSize: 200,
+  });
   React.useEffect(() => {
-    fetchChannel()
-  }, [])
+   dispatch( fetchChannel({
+     page: pagination.pageIndex, // API использует нумерацию с 1
+     pageSize: pagination.pageSize,
+   }))
+  }, [pagination.pageIndex, pagination.pageSize])
 
   const {
     register,
@@ -73,19 +65,23 @@ export default function ChannelModalUsers({ onClose }) {
     },
     mode: 'onChange',
   })
-
   const onSubmit = async (data) => {
     try {
       const pubUser = await dispatch(addChannelUsers({ data })).unwrap()
       toast.success('Пользователь рекламодателя успешно создан!')
       onClose()
       setTimeout(() => {
-        dispatch(fetchChannelUsers())
+        dispatch(fetchChannelUsers({
+          page: 1, // API использует нумерацию с 1
+          pageSize: 20,
+        }))
       }, 1000)
     } catch (error) {
       toast.error(error?.data?.error?.message)
     }
   }
+
+
   return (
     <>
       <DialogContent
@@ -289,7 +285,7 @@ export default function ChannelModalUsers({ onClose }) {
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Выбрать канал</SelectLabel>
-                          {channelModal.map((adv) => (
+                          {channel.results.map((adv) => (
                             <SelectItem key={adv.id} value={adv.id.toString()}>
                               {adv.name}
                             </SelectItem>

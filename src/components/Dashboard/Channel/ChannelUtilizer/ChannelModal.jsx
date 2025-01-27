@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { Controller, useForm } from 'react-hook-form'
 import {
@@ -33,24 +33,18 @@ import {
 } from '@radix-ui/react-tooltip'
 import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
-import axiosInstance from "@/api/api.js";
+import {fetchPublisher} from "@/redux/publisher/publisherSlice.js";
+import {addChannelUsers, fetchChannelUsers} from "@/redux/channelUsers/channelUsersSlice.js";
 
 export default function ChannelModal({ onClose }) {
   const dispatch = useDispatch()
-
-  const [publisherModal, setPublisherModal] = React.useState([])
-
-  const fetchPubl = async () => {
-    let url = new URL(`${backendURL}/publisher/`)
-
-    const response = await axiosInstance.get(url)
-    setPublisherModal(response.data.data.results)
-  }
-
+  const { publisher } = useSelector((state) => state.publisher)
   React.useEffect(() => {
-    fetchPubl()
+    dispatch(fetchPublisher({
+      page: 1, // API использует нумерацию с 1
+      pageSize: 200,
+    }))
   }, [])
-
   const {
     register,
     formState: { errors, isValid },
@@ -63,6 +57,8 @@ export default function ChannelModal({ onClose }) {
       email: '',
       phone: '',
       channelId: '',
+      commission_rate: '',
+
     },
     mode: 'onChange',
   })
@@ -70,13 +66,16 @@ export default function ChannelModal({ onClose }) {
   const onSubmit = async (data) => {
     try {
       const channel = await dispatch(addChannel({ data })).unwrap()
-      toast.success('Канал успешно создан!')
-      onClose()
+      toast.success('Канал успешно создан!');
+      onClose();
       setTimeout(() => {
-        dispatch(fetchChannel())
+        dispatch(fetchChannel({
+          page: 1,
+          pageSize: 20
+        }))
       }, 1000)
     } catch (error) {
-      toast.error(error?.data?.error?.message)
+      toast.error(error?.message || 'Произошла ошибка при создании рекламодателя');
     }
   }
 
@@ -96,44 +95,41 @@ export default function ChannelModal({ onClose }) {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <div className="grid w-full mb-4">
-              <Label className="text-sm	text-white pb-2">
-                Выбрать паблишера<span className="text-red-500 ml-0.5">*</span>
-              </Label>
-              <Controller
-                name="publisher"
-                // {...register ('publisher', {
-                //   required: 'Поле обязательно',
-                // })}
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="!text-white">
-                      <SelectValue placeholder="Выбрать паблишера" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Выбрать паблишера</SelectLabel>
-                        {publisherModal.map((adv) => (
-                          <SelectItem key={adv.id} value={adv.id.toString()}>
-                            {adv.name}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </div>
-            {/**/}
-
-            {/**/}
             <div className="flex gap-4 mb-4">
+              <div className="grid w-full ">
+                <Label className="text-sm	text-white pb-2">
+                  Выбрать паблишера<span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                <Controller
+                  name="publisher"
+                  // {...register ('publisher', {
+                  //   required: 'Поле обязательно',
+                  // })}
+                  control={control}
+                  defaultValue=""
+                  render={({field}) => (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="!text-white">
+                        <SelectValue placeholder="Выбрать паблишера"/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Выбрать паблишера</SelectLabel>
+                          {publisher?.results?.map ((adv) => (
+                            <SelectItem key={adv.id} value={adv.id.toString ()}>
+                              {adv.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-2">
                   Название канала<span className="text-red-500 ml-0.5">*</span>
@@ -141,7 +137,7 @@ export default function ChannelModal({ onClose }) {
                 <Input
                   type="text"
                   autoComplete="off"
-                  {...register('name', {
+                  {...register ('name', {
                     required: 'Поле обезательно к заполнению',
                   })}
                   placeholder={'Введите название канала'}
@@ -150,7 +146,11 @@ export default function ChannelModal({ onClose }) {
                   }   transition-all duration-300 text-sm `}
                 />
               </div>
+            </div>
+              {/**/}
 
+              {/**/}
+            <div className="flex gap-4 mb-4">
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-2">
                   Номер телефона<span className="text-red-500 ml-0.5">*</span>
@@ -165,7 +165,7 @@ export default function ChannelModal({ onClose }) {
                       message: 'Неверный формат номера телефона',
                     },
                   }}
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                  render={({field: {onChange, onBlur, value, ref}}) => (
                     <MaskedInput
                       mask={[
                         '+',
@@ -195,8 +195,8 @@ export default function ChannelModal({ onClose }) {
                         <Input
                           {...props}
                           ref={(e) => {
-                            ref(e)
-                            inputRef(e)
+                            ref (e)
+                            inputRef (e)
                           }}
                           placeholder="+998 (__) ___ - __ - __"
                           className={`border ${
@@ -208,11 +208,7 @@ export default function ChannelModal({ onClose }) {
                   )}
                 />
               </div>
-            </div>
-            {/**/}
-
-            <div className="flex gap-4 ">
-              <div className="grid w-full mb-4">
+              <div className="grid w-full ">
                 <Label className="text-sm	text-white pb-2 flex gap-0.5">
                   Email
                   <span className="text-red-500 ml-0.5">*</span>
@@ -224,7 +220,7 @@ export default function ChannelModal({ onClose }) {
                 <Input
                   type="email"
                   autoComplete="off"
-                  {...register('email', {
+                  {...register ('email', {
                     required: '.',
                   })}
                   placeholder={'Введите email'}
@@ -233,8 +229,29 @@ export default function ChannelModal({ onClose }) {
                   }   transition-all duration-300 text-sm `}
                 />
               </div>
+            </div>
+            {/**/}
+
+            <div className="flex gap-4 ">
               <div className="grid w-full">
-                <Label className="text-sm	text-white pb-2 flex gap-0.5">
+                <Label className="text-sm	text-white pb-2">
+                  Процент комиссии канала	<span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                <Input
+                  type="number"
+                  autoComplete="off"
+                  {...register ('commission_rate', {
+                    required: 'Поле обезательно к заполнению',
+                  })}
+                  placeholder={'Введите комиссию'}
+                  className={`border ${
+                    errors?.commission_rate	 ? 'border-red-500' : 'border-gray-300'
+                  }   transition-all duration-300 text-sm `}
+                />
+              </div>
+
+              <div className="grid w-full ">
+                <Label className="text-sm	text-white pb-5 flex gap-0.5">
                   Сhannel Id
                   <span className="text-red-500 ml-0.5">*</span>
                   <div className="relative">
@@ -244,8 +261,10 @@ export default function ChannelModal({ onClose }) {
                           <TooltipTrigger asChild>
                             <div className="absolute top-0">
                               <span className="relative flex  h-5 w-5 cursor-pointer">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                                <Info className="text-red-500 hover:text-red-700 relative inline-flex rounded-full h-5 w-5 " />
+                                <span
+                                  className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                                <Info
+                                  className="text-red-500 hover:text-red-700 relative inline-flex rounded-full h-5 w-5 "/>
                               </span>
                             </div>
                           </TooltipTrigger>
@@ -274,7 +293,7 @@ export default function ChannelModal({ onClose }) {
                 <Input
                   type="text"
                   autoComplete="off"
-                  {...register('channelId', {
+                  {...register ('channelId', {
                     required: 'Поле обезательно к заполнению',
                     minLength: {
                       value: 10,

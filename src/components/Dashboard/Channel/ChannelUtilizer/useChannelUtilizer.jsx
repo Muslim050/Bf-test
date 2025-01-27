@@ -18,6 +18,7 @@ import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/compon
 import {googleAuth} from "@/redux/googleauth/googleauthSlice.js";
 import {TableCell} from "@/components/ui/table.jsx";
 import {ThemeContext} from "@/utils/ThemeContext.jsx";
+import CircularBadge from "@/components/Labrery/Circular/CircularBadge.jsx";
 
 
 export const useChannelUtilizer = () => {
@@ -32,7 +33,6 @@ export const useChannelUtilizer = () => {
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
   });
-
   const authGoogle = (pubId) => {
     dispatch(googleAuth(pubId))
     // setConnectG(false)
@@ -47,18 +47,59 @@ export const useChannelUtilizer = () => {
       {
         accessorFn: (_, index) => index + 1, // Используем индекс строки
         id: 'id',
-        cell: info => info.row.index + 1, // Начинаем с 1
+        // cell: info => info.row.index + 1, // Начинаем с 1
+        cell: ({row}) =>
+          <div className='relative flex w-auto items-center'>
+            {!row.original.is_active && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div
+                      className="h-6 w-3	cursor-pointer hover:scale-110  bg-red-500 rounded-full top-[18px]   z-40"></div>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-red-400 text-white font-medium relative z-40">
+                    <p>Нужно переподключить канал</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            <div
+              className={`
+              
+              ${
+                !row.original.is_active ? 'ml-2' : 'ml-0'
+              }`}
+            >
+              {row.index + 1}
+            </div>
+            {user === 'publisher' ||
+            user === 'admin' ||
+            user === 'channel' ? (
+              <>
+                {row.original.is_connected === false ? (
+                  <div className='flex'>
+                      <span
+                        className=" inline-flex rounded-full h-2.5 -left-2 -top-1 absolute w-2.5 bg-red-600 text-[14px]  items-center justify-center"></span>
+                  </div>
+                  ) : null}
+              </>
+            ) : null}
+          </div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>№</span>,
       },
       {
         id: 'Канал',
         accessorFn: (row) => row.name, // Преобразование в число
-        cell: ({ row }) =>
+        cell: ({row}) =>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="cursor-pointer">
+                <div className={` ${
+                  row.original.is_active ? '' : 'font-semibold text-red-500'
+                }`}
+
+                    >
                   {row.original.name}
                 </div>
               </TooltipTrigger>
@@ -67,19 +108,19 @@ export const useChannelUtilizer = () => {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>,
-        header: () =><span>Канал</span>,
+        header: () => <span>Канал</span>,
       },
       {
         id: 'Аналитика',
         accessorFn: (row) => row.id, // Преобразование в число
-        cell: ({ row }) =>
+        cell: ({row}) =>
           <Link
-            to={`/statistics-channel/${row.id}`}
-            state={{ channel }}
-            style={{ display: 'contents' }}
+            to={`/statistics-channel/${row.original.id}`}
+            state={{channel}}
+            style={{display: 'contents'}}
           >
             <button className="hover:scale-125 transition-all">
-              <ChartColumn className="hover:text-green-400 " />
+              <ChartColumn className="hover:text-green-400 "/>
             </button>
           </Link>,
         header: () =>
@@ -90,7 +131,7 @@ export const useChannelUtilizer = () => {
       {
         id: 'Паблишер',
         accessorFn: (row) => row.publisher?.name, // Преобразование в число
-        cell: ({ row }) =>
+        cell: ({row}) =>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -139,8 +180,7 @@ export const useChannelUtilizer = () => {
             {user === 'admin' ? (
               ''
             ) : (
-              <TableCell
-                data-label="ID"
+              <div
                 className={`font-normal text-${textColor} text-sm `}
               >
                 <div
@@ -290,15 +330,37 @@ export const useChannelUtilizer = () => {
                   </>
 
                 </div>
-              </TableCell>
+              </div>
+            )}
+          </>
+        ),
+        enableSorting: false,
+        filterFn: 'includesString',
+        header: () => !hasRole('admin') && <span>Статус</span>,
+      },
+      {
+        accessorFn: (row) => row.commission_rate, // Преобразование в число
+        id: 'Процент комиссии канала',
+        cell: ({ row }) => (
+          <>
+            {user === 'admin' && (
+              <div
+                className={`font-normal text-${textColor} text-sm `}
+              >
+                {
+                  row.original?.commission_rate && <>
+                    {row.original?.commission_rate} %</>
+                }
+              </div>
             )}
           </>
         ),
         filterFn: 'includesString',
-        header: () => !hasRole('admin') && <span>Статус</span>,
+        header: () => hasRole('admin') && <span>% комиссии</span>,
       },
+
     ],
-    []
+    [googleAu, linkGoogle]
   )
   const filteredColumns = columns.filter((column) => {
     // Если колонка зависит от роли admin, проверяем условие

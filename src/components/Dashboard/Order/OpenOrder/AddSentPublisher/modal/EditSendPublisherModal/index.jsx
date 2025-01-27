@@ -43,7 +43,6 @@ const EditSendPublisherModal = ({
   const dispatch = useDispatch()
   const [channelModal, setChannelModal] = React.useState([])
   const { publisher } = useSelector((state) => state.publisher)
-  console.log (channelModal)
   const [publisherID, setPublisherID] = React.useState('')
   const [channelID, setChannelID] = React.useState('')
   const selectedPublisher = (value) => {

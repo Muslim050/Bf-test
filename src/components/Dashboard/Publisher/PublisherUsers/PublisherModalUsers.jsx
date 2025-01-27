@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
@@ -26,29 +26,35 @@ import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import Cookies from 'js-cookie'
 import {addPublisherUsers, fetchPublisherUsers} from "@/redux/publisherUsers/publisherUsersSlice.js";
+import {addPublisher, fetchPublisher} from "@/redux/publisher/publisherSlice.js";
+import {addChannelUsers, fetchChannelUsers} from "@/redux/channelUsers/channelUsersSlice.js";
 
 export default function PublisherModalUsers({ onClose }) {
   const dispatch = useDispatch()
   const [publisherModal, setPublisherModal] = React.useState([])
   const [showPasswordOld, setShowPasswordOld] = React.useState(false)
+  const { publisher } = useSelector((state) => state.publisher)
 
-  const fetchPubl = async () => {
-    const token = Cookies.get('token')
-    const response = await axios.get(
-      `${backendURL}/publisher/`,
-
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    )
-    setPublisherModal(response.data.data.results)
-  }
+  // const fetchPubl = async () => {
+  //   const token = Cookies.get('token')
+  //   const response = await axios.get(
+  //     `${backendURL}/publisher/`,
+  //
+  //     {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Accept: 'application/json',
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     },
+  //   )
+  //   setPublisherModal(response.data.data.results)
+  // }
   React.useEffect(() => {
-    fetchPubl()
+    fetchPublisher({
+      page: 1, // API использует нумерацию с 1
+      pageSize: 200,
+    })
   }, [])
 
   const {
@@ -69,18 +75,21 @@ export default function PublisherModalUsers({ onClose }) {
     mode: 'onChange',
   })
 
+
   const onSubmit = async (data) => {
     try {
-      const publisher = await dispatch(addPublisherUsers({ data })).unwrap()
-      toast.success('Пользователь паблишера успешно создан!')
-      onClose()
+      const publisher = await dispatch(addPublisherUsers({ data })).unwrap(); // Попытка выполнить запрос
+      toast.success('Пользователь паблишера успешно создан!'); // Успех
+      onClose(); // Закрыть модальное окно
       setTimeout(() => {
-        dispatch(fetchPublisherUsers())
-      }, 1000)
+        window.location.reload(); // Перезагрузка страницы
+      }, 1500);
     } catch (error) {
-      toast.error(error?.data?.error?.message)
+      console.error("Ошибка:", error); // Диагностируйте, что именно происходит
+      toast.error(error?.data?.error?.message || "Произошла ошибка при создании пользователя"); // Покажите fallback сообщение
     }
-  }
+  };
+
   const handleTogglePasswordOld = () => {
     setShowPasswordOld(!showPasswordOld)
   }
@@ -88,6 +97,7 @@ export default function PublisherModalUsers({ onClose }) {
   return (
     <>
       <DialogContent
+        aria-hidden={false} // Ensure aria-hidden is explicitly set to false
         className="w-[450px] p-4"
         onInteractOutside={(e) => {
           e.preventDefault()
@@ -283,7 +293,7 @@ export default function PublisherModalUsers({ onClose }) {
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Выбрать Паблишера</SelectLabel>
-                          {publisherModal.map((adv) => (
+                          {publisher.results.map((adv) => (
                             <SelectItem key={adv.id} value={adv.id.toString()}>
                               {adv.name}
                             </SelectItem>
@@ -302,7 +312,7 @@ export default function PublisherModalUsers({ onClose }) {
                 isValid
                   ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
                   : 'bg-[#616161]'
-              } w-full   h-[44px] text-white rounded-lg	mt-8`}
+              } w-full   h-[44px] text-white rounded-2xl	mt-8`}
               disabled={!isValid}
             >
               Создать
