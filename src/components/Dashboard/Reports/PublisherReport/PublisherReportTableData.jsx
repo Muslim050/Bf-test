@@ -1,6 +1,6 @@
 import React from 'react'
 import FormatterView from '../../../Labrery/formatter/FormatterView'
-import FormatterBudjet from '../../../Labrery/formatter/FormatterBudjet'
+import FormatterBudjet, {TiinFormatterBudget} from '../../../Labrery/formatter/FormatterBudjet'
 import { formatDate } from '@/utils/formatterDate.jsx'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 import {
@@ -131,9 +131,8 @@ function PublisherReportTable({ publisherReport }) {
               className={`font-normal text-${textColor} text-sm `}
             >
               <div style={{ display: 'flex', justifyContent: 'end' }}>
-                <FormatterBudjet
+                <TiinFormatterBudget
                   budget={person.agency_commission_total}
-                  data={person.order_start_date}
                 />
               </div>
             </TableCell>
@@ -142,9 +141,8 @@ function PublisherReportTable({ publisherReport }) {
               className={`font-normal text-${textColor} text-sm `}
             >
               <div style={{ display: 'flex', justifyContent: 'end' }}>
-                <FormatterBudjet
+                <TiinFormatterBudget
                   budget={person.adtechmedia_commission_total}
-                  data={person.order_start_date}
                 />
               </div>
             </TableCell>
@@ -153,9 +151,8 @@ function PublisherReportTable({ publisherReport }) {
               className={`font-normal text-${textColor} text-sm `}
             >
               <div style={{ display: 'flex', justifyContent: 'end' }}>
-                <FormatterBudjet
+                <TiinFormatterBudget
                   budget={person.channel_budget_total}
-                  data={person.order_start_date}
                 />
               </div>
             </TableCell>

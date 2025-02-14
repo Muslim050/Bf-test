@@ -13,7 +13,6 @@ import PreLoadDashboard from "@/components/Dashboard/PreLoadDashboard/PreLoad.js
 
 function ChannelStatisticsPage() {
   const dispatch = useDispatch();
-
   const { id } = useParams();
   const data = useSelector((state) => state.statistics.statisticsVideo);
   const dataChannel = useSelector(
@@ -31,7 +30,6 @@ function ChannelStatisticsPage() {
 
         await dispatch(clearStatistics())
         await Promise.all([
-          dispatch(fetchVideoStatistics({id})).unwrap(),
           dispatch(fetchChannelStatistics({id})).unwrap()
         ])
       } catch (error) {
@@ -68,7 +66,7 @@ fetchData()
           <>
             <StatictickChannel dataChannel={dataChannel} channel={channel} error={error}/>
 
-            <StatictickVideoTable data={data} loading={loading} error={error}/>
+            {/*<StatictickVideoTable data={data} loading={loading} error={error}/>*/}
           </>
       }
 

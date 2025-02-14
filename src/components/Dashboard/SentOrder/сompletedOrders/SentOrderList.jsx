@@ -169,7 +169,12 @@ function SentOrderList({ listsentPublisher }) {
               )}
 
               <button onClick={() => handleRowClick(item.id)}>
-                <OpenSvg className="text-white hover:text-brandPrimary-1" />
+                <OpenSvg className={`hover:text-brandPrimary-1 transition-all ease-in-out 
+                  ${
+                  expandedRows === item.id
+                    ? 'rotate-90 text-brandPrimary-1 scale-125'
+                    : 'rotate-0'
+                }`} />
               </button>
             </TableCell>
           </TableRow>

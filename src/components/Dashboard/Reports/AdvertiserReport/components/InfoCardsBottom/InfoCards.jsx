@@ -1,6 +1,6 @@
 import React from 'react'
 import FormatterView from '@/components/Labrery/formatter/FormatterView'
-import FormatterBudjet from '@/components/Labrery/formatter/FormatterBudjet'
+import FormatterBudjet, {TiinFormatterBudget} from '@/components/Labrery/formatter/FormatterBudjet'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 
 export function InfoCardsBottom({ totalViews, totalBudget }) {
@@ -32,7 +32,7 @@ export function InfoCardsBottom({ totalViews, totalBudget }) {
             Бюджет
           </div>
           <div style={{ color: textColor }}>
-            <FormatterBudjet
+            <TiinFormatterBudget
               budget={totalBudget}
               // data={getOrder.expected_start_date}
             />
@@ -46,7 +46,7 @@ export function InfoCardsBottom({ totalViews, totalBudget }) {
           <div className="">
             {ndc > 0 ? (
               <div className="text-base " style={{ color: textColor }}>
-                <FormatterBudjet budget={ndc} className="text-base" />
+                <TiinFormatterBudget budget={ndc} className="text-base" />
               </div>
             ) : (
               <div
@@ -66,7 +66,7 @@ export function InfoCardsBottom({ totalViews, totalBudget }) {
         <div>=</div>
 
         <div className="text-base " style={{ color: textColor }}>
-          <FormatterBudjet
+          <TiinFormatterBudget
             budget={totalBudget + ndc}
             // data={getOrder.expected_start_date}
           />{' '}

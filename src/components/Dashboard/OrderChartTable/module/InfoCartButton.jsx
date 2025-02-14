@@ -1,10 +1,9 @@
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
-import FormatterBudjet from '@/components/Labrery/formatter/FormatterBudjet.jsx'
+import FormatterBudjet, {TiinFormatterBudget} from '@/components/Labrery/formatter/FormatterBudjet.jsx'
 import React from 'react'
 
 const InfoCartButton = ({ orderData, totalBudget, totalViews }) => {
-
   return (
     <div className="flex  justify-center h-[80px]">
       <div
@@ -142,7 +141,7 @@ const InfoCartButton = ({ orderData, totalBudget, totalViews }) => {
               <div className="sm:text-base text-xs">Бюджет</div>
 
               <div className="sm:text-base text-xs">
-                <FormatterBudjet
+                <TiinFormatterBudget
                   budget={totalBudget}
                   // data={orderData.expected_start_date}
                 />

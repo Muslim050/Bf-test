@@ -104,13 +104,6 @@ export const useInventory = () => {
         header: () => <span className='flex  items-center gap-1'>Прогноз</span>
       },
       {
-        accessorFn: (row) => row.video_content?.category, // Преобразование в число
-        id: 'Категория',
-        cell: info => info.getValue (),
-        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Категория</span>
-      },
-      {
         accessorFn: (row) => row.video_content?.publication_time, // Преобразование в число
         id: 'Дата начала',
         cell: ({row}) => <>

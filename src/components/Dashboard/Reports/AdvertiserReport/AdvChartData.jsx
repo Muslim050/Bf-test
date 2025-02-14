@@ -1,7 +1,7 @@
 import React from 'react'
 import { TableCell, TableRow } from '@/components/ui/table'
 import FormatterView from '@/components/Labrery/formatter/FormatterView'
-import FormatterBudjet from '@/components/Labrery/formatter/FormatterBudjet'
+import FormatterBudjet, {TiinFormatterBudget} from '@/components/Labrery/formatter/FormatterBudjet'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 import {
   Tooltip,
@@ -175,9 +175,8 @@ function AdvChartData({ statistic, index }) {
             </div>
           ) : (
             <>
-              <FormatterBudjet
+              <TiinFormatterBudget
                 budget={statistic.budget}
-                data={statistic.publication_date}
               />
             </>
           )}

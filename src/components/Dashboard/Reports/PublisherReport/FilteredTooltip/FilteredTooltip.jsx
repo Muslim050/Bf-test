@@ -57,11 +57,11 @@ function FilteredTooltip({
   handleSelectChangePablisher,
   selectedOptionPublisher,
   selectedPublisher,
-  selectedChannelName,
+                           selectedChannelsName,
   selectedPublisherName,
 }) {
+
   const user = Cookies.get('role')
-  console.log (publisher.results)
   return (
     <div className="flex flex-col gap-2">
       {user === 'admin' && (
@@ -260,7 +260,7 @@ function FilteredTooltip({
             endDateMonth={endDateMonth}
             channelId={selectedChannel}
             publisherId={selectedPublisher}
-            selectedChannelsName={selectedChannelName}
+            selectedChannelsName={selectedChannelsName}
             formatOrder={selectedFormat}
             selectedPublisherName={selectedPublisherName}
           />
