@@ -135,7 +135,7 @@ function App() {
             }
           />
           <Route
-            path="statistics-channel/:id"
+            path="statistics-channel/:id/:name"
             element={
               <Protected
                 allowedRoles={[

@@ -18,11 +18,10 @@ function DownloadReport({
   //
   setIsTooltip,
   formatOrder,
-  selectedChannelName,
+                          selectedChannelsName,
   selectedPublisherName,
 }) {
   const [loading, setLoading] = React.useState(false)
-
   const formattedStartDate = startDate
     ? format(startDate, 'yyyy-MM-dd')
     : undefined
@@ -83,7 +82,7 @@ function DownloadReport({
       link.href = url
       link.setAttribute(
         'download',
-        `${selectedChannelName || selectedPublisherName}.xlsx`,
+        `${selectedChannelsName || selectedPublisherName}.xlsx`,
       )
       link.click()
       setIsTooltip(false)

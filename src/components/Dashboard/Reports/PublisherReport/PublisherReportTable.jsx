@@ -41,7 +41,6 @@ function PublisherReportTable() {
 
   const dispatch = useDispatch()
   const channel = useSelector((state) => state.channel.channel)
-
   ////////////////////////////
   const [selectedChannel, setSelectedChannel] = React.useState(null)
   const [selectedChannelName, setSelectedChannelName] = React.useState(null)
@@ -91,11 +90,15 @@ function PublisherReportTable() {
 
   React.useEffect(() => {
     if (selectedPublisher) {
+      dispatch(fetchChannel({ page:1,
+        pageSize: 200,id:selectedPublisher}))
+    } else {
       dispatch(fetchChannel({
         page:1,
         pageSize: 200,
-      selectedPublisher}))
+      }))
     }
+
   }, [selectedPublisher, dispatch])
 
   React.useEffect(() => {
@@ -168,26 +171,43 @@ function PublisherReportTable() {
 
   React.useEffect(() => {
     if (handleSearch) {
+
+      //Бюджет
       const totalBudgetD = publisherReport.reduce(
         (total, person) => total + (person.budget_fact || 0),
         0,
       )
+      //Бюджет
+
+      //Просмотры
       const totalViewsD = publisherReport.reduce(
         (total, person) => total + (person.recorded_view_count || 0),
         0,
       )
-      const totalComisyD = publisherReport.reduce(
-        (total, person) => total + (person.agency_commission_total || 0),
-        0,
-      )
+      //Просмотры
+
+      //Комиссия
       const totalComisyAdtechD = publisherReport.reduce(
         (total, person) => total + (person.adtechmedia_commission_total || 0),
         0,
       )
+      //Комиссия
+
+      //Агентсво
+      const totalComisyD = publisherReport.reduce(
+        (total, person) => total + (person.agency_commission_total || 0),
+        0,
+      )
+      //Агентсво
+
+
+
+      //Бюджет внизу
       const totalbudjetChannelD = publisherReport.reduce(
         (total, person) => total + (person.channel_budget_total || 0),
         0,
       )
+      //Бюджет внизу
       setTotalBudget(totalBudgetD)
       setTotalViews(totalViewsD)
       setTotalComisy(totalComisyD)
@@ -308,12 +328,12 @@ function PublisherReportTable() {
               )}
 
               <div style={{ display: 'flex' }} >
-                <div className="flex gap-2 items-center mr-2">
+                <div className="flex gap-2 items-center mr-2 pt-3">
                   {(selectedChannel || selectedFormat) && (
                     <Button
                       variant="link"
                       onClick={handleClear}
-                      className="text-[#A7CCFF] px-0"
+                      className="text-[#A7CCFF] "
                     >
                       Очистить
                     </Button>
@@ -410,7 +430,7 @@ function PublisherReportTable() {
                       handleSelectChangePablisher={handleSelectChangePablisher}
                       selectedOptionPublisher={selectedOptionPublisher}
                       selectedPublisher={selectedPublisher}
-                      selectedChannelName={selectedChannelName}
+                      selectedChannelsName={selectedChannelName}
                       selectedPublisherName={selectedPublisherName}
                     />
                   </div>
@@ -486,7 +506,7 @@ function PublisherReportTable() {
 
           {publisherReport && publisherReport.length ? (
             <div className="flex justify-center mt-6 ">
-              <InfoCardsButton totalComisyAdtech={totalComisyAdtech} />
+              <InfoCardsButton totalComisyAdtech={totalbudjetChannel} />
             </div>
           ) : null}
         </div>

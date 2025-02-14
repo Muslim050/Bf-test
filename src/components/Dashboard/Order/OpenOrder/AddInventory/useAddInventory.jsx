@@ -106,13 +106,7 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
           </TooltipProvider>,
         header: () => <span>Название Видео</span>,
       },
-      {
-        accessorFn: (row) => row.video_content?.category, // Преобразование в число
-        id: 'Категория',
-        cell: (info) => info.getValue(),
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>Категория</span>,
-      },
+
       {
         accessorFn: (row) => row.format, // Преобразование в число
         id: 'Формат',
@@ -125,11 +119,11 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
       },
       {
         accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
-        id: 'Прогноз показов',
+        id: 'План показов',
         cell: ({ row }) =>
           <FormatterView data={row.original.expected_number_of_views}/>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>Прогноз показов</span>,
+        header: () => <span>План показов</span>,
       },
       {
         accessorFn: (row) => row.content?.link_to_video, // Преобразование в число

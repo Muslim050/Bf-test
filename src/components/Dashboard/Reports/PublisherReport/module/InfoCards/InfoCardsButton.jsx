@@ -1,5 +1,5 @@
 import React from 'react'
-import FormatterBudjet from '@/components/Labrery/formatter/FormatterBudjet.jsx'
+import FormatterBudjet, {TiinFormatterBudget} from '@/components/Labrery/formatter/FormatterBudjet.jsx'
 
 export function InfoCardsButton({ totalComisyAdtech }) {
   const ndc = totalComisyAdtech * 0.12
@@ -17,7 +17,7 @@ export function InfoCardsButton({ totalComisyAdtech }) {
             <div className="t">
               {totalComisyAdtech > 0 ? (
                 <div className="text-[16px] text-white">
-                  <FormatterBudjet budget={totalComisyAdtech} />
+                  <TiinFormatterBudget budget={totalComisyAdtech} />
                 </div>
               ) : (
                 <div
@@ -38,7 +38,7 @@ export function InfoCardsButton({ totalComisyAdtech }) {
             <div className="">
               {ndc > 0 ? (
                 <div className="text-base text-white">
-                  <FormatterBudjet budget={ndc} />
+                  <TiinFormatterBudget budget={ndc} />
                 </div>
               ) : (
                 <div
@@ -60,7 +60,7 @@ export function InfoCardsButton({ totalComisyAdtech }) {
 
           {totalComisyAdtech > 0 ? (
             <div className="text-base text-white">
-              <FormatterBudjet budget={totalComisyAdtech + ndc} />
+              <TiinFormatterBudget budget={totalComisyAdtech + ndc} />
               <div className="text-base 	">Итого с НДС</div>
             </div>
           ) : (

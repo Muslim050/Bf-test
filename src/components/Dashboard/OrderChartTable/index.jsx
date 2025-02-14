@@ -35,12 +35,12 @@ function OrderChart() {
     table,
     flexRender,
     renderSubComponent,
-    expandedRowId
+    expandedRowId,
+    sumBudjet,
+    sumView
   } = useOrderChart()
 
 
-  let totalViews = 0
-  let totalBudget = 0
 
   useEffect (() => {
     if (orderData?.name && orderData?.advertiser?.name) {
@@ -157,8 +157,8 @@ function OrderChart() {
           {/* Ячейки с инфо Итого:*/}
           <InfoCartButton
             orderData={orderData}
-            totalViews={totalViews}
-            totalBudget={totalBudget}
+            totalViews={sumView}
+            totalBudget={sumBudjet}
           />
           {/* Ячейки с инфо Итого:*/}
         </div>

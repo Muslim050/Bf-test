@@ -11,7 +11,7 @@ import {truncate} from "@/utils/other.js";
 import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
 import {formatDate} from "@/utils/formatterDate.jsx";
 import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
-import FormatterBudjet from "@/components/Labrery/formatter/FormatterBudjet.jsx";
+import FormatterBudjet, {TiinFormatterBudget} from "@/components/Labrery/formatter/FormatterBudjet.jsx";
 import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
 import {
   flexRender,
@@ -47,8 +47,11 @@ export const useOrderChart = () => {
   const [globalFilter, setGlobalFilter] = React.useState('')
   const data = useSelector((state) => state.statistics.statistics.results)
 
+  const totalBudjet = data?.map((i) => i.budget)
+  const totalView = data?.map((i) => i.online_view_count)
 
-
+  const sumBudjet = totalBudjet?.reduce((acc, num) => acc + num, 0);
+  const sumView = totalView?.reduce((acc, num) => acc + num, 0);
   //
 
   React.useEffect(() => {
@@ -290,9 +293,8 @@ export const useOrderChart = () => {
         id: 'Бюджет',
         cell: ({row}) =>
           <>
-            <FormatterBudjet
+            <TiinFormatterBudget
               budget={row.original.budget}
-              data={'2024-05-10'} //сделал так потому что publication date null прилетает
             />
           </>,
         filterFn: 'includesString',
@@ -366,6 +368,8 @@ export const useOrderChart = () => {
     loading,
     setOpen,
     open,
-    setLoading
+    setLoading,
+    sumBudjet,
+    sumView
   }
 }

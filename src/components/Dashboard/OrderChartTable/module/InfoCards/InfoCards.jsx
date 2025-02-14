@@ -2,7 +2,7 @@ import React from 'react'
 import style from './InfoCards.module.scss'
 import { useParams } from 'react-router-dom'
 import FormatterView from '@/components/Labrery/formatter/FormatterView'
-import FormatterBudjet from '@/components/Labrery/formatter/FormatterBudjet'
+import FormatterBudjet, {TiinFormatterBudget} from '@/components/Labrery/formatter/FormatterBudjet'
 import Cookies from 'js-cookie'
 import { ChartPie } from 'lucide-react';
 
@@ -41,9 +41,8 @@ export function InfoCardsTop({ orderData }) {
           className="sm:text-base text-xs gap-3	text-white sm:flex block text-center rounded-[20px]	bg-[#2a85ff75] items-center sm:px-6 px-3	sm:h-[50px] h-[35px]">
           Бюджет
           <div className="sm:text-base text-xs text-white ">
-            <FormatterBudjet
+            <TiinFormatterBudget
               budget={orderData.budget}
-              data={orderData.expected_start_date}
             />
           </div>
         </div>

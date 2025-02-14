@@ -18,7 +18,6 @@ export const fetchChannel = createAsyncThunk(
   async ({ id = null, page = null, pageSize = null } = {}, { rejectWithValue }) => {
     let url = new URL(`${backendURL}/publisher/channel/`)
     const params = new URLSearchParams()
-
     if (id) {
       params.append('publisher_id', id)
     }

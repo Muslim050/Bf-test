@@ -87,13 +87,6 @@ export const useVideo = () => {
         header: () => <span className='flex  items-center gap-1'>Название Видео</span>
       },
       {
-        accessorFn: (row) => row.category, // Преобразование в число
-        id: 'Категория',
-        cell: info => info.getValue (),
-        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Категория</span>
-      },
-      {
         accessorFn: (row) => formatDate(row.publication_time), // Преобразование времени публикации
         id: 'Дата публикации',
         cell: ({row}) =>
@@ -110,16 +103,7 @@ export const useVideo = () => {
             </Tooltip>
           </TooltipProvider>,
         filterFn: 'includesString', // Фильтрация по строке
-        header: () => <span className='flex items-center gap-1'>Начало</span>,
-      },
-      {
-        accessorFn: (row) => row.duration, // Преобразование в число
-        id: 'Хрон видео',
-        cell: ({row}) =>
-          <FormatterTime data={row.original.duration} />
-        ,
-        filterFn: 'includesString', // Фильтрация по строке
-        header: () => <span className='flex items-center gap-1'>Хрон видео</span>,
+        header: () => <span className='flex items-center gap-1'>Дата начала</span>,
       },
       {
         accessorFn: (row) => row.duration, // Преобразование в число

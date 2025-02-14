@@ -115,7 +115,7 @@ export const useChannelUtilizer = () => {
         accessorFn: (row) => row.id, // Преобразование в число
         cell: ({row}) =>
           <Link
-            to={`/statistics-channel/${row.original.id}`}
+            to={`/statistics-channel/${row.original.id}/${row.original.name}`}
             state={{channel}}
             style={{display: 'contents'}}
           >
