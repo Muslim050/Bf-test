@@ -4,7 +4,7 @@ import { Tablet } from 'lucide-react';
 import { Tv } from 'lucide-react';
 import { Monitor } from 'lucide-react';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
-import { ShieldQuestion } from 'lucide-react';
+import { CarFront } from 'lucide-react';
 
 function TheadDevaice({ statistic }) {
   const uniqueDeviceTypes = Array.from(
@@ -95,7 +95,7 @@ function TheadDevaice({ statistic }) {
                      device.device_type === 'OTHER' &&<TooltipProvider>
                        <Tooltip>
                          <TooltipTrigger asChild className="cursor-pointer">
-                           <ShieldQuestion/>
+                           <CarFront/>
                          </TooltipTrigger>
                          <TooltipContent sideOffset={0}>
                            <p>Other</p>

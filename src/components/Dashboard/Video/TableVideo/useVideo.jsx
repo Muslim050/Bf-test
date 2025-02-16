@@ -18,6 +18,7 @@ import {Button} from "@/components/ui/button.jsx";
 import {Pencil, Plus, Link} from "lucide-react";
 import {hasRole} from "@/utils/roleUtils.js";
 import {ThemeContext} from "@/utils/ThemeContext.jsx";
+import FormatterData from "@/components/Labrery/formatter/FormatterData.jsx";
 
 export const useVideo = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -26,7 +27,6 @@ export const useVideo = () => {
   const [selectedId, setSelectedId] = useState('')
   const [currentOrder, setCurrentOrder] = React.useState(null)
   const { textColor } = React.useContext(ThemeContext)
-  console.log (videos)
   const [open, setOpen] = React.useState(false)
   const handleClose = () => {
     setOpen(false)
@@ -89,19 +89,7 @@ export const useVideo = () => {
       {
         accessorFn: (row) => formatDate(row.publication_time), // Преобразование времени публикации
         id: 'Дата публикации',
-        cell: ({row}) =>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild className="cursor-pointer">
-                <div>{truncate(row.original.name, 20)}</div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{row.original.name}</p>
-                <p>ID:{row.original.id}</p>
-
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>,
+        cell: ({row}) => <>{formatDate(row.original.publication_time)}</>,
         filterFn: 'includesString', // Фильтрация по строке
         header: () => <span className='flex items-center gap-1'>Дата начала</span>,
       },
