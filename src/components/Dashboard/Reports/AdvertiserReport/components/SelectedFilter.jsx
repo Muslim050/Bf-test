@@ -28,7 +28,7 @@ const OrderChartRow = ({
 
 
   return (
-    <div className="flex flex-wrap gap-2 items-center">
+    <div className="flex flex-wrap gap-2 items-center mr-2">
       {/* Кнопка очистки */}
       {selectedAdvName && (
         <Button

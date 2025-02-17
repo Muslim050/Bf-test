@@ -1,4 +1,4 @@
-import axios from 'axios'
+// import axios from 'axios'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
@@ -17,32 +17,31 @@ import {
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { fetchInventory } from '../../../../../redux/inventory/inventorySlice'
+// import { fetchInventory } from '../../../../../redux/inventory/inventorySlice'
 import Cookies from 'js-cookie'
-import {Monitor, MonitorPlay, MonitorUp} from "lucide-react";
+// import {Monitor, MonitorPlay, MonitorUp} from "lucide-react";
 import axiosInstance from "@/api/api.js";
 
-const categoryC = [
-  { id: 1, value: 'Шоу', text: 'Шоу' },
-  { id: 2, value: 'Драмма', text: 'Драмма' },
-  { id: 3, value: 'Клип', text: 'Клип' },
-]
-
-const format = [
-  { value: 'preroll', text: 'Pre-roll', icon: Monitor },
-  { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
-  { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp  },
-]
+// const categoryC = [
+//   { id: 1, value: 'Шоу', text: 'Шоу' },
+//   { id: 2, value: 'Драмма', text: 'Драмма' },
+//   { id: 3, value: 'Клип', text: 'Клип' },
+// ]
+//
+// const format = [
+//   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
+//   { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
+//   { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp  },
+// ]
 
 export default function AddVideo({
   item,
   setIsPopoverOpen,
-                                   setOpenPopoverIndex
 }) {
   const [channelModal, setChannelModal] = React.useState([])
-  const [selectedTimer, setSelectedTimer] = React.useState('')
-  const [selectedTimervideo_duration, setSelectedTimervideo_duration] =
-    React.useState('')
+  // const [selectedTimer, setSelectedTimer] = React.useState('')
+  // const [selectedTimervideo_duration, setSelectedTimervideo_duration] =
+  //   React.useState('')
   const dispatch = useDispatch()
 
   const id = Number(Cookies.get('channelId'))
@@ -63,66 +62,53 @@ export default function AddVideo({
     register,
     formState: { errors, isValid },
     handleSubmit,
-    setValue,
+    // setValue,
     control,
   } = useForm({
     defaultValues: {
-      expected_number_of_views: '',
-      format: item.format,
-      promo_start_at: 0,
-      promo_duration: '',
       order_id: item.id,
       channel_id: user === 'channel' ? '' : id,
       video_name: '',
-      category: '',
-      video_duration: 0,
       publication_time: '',
       link_to_video: ''
     },
     mode: 'onSubmit',
   })
 
-  const timeC = (event) => {
-    const time = event.target.value
-    if (time === '') {
-      setSelectedTimer('00:00:00')
-      setValue('promo_start_at', 0)
-    } else {
-      setSelectedTimer(time)
-      const [hours, minutes, seconds] = time.split(':').map(Number)
-      const timeInSeconds = hours * 3600 + minutes * 60 + seconds
-      setValue('promo_start_at', timeInSeconds)
-    }
-  }
-  const timevideo_duration = (event) => {
-    const time = event.target.value
-    if (time === '') {
-      setSelectedTimervideo_duration('00:00:00')
-      setValue('video_duration', 0)
-    } else {
-      setSelectedTimervideo_duration(time)
-      const [hours, minutes, seconds] = time.split(':').map(Number)
-      const timeInSeconds = hours * 3600 + minutes * 60 + seconds
-      setValue('video_duration', timeInSeconds)
-    }
-  }
+  // const timeC = (event) => {
+  //   const time = event.target.value
+  //   if (time === '') {
+  //     setSelectedTimer('00:00:00')
+  //     setValue('promo_start_at', 0)
+  //   } else {
+  //     setSelectedTimer(time)
+  //     const [hours, minutes, seconds] = time.split(':').map(Number)
+  //     const timeInSeconds = hours * 3600 + minutes * 60 + seconds
+  //     setValue('promo_start_at', timeInSeconds)
+  //   }
+  // }
+  // const timevideo_duration = (event) => {
+  //   const time = event.target.value
+  //   if (time === '') {
+  //     setSelectedTimervideo_duration('00:00:00')
+  //     setValue('video_duration', 0)
+  //   } else {
+  //     setSelectedTimervideo_duration(time)
+  //     const [hours, minutes, seconds] = time.split(':').map(Number)
+  //     const timeInSeconds = hours * 3600 + minutes * 60 + seconds
+  //     setValue('video_duration', timeInSeconds)
+  //   }
+  // }
   const onSubmit = async (data) => {
     try {
       const response = await axiosInstance.post(
         `${backendURL}/inventory/assign-to-order-with-new-video`,
         {
-          expected_number_of_views: data.expected_number_of_views,
-          format: data.format,
-          promo_start_at: data.promo_start_at,
-          promo_duration: data.promo_duration,
           order_assignment_id: data.order_id,
-          video_name: data.video_name,
-          category: data.category,
-          video_duration: data.video_duration,
-          publication_time: data.publication_time,
           ...(data.channel_id ? { channel_id: data.channel_id } : {}), // Добавляем channel_id только если он существует
+          video_name: data.video_name,
+          publication_time: data.publication_time,
           ...(data.link_to_video ? { link_to_video: data.link_to_video } : {}) // Добавляем channel_id только если он существует
-
         },
       )
 
@@ -130,7 +116,6 @@ export default function AddVideo({
 
       if (response.data) {
         toast.success('Размещение успешно созданно !')
-        // dispatch(fetchInventory({ orderAssignmentId: item.id }))
         setIsPopoverOpen(false)
         dispatch(fetchOnceListSentToPublisher({ is_deactivated: false }))
 
@@ -241,102 +226,6 @@ export default function AddVideo({
         <div className="flex gap-4">
           <div className="grid w-full mb-4">
             <Label className="text-sm	text-white pb-2">
-              Выбрать формат<span className="text-red-500 ml-0.5">*</span>
-            </Label>
-            <Controller
-              name="publisher"
-              {...register('format', {
-                required: 'Поле обязательно',
-              })}
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  value={field.value}
-                  disabled={item.format === 'preroll' || item.format === 'tv_preroll' || item.format === 'top_preroll'}
-                >
-                  <SelectTrigger className="!text-white">
-                    <SelectValue placeholder="Выбрать формат" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Выбрать формат</SelectLabel>
-                      {format.map((adv) => (
-                        <SelectItem key={adv.id} value={adv.value}>
-                          <div className='!flex items-center gap-1'>
-                            {adv.icon &&
-                              <adv.icon/>
-                              // <img src={option.icon} alt="" className='size-4'/>
-                            }
-                            {adv.text}
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
-          <div className="grid w-full mb-4">
-            <Label className="text-sm	text-white pb-2">
-              {' '}
-              Тайм код рекламы<span className="text-red-500 ml-0.5">*</span>
-            </Label>
-            <Input
-              type="time"
-              step="1"
-              inputMode="numeric"
-              onChange={timeC}
-              defaultValue="00:00:00"
-              disabled={item.format === 'preroll' || item.format === 'tv_preroll' || item.format === 'top_preroll'}
-              className={`border ${
-                errors?.promo_start_at ? 'border-red-500' : 'border-gray-300'
-              }   transition-all duration-300 text-sm `}
-            />
-          </div>
-        </div>
-        {/**/}
-
-        {/**/}
-        <div className="flex gap-4">
-          <div className="grid w-full mb-4">
-            <Label className="text-sm	text-white pb-2">
-              Прогноз показов<span className="text-red-500 ml-0.5">*</span>
-            </Label>
-            <Controller
-              name="expected_number_of_views"
-              control={control}
-              rules={{ required: 'Поле обязательно к заполнению' }}
-              defaultValue=""
-              render={({ field: { onChange, onBlur, value, name, ref } }) => (
-                <Input
-                  type="text"
-                  value={value.toLocaleString('en-US')}
-                  onChange={(e) => {
-                    const rawValue = e.target.value.replace(/\D/g, '')
-                    const newValue = rawValue ? parseInt(rawValue, 10) : ''
-                    onChange(newValue)
-                  }}
-                  onBlur={onBlur}
-                  className={`border ${
-                    errors?.expected_number_of_views
-                      ? 'border-red-500'
-                      : 'border-gray-300'
-                  }   transition-all duration-300 text-sm `}
-                  name={name}
-                  ref={ref}
-                  placeholder="Прогноз показов"
-                  autoComplete="off"
-                  step="1000"
-                />
-              )}
-            />
-          </div>
-          <div className="grid w-full mb-4">
-            <Label className="text-sm	text-white pb-2">
               Дата публикаций<span className="text-red-500 ml-0.5">*</span>
             </Label>
             <Input
@@ -353,81 +242,9 @@ export default function AddVideo({
         </div>
         {/**/}
 
-        {/**/}
-        <div className="flex gap-4">
-          <div className="grid w-full mb-4">
-            <Label className="text-sm	text-white pb-2">
-              Выбрать категорию<span className="text-red-500 ml-0.5">*</span>
-            </Label>
-            <Controller
-              name="publisher"
-              {...register('category', {
-                required: 'Поле обязательно',
-              })}
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  value={field.value}
-                >
-                  <SelectTrigger className="!text-white">
-                    <SelectValue placeholder="Выбрать категорию" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Выбрать категорию</SelectLabel>
-                      {categoryC.map((adv) => (
-                        <SelectItem key={adv.id} value={adv.value}>
-                          {adv.text}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
-          <div className="grid w-full mb-4">
-            <Label className="text-sm	text-white pb-2">
-              Хрон видео<span className="text-red-500 ml-0.5">*</span>
-            </Label>
-            <div>
-              <Input
-                type="time"
-                step="1"
-                inputMode="numeric"
-                onChange={timevideo_duration}
-                defaultValue="00:00:00"
-                className={`border ${
-                  errors?.category ? 'border-red-500' : 'border-gray-300'
-                }   transition-all duration-300 text-sm `}
-              />
-            </div>
-          </div>
-        </div>
-        {/**/}
-
         <div className="flex gap-4 items-end ">
-          <div className="grid w-full ">
-            <Label className="text-sm	text-white pb-2">
-              {' '}
-              Хрон рекламы (сек)<span className="text-red-500 ml-0.5">*</span>
-            </Label>
-            <div>
-              <Input
-                className={`border ${
-                  errors?.promo_duration ? 'border-red-500' : 'border-gray-300'
-                }   transition-all duration-300 text-sm `}
-                type="number"
-                {...register ('promo_duration', {
-                  required: 'Поле обязательно для заполнения',
-                })}
-              />
-            </div>
 
-          </div>
+          {/*</div>*/}
           <div className="grid w-full">
             <Label className="text-sm	text-white pb-2">
               Прикрепить ссылку

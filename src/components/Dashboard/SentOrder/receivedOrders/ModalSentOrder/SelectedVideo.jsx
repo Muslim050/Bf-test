@@ -63,10 +63,6 @@ export default function SelectedVideo({ item, setIsPopoverOpen }) {
     watch,
   } = useForm({
     defaultValues: {
-      expected_number_of_views: '',
-      format: item.format,
-      promo_start_at: 0,
-      promo_duration: '',
       order_id: item.id,
       video_id: '',
       channel_id: '',
@@ -74,17 +70,12 @@ export default function SelectedVideo({ item, setIsPopoverOpen }) {
     mode: 'onSubmit',
   })
   const cId = watch('channel_id')
-  console.log (channelid)
   const onSubmit = async (data) => {
 
     try {
       const response = await axiosInstance.post(
         `${backendURL}/inventory/assign-to-order-with-existing-video`,
         {
-          expected_number_of_views: data.expected_number_of_views,
-          format: data.format,
-          promo_start_at: data.promo_start_at,
-          promo_duration: data.promo_duration,
           order_assignment_id: data.order_id,
           video_id: data.video_id,
         }
@@ -197,6 +188,8 @@ export default function SelectedVideo({ item, setIsPopoverOpen }) {
         response.data.data.results,
       )
     } catch (error) {
+      toast.error(error.response.data.error.channel_id[0])
+
       console.error('Error fetching video:', error)
     }
   }
@@ -285,122 +278,9 @@ export default function SelectedVideo({ item, setIsPopoverOpen }) {
             </div>
             {/**/}
 
-            <div className="flex gap-4">
-              <div className="grid w-full mb-4">
-                <Label className="text-sm	text-white pb-2">
-                  Выбрать формат<span className="text-red-500 ml-0.5">*</span>
-                </Label>
-                <Controller
-                  name="publisher"
-                  {...register('format', {
-                    required: 'Поле обязательно',
-                  })}
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      value={field.value}
-                      disabled={item.format === 'preroll' || item.format === 'tv_preroll' || item.format === 'top_preroll'}
-                    >
-                      <SelectTrigger className="!text-white">
-                        <SelectValue placeholder="Выбрать формат" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Выбрать формат</SelectLabel>
-                          {format.map((adv) => (
-                            <SelectItem key={adv.id} value={adv.value}>
-                              <div className='!flex items-center gap-1'>
-                                {adv.icon &&
-                                  <adv.icon/>
-                                  // <img src={option.icon} alt="" className='size-4'/>
-                                }
-                                {adv.text}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </div>
 
-              <div className="grid w-full mb-4">
-                <Label className="text-sm	text-white pb-2">
-                  Тайм код рекламы<span className="text-red-500 ml-0.5">*</span>
-                </Label>
-                <Input
-                  className={`border ${
-                    errors?.timecod ? 'border-red-500' : 'border-gray-300'
-                  }   transition-all duration-300 text-sm `}
-                  type="time"
-                  step="1"
-                  inputMode="numeric"
-                  onChange={timeC}
-                  defaultValue="00:00:00"
-                />
-              </div>
-            </div>
 
-            <div className="flex gap-4">
-              <div className="grid w-full mb-4">
-                <Label className="text-sm	text-white pb-2">
-                  Прогноз показов<span className="text-red-500 ml-0.5">*</span>
-                </Label>
-                <Controller
-                  name="expected_number_of_views"
-                  control={control}
-                  rules={{ required: 'Поле обязательно к заполнению' }}
-                  defaultValue=""
-                  render={({
-                    field: { onChange, onBlur, value, name, ref },
-                  }) => (
-                    <Input
-                      className={`border ${
-                        errors?.expected_number_of_views
-                          ? 'border-red-500'
-                          : 'border-gray-300'
-                      }   transition-all duration-300 text-sm `}
-                      type="text"
-                      value={value.toLocaleString('en-US')}
-                      onChange={(e) => {
-                        const rawValue = e.target.value.replace(/\D/g, '')
-                        const newValue = rawValue ? parseInt(rawValue, 10) : ''
-                        onChange(newValue)
-                      }}
-                      onBlur={onBlur}
-                      name={name}
-                      ref={ref}
-                      placeholder="Прогноз показов"
-                      autoComplete="off"
-                      step="1000"
-                    />
-                  )}
-                />
-              </div>
 
-              <div className="grid w-full mb-4">
-                <Label className="text-sm	text-white pb-2">
-                  Хрон рекламы (сек)
-                  <span className="text-red-500 ml-0.5">*</span>
-                </Label>
-
-                <Input
-                  className={`border ${
-                    errors?.promo_duration
-                      ? 'border-red-500'
-                      : 'border-gray-300'
-                  }   transition-all duration-300 text-sm `}
-                  type="number"
-                  {...register('promo_duration', {
-                    required: 'Поле обязательно для заполнения',
-                  })}
-                />
-              </div>
-            </div>
 
             <Button
               className={`${

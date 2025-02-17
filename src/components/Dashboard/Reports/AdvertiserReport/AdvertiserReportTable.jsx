@@ -57,47 +57,54 @@ function AdvertiserReportTable() {
 
         ) : (
         <div className="tableWrapper" style={{ overflow: 'visible' }}>
-          <div className="tableWrapper__table_title">
-            <div className="flex justify-end items-center gap-2 mb-4">
+          <div className="flex items-center justify-between w-full my-4">
+            {/* Левая часть: YouTube Analytics + выбранные фильтры */}
+            <div className="flex items-center gap-2">
+              {data?.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1 items-center text-lg font-semibold">
+                    You <span className="bg-red-600 px-1 py-1 rounded-xl">Tube</span>
+                    <p className="text-lg font-medium">Analytics</p>
+                  </div>
 
-            {/*Выбрынные фильтры*/}
-             <SelectedFilter
-               selectedAdvName={selectedAdvName}
-               handleClear={handleClear}
-               startDate={startDate}
-               endDate={endDate}
-               startDateMonth={startDateMonth}
-               endDateMonth={endDateMonth}
-               selectedMonth={selectedMonth}
-             />
-              {/*Выбрынные фильтры*/}
+                </div>
+              )}
 
 
+            </div>
 
-
+            {/* Правая часть: Кнопка "Фильтр" */}
+            <div className="ml-auto flex">
+              {/* Выбранные фильтры */}
+              <SelectedFilter
+                selectedAdvName={selectedAdvName}
+                handleClear={handleClear}
+                startDate={startDate}
+                endDate={endDate}
+                startDateMonth={startDateMonth}
+                endDateMonth={endDateMonth}
+                selectedMonth={selectedMonth}
+              />
               <Popover>
-                <PopoverTrigger asChild className="">
+                <PopoverTrigger asChild>
                   <Button
                     variant="ghost"
-                    className=" flex justify-end mt-3 bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
+                    className="flex justify-end bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white"
                   >
-                    <SlidersHorizontal className="w-4 h-4 mr-2" /> Фильтр
+                    <SlidersHorizontal className="w-4 h-4 mr-2"/> Фильтр
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-80 mr-3.5 bg-white bg-opacity-30 backdrop-blur-md border-0 rounded-[22px]">
-                  <div className="">
+                  <div>
                     <div className="flex items-center gap-2 pb-4">
-                      <div className="w-2.5	h-6	bg-[#B5E4CA] rounded-[4px]"></div>
-                      <h4
-                        className="font-medium "
-                        style={{ color: 'var(--text-color )' }}
-                      >
+                      <div className="w-2.5 h-6 bg-[#B5E4CA] rounded-[4px]"></div>
+                      <h4 className="font-medium" style={{color: 'var(--text-color )'}}>
                         Фильтры
                       </h4>
                     </div>
                     <p
-                      className="text-xs	  pt-3 pb-1 border-t border-[#F9F9F9] "
-                      style={{ color: 'var(--text-color )' }}
+                      className="text-xs pt-3 pb-1 border-t border-[#F9F9F9]"
+                      style={{color: 'var(--text-color )'}}
                     >
                       Выберите необходимые параметры
                     </p>
@@ -109,11 +116,9 @@ function AdvertiserReportTable() {
                       advdata={advdata}
                       selectedOptionAdv={selectedOptionAdv}
                       handleSelectChangeADV={handleSelectChangeADV}
-                      //
                       selectedAdv={selectedAdv}
                       handleClear={handleClear}
                       selectedAdvName={selectedAdvName}
-                      //
                       handleStartDateChange={handleStartDateChange}
                       handleEndDateChange={handleEndDateChange}
                       handleDateChange={handleDateChange}

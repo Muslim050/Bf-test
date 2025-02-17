@@ -49,6 +49,7 @@ export const useReceived = () => {
   const dispatch = useDispatch()
   // Модальное окно Index
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
+  const [isPopoverOpenData, setIsPopoverOpenData] = React.useState()
   // Модальное окно Index
   const [currentOrder, setCurrentOrder] = React.useState(null)
   const copyToClipboard = () => {
@@ -248,7 +249,10 @@ export const useReceived = () => {
               <Popover isOpen={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                 <PopoverTrigger asChild>
                   <button
-                    onClick={() => setIsPopoverOpen(true)}
+                    onClick={() => {
+                      setIsPopoverOpen(true)
+                      setIsPopoverOpenData(row.original)
+                    }}
                     className="hover:scale-125 transition-all relative"
                   >
                     <PackagePlus className={`hover:text-orange-500 ${row.original.order_status === 'in_review' || row.original.order_status === 'confirmed' && 'text-green-400'}` } />
@@ -468,6 +472,7 @@ export const useReceived = () => {
     globalFilter,
     setGlobalFilter,
     pagination,
-    renderSubComponent
+    renderSubComponent,
+    isPopoverOpenData
   };
 };
