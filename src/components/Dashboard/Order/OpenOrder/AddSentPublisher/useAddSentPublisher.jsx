@@ -132,7 +132,7 @@ export const useAddSentPublisher = ( expandedRows, onceOrder) => {
       },
       {
         accessorFn: (row) => row.format, // Преобразование в число
-        id: 'Показы',
+        id: 'Порог',
         cell: ({row}) =>
           <div className="flex gap-2 items-center justify-between">
             <FormatterView data={row.original.ordered_number_of_views}/>
@@ -167,7 +167,7 @@ export const useAddSentPublisher = ( expandedRows, onceOrder) => {
             </Popover>
           </div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>Показы</span>,
+        header: () => <span>Порог</span>,
       },
       {
         accessorFn: (row) => row.online_views, // Преобразование в число

@@ -381,7 +381,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
 
         <div className="grid w-full mb-4">
           <Label className="text-sm text-white pb-2">
-            Количество показов<span className="text-red-500 ml-0.5">*</span>
+            Порог показов<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Controller
             name="ordered_number_of_views"
@@ -396,7 +396,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                   const rawValue = e.target.value.replace(/\D/g, '')
                   field.onChange(rawValue ? parseInt(rawValue, 10) : '')
                 }}
-                placeholder="Количество показов"
+                placeholder="Порог показов"
                 style={{
                   border: errors?.ordered_number_of_views
                     ? '1px solid red'

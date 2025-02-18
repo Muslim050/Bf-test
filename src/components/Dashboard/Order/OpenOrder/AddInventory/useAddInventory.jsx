@@ -120,10 +120,10 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
       },
       {
         accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
-        id: 'План показов',
+        id: 'Порог показов',
         cell: ({ row }) => <PlanPopoverCell row={row} fetchGetOrder={fetchGetOrder} />,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>План показов</span>,
+        header: () => <span>Порог показов</span>,
       },
       {
         accessorFn: (row) => row.content?.link_to_video, // Преобразование в число
