@@ -136,35 +136,35 @@ export const useAddSentPublisher = ( expandedRows, onceOrder) => {
         cell: ({row}) =>
           <div className="flex gap-2 items-center justify-between">
             <FormatterView data={row.original.ordered_number_of_views}/>
-            <Popover
-              onOpenChange={(isOpen) => {
-                if (isOpen) {
-                  setOpenPopoverIndex(row.original.rowIndex);
-                } else {
-                  setOpenPopoverIndex(null);
-                }
-              }}
-              open={openPopoverIndex === row.original.rowIndex}
-            >
-              <PopoverTrigger asChild>
-                <button
-                  className="bg-[#5670f1] rounded-full hover:scale-125 transition-all "
-                >
-                  <Plus className="w-5 h-5"/>
-                </button>
-              </PopoverTrigger>
-              {/* eslint-disable-next-line no-undef */}
-              {openPopoverIndex === row.original.rowIndex && (
-                <PopoverContent className="w-80 bg-white bg-opacity-30 backdrop-blur-md rounded-2xl">
-                  <PopoverEditView
-                    item={row}
-                    expandedRows={expandedRows}
-                    setOpenPopoverIndex={setOpenPopoverIndex}
-                    onceOrder={onceOrder}
-                  />
-                </PopoverContent>
-              )}
-            </Popover>
+            {/*<Popover*/}
+            {/*  onOpenChange={(isOpen) => {*/}
+            {/*    if (isOpen) {*/}
+            {/*      setOpenPopoverIndex(row.original.rowIndex);*/}
+            {/*    } else {*/}
+            {/*      setOpenPopoverIndex(null);*/}
+            {/*    }*/}
+            {/*  }}*/}
+            {/*  open={openPopoverIndex === row.original.rowIndex}*/}
+            {/*>*/}
+            {/*  <PopoverTrigger asChild>*/}
+            {/*    <button*/}
+            {/*      className="bg-[#5670f1] rounded-full hover:scale-125 transition-all "*/}
+            {/*    >*/}
+            {/*      <Plus className="w-5 h-5"/>*/}
+            {/*    </button>*/}
+            {/*  </PopoverTrigger>*/}
+            {/*  /!* eslint-disable-next-line no-undef *!/*/}
+            {/*  {openPopoverIndex === row.original.rowIndex && (*/}
+            {/*    <PopoverContent className="w-80 bg-white bg-opacity-30 backdrop-blur-md rounded-2xl">*/}
+            {/*      <PopoverEditView*/}
+            {/*        item={row}*/}
+            {/*        expandedRows={expandedRows}*/}
+            {/*        setOpenPopoverIndex={setOpenPopoverIndex}*/}
+            {/*        onceOrder={onceOrder}*/}
+            {/*      />*/}
+            {/*    </PopoverContent>*/}
+            {/*  )}*/}
+            {/*</Popover>*/}
           </div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>Порог</span>,
