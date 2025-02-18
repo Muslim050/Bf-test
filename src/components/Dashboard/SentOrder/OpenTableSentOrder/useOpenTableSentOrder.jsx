@@ -96,8 +96,6 @@ export const useOpenTableSentOrder = () => {
 
   const columns = React.useMemo(
     () => [
-
-
       {
         id: 'id',
         accessorFn: (_, index) => index + 1, // Используем индекс строки
@@ -161,13 +159,6 @@ export const useOpenTableSentOrder = () => {
         ,
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Название Видео	</span>
-      },
-      {
-        accessorFn: (row) => row.video_content?.category, // Преобразование в число
-        id: 'Категория',
-        cell: info => info.getValue(),
-        filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Категория</span>
       },
       {
         accessorFn: (row) => row.format, // Преобразование в число

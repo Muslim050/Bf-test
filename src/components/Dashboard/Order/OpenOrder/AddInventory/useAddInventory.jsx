@@ -16,16 +16,18 @@ import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
 import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
 import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
 import {Button} from "@/components/ui/button.jsx";
-import {Star, SquareArrowOutUpRight, SquareCheckBig} from "lucide-react";
+import {Star, SquareArrowOutUpRight, SquareCheckBig, Plus} from "lucide-react";
 import Cookies from "js-cookie";
 import {deactivateInventories} from "@/redux/orderStatus/orderStatusSlice.js";
 import {toast} from "react-hot-toast";
 import {fetchOrder} from "@/redux/order/orderSlice.js";
+import PlanPopoverCell from "@/components/Dashboard/Order/OpenOrder/PlanPopoverCell.jsx";
 
 export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const { channel,total_count } = useSelector((state) => state.channel)
   const [globalFilter, setGlobalFilter] = React.useState('')
+
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
@@ -40,7 +42,6 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   }
   // Модальное окно OrderModal
   const dispatch = useDispatch()
-  console.log (onceOrder)
   useEffect (() => {
     fetchGetOrder()
   }, []);
@@ -119,11 +120,10 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
       },
       {
         accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
-        id: 'План показов',
-        cell: ({ row }) =>
-          <FormatterView data={row.original.expected_number_of_views}/>,
+        id: 'Порог показов',
+        cell: ({ row }) => <PlanPopoverCell row={row} fetchGetOrder={fetchGetOrder} />,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>План показов</span>,
+        header: () => <span>Порог показов</span>,
       },
       {
         accessorFn: (row) => row.content?.link_to_video, // Преобразование в число

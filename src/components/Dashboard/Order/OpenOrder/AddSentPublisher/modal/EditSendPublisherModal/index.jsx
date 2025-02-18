@@ -442,7 +442,7 @@ const EditSendPublisherModal = ({
                     const newValue = rawValue ? parseInt(rawValue, 10) : ''
                     onChange(newValue)
                   }}
-                  placeholder="Количество показов"
+                  placeholder="Порог показов"
                   style={{
                     border: errors?.ordered_number_of_views
                       ? '1px solid red'

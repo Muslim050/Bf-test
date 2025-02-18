@@ -20,13 +20,8 @@ function SentOrder() {
     setGlobalFilter,
     flexRender,
     pagination,
-    renderSubComponent
-
+    renderSubComponent,
   } = useReceived();
-
-
-
-
 
   return (
     <>
@@ -58,7 +53,8 @@ function SentOrder() {
           setGlobalFilter={setGlobalFilter}
           flexRender={flexRender}
           pagination={pagination}
-          renderSubComponent={renderSubComponent}/>
+          renderSubComponent={renderSubComponent}
+          />
         </TabsContent>
         <TabsContent value="complited">
           <CompletedOrder />

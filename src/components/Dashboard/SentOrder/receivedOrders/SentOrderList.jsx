@@ -21,7 +21,6 @@ import backendURL from '@/utils/url'
 import { PackagePlus } from 'lucide-react'
 import { hasRole } from '../../../../utils/roleUtils'
 import toast from 'react-hot-toast'
-import CircularTable from "@/components/Labrery/Circular/CircularTable.jsx";
 
 
 function SentOrderList({ listsentPublisher }) {

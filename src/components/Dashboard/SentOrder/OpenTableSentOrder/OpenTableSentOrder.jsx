@@ -1,16 +1,7 @@
 import React from 'react'
 import { fetchInventory } from '../../../../redux/inventory/inventorySlice'
 import { useDispatch, useSelector } from 'react-redux'
-import OpenTableSentOrderData from './OpenTableSentOrderData'
 import ModalSentOrder from '../receivedOrders/ModalSentOrder'
-import style from '@/components/Dashboard/SentOrder/TableSentsOrder.module.scss'
-import {
-  TableHead,
-  Table,
-  TableHeader,
-  TableRow,
-  TableBody,
-} from '@/components/ui/table.jsx'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 import {
   Popover,
@@ -19,38 +10,11 @@ import {
 } from '@/components/ui/popover.jsx'
 import { PackagePlus } from 'lucide-react'
 import { hasRole } from '../../../../utils/roleUtils'
-import Cookies from 'js-cookie'
 import TablePagination from "@/components/module/TablePagination/index.jsx";
-import Pagination from "@/components/module/Pagination/index.jsx";
-import {useOrder} from "@/components/Dashboard/Order/OrderTable/useOrder.jsx";
 import {useOpenTableSentOrder} from "@/components/Dashboard/SentOrder/OpenTableSentOrder/useOpenTableSentOrder.jsx";
 
-const headers = [
-  { key: 'id', label: '№' },
-  { key: 'channel.name', label: 'Канал' },
-  { key: 'video_content.name', label: 'Название Видео	' },
-  { key: 'category', label: 'Категория' },
-
-  { key: 'format', label: 'Формат' },
-  { key: 'publication_time', label: 'Дата начала' },
-
-  {
-    key: 'expected_number_of_views',
-    label: 'Показы факт',
-  },
-
-  {
-    key: 'status',
-    label: 'Статус',
-  },
-  { key: 'status', label: 'Действия' },
-  { key: 'status', label: '' },
-]
-
 function OpenTableSentOrder({ item }) {
-  const { textColor } = React.useContext(ThemeContext)
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
-
   const dispatch = useDispatch()
   const [loading, setLoading] = React.useState(true)
   const data = useSelector((state) => state.inventory.inventory)
