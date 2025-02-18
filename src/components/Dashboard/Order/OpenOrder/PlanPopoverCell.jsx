@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@radix-ui/react-popover';
 import { Plus } from 'lucide-react';
 import PopoverEditViewIventory from "@/components/Dashboard/Order/OpenOrder/PopoverEditViewIventory.jsx";
-import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx"; // или нужный вам импорт
+import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
+import {Badge} from "@/components/ui/badge.jsx"; // или нужный вам импорт
 
 // Отдельный компонент для ячейки с Popover
 const PlanPopoverCell = ({ row, fetchGetOrder }) => {
@@ -15,10 +16,10 @@ const PlanPopoverCell = ({ row, fetchGetOrder }) => {
       <Popover open={openPopover} onOpenChange={setOpenPopover}>
         <PopoverTrigger asChild >
           <button
-            className="bg-[#5670f1] rounded-full hover:scale-125 transition-all"
             onClick={() => setOpenPopover(true)}
           >
-            <Plus className="w-5 h-5" />
+            <Badge className='px-0.5 bg-[#5670f1]'><Plus className="w-4 h-4 font-semibold"/></Badge>
+
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-50 bg-white bg-opacity-30 backdrop-blur-md rounded-2xl p-3">          <PopoverEditViewIventory
