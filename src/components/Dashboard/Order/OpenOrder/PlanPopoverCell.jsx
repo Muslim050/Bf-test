@@ -11,8 +11,10 @@ const PlanPopoverCell = ({ row, fetchGetOrder }) => {
 
   return (
     <div className='flex gap-4'>
-      <FormatterView data={row.original.expected_number_of_views} />
+<div className='w-[60px]'>
+  <FormatterView data={row.original.expected_number_of_views} />
 
+</div>
       <Popover open={openPopover} onOpenChange={setOpenPopover}>
         <PopoverTrigger asChild >
           <button
