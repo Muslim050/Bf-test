@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input.jsx'
 import { Label } from '@/components/ui/label.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import Cookies from 'js-cookie'
+import { Check } from 'lucide-react';
 
 const PopoverEditViewIventory = ({setOpenPopover,fetchGetOrder,item}) => {
   const {
@@ -56,7 +57,7 @@ const PopoverEditViewIventory = ({setOpenPopover,fetchGetOrder,item}) => {
         Редактировать показы
       </div>
 
-      <div className="grid w-full relative mt-4">
+      <div className=" mt-2 items-center gap-2 flex">
         <Controller
           name="ordered_number_of_views"
           control={control}
@@ -72,7 +73,7 @@ const PopoverEditViewIventory = ({setOpenPopover,fetchGetOrder,item}) => {
                 errors?.ordered_number_of_views
                   ? 'border-red-500'
                   : 'border-gray-300'
-              } transition-all duration-300 text-sm `}
+              } transition-all duration-300 text-sm w-[130px]`}
               onChange={(e) => {
                 const rawValue = e.target.value.replace(/\D/g, '')
                 const newValue = rawValue ? parseInt(rawValue, 10) : ''
@@ -87,20 +88,21 @@ const PopoverEditViewIventory = ({setOpenPopover,fetchGetOrder,item}) => {
             />
           )}
         />
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          className={`${
+            isValid
+              ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
+              : 'bg-[#616161]'
+          }   h-[44px] text-white rounded-2xl	px-2`}
+          disabled={!isValid}
+          isValid={true}
+        >
+          <Check />
+        </Button>
       </div>
 
-      <Button
-        onClick={handleSubmit(onSubmit)}
-        className={`${
-          isValid
-            ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-            : 'bg-[#616161]'
-        } w-full   h-[44px] text-white rounded-2xl	mt-4`}
-        disabled={!isValid}
-        isValid={true}
-      >
-        Обновить
-      </Button>
+
     </div>
   )
 }
