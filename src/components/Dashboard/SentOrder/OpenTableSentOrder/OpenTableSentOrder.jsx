@@ -1,17 +1,9 @@
 import React from 'react'
-import { fetchInventory } from '../../../../redux/inventory/inventorySlice'
-import { useDispatch, useSelector } from 'react-redux'
-import ModalSentOrder from '../receivedOrders/ModalSentOrder'
-import { ThemeContext } from '@/utils/ThemeContext.jsx'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover.jsx'
-import { PackagePlus } from 'lucide-react'
-import { hasRole } from '../../../../utils/roleUtils'
+import {fetchInventory} from '../../../../redux/inventory/inventorySlice'
+import {useDispatch, useSelector} from 'react-redux'
 import TablePagination from "@/components/module/TablePagination/index.jsx";
 import {useOpenTableSentOrder} from "@/components/Dashboard/SentOrder/OpenTableSentOrder/useOpenTableSentOrder.jsx";
+import {FormWrapper} from "@/components/Dashboard/SentOrder/receivedOrders/FormWrapperOpenTable/index.jsx";
 
 function OpenTableSentOrder({ item }) {
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
@@ -46,47 +38,8 @@ function OpenTableSentOrder({ item }) {
       ) : (
         <>
           {item.order_status === 'in_progress' ? (
-            <Popover isOpen={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-              <div className="flex justify-end">
-                <PopoverTrigger asChild>
-                  <button
-                    onClick={() => setIsPopoverOpen (true)}
-                    className={` hover:scale-105  transition-all h-auto px-2 py-1 hover:text-white rounded-lg flex items-center gap-1.5 bg-orange-500 hover:bg-orange-400 border border-transparent hover:border-orange-700`}
-                  >
-
-                    <PackagePlus/>
-                    Добавить размещение
-                    {hasRole ('channel') || hasRole ('publisher') ? (
-                      <div className="absolute top-0 right-0">
-                        {item.order_status === 'in_review' ||
-                        item.order_status === 'confirmed' ? (
-                          <span className="relative flex h-3 w-3">
-                            <span
-                              className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                          </span>
-                        ) : null}
-                      </div>
-                    ) : null}
-                  </button>
-                </PopoverTrigger>
-              </div>
-              {isPopoverOpen && (
-                <PopoverContent
-                  side="left"
-                  align="start"
-                  className="w-[400px] bg-white bg-opacity-30 backdrop-blur-md rounded-xl"
-                >
-                  <ModalSentOrder
-                    setIsPopoverOpen={setIsPopoverOpen}
-                    item={item}
-                  />
-                </PopoverContent>
-              )}
-            </Popover>
+            <FormWrapper item={item} isPopoverOpen={isPopoverOpen} setIsPopoverOpen={setIsPopoverOpen}/>
           ) : null}
-          {/*<div className="p-3 rounded-xl	border_container bg-white bg-opacity-30 backdrop-blur-md">*/}
-
           <>
             <div
               className="border_container rounded-[22px] mt-3 p-[3px] glass-background flex flex-col h-full max-h-screen">
@@ -94,9 +47,7 @@ function OpenTableSentOrder({ item }) {
                 <TablePagination table={table} flexRender={flexRender} text='создайте размещение'/>
               </div>
             </div>
-            {/*<Pagination table={table} pagination={pagination}/>*/}
           </>
-          {/*</div>*/}
         </>
       )}
     </div>

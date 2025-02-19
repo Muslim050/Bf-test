@@ -71,7 +71,7 @@ const TablePagination = ({flexRender,table, renderSubComponent, text }) => {
                 </TableRow>
                 {row.getIsExpanded() && (
                   <TableRow>
-                    <TableCell className="p-0" colSpan={row.getVisibleCells().length}>
+                    <TableCell className={`${style.responsive_table_dop} p-0`} colSpan={row.getVisibleCells().length}>
                       {renderSubComponent({ row })}
                     </TableCell>
                   </TableRow>

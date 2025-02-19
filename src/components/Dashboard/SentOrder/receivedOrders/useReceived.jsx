@@ -1,36 +1,31 @@
 import React from 'react';
 import {
-  useReactTable,
+  flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  flexRender, getPaginationRowModel, getExpandedRowModel
+  useReactTable
 } from '@tanstack/react-table';
-import {useDispatch, useSelector} from 'react-redux';
-import {hasRole} from "@/utils/roleUtils.js";
-import {Copy, ChartColumnIncreasing, PackagePlus, MessageSquareText} from "lucide-react";
-import Cookies from "js-cookie";
+import {useSelector} from 'react-redux';
+import {Copy, MessageSquareText} from "lucide-react";
 import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
 import {formatDate} from "@/utils/formatterDate.jsx";
 import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
 import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
 import toast from 'react-hot-toast'
 import backendURL from "@/utils/url.js";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover.jsx'
+import {Popover, PopoverContent, PopoverTrigger,} from '@/components/ui/popover.jsx'
 import {Button} from "@/components/ui/button.jsx";
-import ModalSentOrder from "@/components/Dashboard/SentOrder/receivedOrders/ModalSentOrder/index.jsx";
 import OpenTableSentOrder from "@/components/module/TablePagination/OpenTableSentOrder.jsx";
 import {OpenSvg} from "@/assets/icons-ui.jsx";
+import {FormWrapperCreate} from "@/components/Dashboard/SentOrder/receivedOrders/FormWrapperCreate/index.jsx";
+
 export const useReceived = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const { listsentPublisher, total_count } = useSelector((state) => state.sentToPublisher)
   const [globalFilter, setGlobalFilter] = React.useState('')
-  const role = Cookies.get('role')
-  const [showModalEditAdmin, setShowModalEditAdmin] = React.useState(false)
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
@@ -42,11 +37,7 @@ export const useReceived = () => {
       <OpenTableSentOrder data={row.original} />
     );
   };
-  const redirectToTariffDetails = React.useCallback((advert) => {
-    const url = `/chart-order-table/${advert.id}`
-    window.open(url, '_blank', 'noopener,noreferrer') // Открыть в новом окне
-  }, [])
-  const dispatch = useDispatch()
+
   // Модальное окно Index
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
   const [isPopoverOpenData, setIsPopoverOpenData] = React.useState()
@@ -246,191 +237,13 @@ export const useReceived = () => {
 
             {row.original.order_status === 'in_progress' ||
             row.original.order_status === 'finished' ? null : (
-              <Popover isOpen={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-                <PopoverTrigger asChild>
-                  <button
-                    onClick={() => {
-                      setIsPopoverOpen(true)
-                      setIsPopoverOpenData(row.original)
-                    }}
-                    className="hover:scale-125 transition-all relative"
-                  >
-                    <PackagePlus className={`hover:text-orange-500 ${row.original.order_status === 'in_review' || row.original.order_status === 'confirmed' && 'text-green-400'}` } />
-                    {hasRole('channel') || hasRole('publisher') ? (
-                      <div className="absolute -top-2 -right-1">
-                        {row.original.order_status === 'in_review' ||
-                        row.original.order_status === 'confirmed' ? (
-                          <span className="relative flex h-3 w-3">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                            </span>
-                        ) : null}
-                      </div>
-                    ) : null}
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent side="left" align="start" className="w-[400px] bg-white bg-opacity-30 backdrop-blur-md rounded-xl">
-                  <ModalSentOrder setIsPopoverOpen={setIsPopoverOpen} item={row?.original} />
-                </PopoverContent>
 
-              </Popover>
+              <FormWrapperCreate isPopoverOpen={isPopoverOpen} setIsPopoverOpen={setIsPopoverOpen} row={row} setIsPopoverOpenData={setIsPopoverOpenData}/>
             )}
           </div>,
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Действия</span>
       },
-      // {
-      //   id: 'Детали',
-      //   header: () => <span className="flex items-center gap-1">Детали</span>,
-      //   cell: ({ row }) => {
-      //     return (
-      //       <div className="flex gap-2">
-      //         {/*кнопка открыть*/}
-      //
-      //         {role === 'admin' ? (
-      //           <button
-      //             // onClick={() => handleRowClick(advert.id, row)}
-      //             onClick={() => {
-      //               setExpandedRowId ((prev) => {
-      //                 console.log ("Updating expandedRowId from:", prev, "to:", prev === row.id ? null : row.id);
-      //
-      //                 return prev === row.id ? null : row.id; // Переключение состояния
-      //               });
-      //             }}
-      //             className="relative hover:scale-125 transition-all "
-      //           >
-      //             <PanelTopOpen
-      //               className={`
-      //             ${row.original.inventories.filter (
-      //                 (item) =>
-      //                   item.video_content.link_to_video &&
-      //                   item.status === 'booked',
-      //               ).length > 0 && 'text-[#aa84ff]'}
-      //             hover:text-brandPrimary-1 transition-all ease-in-out ${
-      //                 expandedRowId === row.id
-      //                   ? 'rotate-180 text-brandPrimary-1 scale-125'
-      //                   : 'rotate-0'
-      //               }`}
-      //             />
-      //
-      //             <span>
-      //             {row.original?.inventories?.filter (
-      //               (item) =>
-      //                 item.video_content.link_to_video &&
-      //                 item.status === 'booked',
-      //             ).length > 0 ? (
-      //               <div className="absolute -top-2.5 -right-2.5">
-      //                 <span className="relative flex h-[17px] w-[17px]">
-      //                   <span
-      //                     className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
-      //                   <span
-      //                     className="relative inline-flex items-center rounded-full h-[17px] w-[17px] bg-violet-500 justify-center text-[12px]">
-      //                     {
-      //                       row.original?.inventories?.filter (
-      //                         (item) =>
-      //                           item.video_content.link_to_video &&
-      //                           item.status === 'booked',
-      //                       ).length
-      //                     }
-      //                   </span>
-      //                 </span>
-      //               </div>
-      //             ) : (
-      //               <>
-      //                 {row.status === 'in_review' &&
-      //                 row.inventories.filter (
-      //                   (item) => item.status === 'booked',
-      //                 ).length > 0 ? (
-      //                   <CircularBadge
-      //                     style={{
-      //                       backgroundColor: '#ff7d00',
-      //                       width: '15px',
-      //                       height: '15px',
-      //                     }}
-      //                     count={row.original.status === 'booked'}
-      //                   />
-      //                 ) : (
-      //                   ''
-      //                 )}
-      //               </>
-      //             )}
-      //               {row.status === 'booked' ? (
-      //                 <CircularBadge
-      //                   style={{
-      //                     backgroundColor: '#ff7d00',
-      //                     width: '15px',
-      //                     height: '15px',
-      //                   }}
-      //                   count={row.original.status === 'booked'}
-      //                 />
-      //               ) : (
-      //                 ''
-      //               )}
-      //           </span>
-      //           </button>
-      //         ) : null}
-      //         {/*кнопка открыть*/}
-      //
-      //
-      //         {/*Статистика заказа*/}
-      //         {row.original.status === 'in_progress' ||
-      //         row.original.status === 'finished' ? (
-      //           <button
-      //             onClick={() => redirectToTariffDetails (row.original)}
-      //             // onClick={() => redirectToTariffDetails(advert)}
-      //             className="hover:scale-125 transition-all"
-      //           >
-      //             <ChartColumnIncreasing className="hover:text-green-400"/>
-      //           </button>
-      //         ) : (
-      //           <>
-      //             {role === 'advertising_agency' || role === 'advertiser'
-      //               ? ''
-      //               : null}
-      //           </>
-      //         )}
-      //         {/*Статистика заказа*/}
-      //
-      //
-      //       </div>
-      //     )
-      //   },
-      //
-      //
-      // },
-      // {
-      //   id: 'Действия',
-      //   header: () => <span className="flex items-center gap-1">Действия</span>,
-      //   cell: ({ row }) => {
-      //     const isOver100Percent =
-      //       (row.original.online_views / row.original.expected_number_of_views) * 100 >= 100;
-      //
-      //
-      //     return (
-      //       <div className="flex gap-2">
-      //
-      //         {/*POPOVER*/}
-      //         {hasRole ('admin') ||
-      //         hasRole ('advertiser') ||
-      //         hasRole ('advertising_agency') ? (
-      //           <div>
-      //             <PopoverButtons
-      //               advert={row.original}
-      //               isOver100Percent={isOver100Percent}
-      //               setShowModalEditAdmin={setShowModalEditAdmin}
-      //               handleFinishOrder={handleFinishOrder}
-      //             />
-      //           </div>
-      //
-      //         ) : null}
-      //         {/*POPOVER*/}
-      //       </div>
-      //     )
-      //   },
-      //
-      //
-      // },
-
 ],
   [expandedRowId, setIsPopoverOpen]
 )

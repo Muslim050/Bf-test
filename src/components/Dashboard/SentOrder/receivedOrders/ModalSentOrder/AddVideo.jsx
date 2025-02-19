@@ -22,26 +22,11 @@ import Cookies from 'js-cookie'
 // import {Monitor, MonitorPlay, MonitorUp} from "lucide-react";
 import axiosInstance from "@/api/api.js";
 
-// const categoryC = [
-//   { id: 1, value: 'Шоу', text: 'Шоу' },
-//   { id: 2, value: 'Драмма', text: 'Драмма' },
-//   { id: 3, value: 'Клип', text: 'Клип' },
-// ]
-//
-// const format = [
-//   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
-//   { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
-//   { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp  },
-// ]
-
 export default function AddVideo({
   item,
   setIsPopoverOpen,
 }) {
   const [channelModal, setChannelModal] = React.useState([])
-  // const [selectedTimer, setSelectedTimer] = React.useState('')
-  // const [selectedTimervideo_duration, setSelectedTimervideo_duration] =
-  //   React.useState('')
   const dispatch = useDispatch()
 
   const id = Number(Cookies.get('channelId'))
@@ -74,31 +59,6 @@ export default function AddVideo({
     },
     mode: 'onSubmit',
   })
-
-  // const timeC = (event) => {
-  //   const time = event.target.value
-  //   if (time === '') {
-  //     setSelectedTimer('00:00:00')
-  //     setValue('promo_start_at', 0)
-  //   } else {
-  //     setSelectedTimer(time)
-  //     const [hours, minutes, seconds] = time.split(':').map(Number)
-  //     const timeInSeconds = hours * 3600 + minutes * 60 + seconds
-  //     setValue('promo_start_at', timeInSeconds)
-  //   }
-  // }
-  // const timevideo_duration = (event) => {
-  //   const time = event.target.value
-  //   if (time === '') {
-  //     setSelectedTimervideo_duration('00:00:00')
-  //     setValue('video_duration', 0)
-  //   } else {
-  //     setSelectedTimervideo_duration(time)
-  //     const [hours, minutes, seconds] = time.split(':').map(Number)
-  //     const timeInSeconds = hours * 3600 + minutes * 60 + seconds
-  //     setValue('video_duration', timeInSeconds)
-  //   }
-  // }
   const onSubmit = async (data) => {
     try {
       const response = await axiosInstance.post(
@@ -113,7 +73,6 @@ export default function AddVideo({
       )
 
       // Debug log to inspect response
-
       if (response.data) {
         toast.success('Размещение успешно созданно !')
         setIsPopoverOpen(false)

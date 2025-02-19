@@ -7,11 +7,8 @@ const NestedStatickOrderTable = ({ data }) => {
       <DopTable
         statistic={data}
         data={data}
-        // expandedRows={expandedRows}
       />
-
     </>
-
 );
 };
 
