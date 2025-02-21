@@ -1,28 +1,20 @@
 import React from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
-import { Film } from 'lucide-react'
+import {Controller, useForm} from 'react-hook-form'
+import {useDispatch, useSelector} from 'react-redux'
+import {Film, Monitor, MonitorPlay, MonitorUp} from 'lucide-react'
 
-import {
-  deleteOrder,
-  fetchEditOrder,
-  fetchOrder,
-} from '../../../../../../redux/order/orderSlice'
-import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog.jsx'
-import { toastConfig } from '../../../../../../utils/toastConfig'
+import {deleteOrder, fetchEditOrder, fetchOrder, fetchSingleOrder,} from '../../../../../../redux/order/orderSlice'
+import {DialogContent, DialogHeader, DialogTitle,} from '@/components/ui/dialog.jsx'
+import {toastConfig} from '../../../../../../utils/toastConfig'
 import 'react-datepicker/dist/react-datepicker.css'
 import style from './EditOrder.module.scss'
 import backendURL from '@/utils/url'
 import axios from 'axios'
-import { Label } from '@/components/ui/label.jsx'
-import { Textarea } from '@/components/ui/textarea.jsx'
+import {Label} from '@/components/ui/label.jsx'
+import {Textarea} from '@/components/ui/textarea.jsx'
 
-import { Input } from '@/components/ui/input.jsx'
-import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
+import {Input} from '@/components/ui/input.jsx'
+import {SelectTrigger} from '@/components/ui/selectTrigger.jsx'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,16 +26,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog.jsx'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectValue,
-} from '@/components/ui/select.jsx'
-import { Button } from '../../../../../ui/button'
+import {Select, SelectContent, SelectGroup, SelectItem, SelectValue,} from '@/components/ui/select.jsx'
+import {Button} from '../../../../../ui/button'
 import toast from 'react-hot-toast'
-import { Monitor, MonitorPlay, MonitorUp } from 'lucide-react';
+import Cookies from 'js-cookie'
 
 
 const formatV = [
@@ -51,7 +37,6 @@ const formatV = [
   { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
   { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp  },
 ]
-import Cookies from 'js-cookie'
 
 export default function EditOrder({
   setShowModalEditAdmin,
@@ -81,6 +66,7 @@ export default function EditOrder({
     watch,
     control,
     setValue,
+    onBlur
   } = useForm({
     defaultValues: {
       name: currentOrder.name,
@@ -164,9 +150,8 @@ export default function EditOrder({
       if (response && !response.error) {
         toast.success('Изминения успешно обновлены!')
         onClose()
-        setTimeout(() => {
-          window.location.reload()
-        }, 1500)
+        dispatch(fetchSingleOrder(currentOrder.id));
+
       } else if (response.error.message) {
         toast.error('Что-то пошло не так!' + response.error.message)
         onClose()
@@ -182,21 +167,6 @@ export default function EditOrder({
   }
 
   const handleRemoveInventory = () => {
-    // const confirmDelete = window.confirm('Вы уверены, что хотите удалить?')
-    // if (confirmDelete) {
-    //   dispatch(deleteOrder({ id: currentOrder.id }))
-    //     .then(() => {
-    //       toast.success('Инвентарь успешно удален', toastConfig)
-    //       setShowModalEditAdmin(false)
-    //       dispatch(fetchOrder())
-    //     })
-    //     .catch((error) => {
-    //       toast.error(error.message, toastConfig)
-    //       dispatch(fetchOrder())
-    //     })
-    // } else {
-    //   toast.info('Операция отменена', toastConfig)
-    // }
     dispatch(deleteOrder({ id: currentOrder.id }))
       .unwrap()
       .then((result) => {
@@ -206,6 +176,7 @@ export default function EditOrder({
           window.location.reload()
         }, 1500)
         dispatch(fetchOrder())
+
       })
       .catch((error) => {
         toast.error(`Ошибка завершения заказа: ${error.data.error.detail}`)
@@ -400,13 +371,13 @@ export default function EditOrder({
                       errors?.enddate ? 'border-red-500' : 'border-gray-300'
                     }   transition-all duration-300 text-sm `}
                     type="text"
-                    value={value.toLocaleString('en-US')}
+                    value={typeof value === 'number' ? value.toLocaleString('en-US') : value}
                     onChange={(e) => {
-                      const rawValue = e.target.value.replace(/\D/g, '')
-                      const newValue = rawValue ? parseInt(rawValue, 10) : ''
-                      onChange(newValue)
+                      const rawValue = e.target.value.replace(/\D/g, '');
+                      const newValue = rawValue ? parseInt(rawValue, 10) : '';
+                      onChange(newValue);
                     }}
-                    onBlur={onChange}
+                    onBlur={onBlur} // Используем стандартный onBlur без повторного вызова onChange
                     name={name}
                     ref={ref}
                     placeholder="Количество показов"

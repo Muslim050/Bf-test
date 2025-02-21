@@ -1,14 +1,16 @@
 import React from 'react';
 import {
-  useReactTable,
+  flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  flexRender, getPaginationRowModel, getExpandedRowModel
+  useReactTable
 } from '@tanstack/react-table';
 import {useDispatch, useSelector} from 'react-redux';
 import {hasRole} from "@/utils/roleUtils.js";
-import {Film, ChartColumnIncreasing} from "lucide-react";
+import {ChartColumnIncreasing, Film} from "lucide-react";
 import CircularTable from "@/components/Labrery/Circular/CircularTable.jsx";
 import Cookies from "js-cookie";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
@@ -32,7 +34,8 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.jsx";
 export const useOrder = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const { order, total_count } = useSelector((state) => state.order)
-  const [globalFilter, setGlobalFilter] = React.useState('')
+  const [searchInOrder, setSearchInOrder] = React.useState('')
+
   const role = Cookies.get('role')
   const [showModalEditAdmin, setShowModalEditAdmin] = React.useState(false)
   const [pagination, setPagination] = React.useState({
@@ -151,7 +154,6 @@ export const useOrder = () => {
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>№</span>,
       },
-
       {
         id: '-',
         cell: ({ row }) =>
@@ -452,7 +454,6 @@ export const useOrder = () => {
     columns,
     state: {
       columnFilters,
-      globalFilter,
       pagination,
       expanded: expandedRowId ? {[expandedRowId]: true} : {}, // Управляем развернутыми строками
 
@@ -480,9 +481,9 @@ export const useOrder = () => {
     columns,
     setColumnFilters,
     flexRender,
-    globalFilter,
-    setGlobalFilter,
     pagination,
-    renderSubComponent
+    renderSubComponent,
+    setSearchInOrder,
+    searchInOrder
   };
 };

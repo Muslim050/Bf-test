@@ -1,25 +1,23 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { fetchOrder } from '@/redux/order/orderSlice'
-import { Plus } from 'lucide-react'
-import { showModalOrder } from '@/redux/modalSlice'
-import { Button } from '@/components/ui/button.jsx'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog.jsx'
+import {useDispatch} from 'react-redux'
+import {fetchOrder} from '@/redux/order/orderSlice'
+import {Plus} from 'lucide-react'
+import {showModalOrder} from '@/redux/modalSlice'
+import {Button} from '@/components/ui/button.jsx'
+import {Dialog, DialogTrigger} from '@/components/ui/dialog.jsx'
 import OrderModal from './modals/CreateOrder/CreateOrder'
 import Cookies from 'js-cookie'
 import PreLoadDashboard from "@/components/Dashboard/PreLoadDashboard/PreLoad.jsx";
 import TablePagination from "@/components/module/TablePagination/index.jsx";
 import Pagination from "@/components/module/Pagination/index.jsx";
 import {useOrder} from "@/components/Dashboard/Order/OrderTable/useOrder.jsx";
-import TableSearchInput from "@/shared/TableSearchInput/index.jsx";
 import toast from "react-hot-toast";
+import TableSearchInputOnce from "@/shared/TableSearchInputOnce/index.jsx";
 
 function OrderTable() {
   const dispatch = useDispatch()
   const [loading, setLoading] = React.useState(true)
-  // const { order } = useSelector((state) => state)
   const user = Cookies.get('role')
-  // const data = order?.order
 
   // Модальное окно Index
   const [open, setOpen] = React.useState(false)
@@ -30,12 +28,12 @@ function OrderTable() {
 
   const {
     table, // Экземпляр таблицы
-    globalFilter,
-    setGlobalFilter,
     flexRender,
     pagination,
-    renderSubComponent,expandedRowId
-    
+    renderSubComponent,
+    expandedRowId,
+    setSearchInOrder,
+    searchInOrder
   } = useOrder();
 
 
@@ -49,6 +47,7 @@ function OrderTable() {
       fetchOrder({
         page: pagination.pageIndex + 1, // API использует нумерацию с 1
         pageSize: pagination.pageSize,
+        search: searchInOrder
       })
     )
       .then(() => {
@@ -60,7 +59,7 @@ function OrderTable() {
         toast.dismiss('loading-toast'); // Убираем загрузочный toast
         toast.error('Ошибка загрузки данных!'); // Показываем уведомление об ошибке
       });
-  }, [dispatch, pagination.pageIndex, pagination.pageSize, setLoading]);
+  }, [dispatch, pagination.pageIndex, pagination.pageSize, setLoading, searchInOrder]);
 
   const handleButtonClick = () => {
     dispatch(showModalOrder())
@@ -74,15 +73,16 @@ function OrderTable() {
         <div>
           <div className='flex gap-2 justify-end pt-4 pb-1'>
             <div className='flex  justify-end'>
-              <TableSearchInput
-                value={globalFilter ?? ''}
-                onChange={value => setGlobalFilter (String (value))}
+              <TableSearchInputOnce
+                value={searchInOrder ?? ''}
+                onChange={value => setSearchInOrder (String (value))}
                 className={`p-2 font-lg shadow border border-block `}
               />
+
             </div>
             {user === 'admin' ? null : (
               <div className="flex justify-end">
-                <Dialog open={open} onOpenChange={setOpen}>
+              <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger asChild>
                     <Button
                       variant="ghost"
@@ -97,26 +97,6 @@ function OrderTable() {
               </div>
             )}
           </div>
-          {/*<div className="border_container w-full sm:h-[calc(100vh-100px)] h-[calc(100vh-100px)]   rounded-[22px]  p-[3px] glass-background flex flex-col">*/}
-
-
-          {/*{data.length && data ? (*/}
-          {/*  <Table*/}
-          {/*    className={`${style.responsive_table} border_design rounded-lg h-full`}*/}
-          {/*  >*/}
-          {/*    <TableHeader className="bg-[#FFFFFF2B] rounded-t-lg ">*/}
-          {/*      <OrderRows data={data} />*/}
-          {/*    </TableHeader>*/}
-          {/*    <TableBody>*/}
-          {/*      <OrderData data={data} />*/}
-          {/*    </TableBody>*/}
-          {/*  </Table>*/}
-          {/*) : (*/}
-          {/*  <div className="flex items-center gap-2 justify-center h-full">*/}
-          {/*    Список пустой. Добавьте заказ!*/}
-          {/*  </div>*/}
-          {/*)}*/}
-          {/*</div>*/}
           <>
             <div
               className="border_container rounded-[22px] mt-3 p-[3px] glass-background flex flex-col h-full max-h-screen">
