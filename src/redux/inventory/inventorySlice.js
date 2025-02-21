@@ -1,14 +1,15 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import backendURL from '@/utils/url'
-import { toastConfig } from '../../utils/toastConfig.js'
+import {toastConfig} from '../../utils/toastConfig.js'
 import toast from 'react-hot-toast'
 import axiosInstance from "@/api/api.js";
 
 const initialState = {
   inventory: [],
+  diactivatedInventory:[],
   status: '',
   error: null,
   total_count: 0, // Изначально общее количество равно 0
@@ -117,6 +118,7 @@ export const inventoryPublish = createAsyncThunk(
   },
 )
 
+
 export const fetchEditInventory = createAsyncThunk(
   'inventory/fetchEditInventory',
   async ({ id, data }) => {
@@ -197,6 +199,35 @@ export const reloadInventory = createAsyncThunk(
     }
   },
 )
+
+export const fetchDiactivatedInventory = createAsyncThunk(
+  'deactivateInventory/fetchInventory',
+  async (
+    {
+      page = 1,
+      pageSize = 20,
+    } = {},
+    { rejectWithValue }
+  ) => {
+    try {
+      // Создаем URL и добавляем параметры
+      const url = new URL(`${backendURL}/inventory/deactivated-inventories/`);
+      const params = new URLSearchParams();
+
+      params.append('page', page);
+      params.append('page_size', pageSize);
+      url.search = params.toString();
+      // Делаем запрос
+      const response = await axiosInstance.get(url.href);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || { message: 'Failed to fetch inventory' });
+    }
+  }
+);
+
+
+
 const inventorySlice = createSlice({
   name: 'inventory',
   initialState,
@@ -253,6 +284,18 @@ const inventorySlice = createSlice({
       })
       .addCase(reloadInventory.rejected, (state, action) => {
         state.status = 'failed'
+      })
+      .addCase(fetchDiactivatedInventory.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(fetchDiactivatedInventory.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.diactivatedInventory = action.payload
+        state.total_count = action.payload.count; // Обновляем общее количество
+      })
+      .addCase(fetchDiactivatedInventory.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
       })
   },
 })
