@@ -114,13 +114,6 @@ export const useDeactivateInventory = () => {
         header: () => <span className='flex  items-center gap-1'>Название видео</span>
       },
       {
-        accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
-        id: 'Показы факт',
-        cell: ({row}) => <>{row.original.recorded_view_count ? <FormatterView data={row.original.recorded_view_count}/> : <div>----</div>}</>,
-        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Показы факт</span>
-      },
-      {
         accessorFn: (row) => row.status, // Преобразование в число
         id: 'Статус',
         cell: ({row}) =>  <AdvertStatus
@@ -129,6 +122,13 @@ export const useDeactivateInventory = () => {
         />,
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () => <span className='flex  items-center gap-1'>Статус</span>
+      },
+      {
+        accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
+        id: 'Показы факт',
+        cell: ({row}) => <>{row.original.recorded_view_count ? <FormatterView data={row.original.recorded_view_count}/> : <div>----</div>}</>,
+        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
+        header: () => <span className='flex  items-center gap-1'>Показы факт</span>
       },
     ],
     []

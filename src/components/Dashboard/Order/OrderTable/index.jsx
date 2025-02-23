@@ -36,7 +36,26 @@ function OrderTable() {
     searchInOrder
   } = useOrder();
 
+  const formatDate = (value) => {
+    // Проверяем полный формат "dd.MM.yyyy"
+    const fullDatePattern = /^(\d{2})\.(\d{2})\.(\d{4})$/;
+    let match = value.match(fullDatePattern);
+    if (match) {
+      const [, day, month, year] = match;
+      return `${year}-${month}-${day}`;
+    }
 
+    // Проверяем частичный формат "dd.MM"
+    const partialDatePattern = /^(\d{2})\.(\d{2})$/;
+    match = value.match(partialDatePattern);
+    if (match) {
+      const [, day, month] = match;
+      return `${month}-${day}`;
+    }
+
+    // Если формат не соответствует ни одному шаблону, возвращаем исходное значение
+    return value;
+  };
   React.useEffect(() => {
     // Показываем уведомление при изменении pageSize
     toast.loading('Загрузка данных...', {
@@ -47,7 +66,7 @@ function OrderTable() {
       fetchOrder({
         page: pagination.pageIndex + 1, // API использует нумерацию с 1
         pageSize: pagination.pageSize,
-        search: searchInOrder
+        search: formatDate(searchInOrder) // Преобразование даты
       })
     )
       .then(() => {

@@ -8,17 +8,17 @@ import {useDispatch, useSelector} from "react-redux";
 import {calculateShowRedCircle} from "@/components/Dashboard/SentOrder/deactivatedInventory/useDeactivateInventory.jsx";
 import {fetchDiactivatedInventory} from "@/redux/inventory/inventorySlice.js";
 
+
 function SentOrder() {
   const { diactivatedInventory } = useSelector((state) => state.inventory)
   const dispatch = useDispatch()
 
   useEffect (() => {
     dispatch(
-
       fetchDiactivatedInventory({
       page: 1, // API использует нумерацию с 1
       pageSize: 200
-    }),)
+    }))
   }, [dispatch]);
   const {
     table, // Экземпляр таблицы
@@ -68,7 +68,7 @@ function SentOrder() {
 
            </TabsTrigger>
              {countOfRedCircle > 0 && (
-               <div className="absolute -right-1 -top-3 inline-flex items-center justify-center w-4 h-4 bg-red-500 text-white text-[10px] rounded-full">
+               <div className="absolute -right-1 -top-2 inline-flex items-center justify-center w-4 h-4 bg-red-500 text-white text-[10px] rounded-full">
                  {countOfRedCircle}
                </div>
              )}
