@@ -14,7 +14,7 @@ import CircularTable from "@/components/Labrery/Circular/CircularTable.jsx";
 import Cookies from "js-cookie";
 import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
 import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
-import {Link} from "lucide-react";
+import {SquareArrowOutUpRight} from "lucide-react";
 
 
 export function calculateShowRedCircle(deactivationDateStr, status) {
@@ -96,7 +96,13 @@ export const useDeactivateInventory = () => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild className="cursor-pointer">
-                <div>{truncate(row.original.video_content?.name, 20)}</div>
+                <a
+                  target="_blank"
+                  className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                  href={row.original.video_content.link_to_video}>{truncate(row.original.video_content?.name, 20)}
+                  <SquareArrowOutUpRight className='size-4'/>
+                </a>
+
               </TooltipTrigger>
               <TooltipContent>
                 <p>ID:{row?.original.video_content?.id}</p>
@@ -123,29 +129,6 @@ export const useDeactivateInventory = () => {
         />,
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () => <span className='flex  items-center gap-1'>Статус</span>
-      },
-      {
-        id: 'Ссылка',
-        header: () => <span className="flex items-center gap-1">Ссылка</span>,
-        cell: ({ row }) => {
-          return (
-            <div className="inline-flex">
-              <a
-                href={row.original.video_content.link_to_video}
-                target="_blank"
-                className=" hover:scale-105 transition-all w-full h-auto px-4 py-1 rounded-2xl flex items-center gap-1.5  bg-green-600 hover:bg-green-400 border border-transparent hover:border-green-600"
-                rel="noreferrer"
-              >
-                <Link className="w-[20px] h-[20px] text-white"/>
-                Ссылка на Видео
-              </a>
-
-
-            </div>
-          )
-        },
-
-
       },
     ],
     []
