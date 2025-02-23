@@ -6,10 +6,6 @@ import {useReceived} from "@/components/Dashboard/SentOrder/receivedOrders/useRe
 import DeactivatedInventory from "@/components/Dashboard/SentOrder/deactivatedInventory/index.jsx";
 
 function SentOrder() {
-
-
-
-
   const {
     table, // Экземпляр таблицы
     globalFilter,
@@ -18,6 +14,7 @@ function SentOrder() {
     pagination,
     renderSubComponent,
   } = useReceived();
+
 
   return (
     <>
