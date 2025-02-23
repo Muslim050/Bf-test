@@ -16,6 +16,15 @@ import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
 import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
 import {Link} from "lucide-react";
 
+
+export function calculateShowRedCircle(deactivationDateStr, status) {
+  const deactivationDate = new Date(deactivationDateStr);
+  const redCircleThreshold = new Date(deactivationDate.getTime() + 24 * 60 * 60 * 1000);
+  const now = new Date();
+  return status === 'inactive' && now >= deactivationDate && now <= redCircleThreshold;
+}
+
+
 export const useDeactivateInventory = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState('')
@@ -26,19 +35,18 @@ export const useDeactivateInventory = () => {
     pageSize: 20,
   });
 
+
+
   const columns = React.useMemo(
     () => [
       {
         accessorFn: (_, index) => index + 1, // Используем индекс строки
         id: 'id',
         cell: ({ row }) => {
-          const deactivationDate = new Date(row.original.deactivation_date);
-          const redCircleThreshold = new Date(deactivationDate.getTime() + 24 * 60 * 60 * 1000);
-          const now = new Date();
-          const showRedCircle =
-            row.original.status === 'inactive' && // убедитесь, что статус совпадает
-            now >= deactivationDate &&
-            now <= redCircleThreshold;
+          const showRedCircle = calculateShowRedCircle(
+            row.original.deactivation_date,
+            row.original.status
+          );
           return (
             <div className="relative flex items-center">
               <span>{row.index + 1}</span>
