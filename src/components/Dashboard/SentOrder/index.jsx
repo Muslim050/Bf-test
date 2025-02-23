@@ -1,15 +1,25 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import ReceivedOrders from './receivedOrders'
 import CompletedOrder from './сompletedOrders/'
 import {Tabs, TabsContent, TabsList, TabsTrigger,} from '@/components/ui/tabs.jsx'
 import {useReceived} from "@/components/Dashboard/SentOrder/receivedOrders/useReceived.jsx";
 import DeactivatedInventory from "@/components/Dashboard/SentOrder/deactivatedInventory/index.jsx";
-import {
-  calculateShowRedCircle,
-  useDeactivateInventory
-} from "@/components/Dashboard/SentOrder/deactivatedInventory/useDeactivateInventory.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {calculateShowRedCircle} from "@/components/Dashboard/SentOrder/deactivatedInventory/useDeactivateInventory.jsx";
+import {fetchDiactivatedInventory} from "@/redux/inventory/inventorySlice.js";
 
 function SentOrder() {
+  const { diactivatedInventory } = useSelector((state) => state.inventory)
+  const dispatch = useDispatch()
+
+  useEffect (() => {
+    dispatch(
+
+      fetchDiactivatedInventory({
+      page: 1, // API использует нумерацию с 1
+      pageSize: 200
+    }),)
+  }, [dispatch]);
   const {
     table, // Экземпляр таблицы
     globalFilter,
@@ -19,16 +29,13 @@ function SentOrder() {
     renderSubComponent,
   } = useReceived();
 
-  const {
-    table: tableDiactivate, // Экземпляр таблицы
-  } = useDeactivateInventory();
-
-  const rows = tableDiactivate.getRowModel().rows;
-  const countOfRedCircle = rows.reduce((acc, row) => {
-    const { deactivation_date, status } = row.original;
-    const isRedCircle = calculateShowRedCircle(deactivation_date, status);
+  const countOfRedCircle = diactivatedInventory?.results?.reduce((acc, row) => {
+    // Вызываем функцию, передаём дату деактивации и статус
+    const isRedCircle = calculateShowRedCircle(row.deactivation_date, row.status);
+    // Если функция вернёт true, увеличиваем счётчик
     return isRedCircle ? acc + 1 : acc;
   }, 0);
+  console.log (countOfRedCircle)
   return (
     <>
 
