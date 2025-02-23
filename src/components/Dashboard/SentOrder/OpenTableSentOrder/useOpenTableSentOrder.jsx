@@ -1,13 +1,15 @@
 import React from 'react';
 import {
-  useReactTable,
+  flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  flexRender, getPaginationRowModel, getExpandedRowModel
+  useReactTable
 } from '@tanstack/react-table';
 import {useDispatch, useSelector} from 'react-redux';
-import { Paperclip, Link} from "lucide-react";
+import {Link, Paperclip} from "lucide-react";
 import CircularTable from "@/components/Labrery/Circular/CircularTable.jsx";
 import Cookies from "js-cookie";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
@@ -22,11 +24,7 @@ import {finishOrder} from "@/redux/orderStatus/orderStatusSlice.js";
 import OpenTableSentOrder from "@/components/module/TablePagination/OpenTableSentOrder.jsx";
 import {Button} from "@/components/ui/button.jsx";
 import {showModalVideoLinked} from "@/redux/modalSlice.js";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import {Dialog, DialogContent, DialogTrigger,} from "@/components/ui/dialog"
 import LinkedVideoModal from "@/components/Dashboard/SentOrder/OpenTableSentOrder/LinkedVideoModal.jsx";
 
 export const useOpenTableSentOrder = () => {
@@ -227,7 +225,7 @@ export const useOpenTableSentOrder = () => {
                   <a
                     href={row.original.video_content.link_to_video}
                     target="_blank"
-                    className=" hover:scale-105 transition-all w-full h-auto px-4 py-1 rounded-lg flex items-center gap-1.5  bg-green-600 hover:bg-green-400 border border-transparent hover:border-green-600"
+                    className=" hover:scale-105 transition-all w-full h-auto px-4 py-1 rounded-2xl flex items-center gap-1.5  bg-green-600 hover:bg-green-400 border border-transparent hover:border-green-600"
                     rel="noreferrer"
                   >
                     <Link className="w-[20px] h-[20px] text-white"/>
