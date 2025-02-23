@@ -94,41 +94,12 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <a
-                  href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
-                  target="_blank"
-                  style={{
-                    display: 'inline-flex',
-                    gap: '4px',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    cursor:
-                      row.original.verified_link_with_timecode === null
-                        ? 'not-allowed'
-                        : 'pointer',
-                  }}
-                  className={`underline ${
-                    row.original.verified_link_with_timecode === null
-                      ? ' text-gray-500'
-                      : 'text-[#A7CCFF] hover:text-[#3282f1]'
-                  }`}
-                  onClick={(e) => {
-                    if (row.original.verified_link_with_timecode === null) {
-                      e.preventDefault ()
-                    }
-                  }}
-                  rel="noreferrer"
-                >
+
+
+
+                <div className="cursor-pointer">
                   {truncate(row.original.video_content?.name, 20)}
-                  {row.original.verified_link_with_timecode === null ? null : (
-                    <SquareArrowOutUpRight className='size-4'/>
-                  )}
-                </a>
-
-
-                {/*<div className="cursor-pointer">*/}
-                {/*  {truncate(row.original.video_content?.name, 20)}*/}
-                {/*</div>*/}
+                </div>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{row.original.video_content?.name}</p>
@@ -155,43 +126,43 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>Порог показов</span>,
       },
-      // {
-      //   accessorFn: (row) => row.content?.link_to_video, // Преобразование в число
-      //   id: 'Ссылка',
-      //   cell: ({row}) =>
-      //     <a
-      //       href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
-      //       target="_blank"
-      //       style={{
-      //         display: 'inline-flex',
-      //         gap: '4px',
-      //         alignItems: 'center',
-      //         justifyContent: 'space-between',
-      //         cursor:
-      //           row.verified_link_with_timecode === null
-      //             ? 'not-allowed'
-      //             : 'pointer',
-      //       }}
-      //       className={`underline ${
-      //         row.verified_link_with_timecode === null
-      //           ? ' text-gray-500'
-      //           : 'text-[#A7CCFF] hover:text-[#3282f1]'
-      //       }`}
-      //       onClick={(e) => {
-      //         if (row.verified_link_with_timecode === null) {
-      //           e.preventDefault ()
-      //         }
-      //       }}
-      //       rel="noreferrer"
-      //     >
-      //       Ссылка
-      //       {row.verified_link_with_timecode === null ? null : (
-      //         <SquareArrowOutUpRight className='size-4'/>
-      //       )}
-      //     </a>,
-      //   filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-      //   header: () => <span>Ссылка</span>,
-      // },
+      {
+        accessorFn: (row) => row.content?.link_to_video, // Преобразование в число
+        id: 'Ссылка',
+        cell: ({row}) =>
+          <a
+            href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
+            target="_blank"
+            style={{
+              display: 'inline-flex',
+              gap: '4px',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              cursor:
+                row.verified_link_with_timecode === null
+                  ? 'not-allowed'
+                  : 'pointer',
+            }}
+            className={`underline ${
+              row.verified_link_with_timecode === null
+                ? ' text-gray-500'
+                : 'text-[#A7CCFF] hover:text-[#3282f1]'
+            }`}
+            onClick={(e) => {
+              if (row.verified_link_with_timecode === null) {
+                e.preventDefault ()
+              }
+            }}
+            rel="noreferrer"
+          >
+            Ссылка
+            {row.verified_link_with_timecode === null ? null : (
+              <SquareArrowOutUpRight className='size-4'/>
+            )}
+          </a>,
+        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        header: () => <span>Ссылка</span>,
+      },
       {
         accessorFn: (row) => row.video_content?.publication_time, // Преобразование в число
         id: 'Время публикаций',
