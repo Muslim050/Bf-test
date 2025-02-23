@@ -1,24 +1,24 @@
-import React, { useEffect, useRef } from 'react'
-import { EyeOff, Eye, Loader2 } from 'lucide-react'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
-import { login } from '@/redux/auth/authSlice.js'
-import { toast } from 'react-hot-toast'
-import { gsap } from 'gsap'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import React, {useEffect, useRef} from 'react'
+import {Eye, EyeOff, Loader2} from 'lucide-react'
+import {useDispatch} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import {Button} from '@/components/ui/button'
+import {Input} from '@/components/ui/input'
+import {useForm} from 'react-hook-form'
+import {login} from '@/redux/auth/authSlice.js'
+import {toast} from 'react-hot-toast'
+import {gsap} from 'gsap'
+import {Swiper, SwiperSlide} from 'swiper/react'
 import m from './Login.module.scss'
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 
-import { sliderData } from './sliderData'
+import {sliderData} from './sliderData'
 // import Cookies from 'js-cookie'
 import Cookies from 'js-cookie'
-import { Autoplay, Pagination, Navigation } from 'swiper/modules'
+import {Autoplay, Navigation, Pagination} from 'swiper/modules'
 
 function Login() {
   const dispatch = useDispatch()
@@ -29,7 +29,6 @@ function Login() {
   const {
     register,
     formState: { errors, isValid },
-
     handleSubmit,
   } = useForm({
     defaultValues: {
