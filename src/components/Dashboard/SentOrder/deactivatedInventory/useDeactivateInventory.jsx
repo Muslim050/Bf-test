@@ -16,6 +16,7 @@ import Cookies from "js-cookie";
 import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
 import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
 import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
+import {Link} from "lucide-react";
 
 export const useDeactivateInventory = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -109,7 +110,7 @@ export const useDeactivateInventory = () => {
       {
         accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
         id: 'Показы факт',
-        cell: ({row}) => <FormatterView data={row.original.recorded_view_count}/>,
+        cell: ({row}) => <>{row.original.recorded_view_count ? <FormatterView data={row.original.recorded_view_count}/> : <div>----</div>}</>,
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () => <span className='flex  items-center gap-1'>Показы факт</span>
       },
@@ -123,10 +124,33 @@ export const useDeactivateInventory = () => {
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () => <span className='flex  items-center gap-1'>Статус</span>
       },
+      {
+        id: 'Действия',
+        header: () => <span className="flex items-center gap-1">Действия</span>,
+        cell: ({ row }) => {
+          return (
+            <div className="inline-flex">
+              <a
+                href={row.original.video_content.link_to_video}
+                target="_blank"
+                className=" hover:scale-105 transition-all w-full h-auto px-4 py-1 rounded-2xl flex items-center gap-1.5  bg-green-600 hover:bg-green-400 border border-transparent hover:border-green-600"
+                rel="noreferrer"
+              >
+                <Link className="w-[20px] h-[20px] text-white"/>
+                Ссылка на Видео
+              </a>
+
+
+            </div>
+          )
+        },
+
+
+      },
     ],
     []
   )
-  const table = useReactTable({
+  const table = useReactTable ({
     data: diactivatedInventory.results || [], // Данные из Redux
     columns,
     state: {
@@ -135,13 +159,13 @@ export const useDeactivateInventory = () => {
       pagination,
     },
     onPaginationChange: (updater) => {
-      setPagination((prev) => {
+      setPagination ((prev) => {
         const newPagination =
-          typeof updater === 'function' ? updater(prev) : updater;
-        return { ...prev, ...newPagination };
+          typeof updater === 'function' ? updater (prev) : updater;
+        return {...prev, ...newPagination};
       });
     },
-    pageCount: Math.ceil(total_count / pagination.pageSize), // Общее количество страниц
+    pageCount: Math.ceil (total_count / pagination.pageSize), // Общее количество страниц
     manualPagination: true, // Указываем, что используем серверную пагинацию
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
