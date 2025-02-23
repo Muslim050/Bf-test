@@ -125,10 +125,10 @@ export const useDeactivateInventory = () => {
       },
       {
         accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
-        id: 'Показы факт',
+        id: 'Показы по завершению',
         cell: ({row}) => <>{row.original.recorded_view_count ? <FormatterView data={row.original.recorded_view_count}/> : <div>----</div>}</>,
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Показы факт</span>
+        header: () => <span className='flex  items-center gap-1'>Показы по завершению</span>
       },
     ],
     []
