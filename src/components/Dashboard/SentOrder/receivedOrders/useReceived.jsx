@@ -78,7 +78,6 @@ export const useReceived = () => {
             <div style={{display: 'flex', justifyContent: "space-between"}}>
               {row.original.order_status === 'in_review' ? null : <>
                 {row.original.inventory_count ? null : <span className=" h-5 w-2.5">
-
                       <span
                         className="relative inline-flex rounded-full h-5 w-2.5 bg-red-500 text-[14px] items-center justify-center"></span>
                     </span>}
