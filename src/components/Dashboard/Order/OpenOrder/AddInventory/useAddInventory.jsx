@@ -1,27 +1,26 @@
-
-
 import React, {useEffect, useState} from 'react';
 import {
-  useReactTable,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  flexRender, getPaginationRowModel
+  useReactTable
 } from '@tanstack/react-table';
 import {useDispatch, useSelector} from 'react-redux';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
-import {truncate} from "@/utils/other.js";
 import {formatDate} from "@/utils/formatterDate.jsx";
 import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
 import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
 import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
 import {Button} from "@/components/ui/button.jsx";
-import {Star, SquareArrowOutUpRight, SquareCheckBig, Plus} from "lucide-react";
+import {SquareArrowOutUpRight, SquareCheckBig, Star} from "lucide-react";
 import Cookies from "js-cookie";
 import {deactivateInventories} from "@/redux/orderStatus/orderStatusSlice.js";
 import {toast} from "react-hot-toast";
 import {fetchOrder} from "@/redux/order/orderSlice.js";
 import PlanPopoverCell from "@/components/Dashboard/Order/OpenOrder/PlanPopoverCell.jsx";
+import {truncate} from "@/utils/other.js";
 
 export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -95,9 +94,41 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="cursor-pointer">
+                <a
+                  href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
+                  target="_blank"
+                  style={{
+                    display: 'inline-flex',
+                    gap: '4px',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor:
+                      row.original.verified_link_with_timecode === null
+                        ? 'not-allowed'
+                        : 'pointer',
+                  }}
+                  className={`underline ${
+                    row.original.verified_link_with_timecode === null
+                      ? ' text-gray-500'
+                      : 'text-[#A7CCFF] hover:text-[#3282f1]'
+                  }`}
+                  onClick={(e) => {
+                    if (row.original.verified_link_with_timecode === null) {
+                      e.preventDefault ()
+                    }
+                  }}
+                  rel="noreferrer"
+                >
                   {truncate(row.original.video_content?.name, 20)}
-                </div>
+                  {row.original.verified_link_with_timecode === null ? null : (
+                    <SquareArrowOutUpRight className='size-4'/>
+                  )}
+                </a>
+
+
+                {/*<div className="cursor-pointer">*/}
+                {/*  {truncate(row.original.video_content?.name, 20)}*/}
+                {/*</div>*/}
               </TooltipTrigger>
               <TooltipContent>
                 <p>{row.original.video_content?.name}</p>
@@ -107,13 +138,12 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
           </TooltipProvider>,
         header: () => <span>Название Видео</span>,
       },
-
       {
         accessorFn: (row) => row.format, // Преобразование в число
         id: 'Формат',
-        cell: ({ row }) =>
+        cell: ({row}) =>
           <div className='text-blue-400	'>
-            <FormatFormatter format={row.original.format} target={row.original.target_country} />
+            <FormatFormatter format={row.original.format} target={row.original.target_country}/>
           </div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>Формат</span>,
@@ -121,47 +151,47 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
       {
         accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
         id: 'Порог показов',
-        cell: ({ row }) => <PlanPopoverCell row={row} fetchGetOrder={fetchGetOrder} />,
+        cell: ({row}) => <PlanPopoverCell row={row} fetchGetOrder={fetchGetOrder}/>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>Порог показов</span>,
       },
-      {
-        accessorFn: (row) => row.content?.link_to_video, // Преобразование в число
-        id: 'Ссылка',
-        cell: ({row}) =>
-          <a
-            href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
-            target="_blank"
-            style={{
-              display: 'inline-flex',
-              gap: '4px',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              cursor:
-                row.verified_link_with_timecode === null
-                  ? 'not-allowed'
-                  : 'pointer',
-            }}
-            className={`underline ${
-              row.verified_link_with_timecode === null
-                ? ' text-gray-500'
-                : 'text-[#A7CCFF] hover:text-[#3282f1]'
-            }`}
-            onClick={(e) => {
-              if (row.verified_link_with_timecode === null) {
-                e.preventDefault ()
-              }
-            }}
-            rel="noreferrer"
-          >
-            Ссылка
-            {row.verified_link_with_timecode === null ? null : (
-              <SquareArrowOutUpRight className='size-4'/>
-            )}
-          </a>,
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>Ссылка</span>,
-      },
+      // {
+      //   accessorFn: (row) => row.content?.link_to_video, // Преобразование в число
+      //   id: 'Ссылка',
+      //   cell: ({row}) =>
+      //     <a
+      //       href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
+      //       target="_blank"
+      //       style={{
+      //         display: 'inline-flex',
+      //         gap: '4px',
+      //         alignItems: 'center',
+      //         justifyContent: 'space-between',
+      //         cursor:
+      //           row.verified_link_with_timecode === null
+      //             ? 'not-allowed'
+      //             : 'pointer',
+      //       }}
+      //       className={`underline ${
+      //         row.verified_link_with_timecode === null
+      //           ? ' text-gray-500'
+      //           : 'text-[#A7CCFF] hover:text-[#3282f1]'
+      //       }`}
+      //       onClick={(e) => {
+      //         if (row.verified_link_with_timecode === null) {
+      //           e.preventDefault ()
+      //         }
+      //       }}
+      //       rel="noreferrer"
+      //     >
+      //       Ссылка
+      //       {row.verified_link_with_timecode === null ? null : (
+      //         <SquareArrowOutUpRight className='size-4'/>
+      //       )}
+      //     </a>,
+      //   filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+      //   header: () => <span>Ссылка</span>,
+      // },
       {
         accessorFn: (row) => row.video_content?.publication_time, // Преобразование в число
         id: 'Время публикаций',
