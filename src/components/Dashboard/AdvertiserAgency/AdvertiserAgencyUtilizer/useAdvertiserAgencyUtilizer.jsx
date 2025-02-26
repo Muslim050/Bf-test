@@ -1,17 +1,16 @@
-
-
 import React, {useCallback} from 'react';
 import {
-  useReactTable,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  flexRender, getPaginationRowModel
+  useReactTable
 } from '@tanstack/react-table';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import {hasRole} from "@/utils/roleUtils.js";
 import {Button} from "@/components/ui/button.jsx";
-import { Pencil } from 'lucide-react';
+import {Pencil} from 'lucide-react';
 import backendURL from "@/utils/url.js";
 import FormatterPhone from "@/components/Labrery/formatter/FormatterPhone.jsx";
 import axiosInstance from "@/api/api.js";
@@ -55,10 +54,10 @@ export const useAdvertiserAgencyUtilizer = () => {
       },
       {
         accessorFn: row => row.name,
-        id: 'Наименование Компании',
+        id: 'Компании',
         cell: info => info.getValue(),
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>Наименование Компании</span>,
+        header: () => <span>Компании</span>,
       },
       {
         accessorFn: (row) => row.email, // Преобразование в число
@@ -69,10 +68,10 @@ export const useAdvertiserAgencyUtilizer = () => {
       },
       {
         accessorFn: row => row.phone_number,
-        id: 'Номер телефона',
+        id: 'Телефона',
         cell: ({ row }) => <FormatterPhone phoneNumber={row.original.phone_number} />,
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Номер телефона	</span>
+        header: () => <span className='flex  items-center gap-1'>Телефона	</span>
       },
       {
         accessorFn: row => row.commission_rate === 0 ? 'Нет комиссии' : `${row.commission_rate}%`,

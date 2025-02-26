@@ -1,14 +1,11 @@
 import React from 'react';
 import {
-  useReactTable,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFacetedMinMaxValues,
-  flexRender,
-  getPaginationRowModel
+  useReactTable
 } from '@tanstack/react-table';
 import {useSelector} from 'react-redux';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
@@ -17,7 +14,7 @@ import FormatterPhone from "@/components/Labrery/formatter/FormatterPhone.jsx";
 export const useAdvertiserUser = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState('')
-  const { advertiserUsers } = useSelector(
+  const { advertiserUsers,total_count } = useSelector(
     (state) => state.advertiserUsers,
   )
   const [loading, setLoading] = React.useState(true)
@@ -109,23 +106,38 @@ export const useAdvertiserUser = () => {
     []
   )
   const table = useReactTable({
-    data: advertiserUsers || [], // Ensure advertisers is defined
+    data: advertiserUsers.results || [], // Ensure advertisers is defined
     columns,
     state: {
       columnFilters,
       globalFilter,
       pagination
     },
-    onGlobalFilterChange: setGlobalFilter,
-    onColumnFiltersChange: setColumnFilters,
+    onPaginationChange: (updater) => {
+      setPagination((prev) => {
+        const newPagination =
+          typeof updater === 'function' ? updater(prev) : updater;
+        return { ...prev, ...newPagination };
+      });
+    },
+    pageCount: Math.ceil(total_count / pagination.pageSize), // Общее количество страниц
+    manualPagination: true, // Указываем, что используем серверную пагинацию
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(), // Client-side filtering
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(), // Client-side faceting
-    getFacetedUniqueValues: getFacetedUniqueValues(), // Generate unique values for select filter/autocomplete
-    getFacetedMinMaxValues: getFacetedMinMaxValues(), // Generate min/max values for range filter
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
+    // pageCount: Math.ceil(total_count / pagination.pageSize), // Общее количество страниц
+    //
+    // onGlobalFilterChange: setGlobalFilter,
+    // onColumnFiltersChange: setColumnFilters,
+    // getCoreRowModel: getCoreRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(), // Client-side filtering
+    // getSortedRowModel: getSortedRowModel(),
+    // getFacetedRowModel: getFacetedRowModel(), // Client-side faceting
+    // getFacetedUniqueValues: getFacetedUniqueValues(), // Generate unique values for select filter/autocomplete
+    // getFacetedMinMaxValues: getFacetedMinMaxValues(), // Generate min/max values for range filter
+    // getPaginationRowModel: getPaginationRowModel(),
+    // onPaginationChange: setPagination,
   });
 
   return {

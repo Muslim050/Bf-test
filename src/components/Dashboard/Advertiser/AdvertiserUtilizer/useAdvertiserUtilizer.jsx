@@ -1,25 +1,19 @@
 import React, {useCallback} from 'react';
 import {
-  useReactTable,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  flexRender, getPaginationRowModel
+  useReactTable
 } from '@tanstack/react-table';
-import { useSelector } from 'react-redux';
-import {Monitor, MonitorPlay, MonitorUp} from "lucide-react";
+import {useSelector} from 'react-redux';
+import {Monitor, MonitorPlay, MonitorUp, Pencil} from "lucide-react";
 import {hasRole} from "@/utils/roleUtils.js";
 import {Button} from "@/components/ui/button.jsx";
-import { Pencil } from 'lucide-react';
 import backendURL from "@/utils/url.js";
 import axiosInstance from "@/api/api.js";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
-import {truncate} from "@/utils/other.js";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import {Avatar, AvatarFallback, AvatarImage,} from "@/components/ui/avatar"
 
 export const useAdvertiserUtilizer = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -70,11 +64,11 @@ export const useAdvertiserUtilizer = () => {
       },
       {
         accessorFn: row => row.name,
-        id: 'Наименование Компании',
+        id: 'Компании',
         cell: ({ row }) =>
             <div>{row.original.name}</div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>Наименование Компании</span>,
+        header: () => <span>Компании</span>,
       },
       {
         accessorFn: (row) => Number(row.cpm_preroll), // Преобразование в число
@@ -151,17 +145,17 @@ export const useAdvertiserUtilizer = () => {
       },
       {
         accessorFn: (row) => row.phone_number,
-        id: 'Номер телефона',
+        id: 'Телефон',
         cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Номер телефона</span>,
+        header: () => <span className='flex  items-center gap-1'>Телефон</span>,
       },
       {
         accessorFn: (row) => row.advertising_agency?.name,
-        id: 'Рекламное агенство',
+        id: 'Агенство',
         cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Рекламное агенство</span>,
+        header: () => <span className='flex  items-center gap-1'>Агенство</span>,
       },
       {
         id: 'edit',
