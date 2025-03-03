@@ -146,10 +146,12 @@ export const useOpenTableSentOrder = () => {
                 <TooltipTrigger asChild className="cursor-pointer">
                   <a
                     target="_blank"
-                    className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                    className={`
+                    ${row.original.video_content.link_to_video !== null && 'text-[#A7CCFF] hover:text-[#3282f1] hover:underline'}
+                    no-underline   flex gap-1`}
                     href={row.original.video_content.link_to_video}>
                     {truncate(row.original.video_content?.name, 20)}
-                    <SquareArrowOutUpRight className='size-4'/>
+                    {row.original.video_content.link_to_video !== null && <SquareArrowOutUpRight className='size-4'/> }
                   </a>
 
                 </TooltipTrigger>
