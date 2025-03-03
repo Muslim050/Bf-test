@@ -1,8 +1,8 @@
 import React from 'react'
-import { toast } from 'react-hot-toast'
+import {toast} from 'react-hot-toast'
 import {useDispatch, useSelector} from 'react-redux'
-import { fetchStatistics } from '../../../redux/statisticsSlice'
-import { useLocation, useParams } from 'react-router-dom'
+import {fetchStatistics} from '../../../redux/statisticsSlice'
+import {useParams} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import backendURL from '@/utils/url.js'
 import axios from 'axios'
@@ -11,18 +11,19 @@ import {truncate} from "@/utils/other.js";
 import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
 import {formatDate} from "@/utils/formatterDate.jsx";
 import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
-import FormatterBudjet, {TiinFormatterBudget} from "@/components/Labrery/formatter/FormatterBudjet.jsx";
+import {TiinFormatterBudget} from "@/components/Labrery/formatter/FormatterBudjet.jsx";
 import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
 import {
   flexRender,
-  getCoreRowModel, getExpandedRowModel,
+  getCoreRowModel,
+  getExpandedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
 import NestedStatickOrderTable from "@/components/module/TablePagination/NestedStatickOrderTable.jsx";
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import {ChevronDown, ChevronUp, SquareArrowOutUpRight} from 'lucide-react';
 
 export const useOrderChart = () => {
   const dispatch = useDispatch()
@@ -228,7 +229,9 @@ export const useOrderChart = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild className="cursor-pointer">
-                    <div>{truncate (row.original.video_name, 20)}</div>
+                    <div className='flex items-center gap-1'>{truncate (row.original.video_name, 20)}
+                      <SquareArrowOutUpRight className='size-4'/>
+                    </div>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>{row.original.video_name}</p>

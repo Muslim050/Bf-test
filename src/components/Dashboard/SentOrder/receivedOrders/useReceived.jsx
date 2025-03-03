@@ -9,7 +9,7 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 import {useSelector} from 'react-redux';
-import {Copy, MessageSquareText} from "lucide-react";
+import {Copy, MessageSquareText, SquareArrowOutUpRight} from "lucide-react";
 import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
 import {formatDate} from "@/utils/formatterDate.jsx";
 import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
@@ -21,6 +21,8 @@ import {Button} from "@/components/ui/button.jsx";
 import OpenTableSentOrder from "@/components/module/TablePagination/OpenTableSentOrder.jsx";
 import {OpenSvg} from "@/assets/icons-ui.jsx";
 import {FormWrapperCreate} from "@/components/Dashboard/SentOrder/receivedOrders/FormWrapperCreate/index.jsx";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
+import {truncate} from "@/utils/other.js";
 
 export const useReceived = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -91,7 +93,24 @@ export const useReceived = () => {
       {
         accessorFn: (row) => row.order_name, // Преобразование в число
         id: 'Кампания',
-        cell: info => info.getValue(),
+        cell: ({row}) =>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild className="cursor-pointer">
+                <a
+                  target="_blank"
+                  className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                  href={`${backendURL}/media/${row.original.promo_file}`}>{truncate(row.original.order_name, 20)}
+                  <SquareArrowOutUpRight className='size-4'/>
+                </a>
+
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>ID:{row?.original.id}</p>
+                <p>{row.original.order_name}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>,
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Кампания</span>
       },
@@ -116,22 +135,6 @@ export const useReceived = () => {
         cell: ({ row }) => <> {formatDate(row.original.end_date)}</>,
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Конец</span>
-      },
-      {
-        accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
-        id: 'Ролик',
-        cell: ({ row }) => <>
-          <a
-            href={`${backendURL}/media/${row.original.promo_file}`}
-            target="_blank"
-            className='text-[#A7CCFF] underline hover:text-[#3e8bf4]"'
-            rel="noreferrer"
-          >
-            Видео
-          </a>
-        </>,
-        filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Ролик</span>
       },
       {
         accessorFn: (row) => row.budget, // Преобразование в число

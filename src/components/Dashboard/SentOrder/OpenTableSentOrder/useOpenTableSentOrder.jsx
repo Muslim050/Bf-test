@@ -9,7 +9,7 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 import {useDispatch, useSelector} from 'react-redux';
-import {Link, Paperclip} from "lucide-react";
+import {Paperclip, SquareArrowOutUpRight} from "lucide-react";
 import CircularTable from "@/components/Labrery/Circular/CircularTable.jsx";
 import Cookies from "js-cookie";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
@@ -144,19 +144,31 @@ export const useOpenTableSentOrder = () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild className="cursor-pointer">
-                  <div>{truncate(row.original.video_content?.name, 20)}</div>
+                  <a
+                    target="_blank"
+                    className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                    href={row.original.video_content.link_to_video}>
+                    {truncate(row.original.video_content?.name, 20)}
+                    <SquareArrowOutUpRight className='size-4'/>
+                  </a>
+
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>ID:{row.original?.video_content?.id}
-                  </p>
+                  <p>{row.original.video_content?.name}</p>
+                  <p>ID:{row.original?.video_content?.id}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-
-          </>
-        ,
+          </>,
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Название Видео	</span>
+      },
+      {
+        accessorFn: (row) => row.expected_start_date, // Преобразование в число
+        id: 'Дата начала	',
+        cell: ({ row }) => <> {formatDate (row.original.video_content?.publication_time)}</>,
+        filterFn: 'includesString',
+        header: () => <span className="flex items-center gap-1">Дата начала	</span>
       },
       {
         accessorFn: (row) => row.format, // Преобразование в число
@@ -168,13 +180,6 @@ export const useOpenTableSentOrder = () => {
 
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Формат</span>
-      },
-      {
-        accessorFn: (row) => row.expected_start_date, // Преобразование в число
-        id: 'Дата начала	',
-        cell: ({ row }) => <> {formatDate (row.original.video_content?.publication_time)}</>,
-        filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Дата начала	</span>
       },
       {
         accessorFn: (row) => row.expected_end_date, // Преобразование в число
@@ -207,7 +212,7 @@ export const useOpenTableSentOrder = () => {
           return (
             <div className="inline-flex">
               <Dialog>
-                {row.original.video_content.link_to_video === null ? (
+                {row.original.video_content.link_to_video === null && (
                     <DialogTrigger asChild>
                     <Button
                       onClick={() => {
@@ -219,27 +224,12 @@ export const useOpenTableSentOrder = () => {
                       <Paperclip className="w-[20px] h-[20px] text-white"/>
                       Прикрепить Видео
                     </Button>
-
-                </DialogTrigger>
-                ) : (
-                  <a
-                    href={row.original.video_content.link_to_video}
-                    target="_blank"
-                    className=" hover:scale-105 transition-all w-full h-auto px-4 py-1 rounded-2xl flex items-center gap-1.5  bg-green-600 hover:bg-green-400 border border-transparent hover:border-green-600"
-                    rel="noreferrer"
-                  >
-                    <Link className="w-[20px] h-[20px] text-white"/>
-                    Ссылка на Видео
-                  </a>
-                )}
+                </DialogTrigger>)
+                }
                 <DialogContent className="sm:max-w-[425px]">
                   <LinkedVideoModal onClose={handleClose} selectedId={row.original.video_content.id} setOpen={setOpen} />
                 </DialogContent>
               </Dialog>
-
-
-
-
             </div>
           )
         },
@@ -292,3 +282,7 @@ export const useOpenTableSentOrder = () => {
     renderSubComponent
   };
 };
+
+
+
+

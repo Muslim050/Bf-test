@@ -1,17 +1,11 @@
 import SentOrderList from './SentOrderList'
 import React from 'react'
 // import {fetchOnceListSentToPublisher} from "../../../../redux/order/SentToPublisher";
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchOnceListSentToPublisher } from '@/redux/order/SentToPublisher.js'
-import {
-  TableHead,
-  Table,
-  TableHeader,
-  TableRow,
-  TableBody,
-} from '@/components/ui/table.jsx'
+import {useDispatch, useSelector} from 'react-redux'
+import {fetchOnceListSentToPublisher} from '@/redux/order/SentToPublisher.js'
+import {Table, TableBody, TableHead, TableHeader, TableRow,} from '@/components/ui/table.jsx'
 import style from '../TableSentsOrder.module.scss'
-import { ThemeContext } from '@/utils/ThemeContext.jsx'
+import {ThemeContext} from '@/utils/ThemeContext.jsx'
 import Cookies from 'js-cookie'
 import PreLoadDashboard from "@/components/Dashboard/PreLoadDashboard/PreLoad.jsx";
 
@@ -21,11 +15,8 @@ const headers = [
   { key: 'name', label: 'Формат' },
   { key: 'name', label: 'Начало' },
   { key: 'name', label: 'Конец' },
-  { key: 'name', label: 'Ролик' },
-  { key: 'category', label: 'План показов' },
-  // {key: 'category', label: 'Комментарий'},
+  { key: 'category', label: 'Показы по завершению' },
   { key: 'category', label: 'Статус' },
-  { key: 'category', label: 'Действия' },
 ]
 const CompletedOrders = () => {
   const dispatch = useDispatch()

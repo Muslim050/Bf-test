@@ -1,13 +1,13 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import backendURL from '@/utils/url'
-import Cookies from 'js-cookie'
 import axiosInstance from "@/api/api.js";
 
 const initialState = {
   advertiserUsers: [],
   status: 'idle',
   error: null,
+  total_count: 0, // Изначально общее количество равно 0
+
 }
 export const fetchAdvertiserUsers = createAsyncThunk(
   'advertiserusers/fetchAdvertiserUsers',
@@ -16,7 +16,7 @@ export const fetchAdvertiserUsers = createAsyncThunk(
       const response = await axiosInstance.get(`advertiser/user/`, {
         params: { page, page_size: pageSize },
       });
-      return response.data.data.results; // Предполагается, что ваш API возвращает данные в поле `data`
+      return response.data.data; // Предполагается, что ваш API возвращает данные в поле `data`
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -58,6 +58,8 @@ const advertiserUsersSlice = createSlice({
       .addCase(fetchAdvertiserUsers.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.advertiserUsers = action.payload
+        state.total_count = action.payload?.count; // Обновляем общее количество
+
       })
       .addCase(fetchAdvertiserUsers.rejected, (state, action) => {
         state.status = 'failed'

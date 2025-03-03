@@ -12,7 +12,6 @@ import TablePagination from "@/components/module/TablePagination/index.jsx";
 import Pagination from "@/components/module/Pagination/index.jsx";
 import {useOrder} from "@/components/Dashboard/Order/OrderTable/useOrder.jsx";
 import toast from "react-hot-toast";
-import TableSearchInputOnce from "@/shared/TableSearchInputOnce/index.jsx";
 
 function OrderTable() {
   const dispatch = useDispatch()
@@ -73,11 +72,11 @@ function OrderTable() {
         <div>
           <div className='flex gap-2 justify-end pt-4 pb-1'>
             <div className='flex  justify-end'>
-              <TableSearchInputOnce
-                value={searchInOrder ?? ''}
-                onChange={value => setSearchInOrder (String (value))}
-                className={`p-2 font-lg shadow border border-block `}
-              />
+              {/*<TableSearchInputOnce*/}
+              {/*  value={searchInOrder ?? ''}*/}
+              {/*  onChange={value => setSearchInOrder (String (value))}*/}
+              {/*  className={`p-2 font-lg shadow border border-block `}*/}
+              {/*/>*/}
 
             </div>
             {user === 'admin' ? null : (

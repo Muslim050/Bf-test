@@ -1,6 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
-import Cookies from 'js-cookie'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 
 import backendURL from '@/utils/url'
 import axiosInstance from "@/api/api.js";
@@ -13,10 +11,14 @@ const initialState = {
 
 export const fetchAdvertiserAgencyUsers = createAsyncThunk(
   'advertiserAgencyUsers/fetchAdvertiserAgencyUsers',
-  async (_, { rejectWithValue }) => {
+  async ({page = null, pageSize = null} = {}, { rejectWithValue }) => {
     try {
+      const params = {
+        ...(page && { page }),
+        ...(pageSize && { page_size: pageSize }),
+      };
       const response = await axiosInstance.get(
-        `${backendURL}/advertiser/ad-agency-user/`)
+        `${backendURL}/advertiser/ad-agency-user/`, {params})
       return response.data.data
     } catch (error) {
       return rejectWithValue(error.response)
