@@ -1,6 +1,6 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchAdvertiserUsers } from '@/redux/advertiserUsers/advertiserUsersSlice.js'
+import {useDispatch, useSelector} from 'react-redux'
+import {fetchAdvertiserUsers} from '@/redux/advertiserUsers/advertiserUsersSlice.js'
 import PreLoadDashboard from "@/components/Dashboard/PreLoadDashboard/PreLoad.jsx";
 import TablePagination from "@/components/module/TablePagination/index.jsx";
 import Pagination from "@/components/module/Pagination/index.jsx";
@@ -32,9 +32,8 @@ function AdvertiserTableUsers({table, flexRender, loading,setLoading, pagination
               <TablePagination table={table} flexRender={flexRender} text='создайте юзера'/>
             </div>
           </div>
-          {table.getPageCount() > 1 &&
             <Pagination table={table} pagination={pagination}/>
-          }
+
         </>
       )}
     </>

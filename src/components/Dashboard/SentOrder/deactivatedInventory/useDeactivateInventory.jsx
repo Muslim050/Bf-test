@@ -10,12 +10,20 @@ import {
 import {useSelector} from 'react-redux';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
 import {truncate} from "@/utils/other.js";
-import {formatDate} from "@/utils/formatterDate.jsx";
 import CircularTable from "@/components/Labrery/Circular/CircularTable.jsx";
 import Cookies from "js-cookie";
-import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
 import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
 import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
+import {SquareArrowOutUpRight} from "lucide-react";
+
+
+export function calculateShowRedCircle(deactivationDateStr, status) {
+  const deactivationDate = new Date(deactivationDateStr);
+  const redCircleThreshold = new Date(deactivationDate.getTime() + 24 * 60 * 60 * 1000);
+  const now = new Date();
+  return status === 'inactive' && now >= deactivationDate && now <= redCircleThreshold;
+}
+
 
 export const useDeactivateInventory = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -27,30 +35,40 @@ export const useDeactivateInventory = () => {
     pageSize: 20,
   });
 
+
+
   const columns = React.useMemo(
     () => [
       {
         accessorFn: (_, index) => index + 1, // Используем индекс строки
         id: 'id',
-        cell: ({row}) => (
-          <div className="relative flex items-center">
-            <span>{row.index + 1}</span>
-            {user === 'publisher' || user === 'channel' ? (
-              <>
-                {row.status === 'pre_booked' ? (
-                  <CircularTable />
-                ) : null}
-              </>
-            ) : null}
-            {user === 'admin' ? (
-              <>
-                {row.status === 'open' ? (
-                  <div className="w-2 h-6 rounded-[2px] bg-[#05c800] absolute -left-2"></div>
-                ) : null}
-              </>
-            ) : null}
-          </div>
-        ),
+        cell: ({ row }) => {
+          const showRedCircle = calculateShowRedCircle(
+            row.original.deactivation_date,
+            row.original.status
+          );
+          return (
+            <div className="relative flex items-center">
+              <span>{row.index + 1}</span>
+              {(user === 'publisher' || user === 'channel') && (
+                <>
+                  {row.status === 'pre_booked' && <CircularTable />}
+                </>
+              )}
+              {user === 'admin' && (
+                <>
+                  {row.status === 'open' && (
+                    <div className="w-2 h-6 rounded-[2px] bg-[#05c800] absolute -left-2"></div>
+                  )}
+                </>
+              )}
+              {showRedCircle && (
+                <span
+                  className="ml-2 relative inline-flex rounded-full h-5 w-2.5 bg-red-500 text-[14px] items-center justify-center"></span>
+              )}
+            </div>
+          );
+        },
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>№</span>,
       },
@@ -78,7 +96,13 @@ export const useDeactivateInventory = () => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild className="cursor-pointer">
-                <div>{truncate(row.original.video_content?.name, 20)}</div>
+                <a
+                  target="_blank"
+                  className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                  href={row.original.video_content.link_to_video}>{truncate(row.original.video_content?.name, 20)}
+                  <SquareArrowOutUpRight className='size-4'/>
+                </a>
+
               </TooltipTrigger>
               <TooltipContent>
                 <p>ID:{row?.original.video_content?.id}</p>
@@ -90,30 +114,6 @@ export const useDeactivateInventory = () => {
         header: () => <span className='flex  items-center gap-1'>Название видео</span>
       },
       {
-        accessorFn: (row) => row.format, // Преобразование в число
-        id: 'Формат',
-        cell: ({row}) =>
-          <FormatFormatter format={row.original.format} />,
-        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Формат</span>
-      },
-      {
-        accessorFn: (row) => row.video_content?.publication_time, // Преобразование в число
-        id: 'Дата начала',
-        cell: ({row}) => <>
-          {formatDate (row.original.video_content?.publication_time)}
-        </>,
-        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Дата начала</span>
-      },
-      {
-        accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
-        id: 'Показы факт',
-        cell: ({row}) => <FormatterView data={row.original.recorded_view_count}/>,
-        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Показы факт</span>
-      },
-      {
         accessorFn: (row) => row.status, // Преобразование в число
         id: 'Статус',
         cell: ({row}) =>  <AdvertStatus
@@ -123,10 +123,17 @@ export const useDeactivateInventory = () => {
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () => <span className='flex  items-center gap-1'>Статус</span>
       },
+      {
+        accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
+        id: 'Показы по завершению',
+        cell: ({row}) => <>{row.original.recorded_view_count ? <FormatterView data={row.original.recorded_view_count}/> : <div>----</div>}</>,
+        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
+        header: () => <span className='flex  items-center gap-1'>Показы по завершению</span>
+      },
     ],
     []
   )
-  const table = useReactTable({
+  const table = useReactTable ({
     data: diactivatedInventory.results || [], // Данные из Redux
     columns,
     state: {
@@ -135,13 +142,13 @@ export const useDeactivateInventory = () => {
       pagination,
     },
     onPaginationChange: (updater) => {
-      setPagination((prev) => {
+      setPagination ((prev) => {
         const newPagination =
-          typeof updater === 'function' ? updater(prev) : updater;
-        return { ...prev, ...newPagination };
+          typeof updater === 'function' ? updater (prev) : updater;
+        return {...prev, ...newPagination};
       });
     },
-    pageCount: Math.ceil(total_count / pagination.pageSize), // Общее количество страниц
+    pageCount: Math.ceil (total_count / pagination.pageSize), // Общее количество страниц
     manualPagination: true, // Указываем, что используем серверную пагинацию
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

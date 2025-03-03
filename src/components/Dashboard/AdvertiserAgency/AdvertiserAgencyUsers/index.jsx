@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import PreLoadDashboard from "@/components/Dashboard/PreLoadDashboard/PreLoad.jsx";
 import TablePagination from "@/components/module/TablePagination/index.jsx";
 import Pagination from "@/components/module/Pagination/index.jsx";
