@@ -91,23 +91,55 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         id: 'Название Видео',
         accessorFn: (row) => row.video_content?.name, // Преобразование в число
         cell: ({ row }) =>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
+          <>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <a
+                    href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
+                    target="_blank"
+                    style={{
+                      display: 'inline-flex',
+                      gap: '4px',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      cursor:
+                        row.verified_link_with_timecode === null
+                          ? 'not-allowed'
+                          : 'pointer',
+                    }}
+                    className={`underline ${
+                      row.verified_link_with_timecode === null
+                        ? ' text-gray-500'
+                        : 'text-[#A7CCFF] hover:text-[#3282f1]'
+                    }`}
+                    onClick={(e) => {
+                      if (row.verified_link_with_timecode === null) {
+                        e.preventDefault ()
+                      }
+                    }}
+                    rel="noreferrer"
+                    >
+                    {truncate(row.original.video_content?.name, 20)}
+                    <SquareArrowOutUpRight className='size-4'/>
+                  </a>
 
-
-
-                <div className="cursor-pointer">
-                  {truncate(row.original.video_content?.name, 20)}
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{row.original.video_content?.name}</p>
-                <p>ID: {row.original.video_content.id}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>,
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{row.original.video_content?.name}</p>
+                  <p>ID:{row.original?.video_content?.id}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </>,
         header: () => <span>Название Видео</span>,
+      },
+      {
+        accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
+        id: 'Порог показов',
+        cell: ({row}) => <PlanPopoverCell row={row} fetchGetOrder={fetchGetOrder}/>,
+        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        header: () => <span>Порог показов</span>,
       },
       {
         accessorFn: (row) => row.format, // Преобразование в число
@@ -118,50 +150,6 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
           </div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>Формат</span>,
-      },
-      {
-        accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
-        id: 'Порог показов',
-        cell: ({row}) => <PlanPopoverCell row={row} fetchGetOrder={fetchGetOrder}/>,
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>Порог показов</span>,
-      },
-      {
-        accessorFn: (row) => row.content?.link_to_video, // Преобразование в число
-        id: 'Ссылка',
-        cell: ({row}) =>
-          <a
-            href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
-            target="_blank"
-            style={{
-              display: 'inline-flex',
-              gap: '4px',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              cursor:
-                row.verified_link_with_timecode === null
-                  ? 'not-allowed'
-                  : 'pointer',
-            }}
-            className={`underline ${
-              row.verified_link_with_timecode === null
-                ? ' text-gray-500'
-                : 'text-[#A7CCFF] hover:text-[#3282f1]'
-            }`}
-            onClick={(e) => {
-              if (row.verified_link_with_timecode === null) {
-                e.preventDefault ()
-              }
-            }}
-            rel="noreferrer"
-          >
-            Ссылка
-            {row.verified_link_with_timecode === null ? null : (
-              <SquareArrowOutUpRight className='size-4'/>
-            )}
-          </a>,
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
-        header: () => <span>Ссылка</span>,
       },
       {
         accessorFn: (row) => row.video_content?.publication_time, // Преобразование в число

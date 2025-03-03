@@ -1,13 +1,15 @@
 import React from 'react'
 import ModalSentOrder from '../receivedOrders/ModalSentOrder/index'
 import OpenTableSentOrder from '../OpenTableSentOrder/OpenTableSentOrder'
-import { TableCell, TableRow } from '@/components/ui/table'
-import { formatDate } from '../../../../utils/formatterDate'
+import {TableCell, TableRow} from '@/components/ui/table'
+import {formatDate} from '../../../../utils/formatterDate'
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
-import { ThemeContext } from '@/utils/ThemeContext.jsx'
-import { OpenSvg } from '@/assets/icons-ui.jsx'
-import {Monitor, MonitorPlay, MonitorUp} from "lucide-react";
+import {ThemeContext} from '@/utils/ThemeContext.jsx'
+import {OpenSvg} from '@/assets/icons-ui.jsx'
+import {Monitor, MonitorPlay, MonitorUp, SquareArrowOutUpRight} from "lucide-react";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
+import {truncate} from "@/utils/other.js";
 
 function SentOrderList({ listsentPublisher }) {
   const [openPopoverIndex, setOpenPopoverIndex] = React.useState(null)
@@ -46,7 +48,27 @@ function SentOrderList({ listsentPublisher }) {
               data-label="Кампания"
               className={`font-normal text-${textColor} text-sm `}
             >
-              {item.order_name}
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild className="cursor-pointer">
+                    <a
+                      target="_blank"
+                      className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                      href={item.promo_file}>
+                      {truncate(item.order_name, 20)}
+                      <SquareArrowOutUpRight className='size-4'/>
+                    </a>
+
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{item.order_name}</p>
+                    <p>ID:{item.id}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+
             </TableCell>
             <TableCell
               data-label="Формат"
@@ -67,36 +89,16 @@ function SentOrderList({ listsentPublisher }) {
                   ('midroll4' && 'Mid-roll 4') ||
                   (item.format === 'top_preroll' && 'Top Pre-roll') ||
                   (item.format === 'tv_preroll' && 'TV Pre-roll')}
-
-
               </div>
+            </TableCell>
 
-            </TableCell>
-            <TableCell
-              data-label="Начало"
-              className={`font-normal text-${textColor} text-sm `}
-            >
-              {formatDate (item.start_date)}
-            </TableCell>
             <TableCell
               data-label="Конец"
               className={`font-normal text-${textColor} text-sm `}
             >
               {formatDate (item.end_date)}
             </TableCell>
-            <TableCell
-              data-label="Ролик"
-              className={`font-normal text-${textColor} text-sm `}
-            >
-              <a
-                href={item.promo_file}
-                target="_blank"
-                className='text-[#A7CCFF] underline hover:text-[#3e8bf4]"'
-                rel="noreferrer"
-              >
-                Видео
-              </a>
-            </TableCell>
+
             <TableCell
               data-label="План показов	"
               className={`font-normal text-${textColor} text-sm `}

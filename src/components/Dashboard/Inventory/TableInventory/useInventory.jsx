@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  useReactTable,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  flexRender, getPaginationRowModel
+  useReactTable
 } from '@tanstack/react-table';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
 import {truncate} from "@/utils/other.js";
 import {formatDate} from "@/utils/formatterDate.jsx";
@@ -96,13 +97,7 @@ export const useInventory = () => {
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () => <span className='flex  items-center gap-1'>Формат</span>
       },
-      {
-        accessorFn: (row) => row.expected_number_of_views, // Преобразование в число
-        id: 'Прогноз',
-        cell: ({row}) => <FormatterView data={row.original.expected_number_of_views}/>,
-        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Прогноз</span>
-      },
+     
       {
         accessorFn: (row) => row.video_content?.publication_time, // Преобразование в число
         id: 'Дата начала',

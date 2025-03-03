@@ -10,7 +10,7 @@ import {
 } from '@tanstack/react-table';
 import {useDispatch, useSelector} from 'react-redux';
 import {hasRole} from "@/utils/roleUtils.js";
-import {ChartColumnIncreasing, Film} from "lucide-react";
+import {ChartColumnIncreasing, SquareArrowOutUpRight} from "lucide-react";
 import CircularTable from "@/components/Labrery/Circular/CircularTable.jsx";
 import Cookies from "js-cookie";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
@@ -173,47 +173,51 @@ export const useOrder = () => {
       {
         accessorFn: (row) => row.name, // Преобразование в число
         id: 'Кампания',
-        cell: ({ row }) =>
-          <>
-            {role === 'admin' ? (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild className="cursor-pointer">
-                    <div className='flex items-center gap-2'>
-                      <div>{truncate (row.original.name, 20)}</div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>ID: {row.original.id}</p>
-                    <p>Кампания: {row.original.name}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : (
-              <div className='flex items-center gap-2'>
-                <div>{truncate (row.original.name, 20)}</div>
-              </div>
-            )}</>,
+        cell: ({row}) =>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild className="cursor-pointer">
+                <a
+                  target="_blank"
+                  className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                  href={row.original.promo_file}>{truncate(row.original.name, 20)}
+                  <SquareArrowOutUpRight className='size-4'/>
+                </a>
+
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>ID:{row?.original.id}</p>
+                <p>{row.original.name}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>,
+        // cell: ({ row }) =>
+        //   <>
+        //
+        //
+        //     {role === 'admin' ? (
+        //       <TooltipProvider>
+        //         <Tooltip>
+        //           <TooltipTrigger asChild className="cursor-pointer">
+        //             <div className='flex items-center gap-2'>
+        //               <div>{truncate (row.original.name, 20)}</div>
+        //             </div>
+        //           </TooltipTrigger>
+        //           <TooltipContent>
+        //             <p>ID: {row.original.id}</p>
+        //             <p>Кампания: {row.original.name}</p>
+        //           </TooltipContent>
+        //         </Tooltip>
+        //       </TooltipProvider>
+        //     ) : (
+        //       <div className='flex items-center gap-2'>
+        //         <div>{truncate (row.original.name, 20)}</div>
+        //       </div>
+        //     )}</>,
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Кампания</span>
       },
-      {
-        accessorFn: (row) => row.promo_file, // Преобразование в число
-        id: 'Ролик',
-        cell: ({ row }) =>
-          <>
-            <a
-              href={row.original.promo_file}
-              target="_blank"
-              className="text-[#A7CCFF]  underline-offset-2 underline hover:text-[#0767eb]"
-              rel="noreferrer"
-            >
-              <Film/>
-            </a>
-          </>,
-        filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Ролик</span>
-      },
+      
       {
         accessorFn: (row) => row.format, // Преобразование в число
         id: 'Формат',
