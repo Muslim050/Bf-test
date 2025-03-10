@@ -1,12 +1,20 @@
 import React from 'react'
-import { TableCell } from '@/components/ui/table.jsx'
+import {TableCell} from '@/components/ui/table.jsx'
 
 function AgeData({ statistic }) {
-  const uniqueAge = statistic.age_group_percentages
+  const desiredOrder = ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+']
+
+  // Для каждого желаемого диапазона ищем данные или создаем дефолтные
+  const sortedData = desiredOrder.map(ageGroup => {
+    const found = statistic.age_group_percentages.find(item =>
+      item.age_group.replace('age', '') === ageGroup
+    )
+    return found ? found : { age_group: ageGroup, percentage: 0 }
+  })
   return (
     <>
-      {uniqueAge.length > 0
-        ? uniqueAge.map((age, index) => (
+      {sortedData.length > 0
+        ? sortedData.map((age, index) => (
             <TableCell
               key={`age-${index}`}
               data-label="Возраст"
@@ -15,7 +23,12 @@ function AgeData({ statistic }) {
               {age.percentage}%
             </TableCell>
           ))
-        : null}
+        :   <TableCell
+          data-label="Возраст"
+          className="font-normal text-orange-600 text-sm text-center"
+        >
+          Введется аналитика...
+        </TableCell>}
     </>
   )
 }

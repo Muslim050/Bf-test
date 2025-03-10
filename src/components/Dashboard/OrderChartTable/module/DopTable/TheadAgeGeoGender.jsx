@@ -1,12 +1,8 @@
 import React from 'react'
-import { TableCell } from '@/components/ui/table.jsx'
-import { Info } from 'lucide-react'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+import {TableCell} from '@/components/ui/table.jsx'
+import {Info} from 'lucide-react'
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from '@/components/ui/tooltip'
+
 function TheadAgeGeoGender({ statistic }) {
   const removeDuplicates = (arr) => Array.from(new Set(arr))
   const uniqueDevaice =
@@ -19,12 +15,12 @@ function TheadAgeGeoGender({ statistic }) {
       ? removeDuplicates(statistic?.gender_percentages.map((gen) => gen.gender))
       : []
 
-  const uniqueAge =
-    statistic && statistic.age_group_percentages
-      ? removeDuplicates(
-          statistic?.age_group_percentages.map((age) => age.age_group),
-        )
-      : []
+  // const uniqueAge =
+  //   statistic && statistic.age_group_percentages
+  //     ? removeDuplicates(
+  //         statistic?.age_group_percentages.map((age) => age.age_group),
+  //       )
+  //     : []
 
   const uniqueGeo =
     statistic && statistic.geo_percentages
@@ -33,9 +29,9 @@ function TheadAgeGeoGender({ statistic }) {
 
 
   const genderColSpan = uniqueGenders.length
-  const deviceColSpan = uniqueDevaice.length
-  const ageColSpan = uniqueAge.length
-  const geoColSpan = uniqueGeo.length
+  const deviceColSpan = 5
+  const ageColSpan = 7
+  const geoColSpan = 5
   return (
     <>
 
@@ -58,42 +54,42 @@ function TheadAgeGeoGender({ statistic }) {
 
 
 
-      {genderColSpan ? (
+      {/*{genderColSpan ? (*/}
         <TableCell
           className="border-x border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
           colSpan={genderColSpan}
         >
           Пол
         </TableCell>
-      ) : null}
+      {/*) : null}*/}
 
-      {ageColSpan ? (
+      {/*{ageColSpan ? (*/}
         <TableCell
           className="border-x border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
           colSpan={ageColSpan}
         >
           Возраст
         </TableCell>
-      ) : null}
+      {/*) : null}*/}
 
-      {geoColSpan ? (
+      {/*{geoColSpan ? (*/}
         <TableCell
           className=" text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center "
           colSpan={geoColSpan}
         >
           Гео
         </TableCell>
-      ) : null}
+      {/*) : null}*/}
+      {/**/}
 
-
-      {deviceColSpan ? (
+      {/*{deviceColSpan ? (*/}
         <TableCell
           className="rounded-tr-[22px] border-l border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
           colSpan={deviceColSpan}
         >
           Девайсы
         </TableCell>
-      ) : null}
+      {/*) : null}*/}
     </>
   )
 }

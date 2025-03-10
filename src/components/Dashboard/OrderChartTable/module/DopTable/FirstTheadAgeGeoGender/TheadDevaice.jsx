@@ -1,33 +1,33 @@
 import React from 'react'
-import { TableHead } from '@/components/ui/table.jsx'
-import { Tablet } from 'lucide-react';
-import { Tv } from 'lucide-react';
-import { Monitor } from 'lucide-react';
+import {TableHead} from '@/components/ui/table.jsx'
+import {CarFront, Monitor, Tablet, Tv} from 'lucide-react';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
-import { CarFront } from 'lucide-react';
 
 function TheadDevaice({ statistic }) {
-  const uniqueDeviceTypes = Array.from(
-    new Set(statistic.device_type_percentages?.map((gen) => gen.device_type))
-  ).map((device_type) => {
-    return statistic.device_type_percentages.find((gen) => gen.device_type === device_type);
-  });
+  // const uniqueDeviceTypes = Array.from(
+  //   new Set(statistic.device_type_percentages?.map((gen) => gen.device_type))
+  // ).map((device_type) => {
+  //   return statistic.device_type_percentages.find((gen) => gen.device_type === device_type);
+  // });
 
 
   // Задаем желаемый порядок
   const desiredOrder = ['TV', 'MOBILE', 'TABLET', 'DESKTOP', 'OTHER'];
 
-  // Сортируем типы устройств в соответствии с желаемым порядком
-  const sortedDeviceTypes = uniqueDeviceTypes.sort((a, b) => {
-    return desiredOrder.indexOf(a.device_type) - desiredOrder.indexOf(b.device_type);
-  });
+  // Для каждого желаемого диапазона ищем данные или создаем дефолтные
+  const sortedData = desiredOrder.map(geoGroup => {
+    const found = statistic.device_type_percentages.find(item =>
+      item.device_type === geoGroup
+    )
+    return found ? found : { device_type: geoGroup, percentage: 0 }
+  })
   return (
     <>
-      {sortedDeviceTypes.length > 0
-        ? sortedDeviceTypes.map((device, index) => (
+      {sortedData.length > 0
+        ? sortedData.map((device, index) => (
             <TableHead
               key={index}
-              className="font-normal text-[#FFFFFF] text-sm text-center !rounded-none"
+              className="font-normal text-[#FFFFFF] text-sm text-center !rounded-r-none"
             >
              <div className='flex justify-center'>
                {
@@ -89,7 +89,6 @@ function TheadDevaice({ statistic }) {
                  </TooltipProvider>
                }
 
-               {device.percentage > 0 &&
                  <>
                    {
                      device.device_type === 'OTHER' &&<TooltipProvider>
@@ -103,13 +102,15 @@ function TheadDevaice({ statistic }) {
                        </Tooltip>
                      </TooltipProvider>
                    }</>
-               }
              </div>
 
 
             </TableHead>
         ))
-        : null}
+        : <TableHead
+          className="font-normal text-[#FFFFFF] text-sm text-center !rounded-r-none"
+        >
+        </TableHead>}
     </>
   )
 }

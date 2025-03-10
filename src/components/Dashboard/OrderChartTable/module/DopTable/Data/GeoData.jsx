@@ -1,13 +1,20 @@
 import React from 'react'
-import { TableCell } from '@/components/ui/table.jsx'
+import {TableCell} from '@/components/ui/table.jsx'
 
 function GeoData({ statistic }) {
-  const uniqueGeo = statistic.geo_percentages
 
+  const desiredOrder = ['UZ', 'RU', 'KZ', 'KG', 'Other'];
+  // Для каждого желаемого диапазона ищем данные или создаем дефолтные
+  const sortedData = desiredOrder.map(getGroup => {
+    const found = statistic.geo_percentages.find(item =>
+      item.country === getGroup
+    )
+    return found ? found : { age_group: getGroup, percentage: 0 }
+  })
   return (
     <>
-      {uniqueGeo.length > 0
-        ? uniqueGeo.map((geo, index) => (
+      {sortedData.length > 0
+        ? sortedData.map((geo, index) => (
             <>
               <TableCell
                 key={`geo-${index}`}
@@ -18,7 +25,12 @@ function GeoData({ statistic }) {
               </TableCell>
             </>
           ))
-        : null}
+        : <TableCell
+          data-label="Возраст"
+          className="font-normal text-orange-600 text-sm text-center"
+        >
+          Введется аналитика...
+        </TableCell>}
     </>
   )
 }
