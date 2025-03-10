@@ -1,5 +1,5 @@
 import React from 'react'
-import { TableCell } from '@/components/ui/table.jsx'
+import {TableCell} from '@/components/ui/table.jsx'
 
 function GenderData({ statistic }) {
   const uniqueGenders = statistic.gender_percentages
@@ -17,7 +17,12 @@ function GenderData({ statistic }) {
               </TableCell>
             </>
           ))
-        : null}
+        : <TableCell
+          data-label="Возраст"
+          className="font-normal text-orange-600 text-sm text-center"
+        >
+          Введется аналитика...
+        </TableCell>}
     </>
   )
 }

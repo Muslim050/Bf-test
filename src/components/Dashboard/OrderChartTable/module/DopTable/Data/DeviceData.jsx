@@ -1,13 +1,17 @@
 import React from 'react'
-import { TableCell } from '@/components/ui/table.jsx'
+import {TableCell} from '@/components/ui/table.jsx'
 
 function DeviceData({ statistic }) {
-  const uniqueGenders = statistic?.device_type_percentages
 
   const desiredOrder = ['TV', 'MOBILE', 'TABLET', 'DESKTOP', 'OTHER'];
-  const sortedData = [...uniqueGenders].sort((a, b) => {
-    return desiredOrder.indexOf(a.device_type) - desiredOrder.indexOf(b.device_type);
-  });
+  // Для каждого желаемого диапазона ищем данные или создаем дефолтные
+  const sortedData = desiredOrder.map(getGroup => {
+    const found = statistic.device_type_percentages.find(item =>
+      item.device_type === getGroup
+    )
+    return found ? found : { device_type: getGroup, percentage: 0 }
+  })
+  console.log (sortedData)
   return (
     <>
       {sortedData.length > 0
@@ -18,20 +22,21 @@ function DeviceData({ statistic }) {
                 data-label="Девайсы"
                 className="font-normal text-[#FFFFFF] text-sm text-center"
               >
-
-                {
-                  gender.percentage > 0 &&
                   <div className='flex justify-center'>
                     <div>{gender.percentage}</div>
                     %
                   </div>
-                }
 
 
               </TableCell>
             </>
         ))
-        : null}
+        : <TableCell
+          data-label="Возраст"
+          className="font-normal text-orange-600 text-sm text-center"
+        >
+          Введется аналитика...
+        </TableCell>}
     </>
   )
 }

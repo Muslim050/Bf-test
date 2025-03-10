@@ -1,26 +1,17 @@
-import style from '../../OrderChartTable.module.scss'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table.jsx'
+import {Table, TableCell, TableHead, TableHeader, TableRow,} from '@/components/ui/table.jsx'
 
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
-import { Eye } from 'lucide-react'
-
+import {Eye} from 'lucide-react'
 import React from 'react'
 import TheadAgeGeoGender from './TheadAgeGeoGender.jsx'
-import WrapperThead from '@/components/Dashboard/OrderChartTable/module/DopTable/FirstTheadAgeGeoGender/WrapperThead.jsx'
+import WrapperThead
+  from '@/components/Dashboard/OrderChartTable/module/DopTable/FirstTheadAgeGeoGender/WrapperThead.jsx'
 import AgeData from '@/components/Dashboard/OrderChartTable/module/DopTable/Data/AgeData.jsx'
 import GeoData from '@/components/Dashboard/OrderChartTable/module/DopTable/Data/GeoData.jsx'
-import GenderData from '@/components/Dashboard/OrderChartTable/module/DopTable/Data/GenderData.jsx'
-import m from "@/components/Dashboard/Order/OrderTable/styles/OrderTable.module.scss";
 import DeviceData from "@/components/Dashboard/OrderChartTable/module/DopTable/Data/DeviceData.jsx";
+import GenderData from "@/components/Dashboard/OrderChartTable/module/DopTable/Data/GenderData.jsx";
 
-const DopTable = ({ statistic, data, expandedRows }) => {
+const DopTable = ({ statistic }) => {
   return (
     <div>
       <div style={{ background: 'var(--bg-color)' }} className=" p-2 rounded-b-3xl h-[100%]">
@@ -50,6 +41,7 @@ const DopTable = ({ statistic, data, expandedRows }) => {
           >
             <FormatterView data={statistic.online_view_count} />
           </TableCell>
+          
           <GenderData statistic={statistic} />
 
           <AgeData statistic={statistic} />

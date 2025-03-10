@@ -1,6 +1,6 @@
 import React from 'react'
-import { TableHead } from '@/components/ui/table.jsx'
-import { ShieldQuestion } from 'lucide-react'
+import {TableHead} from '@/components/ui/table.jsx'
+import {ShieldQuestion} from 'lucide-react'
 
 function OrderChartTwoThead({ statistic }) {
   const uniqueGenders = Array.from(
@@ -33,7 +33,10 @@ function OrderChartTwoThead({ statistic }) {
               )}
             </TableHead>
           ))
-        : null}
+        : <TableHead
+          className="font-normal text-[#FFFFFF] text-sm text-center "
+        >
+        </TableHead>}
     </>
   )
 }

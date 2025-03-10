@@ -46,8 +46,10 @@ export const useReceived = () => {
   // Модальное окно Index
   const [currentOrder, setCurrentOrder] = React.useState(null)
   const copyToClipboard = () => {
+    const textToCopy = `${currentOrder.notes_text}\n${currentOrder.notes_url}`;
+
     navigator.clipboard
-      .writeText(currentOrder.notes)
+      .writeText(textToCopy)
       .then(() => {
         toast.success('Комментарий скопирован в буфер обмена', {
           duration: 3000,
@@ -218,17 +220,25 @@ export const useReceived = () => {
                             <p className="text-sm text-white break-words pt-4">
                               {row.original.notes_text}
                             </p>
-                            <p className="text-sm text-white break-words pt-4">
-                              {row.original.notes_url}
-                            </p>
-                            <div className="flex mt-10 float-right">
-                              <Button
+
+                            {
+                              row?.original?.notes_url &&
+                              <a
+                              target="_blank"
+                              className={`no-underline text-[#A7CCFF] font-semibold hover:text-[#3282f1] hover:underline flex gap-1 mt-4`}
+                              href={row?.original?.notes_url}>{row?.original?.notes_url}
+                                <SquareArrowOutUpRight className='size-4'/>
+                              </a>
+                          }
+
+                          <div className="flex mt-10 float-right">
+                            <Button
                                 variant="link"
                                 className="text-black hover:text-[#2A85FF] "
                                 onClick={copyToClipboard}
-                              >
-                                <Copy />
-                              </Button>
+                            >
+                              <Copy/>
+                            </Button>
                             </div>
                           </div>
                         </div>
@@ -247,7 +257,7 @@ export const useReceived = () => {
         header: () => <span className="flex items-center gap-1">Действия</span>
       },
 ],
-  [expandedRowId, setIsPopoverOpen]
+  [expandedRowId, setIsPopoverOpen, currentOrder]
 )
 
 
