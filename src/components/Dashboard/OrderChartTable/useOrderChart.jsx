@@ -36,7 +36,10 @@ export const useOrderChart = () => {
   const [startDate, setStartDate] = React.useState('')
   const [endDate, setEndDate] = React.useState('')
   const [dataFiltered, setDataFiltered] = React.useState(false)
+
   //фильтрация по дате
+  const [isLoadingData, setIsLoadingData] = React.useState(true)
+
 
   // const orderData = location.state?.advert || {}
   const [orderData, setOrderData] = React.useState([])
@@ -121,9 +124,13 @@ export const useOrderChart = () => {
   //При закрытий окна фильтра
   const dataFilteredClose = () => {
     setDataFiltered(false)
+    setOpen(false)
+    setIsLoadingData(true);
+
     const toastId = toast.loading('Загрузка отчета..')
 
     dispatch(fetchStatistics({ order_id: id }))
+
       .then(() => {
         toast.success('Данные успешно обновлены', { id: toastId })
       })
@@ -134,6 +141,8 @@ export const useOrderChart = () => {
       })
       .finally(() => {
         setOpen(false)
+        setIsLoadingData(false);
+
       })
   }
   //При закрытий окна фильтра
@@ -141,6 +150,7 @@ export const useOrderChart = () => {
   //Очищаем фильтр
   const handleClear = () => {
     setDataFiltered(false)
+    setOpen(false)
 
     const startDateObj = new Date(orderData?.expected_start_date)
     const endDateObj = orderData?.actual_end_date
@@ -152,7 +162,7 @@ export const useOrderChart = () => {
 
     setStartDate(minDate)
     setEndDate(maxDate)
-
+    setIsLoadingData(true);
     const toastId = toast.loading('Загрузка отчета...')
 
     dispatch(fetchStatistics({ order_id: id }))
@@ -166,6 +176,8 @@ export const useOrderChart = () => {
       })
       .finally(() => {
         setOpen(false)
+        setIsLoadingData(false);
+
       })
   }
   //Очищаем фильтр
@@ -176,6 +188,9 @@ export const useOrderChart = () => {
     const toastId = toast.loading('Фильтруем отчет...')
 
     setDataFiltered(true)
+    setIsLoadingData(true);
+    setOpen(false)
+
     dispatch(fetchStatistics({ order_id: id, startDate, endDate }))
       .then(() => {
         toast.success('Данные успешно обновлены', { id: toastId })
@@ -187,6 +202,8 @@ export const useOrderChart = () => {
       })
       .finally(() => {
         setOpen(false)
+        setIsLoadingData(false);
+
       })
   }
   //Фильтрация по параметрам
@@ -373,6 +390,7 @@ export const useOrderChart = () => {
     open,
     setLoading,
     sumBudjet,
-    sumView
+    sumView,
+    isLoadingData
   }
 }
