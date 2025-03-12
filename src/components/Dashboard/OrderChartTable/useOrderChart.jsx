@@ -38,7 +38,7 @@ export const useOrderChart = () => {
   const [dataFiltered, setDataFiltered] = React.useState(false)
 
   //фильтрация по дате
-  const [isLoadingData, setIsLoadingData] = React.useState(true)
+  const [isLoadingData, setIsLoadingData] = React.useState(false)
 
 
   // const orderData = location.state?.advert || {}
