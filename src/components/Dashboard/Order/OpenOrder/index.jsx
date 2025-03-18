@@ -1,15 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import { useDispatch } from 'react-redux'
+import {useDispatch} from 'react-redux'
 import backendURL from '@/utils/url'
 import AddInventory from './AddInventory'
 import AddSentPublisher from './AddSentPublisher'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs.jsx'
-import { hasRole } from '@/utils/roleUtils.js'
+import {Tabs, TabsContent, TabsList, TabsTrigger,} from '@/components/ui/tabs.jsx'
+import {hasRole} from '@/utils/roleUtils.js'
 import {useAddInventory} from "@/components/Dashboard/Order/OpenOrder/AddInventory/useAddInventory.jsx";
 import TableSearchInput from "@/shared/TableSearchInput/index.jsx";
 import {useAddSentPublisher} from "@/components/Dashboard/Order/OpenOrder/AddSentPublisher/useAddSentPublisher.jsx";
@@ -67,7 +62,9 @@ const OpenOrderTable = ({  expandedRows }) => {
     pagination: paginationUsers,
     currentOrder,
     listsentPublisherWithIndex,
-    setCurrentOrder
+    setCurrentOrder,
+    setEditNote,
+    editNote
   } = useAddSentPublisher(expandedRows, onceOrder);
 
   React.useEffect(() => {
@@ -183,6 +180,8 @@ const OpenOrderTable = ({  expandedRows }) => {
                   currentOrder={currentOrder}
                   listsentPublisherWithIndex={listsentPublisherWithIndex}
                   setCurrentOrder={setCurrentOrder}
+                  setEditNote={setEditNote}
+                  editNote={editNote}
                 />
               </TabsContent>
 

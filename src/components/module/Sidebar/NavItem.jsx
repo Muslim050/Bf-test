@@ -1,13 +1,9 @@
 import React from 'react'
-import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip'
-import { Link, useLocation } from 'react-router-dom'
-import { ChevronDown } from 'lucide-react'
-import { ChevronUp } from 'lucide-react'
-import { hasRole } from '../../../utils/roleUtils'
-import { ThemeContext } from '@/utils/ThemeContext.jsx'
-import {cn} from "@/lib/utils.js";
-import {buttonVariants} from "@/components/ui/button.jsx";
-import {Badge} from "@/components/ui/badge.jsx";
+import {TooltipContent} from '@/components/ui/tooltip'
+import {Link, useLocation} from 'react-router-dom'
+import {ChevronDown, ChevronUp} from 'lucide-react'
+import {hasRole} from '../../../utils/roleUtils'
+import {ThemeContext} from '@/utils/ThemeContext.jsx'
 
 const NavItem = ({ item, open, setOpen }) => {
   const location = useLocation()

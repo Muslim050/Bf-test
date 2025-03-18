@@ -2,15 +2,14 @@ import React from 'react'
 import axios from 'axios'
 import backendURL from '@/utils/url'
 import Cookies from 'js-cookie'
-import { Button } from '@/components/ui/button.jsx'
-import { Download } from 'lucide-react'
+import {Button} from '@/components/ui/button.jsx'
+import {Download} from 'lucide-react'
 
 function DownloadReport({
   getOrder,
   startDate,
   endDate,
   setIsTooltip,
-  fetchGetOrder,
 }) {
   const [loading, setLoading] = React.useState(false)
   const exportExcel = async (id) => {

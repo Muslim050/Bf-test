@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import React from 'react'
 import axios from 'axios'
-// import backendURL from "../../../../../../../utils/url";
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import style from './AddSendPublisherModal.module.scss'
@@ -21,20 +20,15 @@ import {
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { PackagePlus } from 'lucide-react'
+import { Monitor, MonitorPlay, MonitorUp, PackagePlus } from 'lucide-react'
 import Cookies from 'js-cookie'
-
-
-import { Monitor, MonitorPlay, MonitorUp } from 'lucide-react';
-import {fetchViewStatus} from "@/redux/orderStatus/orderStatusSlice.js";
-import {fetchSingleOrder, updateOrderWithInventory} from "@/redux/order/orderSlice.js";
-import axiosInstance from "@/api/api.js";
-
+import { fetchSingleOrder } from '@/redux/order/orderSlice.js'
+import axiosInstance from '@/api/api.js'
 
 const format = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
   { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
-  { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp  },
+  { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp },
 ]
 const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   const dispatch = useDispatch()
@@ -50,26 +44,26 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   }
   const fetchChannel = async () => {
     try {
-      const url = new URL(`${backendURL}/publisher/channel/`);
-      const params = new URLSearchParams();
+      const url = new URL(`${backendURL}/publisher/channel/`)
+      const params = new URLSearchParams()
 
       // Добавляем параметры запроса
-      params.append('page', '1');
-      params.append('page_size', '200');
+      params.append('page', '1')
+      params.append('page_size', '200')
       if (publisherID) {
-        params.append('publisher_id', publisherID);
+        params.append('publisher_id', publisherID)
       }
 
       // Присваиваем параметры в строку запроса
-      url.search = params.toString();
+      url.search = params.toString()
 
-      const response = await axiosInstance.get(url.toString());
-      setChannelModal(response.data.data);
+      const response = await axiosInstance.get(url.toString())
+      setChannelModal(response.data.data)
     } catch (error) {
-      console.error('Error fetching channel data:', error);
+      console.error('Error fetching channel data:', error)
       // Обработка ошибок
     }
-  };
+  }
 
   const fetchCpm = async () => {
     const response = await axiosInstance.get(
@@ -93,11 +87,11 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
       enddate: '',
       ordered_number_of_views: '',
       budget: budgett,
-      age_range: '',
-      content_language: '',
-      country: '',
+      // age_range: '',
+      // content_language: '',
+      // country: '',
       notes_text: '',
-      notes_url: '',
+      // notes_url: '',
     },
     mode: 'onChange',
   })
@@ -115,16 +109,13 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
         {
           order: data.order,
           channel: data.channel,
-          format: data.format,
+          format: onceOrder.format,
           start_date: data.startdate,
           end_date: data.enddate,
           ordered_number_of_views: data.ordered_number_of_views,
           budget: data.budgett,
-          age_range: data.age_range,
-          content_language: data.content_language,
-          country: data.country,
           notes_text: data.notes_text,
-          notes_url: data.notes_url,
+          // notes_url: data.notes_url,
         },
         {
           headers: {
@@ -141,13 +132,11 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
         toast.success('Запись успешно создана!')
         setViewNote(false)
         await dispatch(fetchOnceListSentToPublisher({ expandedRows }))
-        await dispatch(fetchSingleOrder(onceOrder.id));
-
+        await dispatch(fetchSingleOrder(onceOrder.id))
       } else {
         // Handle case where payload is not as expected
         throw new Error('Unexpected response payload')
       }
-
     } catch (error) {
       setIsOrderCreated(false)
       const errorData = error.response.data.error
@@ -192,24 +181,24 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
     fetchCpm()
   }, [onceOrder])
   React.useEffect(() => {
-    dispatch(fetchPublisher({
-      page:1,
-      pageSize: 200
-    }))
+    dispatch(
+      fetchPublisher({
+        page: 1,
+        pageSize: 200,
+      }),
+    )
   }, [dispatch])
   React.useEffect(() => {
-    fetchChannel(
-      {
-        page:1,
-        pageSize: 200
-      }
-    ).then(() => setLoading(false))
+    fetchChannel({
+      page: 1,
+      pageSize: 200,
+    }).then(() => setLoading(false))
   }, [publisherID])
 
   return (
     <div className="relative rounded-[22px]">
-      <div className="grid lg:grid-cols-6  md:grid-cols-4 sm:grid-cols-2  gap-1">
-        <div className="grid w-full mb-4">
+      <div className="grid lg:grid-cols-7  md:grid-cols-4 sm:grid-cols-2  gap-1">
+        <div className="grid w-full mb-4 ">
           <Label className="text-sm text-white pb-2">Выбрать Паблишера</Label>
           <Controller
             name="advertiser"
@@ -286,14 +275,14 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                         key={option.id}
                         value={option.id.toString()}
                         className="flex"
-                        disabled={!option.is_active ||  !option.is_connected}
+                        disabled={!option.is_active || !option.is_connected}
                       >
                         <div className="flex items-center justify-between w-full">
                           <div className="relative">{option.name}</div>
-                          {!option.is_active  && (
+                          {!option.is_active && (
                             <div className="absolute left-0 bg-red-500 rounded-full  w-3 h-full "></div>
                           )}
-                          {!option.is_connected  && (
+                          {!option.is_connected && (
                             <div className="absolute left-0 bg-red-500 w-2 h-2 rounded-[3px]"></div>
                           )}
                         </div>
@@ -306,7 +295,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
+        <div className=" w-full mb-4 hidden">
           <Label className="text-sm text-white pb-2">
             Выбрать формат<span className="text-red-500 ml-0.5">*</span>
           </Label>
@@ -319,7 +308,11 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 value={field.value}
-                disabled={onceOrder.format === 'preroll' || onceOrder.format === 'tv_preroll' || onceOrder.format === 'top_preroll'}
+                disabled={
+                  onceOrder.format === 'preroll' ||
+                  onceOrder.format === 'tv_preroll' ||
+                  onceOrder.format === 'top_preroll'
+                }
               >
                 <SelectTrigger className="!text-white">
                   <SelectValue placeholder="Выбрать формат" />
@@ -329,18 +322,20 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                     <SelectLabel>Выбрать формат</SelectLabel>
                     {format.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
-                        <div className='!flex items-center gap-1'>
-                          {option.icon &&
-                            <option.icon/>
-                          }
+                        <div className="!flex items-center gap-1">
+                          {option.icon && <option.icon />}
                           {option.text}
-                          {onceOrder?.target_country && <div
-                            className={`rounded-[6px] px-1 text-[12px]  ${
-                              onceOrder?.target_country ? 'bg-[#606afc]' : 'bg-transparent'
-                            }`}
-                          >
-                            {onceOrder?.target_country}
-                          </div>}
+                          {onceOrder?.target_country && (
+                            <div
+                              className={`rounded-[6px] px-1 text-[12px]  ${
+                                onceOrder?.target_country
+                                  ? 'bg-[#606afc]'
+                                  : 'bg-transparent'
+                              }`}
+                            >
+                              {onceOrder?.target_country}
+                            </div>
+                          )}
                         </div>
                       </SelectItem>
                     ))}
@@ -423,36 +418,6 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
 
         <div className="grid w-full mb-4">
           <Label className="text-sm text-white pb-2">
-            Целевая аудитория<span className="text-red-500 ml-0.5">*</span>
-          </Label>
-          <Input
-            className={style.input}
-            type="text"
-            placeholder="Введите аудиторию"
-            {...register('age_range', {
-              required: 'Поле обязательно к заполнению',
-            })}
-            style={{ border: errors?.age_range ? '1px solid red' : '' }}
-          />
-        </div>
-
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
-            Язык контента<span className="text-red-500 ml-0.5">*</span>
-          </Label>
-          <Input
-            className={style.input}
-            type="text"
-            placeholder="Введите Язык"
-            {...register('content_language', {
-              required: 'Поле обязательно к заполнению',
-            })}
-            style={{ border: errors?.content_language ? '1px solid red' : '' }}
-          />
-        </div>
-
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
             Текст<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
@@ -463,36 +428,6 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
               required: 'Поле обязательно к заполнению',
             })}
             style={{ border: errors?.notes_text ? '1px solid red' : '' }}
-          />
-        </div>
-
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
-            Url<span className="text-red-500 ml-0.5">*</span>
-          </Label>
-          <Input
-            className={style.input}
-            type="text"
-            placeholder="Введите url"
-            {...register('notes_url', {
-              required: 'Поле обязательно к заполнению',
-            })}
-            style={{ border: errors?.notes_url ? '1px solid red' : '' }}
-          />
-        </div>
-
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
-            Country<span className="text-red-500 ml-0.5">*</span>
-          </Label>
-          <Input
-            className={style.input}
-            type="text"
-            placeholder="country"
-            {...register('country', {
-              required: 'Поле обязательно к заполнению',
-            })}
-            style={{ border: errors?.country ? '1px solid red' : '' }}
           />
         </div>
       </div>
