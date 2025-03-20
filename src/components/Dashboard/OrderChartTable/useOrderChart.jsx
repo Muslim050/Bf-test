@@ -1,18 +1,23 @@
 import React from 'react'
-import {toast} from 'react-hot-toast'
-import {useDispatch, useSelector} from 'react-redux'
-import {fetchStatistics} from '../../../redux/statisticsSlice'
-import {useParams} from 'react-router-dom'
+import { toast } from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchStatistics } from '../../../redux/statisticsSlice'
+import { useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import backendURL from '@/utils/url.js'
 import axios from 'axios'
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
-import {truncate} from "@/utils/other.js";
-import {FormatFormatter} from "@/utils/FormatFormatter.jsx";
-import {formatDate} from "@/utils/formatterDate.jsx";
-import FormatterView from "@/components/Labrery/formatter/FormatterView.jsx";
-import {TiinFormatterBudget} from "@/components/Labrery/formatter/FormatterBudjet.jsx";
-import AdvertStatus from "@/components/Labrery/AdvertStatus/AdvertStatus.jsx";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip.jsx'
+import { truncate } from '@/utils/other.js'
+import { FormatFormatter } from '@/utils/FormatFormatter.jsx'
+import { formatDate } from '@/utils/formatterDate.jsx'
+import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
+import { TiinFormatterBudget } from '@/components/Labrery/formatter/FormatterBudjet.jsx'
+import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
 import {
   flexRender,
   getCoreRowModel,
@@ -20,10 +25,10 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
-} from "@tanstack/react-table";
-import NestedStatickOrderTable from "@/components/module/TablePagination/NestedStatickOrderTable.jsx";
-import {ChevronDown, ChevronUp, SquareArrowOutUpRight} from 'lucide-react';
+  useReactTable,
+} from '@tanstack/react-table'
+import NestedStatickOrderTable from '@/components/module/TablePagination/NestedStatickOrderTable.jsx'
+import { ChevronDown, ChevronUp, SquareArrowOutUpRight } from 'lucide-react'
 
 export const useOrderChart = () => {
   const dispatch = useDispatch()
@@ -40,22 +45,21 @@ export const useOrderChart = () => {
   //фильтрация по дате
   const [isLoadingData, setIsLoadingData] = React.useState(false)
 
-
   // const orderData = location.state?.advert || {}
   const [orderData, setOrderData] = React.useState([])
 
   const role = Cookies.get('role')
 
   //table
-  const [columnFilters, setColumnFilters] = React.useState([]);
+  const [columnFilters, setColumnFilters] = React.useState([])
   const [globalFilter, setGlobalFilter] = React.useState('')
   const data = useSelector((state) => state.statistics.statistics.results)
 
   const totalBudjet = data?.map((i) => i.budget)
   const totalView = data?.map((i) => i.online_view_count)
 
-  const sumBudjet = totalBudjet?.reduce((acc, num) => acc + num, 0);
-  const sumView = totalView?.reduce((acc, num) => acc + num, 0);
+  const sumBudjet = totalBudjet?.reduce((acc, num) => acc + num, 0)
+  const sumView = totalView?.reduce((acc, num) => acc + num, 0)
   //
 
   React.useEffect(() => {
@@ -125,12 +129,11 @@ export const useOrderChart = () => {
   const dataFilteredClose = () => {
     setDataFiltered(false)
     setOpen(false)
-    setIsLoadingData(true);
+    setIsLoadingData(true)
 
     const toastId = toast.loading('Загрузка отчета..')
 
     dispatch(fetchStatistics({ order_id: id }))
-
       .then(() => {
         toast.success('Данные успешно обновлены', { id: toastId })
       })
@@ -141,8 +144,7 @@ export const useOrderChart = () => {
       })
       .finally(() => {
         setOpen(false)
-        setIsLoadingData(false);
-
+        setIsLoadingData(false)
       })
   }
   //При закрытий окна фильтра
@@ -162,7 +164,7 @@ export const useOrderChart = () => {
 
     setStartDate(minDate)
     setEndDate(maxDate)
-    setIsLoadingData(true);
+    setIsLoadingData(true)
     const toastId = toast.loading('Загрузка отчета...')
 
     dispatch(fetchStatistics({ order_id: id }))
@@ -176,8 +178,7 @@ export const useOrderChart = () => {
       })
       .finally(() => {
         setOpen(false)
-        setIsLoadingData(false);
-
+        setIsLoadingData(false)
       })
   }
   //Очищаем фильтр
@@ -188,7 +189,7 @@ export const useOrderChart = () => {
     const toastId = toast.loading('Фильтруем отчет...')
 
     setDataFiltered(true)
-    setIsLoadingData(true);
+    setIsLoadingData(true)
     setOpen(false)
 
     dispatch(fetchStatistics({ order_id: id, startDate, endDate }))
@@ -202,40 +203,36 @@ export const useOrderChart = () => {
       })
       .finally(() => {
         setOpen(false)
-        setIsLoadingData(false);
-
+        setIsLoadingData(false)
       })
   }
   //Фильтрация по параметрам
-  const [expandedRowId, setExpandedRowId] = React.useState(null);
+  const [expandedRowId, setExpandedRowId] = React.useState(null)
   const renderSubComponent = ({ row }) => {
-    return (
-      <NestedStatickOrderTable data={row.original} />
-    );
-  };
-
+    return <NestedStatickOrderTable data={row.original} />
+  }
 
   const columns = React.useMemo(
     () => [
       {
         id: 'id',
         accessorFn: (_, index) => index + 1, // Используем индекс строки
-        cell: info => info.row.index + 1, // Начинаем с 1
+        cell: (info) => info.row.index + 1, // Начинаем с 1
 
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>№</span>,
       },
       {
-        accessorFn: row => row.channel_name,
+        accessorFn: (row) => row.channel_name,
         id: 'Канал',
-        cell: info => info.getValue (),
+        cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () => <span>Канал</span>,
       },
       {
         accessorFn: (row) => row.video_name, // Преобразование в число
         id: 'Название видео',
-        cell: ({ row }) =>
+        cell: ({ row }) => (
           <>
             <a
               target="_blank"
@@ -246,8 +243,9 @@ export const useOrderChart = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild className="cursor-pointer">
-                    <div className='flex items-center gap-1'>{truncate (row.original.video_name, 20)}
-                      <SquareArrowOutUpRight className='size-4'/>
+                    <div className="flex items-center gap-1">
+                      {truncate(row.original.video_name, 20)}
+                      <SquareArrowOutUpRight className="size-4" />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -256,124 +254,130 @@ export const useOrderChart = () => {
                 </Tooltip>
               </TooltipProvider>
             </a>
-          </>,
+          </>
+        ),
         filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Название видео</span>
+        header: () => (
+          <span className="flex items-center gap-1">Название видео</span>
+        ),
       },
       {
         accessorFn: (row) => row.order_format, // Преобразование в число
         id: 'Формат',
-        cell: ({ row }) =>
-          <FormatFormatter format={row.original.order_format}  />,
+        cell: ({ row }) => (
+          <FormatFormatter format={row.original.order_format} />
+        ),
         filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Формат</span>
+        header: () => <span className="flex items-center gap-1">Формат</span>,
       },
       {
         accessorFn: (row) => row.publication_date, // Преобразование в число
         id: 'Начало',
-        cell: ({row}) =>
-          <div style={{display: 'flex', width: '100px'}}>
+        cell: ({ row }) => (
+          <div style={{ display: 'flex', width: '100px' }}>
             {row.original.publication_date === null ? (
               <div>---</div>
             ) : (
-              formatDate (row.original.publication_date)
+              formatDate(row.original.publication_date)
             )}
-          </div>,
+          </div>
+        ),
         filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Начало</span>
+        header: () => <span className="flex items-center gap-1">Начало</span>,
       },
       {
         accessorFn: (row) => row.status, // Преобразование в число
         id: 'Статус',
-        cell: ({row}) =>
+        cell: ({ row }) => (
           <AdvertStatus
             status={row.original.status}
             endDate={row.original.deactivation_date}
-          />,
+          />
+        ),
         filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Статус</span>
+        header: () => <span className="flex items-center gap-1">Статус</span>,
       },
       {
         accessorFn: (row) => row.online_view_count, // Преобразование в число
         id: 'Показы',
-        cell: ({row}) =>
+        cell: ({ row }) => (
           <>
-            {row.original.video_link ===
-            'https://www.youtube.com/watch?v=OcR6AYdiyUo' ? (
-              <FormatterView data="59 971" />
-            ) : (
+            {row.original.online_view_count ? (
               <FormatterView data={row.original.online_view_count} />
+            ) : (
+              <div>---</div>
             )}
-          </>,
+          </>
+        ),
         filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Показы</span>
+        header: () => <span className="flex items-center gap-1">Показы</span>,
       },
       {
         accessorFn: (row) => row.budget, // Преобразование в число
         id: 'Бюджет',
-        cell: ({row}) =>
+        cell: ({ row }) => (
           <>
-            <TiinFormatterBudget
-              budget={row.original.budget}
-            />
-          </>,
+            <TiinFormatterBudget budget={row.original.budget} />
+          </>
+        ),
         filterFn: 'includesString',
-        header: () => <span className="flex items-center gap-1">Бюджет</span>
+        header: () => <span className="flex items-center gap-1">Бюджет</span>,
       },
       {
         id: 'Анализ аудитории',
-        header: () => <span className="flex items-center gap-1">Анализ аудитории</span>,
+        header: () => (
+          <span className="flex items-center gap-1">Анализ аудитории</span>
+        ),
         cell: ({ row }) => {
-          const isExpanded = expandedRowId === row.id;
+          const isExpanded = expandedRowId === row.id
           return (
             <div className="flex gap-2">
-                <button
-                  onClick={() => {
-                    setExpandedRowId((prev) => (prev === row.id ? null : row.id)); // Переключение состояния
-                  }}
-                  className={`hover:scale-110 transition-all   px-[10px] py-[5px] flex rounded-[12px] hover:bg-white hover:text-[#12173c] ${
-                    isExpanded ? 'bg-white text-[#12173c]' : 'bg-[#FFFFFF2B] text-white'
-                  }`}
-                >
-                  {isExpanded ? 'Закрыть' : 'Показать'}
-                  { isExpanded ? <ChevronUp className='size-5'/> :  <ChevronDown className='size-5'/>
-                  }
-                </button>
+              <button
+                onClick={() => {
+                  setExpandedRowId((prev) => (prev === row.id ? null : row.id)) // Переключение состояния
+                }}
+                className={`hover:scale-110 transition-all   px-[10px] py-[5px] flex rounded-[12px] hover:bg-white hover:text-[#12173c] ${
+                  isExpanded
+                    ? 'bg-white text-[#12173c]'
+                    : 'bg-[#FFFFFF2B] text-white'
+                }`}
+              >
+                {isExpanded ? 'Закрыть' : 'Показать'}
+                {isExpanded ? (
+                  <ChevronUp className="size-5" />
+                ) : (
+                  <ChevronDown className="size-5" />
+                )}
+              </button>
             </div>
           )
         },
       },
     ],
-    [expandedRowId]
+    [expandedRowId],
   )
 
-  const table = useReactTable ({
+  const table = useReactTable({
     data: data || [], // Данные из Redux
     columns,
     state: {
       columnFilters,
       globalFilter,
-      expanded: expandedRowId ? {[expandedRowId]: true} : {}, // Управляем развернутыми строками
-
+      expanded: expandedRowId ? { [expandedRowId]: true } : {}, // Управляем развернутыми строками
     },
     manualPagination: true, // Указываем, что используем серверную пагинацию
-    getCoreRowModel: getCoreRowModel (),
-    getFilteredRowModel: getFilteredRowModel (),
-    getSortedRowModel: getSortedRowModel (),
-    getPaginationRowModel: getPaginationRowModel (),
-    getExpandedRowModel: getExpandedRowModel (), // Для поддержки подтаблиц
-  });
-
-
-
-
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getExpandedRowModel: getExpandedRowModel(), // Для поддержки подтаблиц
+  })
 
   return {
     table,
     setColumnFilters,
     setGlobalFilter,
     flexRender,
-
 
     dataFilteredClose,
     handleDateStatictick,
@@ -391,6 +395,6 @@ export const useOrderChart = () => {
     setLoading,
     sumBudjet,
     sumView,
-    isLoadingData
+    isLoadingData,
   }
 }
