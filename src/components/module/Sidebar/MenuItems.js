@@ -62,7 +62,6 @@ export const menuItems = [
     accordion: false,
     variant: 'ghost',
     label: '',
-
   },
   {
     roles: ['admin'],
@@ -72,7 +71,6 @@ export const menuItems = [
     accordion: false,
     variant: 'ghost',
     label: '',
-
   },
   {
     roles: ['channel', 'publisher', 'admin'],
@@ -82,7 +80,6 @@ export const menuItems = [
     accordion: false,
     variant: 'ghost',
     label: '',
-
   },
   {
     roles: ['publisher', 'admin'],
@@ -92,7 +89,6 @@ export const menuItems = [
     accordion: false,
     variant: 'ghost',
     label: '',
-
   },
   {
     roles: ['admin', 'advertising_agency'],
@@ -102,7 +98,6 @@ export const menuItems = [
     accordion: false,
     variant: 'ghost',
     label: '',
-
   },
   {
     roles: ['admin'],
@@ -112,7 +107,6 @@ export const menuItems = [
     accordion: false,
     variant: 'ghost',
     label: '',
-
   },
 ]
 
@@ -142,9 +136,6 @@ export const SecondMenuItems = [
     variant: 'ghost',
   },
 ]
-
-
-
 
 export default function getTitle(title) {
   if (title === 'inventory') {

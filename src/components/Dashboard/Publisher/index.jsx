@@ -6,12 +6,11 @@ import { Button } from '@/components/ui/button.jsx'
 import { Plus } from 'lucide-react'
 import PublisherModal from '@/components/Dashboard/Publisher/PublihserUtilizer/PublisherModal.jsx'
 import Cookies from 'js-cookie'
-import {usePublihserUtilizer} from "@/components/Dashboard/Publisher/PublihserUtilizer/usePublihserUtilizer.jsx";
-import TableSearchInput from "@/shared/TableSearchInput/index.jsx";
-import {usePublihserUser} from "@/components/Dashboard/Publisher/PublisherUsers/usePublisherUser.jsx";
-import PublisherTableUsers from "@/components/Dashboard/Publisher/PublisherUsers/index.jsx";
-import PublisherModalUsers from "@/components/Dashboard/Publisher/PublisherUsers/PublisherModalUsers.jsx";
-
+import { usePublihserUtilizer } from '@/components/Dashboard/Publisher/PublihserUtilizer/usePublihserUtilizer.jsx'
+import TableSearchInput from '@/shared/TableSearchInput/index.jsx'
+import { usePublihserUser } from '@/components/Dashboard/Publisher/PublisherUsers/usePublisherUser.jsx'
+import PublisherTableUsers from '@/components/Dashboard/Publisher/PublisherUsers/index.jsx'
+import PublisherModalUsers from '@/components/Dashboard/Publisher/PublisherUsers/PublisherModalUsers.jsx'
 
 const PublisherAndUsers = () => {
   const [selectedTab, setSelectedTab] = React.useState('pablisher')
@@ -31,25 +30,21 @@ const PublisherAndUsers = () => {
   }
   // Модальное окно ModalUser
 
-
-
   const {
     table, // Экземпляр таблицы
     globalFilter,
     setGlobalFilter,
     flexRender,
-    pagination
-  } = usePublihserUtilizer();
+    pagination,
+  } = usePublihserUtilizer()
 
   const {
     table: publisherUsersTable,
     globalFilter: usersGlobalFilter,
     setGlobalFilter: setUsersGlobalFilter,
     flexRender: flexRenderUsers,
-    pagination: paginationUsers
-  } = usePublihserUser();
-
-
+    pagination: paginationUsers,
+  } = usePublihserUser()
 
   return (
     <div className="mb-4 mt-2">
@@ -86,29 +81,31 @@ const PublisherAndUsers = () => {
                 ''
               ) : (
                 <div className="flex justify-end ">
-
-                <div className='flex flex-wrap gap-2'>
-                  <div>
-                    <TableSearchInput
-                      value={globalFilter ?? ''}
-                      onChange={value => setGlobalFilter (String (value))}
-                      className={`p-2 font-lg shadow border border-block `}
-                    />
-                  </div>
-                <Dialog open={modalUtilizer} onOpenChange={setModalUtilizer}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className=" bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
+                  <div className="flex flex-wrap gap-2">
+                    <div>
+                      <TableSearchInput
+                        value={globalFilter ?? ''}
+                        onChange={(value) => setGlobalFilter(String(value))}
+                        className={`p-2 font-lg shadow border border-block `}
+                      />
+                    </div>
+                    <Dialog
+                      open={modalUtilizer}
+                      onOpenChange={setModalUtilizer}
                     >
-                      <Plus className="w-5 h-5 mr-2" /> Создать паблишера
-                    </Button>
-                  </DialogTrigger>
-                  {modalUtilizer && (
-                    <PublisherModal onClose={handleCloseModalUtilizer} />
-                  )}
-                </Dialog>
-                </div>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className=" bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
+                        >
+                          <Plus className="w-5 h-5 mr-2" /> Создать паблишера
+                        </Button>
+                      </DialogTrigger>
+                      {modalUtilizer && (
+                        <PublisherModal onClose={handleCloseModalUtilizer} />
+                      )}
+                    </Dialog>
+                  </div>
                 </div>
               )}
             </div>
@@ -116,40 +113,49 @@ const PublisherAndUsers = () => {
 
           {selectedTab === 'pablisher-users' && (
             <div className="flex justify-end ">
-              <div className='flex flex-wrap gap-2'>
+              <div className="flex flex-wrap gap-2">
                 <div>
                   <TableSearchInput
                     value={usersGlobalFilter ?? ''}
-                    onChange={value => setUsersGlobalFilter (String (value))}
+                    onChange={(value) => setUsersGlobalFilter(String(value))}
                     className={`p-2 font-lg shadow border border-block `}
                   />
                 </div>
-              <Dialog open={modalUser} onOpenChange={setModalUser}>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    // onClick={handleButtonClick}
-                    className=" bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
-                  >
-                    <Plus className="w-5 h-5 mr-2" /> Создать пользователя
-                  </Button>
-                </DialogTrigger>
-                {modalUser && (
-                  <PublisherModalUsers onClose={handleCloseModalUser} />
-                )}
-              </Dialog>
+                <Dialog open={modalUser} onOpenChange={setModalUser}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      // onClick={handleButtonClick}
+                      className=" bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
+                    >
+                      <Plus className="w-5 h-5 mr-2" /> Создать пользователя
+                    </Button>
+                  </DialogTrigger>
+                  {modalUser && (
+                    <PublisherModalUsers
+                      onClose={handleCloseModalUser}
+                      modalUser={modalUser}
+                    />
+                  )}
+                </Dialog>
               </div>
             </div>
           )}
         </div>
 
         <TabsContent value="pablisher">
-          <PublihserUtilizer table={table} flexRender={flexRender} pagination={pagination}/>
+          <PublihserUtilizer
+            table={table}
+            flexRender={flexRender}
+            pagination={pagination}
+          />
         </TabsContent>
         <TabsContent value="pablisher-users">
-          <PublisherTableUsers flexRender={flexRenderUsers}
-                 table={publisherUsersTable}
-                 pagination={paginationUsers}/>
+          <PublisherTableUsers
+            flexRender={flexRenderUsers}
+            table={publisherUsersTable}
+            pagination={paginationUsers}
+          />
         </TabsContent>
       </Tabs>
     </div>

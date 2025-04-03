@@ -1,10 +1,10 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 // import axios from "src/utils/axiosInstance.js";
 import backendURL from '@/utils/url'
 import Cookies from 'js-cookie'
-import axiosInstance from "@/api/api.js";
+import axiosInstance from '@/api/api.js'
 
 const initialState = {
   order: [],
@@ -15,31 +15,35 @@ const initialState = {
   confirmedOrders: [],
   exportConfirmed: [],
   shortListData: [],
-  total_count: 0
+  total_count: 0,
 }
 
-export const fetchOrder = createAsyncThunk('order/fetchOrder',
-  async ({ page = null, pageSize = null, search = null } = {}, { rejectWithValue }) => {
-
+export const fetchOrder = createAsyncThunk(
+  'order/fetchOrder',
+  async (
+    { page = null, pageSize = null, search = null } = {},
+    { rejectWithValue },
+  ) => {
     try {
       let url = new URL(`${backendURL}/order/`)
       const params = new URLSearchParams()
       if (page) {
-        params.append('page', page);
+        params.append('page', page)
       }
       if (pageSize) {
-        params.append('page_size', pageSize);
+        params.append('page_size', pageSize)
       }
       if (search) {
-        params.append('search', search);
+        params.append('search', search)
       }
       url.search = params.toString()
       const response = await axiosInstance.get(url.href)
-    return response.data.data
-  } catch (error) {
-    return rejectWithValue(error.response)
-  }
-})
+      return response.data.data
+    } catch (error) {
+      return rejectWithValue(error.response)
+    }
+  },
+)
 
 export const fetchConfirmedOrder = createAsyncThunk(
   'order/fetchConfirmedOrder',
@@ -68,7 +72,7 @@ export const addOrder = createAsyncThunk(
   'order/addOrder',
   async ({ data }, { rejectWithValue }) => {
     const token = Cookies.get('token')
-    console.log (data)
+    console.log(data)
     try {
       const response = await axios.post(
         `${backendURL}/order/`,
@@ -155,8 +159,6 @@ export const fetchShortList = createAsyncThunk(
   },
 )
 
-
-
 export const fetchEditOrder = createAsyncThunk(
   'order/fetchEditOrder',
   async ({ id, data }) => {
@@ -240,7 +242,7 @@ export const deleteOrder = createAsyncThunk(
 export const fetchSingleOrder = createAsyncThunk(
   'order/fetchSingleOrder',
   async (orderId) => {
-    const token = Cookies.get('token');
+    const token = Cookies.get('token')
 
     try {
       const response = await axios.get(`${backendURL}/order/${orderId}/`, {
@@ -249,53 +251,40 @@ export const fetchSingleOrder = createAsyncThunk(
           Accept: 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      });
-      return { orderId, data: response.data };
+      })
+      return { orderId, data: response.data }
     } catch (error) {
       if (error.response.status === 401) {
-        window.location.href = 'login';
+        window.location.href = 'login'
       }
       if (error.response?.data?.error?.detail) {
-        toast.error(error.response.data.error.detail);
+        toast.error(error.response.data.error.detail)
       } else {
-        toast.error('Ошибка при загрузке заказа');
+        toast.error('Ошибка при загрузке заказа')
       }
-      throw error;
+      throw error
     }
-  }
-);
+  },
+)
 const orderSlice = createSlice({
   name: 'order',
   initialState,
-  // reducers: {
-  //   setOrderStatus: (state, action) => {
-  //     const { orderId, status } = action.payload
-  //     console.log (orderId, status)
-  //     const order = state.order.find((o) => o.id === orderId)
-  //     if (order) {
-  //       order.status = status
-  //     }
-  //   },
-  // },
   reducers: {
     setOrderStatus: (state, action) => {
-      const { orderId, status } = action.payload;
-      const index = state.order.results.findIndex((o) => o.id === orderId);
+      const { orderId, status } = action.payload
+      const index = state.order.results.findIndex((o) => o.id === orderId)
       if (index !== -1) {
-        state.order.results[index] = { ...state.order.results[index], status };
+        state.order.results[index] = { ...state.order.results[index], status }
       }
     },
     updateOrderWithInventory(state, action) {
-      const { orderId, updatedData } = action.payload;
-      console.log (orderId, updatedData)
-      console.log (state)
-
-      const index = state.orders.findIndex((order) => order.id === orderId);
+      const { orderId, updatedData } = action.payload
+      const index = state.orders.findIndex((order) => order.id === orderId)
       if (index !== -1) {
         state.orders[index] = {
           ...state.orders[index],
           ...updatedData, // Обновляем только изменённые данные
-        };
+        }
       }
     },
   },
@@ -307,8 +296,7 @@ const orderSlice = createSlice({
       .addCase(fetchOrder.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.order = action.payload
-        state.total_count = action.payload?.count; // Обновляем общее количество
-
+        state.total_count = action.payload?.count // Обновляем общее количество
       })
       .addCase(fetchOrder.rejected, (state, action) => {
         state.status = 'failed'
@@ -357,16 +345,17 @@ const orderSlice = createSlice({
         state.status = 'failed'
       })
       .addCase(fetchSingleOrder.fulfilled, (state, action) => {
-        const { orderId, data } = action.payload;
-        const index = state.order.results.findIndex((order) => order.id === orderId);
+        const { orderId, data } = action.payload
+        const index = state.order.results.findIndex(
+          (order) => order.id === orderId,
+        )
         if (index !== -1) {
           state.order.results[index] = {
             ...state.order.results[index],
             ...data.data, // Обновляем только изменённые поля
-          };
+          }
         }
-      });
-
+      })
   },
 })
 

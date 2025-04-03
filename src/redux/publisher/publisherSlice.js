@@ -3,7 +3,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import backendURL from '@/utils/url'
 import Cookies from 'js-cookie'
-import axiosInstance from "@/api/api.js";
+import axiosInstance from '@/api/api.js'
 
 const initialState = {
   publisher: [],
@@ -12,7 +12,6 @@ const initialState = {
   publisherReport: [],
   publisherReportExport: [],
   total_count: 0, // Изначально общее количество равно 0
-
 }
 
 export const fetchPublisher = createAsyncThunk(
@@ -22,10 +21,10 @@ export const fetchPublisher = createAsyncThunk(
       let url = new URL(`${backendURL}/publisher/`)
       const params = new URLSearchParams()
       if (page) {
-        params.append('page', page);
+        params.append('page', page)
       }
       if (pageSize) {
-        params.append('page_size', pageSize);
+        params.append('page_size', pageSize)
       }
       url.search = params.toString()
       const response = await axiosInstance.get(url.href)
@@ -142,23 +141,28 @@ const publisherSlice = createSlice({
         return total + (item.budget_fact || 0)
       }, 0)
     },
+    resetPublisher(state) {
+      state.publisher = []
+      state.loading = false
+      state.error = null
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPublisher.pending, (state) => {
         state.status = 'loading'
+        state.publisher = [] // сбрасываем данные
       })
       .addCase(fetchPublisher.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.publisher = action.payload
-        state.total_count = action.payload?.count; // Обновляем общее количество
-
+        state.total_count = action.payload?.count // Обновляем общее количество
       })
       .addCase(fetchPublisher.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })
-     
+
       .addCase(deletePublisher.fulfilled, (state, action) => {
         state.publisher = state.publisher.filter(
           (user) => user.id !== action.payload,
@@ -177,7 +181,7 @@ const publisherSlice = createSlice({
       })
   },
 })
-export const { resetPublisherReport, totalBudjetReport } =
+export const { resetPublisherReport, resetPublisher, totalBudjetReport } =
   publisherSlice.actions
 
 export default publisherSlice.reducer

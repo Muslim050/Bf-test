@@ -1,11 +1,9 @@
-import axios from 'axios'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import MaskedInput from 'react-text-mask'
-import backendURL from '@/utils/url'
 import {
   DialogContent,
   DialogHeader,
@@ -24,18 +22,20 @@ import {
 } from '@/components/ui/select.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
-import Cookies from 'js-cookie'
-import {addPublisherUsers, fetchPublisherUsers} from "@/redux/publisherUsers/publisherUsersSlice.js";
-import {addPublisher, fetchPublisher} from "@/redux/publisher/publisherSlice.js";
-import {addChannelUsers, fetchChannelUsers} from "@/redux/channelUsers/channelUsersSlice.js";
+import { addPublisherUsers } from '@/redux/publisherUsers/publisherUsersSlice.js'
+import { fetchPublisher } from '@/redux/publisher/publisherSlice.js'
 
-export default function PublisherModalUsers({ onClose }) {
+export default function PublisherModalUsers({ onClose, modalUser }) {
   const dispatch = useDispatch()
-  const [publisherModal, setPublisherModal] = React.useState([])
   const [showPasswordOld, setShowPasswordOld] = React.useState(false)
   const { publisher } = useSelector((state) => state.publisher)
+  React.useEffect(() => {
+    if (modalUser) {
+      // isModalOpen — состояние, контролирующее открытие модального окна
 
-  // const fetchPubl = async () => {
+      dispatch(fetchPublisher({ page: 1, pageSize: 200 }))
+    }
+  }, [modalUser, dispatch]) // const fetchPubl = async () => {
   //   const token = Cookies.get('token')
   //   const response = await axios.get(
   //     `${backendURL}/publisher/`,
@@ -49,13 +49,15 @@ export default function PublisherModalUsers({ onClose }) {
   //     },
   //   )
   //   setPublisherModal(response.data.data.results)
-  // }
-  React.useEffect(() => {
-    fetchPublisher({
-      page: 1, // API использует нумерацию с 1
-      pageSize: 200,
-    })
-  }, [])
+  // // }
+  // React.useEffect(() => {
+  //   dispatch(resetPublisher())
+  //
+  //   fetchPublisher({
+  //     page: 1, // API использует нумерацию с 1
+  //     pageSize: 200,
+  //   })
+  // }, [dispatch])
 
   const {
     register,
@@ -75,20 +77,22 @@ export default function PublisherModalUsers({ onClose }) {
     mode: 'onChange',
   })
 
-
   const onSubmit = async (data) => {
     try {
-      const publisher = await dispatch(addPublisherUsers({ data })).unwrap(); // Попытка выполнить запрос
-      toast.success('Пользователь паблишера успешно создан!'); // Успех
-      onClose(); // Закрыть модальное окно
+      const publisher = await dispatch(addPublisherUsers({ data })).unwrap() // Попытка выполнить запрос
+      toast.success('Пользователь паблишера успешно создан!') // Успех
+      onClose() // Закрыть модальное окно
       setTimeout(() => {
-        window.location.reload(); // Перезагрузка страницы
-      }, 1500);
+        window.location.reload() // Перезагрузка страницы
+      }, 1500)
     } catch (error) {
-      console.error("Ошибка:", error); // Диагностируйте, что именно происходит
-      toast.error(error?.data?.error?.message || "Произошла ошибка при создании пользователя"); // Покажите fallback сообщение
+      console.error('Ошибка:', error) // Диагностируйте, что именно происходит
+      toast.error(
+        error?.data?.error?.message ||
+          'Произошла ошибка при создании пользователя',
+      ) // Покажите fallback сообщение
     }
-  };
+  }
 
   const handleTogglePasswordOld = () => {
     setShowPasswordOld(!showPasswordOld)
@@ -293,7 +297,7 @@ export default function PublisherModalUsers({ onClose }) {
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Выбрать Паблишера</SelectLabel>
-                          {publisher.results.map((adv) => (
+                          {publisher?.results?.map((adv) => (
                             <SelectItem key={adv.id} value={adv.id.toString()}>
                               {adv.name}
                             </SelectItem>
