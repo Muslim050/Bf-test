@@ -48,8 +48,6 @@ export const useOrderChart = () => {
   // const orderData = location.state?.advert || {}
   const [orderData, setOrderData] = React.useState([])
 
-  const role = Cookies.get('role')
-
   //table
   const [columnFilters, setColumnFilters] = React.useState([])
   const [globalFilter, setGlobalFilter] = React.useState('')
@@ -125,10 +123,37 @@ export const useOrderChart = () => {
   ])
   //Дата
 
+  const openFilter = () => {
+    // Сброс дат к исходным значениям из orderData
+    const startDateObj = orderData?.expected_start_date
+      ? new Date(orderData.expected_start_date)
+      : null
+    const endDateObj = orderData?.actual_end_date
+      ? new Date(orderData.actual_end_date)
+      : orderData?.expected_end_date
+        ? new Date(orderData.expected_end_date)
+        : null
+
+    const minDate =
+      startDateObj && !isNaN(startDateObj.getTime())
+        ? startDateObj.toISOString().split('T')[0]
+        : ''
+    const maxDate =
+      endDateObj && !isNaN(endDateObj.getTime())
+        ? endDateObj.toISOString().split('T')[0]
+        : ''
+
+    setStartDate(minDate)
+    setEndDate(maxDate)
+    setOpen(true)
+  }
+
   //При закрытий окна фильтра
   const dataFilteredClose = () => {
     setDataFiltered(false)
     setOpen(false)
+    setStartDate('')
+    setEndDate('')
     setIsLoadingData(true)
 
     const toastId = toast.loading('Загрузка отчета..')
@@ -144,6 +169,8 @@ export const useOrderChart = () => {
       })
       .finally(() => {
         setOpen(false)
+        setStartDate('')
+        setEndDate('')
         setIsLoadingData(false)
       })
   }
@@ -396,5 +423,6 @@ export const useOrderChart = () => {
     sumBudjet,
     sumView,
     isLoadingData,
+    openFilter,
   }
 }

@@ -39,6 +39,7 @@ function OrderChart() {
     sumBudjet,
     sumView,
     isLoadingData,
+    openFilter,
   } = useOrderChart()
 
   useEffect(() => {
@@ -84,6 +85,7 @@ function OrderChart() {
                 <Button
                   variant="link"
                   onClick={dataFilteredClose}
+                  disabled={isLoadingData}
                   className="text-[#A7CCFF] px-0 h-auto"
                 >
                   Очистить
@@ -99,6 +101,8 @@ function OrderChart() {
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <Button
+                    disabled={isLoadingData}
+                    onClick={openFilter}
                     variant="ghost"
                     className=" px-7 bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
                   >
