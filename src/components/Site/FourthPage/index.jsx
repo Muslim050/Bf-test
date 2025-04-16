@@ -213,7 +213,7 @@ const FourthPage = () => {
       </div>
 
       {/* Контейнер для заголовков – можно расположить их один над другим */}
-      <div className="relative h-full mt-20 mb-20 flex flex-col items-center">
+      <div className="relative h-full mt-24 flex flex-col items-center">
         {/* Заголовок для первого блока */}
         {/*<h2*/}
         {/*  ref={textRefFirst}*/}
@@ -235,7 +235,7 @@ const FourthPage = () => {
         <h2
           ref={textRefSecond}
           style={{
-            top: '-50px',
+            top: '-60px',
 
             background:
               'linear-gradient(360deg, #FFFFFF 16.15%, rgba(255,255,255,0.3) 140.1%)',
