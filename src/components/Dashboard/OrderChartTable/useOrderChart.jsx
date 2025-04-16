@@ -423,6 +423,6 @@ export const useOrderChart = () => {
     sumBudjet,
     sumView,
     isLoadingData,
-    openFilter,
+     openFilter
   }
 }

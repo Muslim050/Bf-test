@@ -39,7 +39,7 @@ function OrderChart() {
     sumBudjet,
     sumView,
     isLoadingData,
-    openFilter,
+    openFilter
   } = useOrderChart()
 
   useEffect(() => {
