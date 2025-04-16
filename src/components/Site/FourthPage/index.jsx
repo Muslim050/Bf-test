@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Video from './VideoBG.mp4'
 import { StarsSSSvg } from '@/assets/Site/site-svg.jsx'
 import m from './FourthPage.module.scss'
+
 import image1 from '@/assets/FourthPage/1.png'
 import image2 from '@/assets/FourthPage/2.png'
 import image3 from '@/assets/FourthPage/3.png'
@@ -19,6 +20,7 @@ import image12 from '@/assets/FourthPage/12.png'
 import image13 from '@/assets/FourthPage/13.png'
 import image14 from '@/assets/FourthPage/14.png'
 import image15 from '@/assets/FourthPage/15.png'
+
 import image01 from '@/assets/FourthPage/imm/1.png'
 import image22 from '@/assets/FourthPage/imm/2.png'
 import image33 from '@/assets/FourthPage/imm/3.png'
@@ -49,6 +51,7 @@ const imagesData = [
   { id: 14, image: image14 },
   { id: 15, image: image15 },
 ]
+
 const imagesData2 = [
   { id: 1, image: image01 },
   { id: 2, image: image22 },
@@ -67,23 +70,10 @@ const imagesData2 = [
 gsap.registerPlugin(ScrollTrigger)
 
 const FourthPage = () => {
-  // Ref для заголовка первого блока
-  // const textRefFirst = useRef(null)
-  // Ref для заголовка второго блока
   const textRefSecond = useRef(null)
 
   useEffect(() => {
-    // Инициализируем начальное состояние двух заголовков:
-    // Первый блок — видим, второй — скрыт.
-    // if (textRefFirst.current) {
-    //   textRefFirst.current.textContent = 'Каналы, выбравшие нас'
-    //   gsap.set(textRefFirst.current, {
-    //     opacity: 1,
-    //     y: 0,
-    //     position: 'relative',
-    //     zIndex: 999,
-    //   })
-    // }
+    // Инициализация заголовка второго блока
     if (textRefSecond.current) {
       textRefSecond.current.textContent = 'Бренды, выбравшие нас'
       gsap.set(textRefSecond.current, {
@@ -94,31 +84,31 @@ const FourthPage = () => {
       })
     }
 
-    // Batch-анимация карточек для всех элементов с классом "card"
+    // Batch-анимация карточек: группировка с меньшим stagger и более короткими анимациями
     ScrollTrigger.batch('.card', {
       onEnter: (batch) => {
         gsap.to(batch, {
           opacity: 1,
           y: 0,
-          stagger: 0.2,
-          duration: 0.8,
-          ease: 'power2.out',
+          stagger: 0.1,
+          duration: 0.5,
+          ease: 'power1.out',
         })
       },
       onLeaveBack: (batch) => {
         gsap.to(batch, {
           opacity: 0,
-          y: 200,
-          stagger: 0.2,
-          duration: 0.8,
-          ease: 'power2.in',
+          y: 50,
+          stagger: 0.1,
+          duration: 0.5,
+          ease: 'power1.in',
         })
       },
       start: 'top 80%',
       end: 'bottom 20%',
     })
 
-    // Мастер-таймлайн для анимаций с прокруткой (pinning секции и расширенный скролл)
+    // Главная временная шкала для анимаций прокрутки
     const masterTL = gsap.timeline({
       scrollTrigger: {
         trigger: '.sectionFourthBlue',
@@ -129,40 +119,28 @@ const FourthPage = () => {
       },
     })
 
-    // Анимация фоновых элементов (например, масштабирование и появление)
     masterTL
       .fromTo(
         '.dog-1',
         { opacity: 0, scale: 6 },
         { opacity: 1, scale: 1, duration: 2, ease: 'power1.out' },
       )
+      // Если есть элемент с классом 'dog-2', анимация его появления
       .to('.dog-2', { opacity: 1, duration: 2, ease: 'power1.out' }, 0)
 
-    // Устанавливаем метку для скрытия первого блока (задержка 2 сек)
     masterTL.addLabel('blockSwitch', 2)
-    // Скрываем карточки первого блока
     masterTL.to(
       '.firstBlock',
       { opacity: 0, y: -80, duration: 1, ease: 'power2.out' },
       'blockSwitch',
     )
-    // Скрываем заголовок первого блока
-    // masterTL.to(
-    //   textRefFirst.current,
-    //   { opacity: 0, y: 50, duration: 1, ease: 'power2.in' },
-    //   'blockSwitch',
-    // )
-
-    // Добавляем метку для появления второго блока через 1 секунду после "blockSwitch"
     masterTL.addLabel('showSecond', 'blockSwitch+=1')
-    // Показываем заголовок второго блока
     masterTL.fromTo(
       textRefSecond.current,
       { opacity: 0, y: 50 },
       { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
       'showSecond',
     )
-    // Показываем карточки второго блока
     masterTL.fromTo(
       '.secondBlock',
       { opacity: 0, y: 50 },
@@ -171,13 +149,14 @@ const FourthPage = () => {
     )
 
     return () => {
+      // Очистка всех ScrollTrigger при размонтировании
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
   }, [])
 
   return (
     <section className="sectionFourth sectionFourthBlue">
-      {/* Видео на заднем фоне */}
+      {/* Видео на заднем фоне с атрибутом poster для быстрой отрисовки */}
       <video
         src={Video}
         autoPlay
@@ -205,44 +184,26 @@ const FourthPage = () => {
           muted
           loop
           playsInline
+          loading="lazy"
+          poster="/path/to/poster.jpg" // Укажите корректный путь к статичному изображению
+          style={{ paddingBottom: '10px' }}
           className="absolute top-0 left-0 w-full h-full object-cover"
-        ></video>
+        />
         <div className="mix-blend-multiply m-auto font-black uppercase absolute top-0 left-0 w-full h-full text-white bg-[#05060a] text-[35px] flex justify-center flex-col items-center">
           Brandformance
         </div>
       </div>
 
-      {/* Контейнер для заголовков – можно расположить их один над другим */}
       <div className="relative h-full mt-[150px] flex flex-col items-center">
-        {/* Заголовок для первого блока */}
-        {/*<h2*/}
-        {/*  ref={textRefFirst}*/}
-        {/*  style={{*/}
-        {/*    background:*/}
-        {/*      'linear-gradient(360deg, #FFFFFF 16.15%, rgba(255,255,255,0.3) 140.1%)',*/}
-        {/*    WebkitBackgroundClip: 'text',*/}
-        {/*    WebkitTextFillColor: 'transparent',*/}
-        {/*    backgroundClip: 'text',*/}
-        {/*    textFillColor: 'transparent',*/}
-        {/*    letterSpacing: '-0.03em',*/}
-        {/*    textShadow: '0px 4px 20px rgba(255,255,255,0.25)',*/}
-        {/*  }}*/}
-        {/*  className="animated-element text-[35px] md:text-[40px] lg:text-[60px] text-center"*/}
-        {/*>*/}
-        {/*  Каналы, выбравшие нас*/}
-        {/*</h2>*/}
-        {/* Заголовок для второго блока (изначально скрыт) */}
         <h2
           ref={textRefSecond}
           style={{
             top: '-60px',
-
             background:
               'linear-gradient(360deg, #FFFFFF 16.15%, rgba(255,255,255,0.3) 140.1%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-            textFillColor: 'transparent',
             letterSpacing: '-0.03em',
             textShadow: '0px 4px 20px rgba(255,255,255,0.25)',
           }}
@@ -268,6 +229,7 @@ const FourthPage = () => {
                 borderRadius: '20px',
                 opacity: 0,
                 transform: 'translateY(1000px)',
+                willChange: 'opacity, transform',
               }}
             >
               <img
@@ -281,7 +243,7 @@ const FourthPage = () => {
         </div>
       </div>
 
-      {/* Второй блок карточек (изначально скрыт) */}
+      {/* Второй блок карточек */}
       <div
         className="secondBlock imgFourth max-w-[1240px] w-full m-auto"
         style={{ opacity: 0 }}
@@ -300,6 +262,7 @@ const FourthPage = () => {
                 borderRadius: '20px',
                 opacity: 0,
                 transform: 'translateY(1000px)',
+                willChange: 'opacity, transform',
               }}
             >
               <img
