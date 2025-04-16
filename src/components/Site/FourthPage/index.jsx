@@ -213,7 +213,7 @@ const FourthPage = () => {
       </div>
 
       {/* Контейнер для заголовков – можно расположить их один над другим */}
-      <div className="relative h-full mt-24 flex flex-col items-center">
+      <div className="relative h-full mt-[150px] flex flex-col items-center">
         {/* Заголовок для первого блока */}
         {/*<h2*/}
         {/*  ref={textRefFirst}*/}
