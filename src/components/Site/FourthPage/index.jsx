@@ -252,7 +252,7 @@ const FourthPage = () => {
           {imagesData2.map((item, index) => (
             <div
               key={`second-${item.id}`}
-              className={`card card-second-${index} ${m.cardWrapper} flex items-center justify-center`}
+              className={`card card-second-${index} ${m.cardWrapper2} flex items-center justify-center`}
               style={{
                 background:
                   'linear-gradient(0deg, rgba(186,207,247,0.04), rgba(186,207,247,0.04)), rgba(2,3,8,0.8)',
