@@ -68,22 +68,22 @@ gsap.registerPlugin(ScrollTrigger)
 
 const FourthPage = () => {
   // Ref для заголовка первого блока
-  const textRefFirst = useRef(null)
+  // const textRefFirst = useRef(null)
   // Ref для заголовка второго блока
   const textRefSecond = useRef(null)
 
   useEffect(() => {
     // Инициализируем начальное состояние двух заголовков:
     // Первый блок — видим, второй — скрыт.
-    if (textRefFirst.current) {
-      textRefFirst.current.textContent = 'Каналы, выбравшие нас'
-      gsap.set(textRefFirst.current, {
-        opacity: 1,
-        y: 0,
-        position: 'relative',
-        zIndex: 999,
-      })
-    }
+    // if (textRefFirst.current) {
+    //   textRefFirst.current.textContent = 'Каналы, выбравшие нас'
+    //   gsap.set(textRefFirst.current, {
+    //     opacity: 1,
+    //     y: 0,
+    //     position: 'relative',
+    //     zIndex: 999,
+    //   })
+    // }
     if (textRefSecond.current) {
       textRefSecond.current.textContent = 'Бренды, выбравшие нас'
       gsap.set(textRefSecond.current, {
@@ -147,11 +147,11 @@ const FourthPage = () => {
       'blockSwitch',
     )
     // Скрываем заголовок первого блока
-    masterTL.to(
-      textRefFirst.current,
-      { opacity: 0, y: 50, duration: 1, ease: 'power2.in' },
-      'blockSwitch',
-    )
+    // masterTL.to(
+    //   textRefFirst.current,
+    //   { opacity: 0, y: 50, duration: 1, ease: 'power2.in' },
+    //   'blockSwitch',
+    // )
 
     // Добавляем метку для появления второго блока через 1 секунду после "blockSwitch"
     masterTL.addLabel('showSecond', 'blockSwitch+=1')
@@ -213,24 +213,24 @@ const FourthPage = () => {
       </div>
 
       {/* Контейнер для заголовков – можно расположить их один над другим */}
-      <div className="relative h-full mt-20 flex flex-col items-center">
+      <div className="relative h-full mt-20 mb-20 flex flex-col items-center">
         {/* Заголовок для первого блока */}
-        <h2
-          ref={textRefFirst}
-          style={{
-            background:
-              'linear-gradient(360deg, #FFFFFF 16.15%, rgba(255,255,255,0.3) 140.1%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            textFillColor: 'transparent',
-            letterSpacing: '-0.03em',
-            textShadow: '0px 4px 20px rgba(255,255,255,0.25)',
-          }}
-          className="animated-element text-[35px] md:text-[40px] lg:text-[60px] text-center"
-        >
-          Каналы, выбравшие нас
-        </h2>
+        {/*<h2*/}
+        {/*  ref={textRefFirst}*/}
+        {/*  style={{*/}
+        {/*    background:*/}
+        {/*      'linear-gradient(360deg, #FFFFFF 16.15%, rgba(255,255,255,0.3) 140.1%)',*/}
+        {/*    WebkitBackgroundClip: 'text',*/}
+        {/*    WebkitTextFillColor: 'transparent',*/}
+        {/*    backgroundClip: 'text',*/}
+        {/*    textFillColor: 'transparent',*/}
+        {/*    letterSpacing: '-0.03em',*/}
+        {/*    textShadow: '0px 4px 20px rgba(255,255,255,0.25)',*/}
+        {/*  }}*/}
+        {/*  className="animated-element text-[35px] md:text-[40px] lg:text-[60px] text-center"*/}
+        {/*>*/}
+        {/*  Каналы, выбравшие нас*/}
+        {/*</h2>*/}
         {/* Заголовок для второго блока (изначально скрыт) */}
         <h2
           ref={textRefSecond}
