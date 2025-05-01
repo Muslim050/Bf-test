@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Video from './VideoBG.mp4'
 import { StarsSSSvg } from '@/assets/Site/site-svg.jsx'
 import m from './FourthPage.module.scss'
-
 import image1 from '@/assets/FourthPage/1.png'
 import image2 from '@/assets/FourthPage/2.png'
 import image3 from '@/assets/FourthPage/3.png'

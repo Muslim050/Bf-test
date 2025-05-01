@@ -1,8 +1,7 @@
-import axios from 'axios'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { Tv } from 'lucide-react';
+import { Monitor, MonitorPlay, MonitorUp } from 'lucide-react'
 
 import { addOrder } from '../../../../../../redux/order/orderSlice'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -30,15 +29,13 @@ import { hasRole } from '../../../../../../utils/roleUtils'
 import { Button } from '../../../../../ui/button'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
-import { Monitor, MonitorPlay, MonitorUp } from 'lucide-react';
-import axiosInstance from "@/api/api.js";
-import {Checkbox} from "@/components/ui/checkbox.jsx";
-
+import axiosInstance from '@/api/api.js'
+import { Checkbox } from '@/components/ui/checkbox.jsx'
 
 const formatV = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
   { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
-  { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp  },
+  { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp },
 ]
 export default function CreateOrder({ onClose }) {
   const dispatch = useDispatch()
@@ -47,10 +44,7 @@ export default function CreateOrder({ onClose }) {
   const [isOrderCreated, setIsOrderCreated] = React.useState(false)
   const [advertiser, setAdvertiser] = React.useState([])
   const [cpm, setCpm] = React.useState([])
-  const user = Cookies.get('role')
   const [budgett, setBudgett] = React.useState(0)
-  const [selectedEndDate, setSelectedEndDate] = React.useState(null)
-
   const advID = Cookies.get('advertiser')
   const today = new Date()
   let advId
@@ -91,14 +85,14 @@ export default function CreateOrder({ onClose }) {
     let newBudget = 0
     if (targetCountry) {
       const uzFormat = `${selectedFormat}_uz`
-      console.log (uzFormat)
       if (cpm[uzFormat]) {
         newBudget = (expectedView / 1000) * cpm[uzFormat]
       }
     } else if (cpm[selectedFormat]) {
       newBudget = (expectedView / 1000) * cpm[selectedFormat]
     }
-    setBudgett(newBudget)
+    const roundedTwo = +newBudget.toFixed(2)
+    setBudgett(roundedTwo)
   }
 
   React.useEffect(() => {
@@ -114,15 +108,13 @@ export default function CreateOrder({ onClose }) {
 
   const fetchCpm = async () => {
     const response = await axiosInstance.get(
-      `${backendURL}/order/cpm/?advertiser=${agencyAdvId || advID}`
+      `${backendURL}/order/cpm/?advertiser=${agencyAdvId || advID}`,
     )
     setCpm(response.data.data)
   }
 
   const fetchAdvertiser = async () => {
-    const response = await axiosInstance.get(
-      `${backendURL}/advertiser/`,
-    )
+    const response = await axiosInstance.get(`${backendURL}/advertiser/`)
     setAdvertiser(response.data.data.results)
   }
   React.useEffect(() => {
@@ -142,7 +134,6 @@ export default function CreateOrder({ onClose }) {
     }
   }, [advID])
   const onSubmit = async (data) => {
-
     try {
       setIsOrderCreated(true)
       const response = await dispatch(addOrder({ data }))
@@ -196,34 +187,32 @@ export default function CreateOrder({ onClose }) {
               <div className="flex gap-5 mb-2">
                 <div className="grid w-full">
                   <Label className="text-sm	text-white pb-0.5">
-                    Выбрать рекламодателя <span className="text-red-500 ml-0.5">*</span>
+                    Выбрать рекламодателя{' '}
+                    <span className="text-red-500 ml-0.5">*</span>
                   </Label>
                   <Controller
                     name="selectedAdvertiserId"
-                    {...register ('advertiserID', {
+                    {...register('advertiserID', {
                       required: 'Поле обязательно',
                     })}
                     control={control}
                     defaultValue=""
-                    render={({field}) => (
+                    render={({ field }) => (
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                         value={field.value}
-
                       >
                         <SelectTrigger className="!text-white">
-                          <SelectValue placeholder="Выбрать рекламодателя"/>
+                          <SelectValue placeholder="Выбрать рекламодателя" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectLabel>
-                              Выбрать рекламодателя
-                            </SelectLabel>
-                            {advertiser.map ((adv) => (
+                            <SelectLabel>Выбрать рекламодателя</SelectLabel>
+                            {advertiser.map((adv) => (
                               <SelectItem
                                 key={adv.id}
-                                value={adv.id.toString ()}
+                                value={adv.id.toString()}
                               >
                                 {adv.name}
                               </SelectItem>
@@ -237,7 +226,6 @@ export default function CreateOrder({ onClose }) {
               </div>
             ) : (
               ''
-
             )}
             <div className="flex gap-2 mb-2">
               <div className="grid w-full">
@@ -251,7 +239,7 @@ export default function CreateOrder({ onClose }) {
                     errors?.name ? 'border-red-500' : 'border-gray-300'
                   }   transition-all duration-300 text-sm `}
                   type="text"
-                  {...register ('name', {
+                  {...register('name', {
                     required: 'Поле обязательно к заполнению',
                   })}
                 />
@@ -271,7 +259,7 @@ export default function CreateOrder({ onClose }) {
                   }   transition-all duration-300 text-sm `}
                   type="date"
                   // min={getCurrentDate()}
-                  {...register ('startdate', {
+                  {...register('startdate', {
                     required: 'Поле обязательно к заполнению',
                   })}
                 />
@@ -314,11 +302,13 @@ export default function CreateOrder({ onClose }) {
                   <SelectContent className="w-full">
                     <SelectGroup>
                       {formatV.map((option, index) => (
-                        <SelectItem key={index} value={option.value} className='hover:bg-white hover:text-black cursor-pointer' >
-                          <div className='flex items-center gap-1'>
-                            {option.icon &&
-                              <option.icon/>
-                            }
+                        <SelectItem
+                          key={index}
+                          value={option.value}
+                          className="hover:bg-white hover:text-black cursor-pointer"
+                        >
+                          <div className="flex items-center gap-1">
+                            {option.icon && <option.icon />}
                             {option.text}
                           </div>
                         </SelectItem>
@@ -338,7 +328,10 @@ export default function CreateOrder({ onClose }) {
                     onClick={taretCheckbox}
                   >
                     Target UZ
-                    <Checkbox id="terms" className='size-6 rounded-lg data-[state=checked]:bg-[#5570f1] data-[state=checked]:border-[#5570f1] border-[#5570f1]' />
+                    <Checkbox
+                      id="terms"
+                      className="size-6 rounded-lg data-[state=checked]:bg-[#5570f1] data-[state=checked]:border-[#5570f1] border-[#5570f1]"
+                    />
                     <span className={style.checkmark}></span>
                   </label>
                 </div>
