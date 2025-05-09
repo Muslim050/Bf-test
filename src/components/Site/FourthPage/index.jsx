@@ -72,18 +72,36 @@ const FourthPage = () => {
   const textRefSecond = useRef(null)
 
   useEffect(() => {
-    // Инициализация заголовка второго блока
-    if (textRefSecond.current) {
-      textRefSecond.current.textContent = 'Бренды, выбравшие нас'
-      gsap.set(textRefSecond.current, {
-        opacity: 0,
-        y: 50,
-        position: 'relative',
-        zIndex: 999,
+    // Disable GSAP animations on small screens (<768px)
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      // Reveal cards and title statically
+      document.querySelectorAll('.card').forEach((card) => {
+        card.style.opacity = '1'
+        card.style.transform = 'translateY(0)'
       })
+      if (textRefSecond.current) {
+        textRefSecond.current.style.opacity = '1'
+        textRefSecond.current.style.transform = 'translateY(0)'
+      }
+      return
     }
 
-    // Batch-анимация карточек: группировка с меньшим stagger и более короткими анимациями
+    // Initialize title
+
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      if (textRefSecond.current) {
+        textRefSecond.current.textContent = 'Бренды, выбравшие нас'
+        gsap.set(textRefSecond.current, {
+          opacity: 0,
+          y: 50,
+          position: 'relative',
+          zIndex: 999,
+        })
+      }
+      return
+    }
+
+    // Batch animation for cards
     ScrollTrigger.batch('.card', {
       onEnter: (batch) => {
         gsap.to(batch, {
@@ -107,7 +125,7 @@ const FourthPage = () => {
       end: 'bottom 20%',
     })
 
-    // Главная временная шкала для анимаций прокрутки
+    // Master timeline for scroll-triggered animations
     const masterTL = gsap.timeline({
       scrollTrigger: {
         trigger: '.sectionFourthBlue',
@@ -124,7 +142,6 @@ const FourthPage = () => {
         { opacity: 0, scale: 6 },
         { opacity: 1, scale: 1, duration: 2, ease: 'power1.out' },
       )
-      // Если есть элемент с классом 'dog-2', анимация его появления
       .to('.dog-2', { opacity: 1, duration: 2, ease: 'power1.out' }, 0)
 
     masterTL.addLabel('blockSwitch', 2)
@@ -147,15 +164,14 @@ const FourthPage = () => {
       'showSecond',
     )
 
+    // Cleanup on unmount
     return () => {
-      // Очистка всех ScrollTrigger при размонтировании
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
   }, [])
 
   return (
     <section className="sectionFourth sectionFourthBlue">
-      {/* Видео на заднем фоне с атрибутом poster для быстрой отрисовки */}
       <video
         src={Video}
         autoPlay
@@ -184,7 +200,7 @@ const FourthPage = () => {
           loop
           playsInline
           loading="lazy"
-          poster="/path/to/poster.jpg" // Укажите корректный путь к статичному изображению
+          poster="/path/to/poster.jpg"
           style={{ paddingBottom: '10px' }}
           className="absolute top-0 left-0 w-full h-full object-cover"
         />
@@ -193,7 +209,7 @@ const FourthPage = () => {
         </div>
       </div>
 
-      <div className="relative h-full mt-[150px] flex flex-col items-center">
+      <div className="relative h-full mt-[100px] flex flex-col items-center md:flex hidden">
         <h2
           ref={textRefSecond}
           style={{
@@ -212,7 +228,6 @@ const FourthPage = () => {
         </h2>
       </div>
 
-      {/* Первый блок карточек */}
       <div className="firstBlock imgFourth max-w-[1240px] w-full m-auto">
         <div className={m.wrapperCard}>
           {imagesData.map((item, index) => (
@@ -242,7 +257,6 @@ const FourthPage = () => {
         </div>
       </div>
 
-      {/* Второй блок карточек */}
       <div
         className="secondBlock imgFourth max-w-[1240px] w-full m-auto"
         style={{ opacity: 0 }}
