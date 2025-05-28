@@ -1,20 +1,36 @@
 import React from 'react'
-import {Controller, useForm} from 'react-hook-form'
-import {useDispatch, useSelector} from 'react-redux'
-import {Film, Monitor, MonitorPlay, MonitorUp} from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  Film,
+  Monitor,
+  MonitorPlay,
+  MonitorUp,
+  Save,
+  Trash2,
+} from 'lucide-react'
 
-import {deleteOrder, fetchEditOrder, fetchOrder, fetchSingleOrder,} from '../../../../../../redux/order/orderSlice'
-import {DialogContent, DialogHeader, DialogTitle,} from '@/components/ui/dialog.jsx'
-import {toastConfig} from '../../../../../../utils/toastConfig'
+import {
+  deleteOrder,
+  fetchEditOrder,
+  fetchOrder,
+  fetchSingleOrder,
+} from '../../../../../../redux/order/orderSlice'
+import {
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog.jsx'
+import { toastConfig } from '../../../../../../utils/toastConfig'
 import 'react-datepicker/dist/react-datepicker.css'
 import style from './EditOrder.module.scss'
 import backendURL from '@/utils/url'
 import axios from 'axios'
-import {Label} from '@/components/ui/label.jsx'
-import {Textarea} from '@/components/ui/textarea.jsx'
+import { Label } from '@/components/ui/label.jsx'
+import { Textarea } from '@/components/ui/textarea.jsx'
 
-import {Input} from '@/components/ui/input.jsx'
-import {SelectTrigger} from '@/components/ui/selectTrigger.jsx'
+import { Input } from '@/components/ui/input.jsx'
+import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,16 +42,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog.jsx'
-import {Select, SelectContent, SelectGroup, SelectItem, SelectValue,} from '@/components/ui/select.jsx'
-import {Button} from '../../../../../ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectValue,
+} from '@/components/ui/select.jsx'
+import { Button } from '../../../../../ui/button'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
-
 
 const formatV = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
   { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
-  { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp  },
+  { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp },
 ]
 
 export default function EditOrder({
@@ -66,7 +87,7 @@ export default function EditOrder({
     watch,
     control,
     setValue,
-    onBlur
+    onBlur,
   } = useForm({
     defaultValues: {
       name: currentOrder.name,
@@ -150,8 +171,7 @@ export default function EditOrder({
       if (response && !response.error) {
         toast.success('Изминения успешно обновлены!')
         onClose()
-        dispatch(fetchSingleOrder(currentOrder.id));
-
+        dispatch(fetchSingleOrder(currentOrder.id))
       } else if (response.error.message) {
         toast.error('Что-то пошло не так!' + response.error.message)
         onClose()
@@ -176,7 +196,6 @@ export default function EditOrder({
           window.location.reload()
         }, 1500)
         dispatch(fetchOrder())
-
       })
       .catch((error) => {
         toast.error(`Ошибка завершения заказа: ${error.data.error.detail}`)
@@ -303,9 +322,9 @@ export default function EditOrder({
                   <SelectGroup>
                     {formatV.map((option, index) => (
                       <SelectItem key={index} value={option.value}>
-                        <div className='!flex items-center gap-1'>
-                          {option.icon &&
-                            <option.icon/>
+                        <div className="!flex items-center gap-1">
+                          {
+                            option.icon && <option.icon />
                             // <img src={option.icon} alt="" className='size-4'/>
                           }
                           {option.text}
@@ -332,7 +351,7 @@ export default function EditOrder({
                     onChange={taretCheckbox}
                     disabled={role !== 'admin'}
                   />
-                  
+
                   <span className={style.checkmark}></span>
                 </label> */}
                 <label
@@ -371,11 +390,15 @@ export default function EditOrder({
                       errors?.enddate ? 'border-red-500' : 'border-gray-300'
                     }   transition-all duration-300 text-sm `}
                     type="text"
-                    value={typeof value === 'number' ? value.toLocaleString('en-US') : value}
+                    value={
+                      typeof value === 'number'
+                        ? value.toLocaleString('en-US')
+                        : value
+                    }
                     onChange={(e) => {
-                      const rawValue = e.target.value.replace(/\D/g, '');
-                      const newValue = rawValue ? parseInt(rawValue, 10) : '';
-                      onChange(newValue);
+                      const rawValue = e.target.value.replace(/\D/g, '')
+                      const newValue = rawValue ? parseInt(rawValue, 10) : ''
+                      onChange(newValue)
                     }}
                     onBlur={onBlur} // Используем стандартный onBlur без повторного вызова onChange
                     name={name}
@@ -462,30 +485,13 @@ export default function EditOrder({
             // {...field}
             {...register('notes')}
           />
-          <div className="flex gap-4">
+          <div className="flex gap-4 mt-4">
             {role === 'admin' ? (
-              // <Button
-              //   className={`${
-              //     isValid && !isOrderCreated
-              //       ? 'bg-[#ff000066] hover:bg-red-500 border-2 border-red-500 hover:border-red-400'
-              //       : 'bg-[#616161]'
-              //   } w-full   h-[44px] text-white rounded-lg	mt-6`}
-              //   onClick={() => {
-              //     handleRemoveInventory()
-              //   }}
-              // >
-              //   Удалить
-              // </Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button
-                    className={`${
-                      isValid && !isOrderCreated
-                        ? 'bg-[#ff000066] hover:bg-red-500 border-2 border-red-500 hover:border-red-400'
-                        : 'bg-[#616161]'
-                    } w-full   h-[44px] text-white rounded-lg	mt-6`}
-                  >
+                  <Button variant="destructive" className="flex gap-1 w-full">
                     Удалить
+                    <Trash2 />
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -513,14 +519,10 @@ export default function EditOrder({
             ) : null}
 
             <Button
-              className={`${
-                isValid && !isOrderCreated
-                  ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-                  : 'bg-[#616161]'
-              } w-full   h-[44px] text-white rounded-lg	mt-6`}
               disabled={!isValid || isOrderCreated}
               isValid={true}
               type="submit"
+              className="w-full"
             >
               {isOrderCreated ? (
                 <>
@@ -530,30 +532,12 @@ export default function EditOrder({
                   </div>
                 </>
               ) : (
-                <span>Сохранить</span>
+                <div className="flex items-center gap-1">
+                  Сохранить
+                  <Save />
+                </div>
               )}
             </Button>
-            {/* <button
-              style={{ display: 'flex', alignItems: 'center' }}
-              type="submit"
-              // disabled={!isValid || isOrderCreated}
-              // className={
-              //   isValid && !isOrderCreated
-              //     ? style.btn__wrapper__btn
-              //     : style.btn__wrapper__disabled
-              // }
-            >
-              {isOrderCreated ? (
-                <>
-                  <span>Сохранить</span>
-                  <div className={style.loaderWrapper}>
-                    <div className={style.spinner}></div>
-                  </div>
-                </>
-              ) : (
-                <span>Сохранить</span>
-              )}
-            </button> */}
           </div>
         </form>
       </DialogContent>

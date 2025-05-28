@@ -26,12 +26,13 @@ import { toast } from 'react-hot-toast'
 import { fetchOrder } from '@/redux/order/orderSlice.js'
 import PlanPopoverCell from '@/components/Dashboard/Order/OpenOrder/PlanPopoverCell.jsx'
 import { truncate } from '@/utils/other.js'
+import Avtomatick from '@/components/Dashboard/Order/OpenOrder/AddInventory/Avtomatick.jsx'
 
 export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   const [columnFilters, setColumnFilters] = React.useState([])
   const { channel, total_count } = useSelector((state) => state.channel)
   const [globalFilter, setGlobalFilter] = React.useState('')
-
+  console.log(getOrder)
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
@@ -207,18 +208,10 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
           // Проверка на наличие значений
           if (onlineViews || totalOnlineViews) {
             return (
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '5px',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
+              <div className="flex gap-1 items-center justify-between">
                 <div
+                  className="ml-0.5 text-[15px]"
                   style={{
-                    marginLeft: '2px',
-                    fontSize: '15px',
                     background: `${
                       onceOrder?.target_country ? '#606afc' : 'transparent'
                     }`,
@@ -255,17 +248,16 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
             ) : (
               <div style={{ width: 'fit-content' }}>
                 <Button
-                  variant="outline"
+                  variant="outlineViolet"
                   onClick={() => {
                     setOpen(true)
                     setSelectedInventoryId(() => row.original.id)
                   }}
-                  style={{ backdropFilter: 'blur(10.3049px)' }}
-                  className="hover:scale-105 transition-all w-full h-auto px-2 py-1 hover:text-white rounded-lg flex items-center gap-1.5  bg-[#ffffff4d] hover:bg-violet-400 border border-transparent hover:border-violet-700"
+                  className="relative flex gap-1"
                 >
-                  <Star className="w-[20px] h-[20px] text-white" />
+                  <Star className="size-5 text-white" />
                   {row.original.video_content.link_to_video ? (
-                    <div className="bg-violet-500 w-4 h-4 rounded-full absolute -right-2 -top-2"></div>
+                    <div className="bg-violet-500 w-4 h-4 rounded-full absolute -right-1.5 -top-1.5"></div>
                   ) : (
                     ''
                   )}
@@ -273,7 +265,6 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
                 </Button>
               </div>
             )}
-
             {row.original.status === 'in_use' ? (
               <div>
                 <Button
@@ -288,6 +279,7 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
             ) : (
               ''
             )}
+            <Avtomatick fetchGetOrder={fetchGetOrder} row={row.original} />
           </div>
         ),
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive

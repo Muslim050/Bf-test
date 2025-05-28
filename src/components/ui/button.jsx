@@ -9,18 +9,25 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-[#2A85FF] text-primary-foreground hover:bg-[#2A85FF99]',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+
+        //полупрозрачные кнопки
         outline:
-          'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+          'border border-input bg-[#ffffff4d] hover:bg-accent hover:text-accent-foreground',
+        //полупрозрачные кнопки
+        //Кнопка Проверить
+        outlineViolet:
+          'border-2 border-transparent hover:bg-violet-400 hover:border-violet-700 bg-[#ffffff4d]  hover:text-white',
+        //Кнопка Проверить
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
+        link: 'text-white underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-10 px-4 py-2',
+        default: 'h-10 px-2 py-2 rounded-xl',
         sm: 'h-9 rounded-md px-3',
         lg: 'h-11 rounded-md px-8',
         icon: 'h-10 w-10',

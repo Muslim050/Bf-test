@@ -23,13 +23,13 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog.jsx'
 import EditOrderModal from '../modals/EditOrder/EditOrder.jsx'
-import { SquareCheckBig, Copy, Pencil, MessageSquareText } from 'lucide-react';
+import { Copy, MessageSquareText, Pencil, SquareCheckBig } from 'lucide-react'
 
 const PopoverButtons = ({
   advert,
   setShowModalEditAdmin,
   handleFinishOrder,
-  isOver100Percent
+  isOver100Percent,
 }) => {
   //нотификация на кнопке ЗАВЕРШИТЬ
   // const isOver100Percent =
@@ -95,7 +95,6 @@ const PopoverButtons = ({
                       setCurrentOrder(advert)
                     }}
                     className="hover:scale-125 transition-all p-0 m-0"
-                    style={{ color: 'var(--text-color)' }} // Динамическая переменная для цвета текста
                   >
                     <MessageSquareText className="w-[24px] h-[24px] hover:text-green-500" />
                   </Button>
@@ -103,22 +102,20 @@ const PopoverButtons = ({
                 <PopoverContent className="w-full  bg-white bg-opacity-30 backdrop-blur-md rounded-xl">
                   <div className="grid gap-4 ">
                     <div className="w-80">
-                      <h4 className="pb-4 font-medium leading-none text-white border-b-[#F9F9F926] border-b">
+                      <div className="pb-2 flex items-center justify-between font-medium leading-none text-white border-b-[#F9F9F926] border-b">
                         Комментарий
-                      </h4>
-                      <p className="text-sm text-white break-words pt-4">
-                        {advert.notes}
-                      </p>
-                      <div className="flex mt-10 float-right">
                         <Button
                           style={{ color: 'var(--text-color)' }} // Динамическая переменная для цвета текста
                           variant="link"
-                          className=" hover:text-[#2A85FF] "
+                          className={` hover:scale-125 transition-all p-0 relative`}
                           onClick={copyToClipboard}
                         >
                           <Copy />
                         </Button>
                       </div>
+                      <p className="text-sm text-white break-words pt-4">
+                        {advert.notes}
+                      </p>
                     </div>
                   </div>
                 </PopoverContent>
@@ -140,19 +137,12 @@ const PopoverButtons = ({
                 style={{ color: 'var(--text-color)' }} // Динамическая переменная для цвета текста
               >
                 {isOver100Percent && (
-                  <div className='absolute -right-1 top-1'>
+                  <div className="absolute -right-1 top-1">
                     <span className="relative flex h-3 w-3">
-  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
-</span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+                    </span>
                   </div>
-                  // <CircularBadge
-                  //   style={{
-                  //     backgroundColor: 'red',
-                  //     width: '15px',
-                  //     height: '15px',
-                  //   }}
-                  // />
                 )}
                 <SquareCheckBig
                   className={`${isOver100Percent && 'text-red-600'} w-[24px] h-[24px]  hover:text-red-500`}
@@ -160,7 +150,7 @@ const PopoverButtons = ({
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
-            <AlertDialogHeader>
+              <AlertDialogHeader>
                 <AlertDialogTitle className="text-red-500">
                   Вы уверены, что хотите финишировать заказ?
                 </AlertDialogTitle>

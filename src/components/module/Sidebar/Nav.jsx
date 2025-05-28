@@ -7,34 +7,29 @@ import { Link } from 'react-router-dom'
 import { cn } from '@/lib/utils.js'
 import { buttonVariants } from '@/components/ui/button'
 import Cookies from 'js-cookie'
-import {Badge} from "@/components/ui/badge.jsx";
-import React from "react";
-import axios from "axios";
-import backendURL from "@/utils/url.js";
-import {fetchInventory} from "@/redux/inventory/inventorySlice.js";
-import {fetchChannel} from "@/redux/channel/channelSlice.js";
-import {fetchVideos} from "@/redux/video/videoSlice.js";
-import {fetchOrder} from "@/redux/order/orderSlice.js";
-import {useDispatch, useSelector} from "react-redux";
-import {menuItems} from "@/components/module/Sidebar/MenuItems.js";
-import {hasRole} from "@/utils/roleUtils.js";
-import { ChevronDown } from 'lucide-react'
-import { ChevronUp } from 'lucide-react'
+import { Badge } from '@/components/ui/badge.jsx'
+import React from 'react'
+import axios from 'axios'
+import backendURL from '@/utils/url.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { menuItems } from '@/components/module/Sidebar/MenuItems.js'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel,
-  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from "@/components/ui/alert-dialog.jsx";
-import {LogoutSvg} from "@/assets/SidebarsIcons-ui.jsx";
-import useMedia from 'use-media';
-import {fetchOnceListSentToPublisher} from "@/redux/order/SentToPublisher.js";
-
-
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog.jsx'
+import { LogoutSvg } from '@/assets/SidebarsIcons-ui.jsx'
+import useMedia from 'use-media'
 
 const Nav = ({ links, isCollapsed, handleLogout }) => {
-  const isMobile = useMedia({ maxWidth: 640 });
+  const isMobile = useMedia({ maxWidth: 640 })
 
   const userRole = Cookies.get('role') // Получаем роль из Cookies
   const userRoles = userRole ? [userRole] : [] // Преобразуем строку в массив, если существует роль
@@ -47,9 +42,7 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
   const hasAccess = (roles) => {
     return roles?.some((role) => userRoles.includes(role)) // Проверяем наличие хотя бы одной роли
   }
-  const { listsentPublisher } = useSelector(
-    (state) => state.sentToPublisher,
-  )
+  const { listsentPublisher } = useSelector((state) => state.sentToPublisher)
   const dispatch = useDispatch()
   const user = Cookies.get('role')
 
@@ -95,7 +88,7 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       if (user === 'admin') {
-        await fetchfilteredOrders({ status: 'sent' });
+        await fetchfilteredOrders({ status: 'sent' })
         // dispatch(fetchInventory({ status: 'open' }));
         // dispatch(fetchChannel());
         // dispatch(fetchVideos())
@@ -109,21 +102,19 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
         // dispatch(fetchChannel());
         // dispatch(fetchVideos());
         // dispatch(fetchOnceListSentToPublisher({ is_deactivated: false }))
-
       }
-    };
+    }
 
-    fetchData();
-  }, [dispatch, user]);
-
-
+    fetchData()
+  }, [dispatch, user])
 
   //Заказы
   // const filteredOrdersAdvertiser = order?.filter(
   //   (i) => i.status === 'accepted' || i.status === 'in_progress',
   // ) || []
   const filteredOrdersAdvertiser = order?.filter || []
-  const filteredComplitedI = сomplitedInventories.filter((i) => i.removal_date === null) || []
+  const filteredComplitedI =
+    сomplitedInventories.filter((i) => i.removal_date === null) || []
   const filteredConfirmedI = сonfirmedInventories.filter((i) => i) || []
   //Заказы
 
@@ -132,8 +123,7 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
   // const filteredChannel = channel.filter((i) => i.is_connected === false) || []
   const filteredChannel = channel.filter || []
   // const filteredChannelIsActive = channel.filter((i) => i.is_active === false)
-    const filteredChannelIsActive = channel.filter || []
-
+  const filteredChannelIsActive = channel.filter || []
 
   // const filtredSentPublisher = listsentPublisher.filter((i) => i.order_status === 'in_review') || []
   const filtredSentPublisher = listsentPublisher.filter || []
@@ -147,80 +137,85 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
 
   //Видео
   // const filteredVideo = videos && videos?.filter((i) => i.link_to_video === null) || []
-  const filteredVideo = videos && videos?.filter || []
+  const filteredVideo = (videos && videos?.filter) || []
 
   //Видео
   const updateMenuItems = (items) => {
-    return items.map(item => {
-
+    return items.map((item) => {
       if (item.title === 'Заказы') {
         if (userRole === 'advertiser' || userRole === 'advertising_agency') {
           return {
             ...item,
             color: 'green',
             label: filteredOrdersAdvertiser.length.toString(),
-          };
+          }
         } else if (userRole === 'publisher' || userRole === 'channel') {
           return {
             ...item,
-            color:  filtredSentPublisher.length > 0 ? 'green' : "bg-[#ff9800]",
-            label: filtredSentPublisher.length.toString()
-          };
+            color: filtredSentPublisher.length > 0 ? 'green' : 'bg-[#ff9800]',
+            label: filtredSentPublisher.length.toString(),
+          }
         } else if (userRole === 'admin') {
           return {
             ...item,
-            color:  'green',
+            color: 'green',
             label: filteredOrders.length || filteredOrders,
-          };
+          }
         }
       }
 
       if (item.title === 'Каналы') {
-        if (userRole === 'publisher' || userRole === 'admin' || userRole === 'channel') {
+        if (
+          userRole === 'publisher' ||
+          userRole === 'admin' ||
+          userRole === 'channel'
+        ) {
           return {
             ...item,
-            color:  'bg-red-500',
+            color: 'bg-red-500',
 
             label: filteredChannel.length.toString(),
-          };
+          }
           // eslint-disable-next-line no-dupe-else-if
         }
       }
 
-      if (item.title === 'Видео' && (userRole === 'publisher' || userRole === 'admin' || userRole === 'channel')) {
+      if (
+        item.title === 'Видео' &&
+        (userRole === 'publisher' ||
+          userRole === 'admin' ||
+          userRole === 'channel')
+      ) {
         return {
           ...item,
-          color:  'bg-red-500',
+          color: 'bg-red-500',
 
           label: filteredVideo.length.toString(),
-        };
+        }
       }
-      return item;
-    });
-  };
-  const updatedMenuItems = updateMenuItems(menuItems);
+      return item
+    })
+  }
+  const updatedMenuItems = updateMenuItems(menuItems)
 
   const [isSubMenuOpen, setIsSubMenuOpen] = React.useState(false)
-
 
   const toggleSubMenu = (title) => {
     // Только если sidebar открыт, позволяем открывать аккордеон
     if (open) {
-      setIsSubMenuOpen(prevTitle => (prevTitle === title ? null : title));
+      setIsSubMenuOpen((prevTitle) => (prevTitle === title ? null : title))
     }
-  };
-
+  }
 
   return (
     <div
       data-collapsed={isCollapsed}
       className="group flex flex-col gap-4 sm:py-5 py-3.5   relative z-10"
     >
-      <nav
-        className="grid px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2 ">
+      <nav className="grid px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2 ">
         {updatedMenuItems
-          .filter ((item) => hasAccess (item.roles))
-          .map ((link, index) => {
+          .filter((item) => hasAccess(item.roles))
+          .map((link, index) => {
             const isActive = location.pathname === link.to // Проверяем, активна ли ссылка
             //когда меню закрыта
             return isCollapsed ? (
@@ -228,34 +223,34 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
                 <TooltipTrigger asChild>
                   <Link
                     to={link.to}
-                    className={cn (
-                      buttonVariants ({variant: link.variant, size: 'icon'}),
+                    className={cn(
+                      buttonVariants({ variant: link.variant, size: 'icon' }),
                       'h-9 w-9',
                       link.variant === 'default' &&
-                      'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+                        'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
                       isActive && 'bg-[var(--bg-color)] text-white', // Класс для активного состояния
                       'h-[35px] w-[35px] sm:h-[45px] sm:w-[45px] rounded-[12px] hover:scale-105 transition-all relative ',
                     )}
                   >
-                    <link.icon className="h-5 w-5 sm:h-6 sm:w-6"/>
+                    <link.icon className="h-5 w-5 sm:h-6 sm:w-6" />
                     <span className="sr-only">{link.title}</span>
                     <>
                       {link.label > 0 ? (
                         <>
-
-
-                    <span
-                      className='absolute -top-3 -right-2'
-                    >
-                        <Badge className={`px-1.5 py-0 ${link.color === 'green' ? 'bg-[#05c800]' : link.color}`}>
-                          {link.label}
-                          {(link.title === 'Каналы' && userRole === 'admin') &&
-                            <span>
-                            +{filteredChannelIsActive.length.toString ()}
+                          <span className="absolute -top-3 -right-2">
+                            <Badge
+                              className={`px-1.5 py-0 ${link.color === 'green' ? 'bg-[#05c800]' : link.color}`}
+                            >
+                              {link.label}
+                              {link.title === 'Каналы' &&
+                                userRole === 'admin' && (
+                                  <span>
+                                    +{filteredChannelIsActive.length.toString()}
+                                  </span>
+                                )}
+                            </Badge>
                           </span>
-                          }
-                        </Badge>
-                      </span></>
+                        </>
                       ) : null}
                     </>
                   </Link>
@@ -264,141 +259,149 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
                   <span>{link.title}</span>
                   {link.accordion && link.subMenu && (
                     <div className="flex flex-col">
-                      {link.subMenu?.filter(subItem => hasAccess(subItem.roles)).map((subItem, subIndex) => (
-                        <Link
-                          key={subIndex}
-                          to={subItem.to}
-                          className={cn (
-                            buttonVariants ({variant: link.variant, size: 'sm'}),
-                            link.variant === 'ghost' &&
-                            'dark:bg-muted dark:text-white dark:hover:bg-red-500 dark:hover:text-white',
-                            isActive && 'bg-[var(--bg-color)] text-white', // Класс для активного состояния
-                            'justify-start h-[35px] rounded-[12px] hover:scale-105 transition-all border border-transparent hover:border-[var(--bg-color)] glass-background',
-                          )}
-                          // className="block py-1 text-sm hover:underline"
-                        >
-                          {subItem.title}
-                        </Link>
-                      ))}
+                      {link.subMenu
+                        ?.filter((subItem) => hasAccess(subItem.roles))
+                        .map((subItem, subIndex) => (
+                          <Link
+                            key={subIndex}
+                            to={subItem.to}
+                            className={cn(
+                              buttonVariants({
+                                variant: link.variant,
+                                size: 'sm',
+                              }),
+                              link.variant === 'ghost' &&
+                                'dark:bg-muted dark:text-white dark:hover:bg-red-500 dark:hover:text-white',
+                              isActive && 'bg-[var(--bg-color)] text-white', // Класс для активного состояния
+                              'justify-start h-[35px] rounded-[12px] hover:scale-105 transition-all border border-transparent hover:border-[var(--bg-color)] glass-background',
+                            )}
+                            // className="block py-1 text-sm hover:underline"
+                          >
+                            {subItem.title}
+                          </Link>
+                        ))}
                     </div>
                   )}
                 </TooltipContent>
-
               </Tooltip>
+            ) : (
               //когда меню закрыта
 
-
-            ) : (
               <>
                 <Link
                   key={index}
                   to={link.to}
-                  className={cn (
-                    buttonVariants ({variant: link.variant, size: 'sm'}),
+                  className={cn(
+                    buttonVariants({ variant: link.variant, size: 'sm' }),
                     link.variant === 'ghost' &&
-                    'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+                      'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
                     isActive && 'bg-[var(--bg-color)] text-white', // Класс для активного состояния
                     'justify-start h-[50px] rounded-[12px] hover:scale-105 transition-all flex justify-between',
                   )}
-                  onClick={link.accordion ? () => toggleSubMenu (link.title) : null}
-
+                  onClick={
+                    link.accordion ? () => toggleSubMenu(link.title) : null
+                  }
                 >
-                  <div className='flex items-center'>
-                    <link.icon className="mr-2 h-6 w-6"/>
+                  <div className="flex items-center">
+                    <link.icon className="mr-2 h-6 w-6" />
                     {link.title}
                   </div>
 
                   <div>
                     {link.label > 0 ? (
                       <>
-                    <span
-                      className={cn (
-                        'ml-auto',
-                        link.variant === 'default' &&
-                        'text-background dark:text-white',
-                      )}
-                    >
-
-                        <Badge className={`px-1.5 py-0 ${link.color === 'green' ? 'bg-[#05c800]' : link.color}`}>
-                      {link.label}
-                          {(link.title === 'Каналы' && userRole === 'admin') &&
-                      <span
-                        className={cn (
-                          'ml-auto',
-                          link.variant === 'default' &&
-                          'text-background dark:text-white',
-                        )}
-                      >
-                          +{filteredChannelIsActive.length.toString ()}
-
-                      </span>
-                    }
-                    </Badge>
-                  </span></>
+                        <span
+                          className={cn(
+                            'ml-auto',
+                            link.variant === 'default' &&
+                              'text-background dark:text-white',
+                          )}
+                        >
+                          <Badge
+                            className={`px-1.5 py-0 ${link.color === 'green' ? 'bg-[#05c800]' : link.color}`}
+                          >
+                            {link.label}
+                            {link.title === 'Каналы' &&
+                              userRole === 'admin' && (
+                                <span
+                                  className={cn(
+                                    'ml-auto',
+                                    link.variant === 'default' &&
+                                      'text-background dark:text-white',
+                                  )}
+                                >
+                                  +{filteredChannelIsActive.length.toString()}
+                                </span>
+                              )}
+                          </Badge>
+                        </span>
+                      </>
                     ) : null}
-                    <div className='float-right'>
+                    <div className="float-right">
                       {link.accordion &&
-                        (isSubMenuOpen ? (
-                          <ChevronUp/>
-                        ) : (
-                          <ChevronDown/>
-                        ))}
+                        (isSubMenuOpen ? <ChevronUp /> : <ChevronDown />)}
                     </div>
                   </div>
                 </Link>
 
-
-                {hasAccess (link.roles) && link.accordion && isCollapsed === false && isSubMenuOpen === link.title && (
-                  <div className="pl-9 pb-2 ">
-                    {/*{link.subMenu.map ((subItem, subIndex) => (*/}
-                    {/*  <Link*/}
-                    {/*    key={subIndex}*/}
-                    {/*    to={subItem.to}*/}
-                    {/*    className={cn (*/}
-                    {/*      buttonVariants ({variant: link.variant, size: 'sm'}),*/}
-                    {/*      link.variant === 'ghost' &&*/}
-                    {/*      'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',*/}
-                    {/*      isActive && 'bg-[var(--bg-color)] text-white', // Класс для активного состояния*/}
-                    {/*      'justify-start h-[40px] rounded-[12px] w-full',*/}
-                    {/*    )}>*/}
-                    {/*    {subItem.title}*/}
-                    {/*  </Link>*/}
-                    {/*))}*/}
-                    {link.subMenu?.filter(subItem => hasAccess(subItem.roles)).map((subItem, subIndex) => (
-                      <Link key={subIndex} to={subItem.to} className={cn (
-                            buttonVariants ({variant: link.variant, size: 'sm'}),
-                            link.variant === 'ghost' &&
-                            'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
-                            isActive && 'bg-[var(--bg-color)] text-white', // Класс для активного состояния*/}
-                            'justify-start h-[40px] rounded-[12px] w-full',
-                          )}>
-                        {subItem.title}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-
-
+                {hasAccess(link.roles) &&
+                  link.accordion &&
+                  isCollapsed === false &&
+                  isSubMenuOpen === link.title && (
+                    <div className="pl-9 pb-2 ">
+                      {/*{link.subMenu.map ((subItem, subIndex) => (*/}
+                      {/*  <Link*/}
+                      {/*    key={subIndex}*/}
+                      {/*    to={subItem.to}*/}
+                      {/*    className={cn (*/}
+                      {/*      buttonVariants ({variant: link.variant, size: 'sm'}),*/}
+                      {/*      link.variant === 'ghost' &&*/}
+                      {/*      'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',*/}
+                      {/*      isActive && 'bg-[var(--bg-color)] text-white', // Класс для активного состояния*/}
+                      {/*      'justify-start h-[40px] rounded-[12px] w-full',*/}
+                      {/*    )}>*/}
+                      {/*    {subItem.title}*/}
+                      {/*  </Link>*/}
+                      {/*))}*/}
+                      {link.subMenu
+                        ?.filter((subItem) => hasAccess(subItem.roles))
+                        .map((subItem, subIndex) => (
+                          <Link
+                            key={subIndex}
+                            to={subItem.to}
+                            className={cn(
+                              buttonVariants({
+                                variant: link.variant,
+                                size: 'sm',
+                              }),
+                              link.variant === 'ghost' &&
+                                'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+                              isActive && 'bg-[var(--bg-color)] text-white', // Класс для активного состояния*/}
+                              'justify-start h-[40px] rounded-[12px] w-full',
+                            )}
+                          >
+                            {subItem.title}
+                          </Link>
+                        ))}
+                    </div>
+                  )}
               </>
             )
+          })}
 
-          })
-
-        }
-
-        {
-          isMobile ? <div className='flex  flex-col justify-end px-2 min-h-[50px]'>
+        {isMobile ? (
+          <div className="flex  flex-col justify-end px-2 min-h-[50px]">
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <div
-                  className=' group py-2    rounded-[12px]  h-full cursor-pointer'
+                  className=" group py-2    rounded-[12px]  h-full cursor-pointer"
 
                   // className={`hover:scale-105 transition-all ${baseStyles} hover:${inactiveStyles} group hover:text-red-500 hover:bg-red-200 cursor-pointer`}
                 >
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex items-center relative ">
-                        <LogoutSvg className="sm:w-[26px] sm:h-[26px] w-[20px] h-[20px] text-red-500"/>
+                        <LogoutSvg className="sm:w-[26px] sm:h-[26px] w-[20px] h-[20px] text-red-500" />
                         {!isCollapsed ? (
                           <span
                             className={`ml-1.5 transition-opacity duration-500 ease-in-out text-white  ${
@@ -415,7 +418,6 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
                         ) : null}
                       </div>
                     </TooltipTrigger>
-
                   </Tooltip>
                 </div>
               </AlertDialogTrigger>
@@ -428,7 +430,7 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
                     Вы точно хотите выйти?
                   </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter className='!flex'>
+                <AlertDialogFooter className="!flex">
                   <AlertDialogCancel className="text-white w-[100px]">
                     Нет
                   </AlertDialogCancel>
@@ -442,9 +444,7 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
               </AlertDialogContent>
             </AlertDialog>
           </div>
-: null
-        }
-
+        ) : null}
       </nav>
     </div>
   )
