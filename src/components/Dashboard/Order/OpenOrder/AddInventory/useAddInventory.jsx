@@ -269,6 +269,7 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
               <div>
                 <Button
                   onClick={() => handleDeactivateInventory(row.original.id)}
+                  disabled={row.original.is_auto_deactivation_mode}
                   style={{ backdropFilter: 'blur(10.3049px)' }}
                   className="hover:scale-105 transition-all w-full h-auto px-1.5 py-1 rounded-[12px] flex items-center gap-1.5  bg-[#ffffff4d] hover:bg-red-400 border border-transparent hover:border-red-500"
                 >
@@ -279,7 +280,11 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
             ) : (
               ''
             )}
-            <Avtomatick fetchGetOrder={fetchGetOrder} row={row.original} />
+            {row.original.status === 'in_use' ? (
+              <Avtomatick fetchGetOrder={fetchGetOrder} row={row.original} />
+            ) : (
+              ''
+            )}
           </div>
         ),
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
