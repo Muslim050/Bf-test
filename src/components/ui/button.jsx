@@ -9,18 +9,18 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-[#2A85FF] text-primary-foreground hover:bg-[#2A85FF99]',
+        default:
+          'bg-brandPrimary-1 text-primary-foreground hover:bg-brandPrimary-50',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
 
         //полупрозрачные кнопки
         outline:
           'border border-input bg-[#ffffff4d] hover:bg-accent hover:text-accent-foreground',
-        //полупрозрачные кнопки
         //Кнопка Проверить
-        outlineViolet:
-          'border-2 border-transparent hover:bg-violet-400 hover:border-violet-700 bg-[#ffffff4d]  hover:text-white',
-        //Кнопка Проверить
+        outlineViolet: ' hover:bg-violet-400 bg-[#ffffff4d]  hover:text-white',
+        //Кнопка Завершить
+        outlineDeactivate: 'hover:bg-red-400 bg-[#ffffff4d]  hover:text-white',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',

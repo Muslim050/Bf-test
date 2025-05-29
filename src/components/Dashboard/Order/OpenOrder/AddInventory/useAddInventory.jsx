@@ -19,18 +19,24 @@ import { FormatFormatter } from '@/utils/FormatFormatter.jsx'
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { SquareArrowOutUpRight, SquareCheckBig, Star } from 'lucide-react'
+import {
+  SquareArrowOutUpRight,
+  SquareCheckBig,
+  Star,
+  Zap,
+  ZapOff,
+} from 'lucide-react'
 import Cookies from 'js-cookie'
 import { deactivateInventories } from '@/redux/orderStatus/orderStatusSlice.js'
 import { toast } from 'react-hot-toast'
 import { fetchOrder } from '@/redux/order/orderSlice.js'
-import PlanPopoverCell from '@/components/Dashboard/Order/OpenOrder/PlanPopoverCell.jsx'
+import PlanPopoverCell from '@/components/module/Order/EditView/PlanPopoverCell.jsx'
 import { truncate } from '@/utils/other.js'
-import Avtomatick from '@/components/Dashboard/Order/OpenOrder/AddInventory/Avtomatick.jsx'
+import Avtomatick from '@/components/module/Order/Avtomatick.jsx'
 
 export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   const [columnFilters, setColumnFilters] = React.useState([])
-  const { channel, total_count } = useSelector((state) => state.channel)
+  const { total_count } = useSelector((state) => state.channel)
   const [globalFilter, setGlobalFilter] = React.useState('')
   console.log(getOrder)
   const [pagination, setPagination] = React.useState({
@@ -50,7 +56,7 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   useEffect(() => {
     fetchGetOrder()
   }, [])
-  const [currentOnceOrder, setCurrentOnceOrder] = useState(onceOrder)
+  const [setCurrentOnceOrder] = useState(onceOrder)
 
   useEffect(() => {
     setCurrentOnceOrder(onceOrder) // Обновляем состояние каждый раз, когда onceOrder меняется
@@ -130,20 +136,14 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
                   <a
                     href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
                     target="_blank"
-                    style={{
-                      display: 'inline-flex',
-                      gap: '4px',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      cursor:
-                        row.verified_link_with_timecode === null
-                          ? 'not-allowed'
-                          : 'pointer',
-                    }}
-                    className={`underline ${
+                    className={`underline inline-flex gap-1 items-center justify-between ${
                       row.verified_link_with_timecode === null
                         ? ' text-gray-500'
                         : 'text-[#A7CCFF] hover:text-[#3282f1]'
+                    } ${
+                      row.verified_link_with_timecode === null
+                        ? 'cursor-not-allowed'
+                        : 'cursor-pointer'
                     }`}
                     onClick={(e) => {
                       if (row.verified_link_with_timecode === null) {
@@ -172,7 +172,7 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         cell: ({ row }) => (
           <PlanPopoverCell row={row} fetchGetOrder={fetchGetOrder} />
         ),
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        filterFn: 'includesStringSensitive',
         header: () => <span>Порог показов</span>,
       },
       {
@@ -270,8 +270,8 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
                 <Button
                   onClick={() => handleDeactivateInventory(row.original.id)}
                   disabled={row.original.is_auto_deactivation_mode}
-                  style={{ backdropFilter: 'blur(10.3049px)' }}
-                  className="hover:scale-105 transition-all w-full h-auto px-1.5 py-1 rounded-[12px] flex items-center gap-1.5  bg-[#ffffff4d] hover:bg-red-400 border border-transparent hover:border-red-500"
+                  variant="outlineDeactivate"
+                  className="flex gap-1"
                 >
                   <SquareCheckBig className="w-[20px] h-[20px] text-white" />
                   Завершить
@@ -281,10 +281,42 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
               ''
             )}
             {row.original.status === 'in_use' ? (
-              <Avtomatick fetchGetOrder={fetchGetOrder} row={row.original} />
-            ) : (
-              ''
-            )}
+              <>
+                <Avtomatick fetchGetOrder={fetchGetOrder} row={row.original} />
+
+                {row.original.status === 'in_use' ||
+                row.original.status === 'inactive' ? (
+                  <>
+                    {row.original.is_automatically_deactivated !== null &&
+                      (row.original.is_automatically_deactivated ? (
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Zap
+                              className="text-green-500"
+                              title="Автоматический режим включен"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent className="flex flex-col gap-2">
+                            Авто
+                          </TooltipContent>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <ZapOff
+                              className="text-gray-400"
+                              title="Автоматический режим выключен"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent className="flex flex-col gap-2">
+                            Ручное
+                          </TooltipContent>
+                        </Tooltip>
+                      ))}
+                  </>
+                ) : null}
+              </>
+            ) : null}
           </div>
         ),
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive

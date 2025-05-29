@@ -2,15 +2,13 @@ import { Controller, useForm } from 'react-hook-form'
 import React from 'react'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
-import { useDispatch } from 'react-redux'
 import backendURL from '@/utils/url.js'
 import { Input } from '@/components/ui/input.jsx'
-import { Label } from '@/components/ui/label.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import Cookies from 'js-cookie'
-import { Check } from 'lucide-react';
+import { Check } from 'lucide-react'
 
-const PopoverEditViewIventory = ({setOpenPopover,fetchGetOrder,item}) => {
+const PopoverEditViewIventory = ({ setOpenPopover, fetchGetOrder, item }) => {
   const {
     formState: { errors, isValid },
     handleSubmit,
@@ -31,8 +29,10 @@ const PopoverEditViewIventory = ({setOpenPopover,fetchGetOrder,item}) => {
     try {
       const response = await axios.post(
         `${backendURL}/inventory/update-expected-views-count-view`,
-        {inventory_id: item.original.id ,
-          expected_number_of_views: expectedView },
+        {
+          inventory_id: item.original.id,
+          expected_number_of_views: expectedView,
+        },
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -43,7 +43,7 @@ const PopoverEditViewIventory = ({setOpenPopover,fetchGetOrder,item}) => {
       )
       if (response.data) {
         toast.success('Данные успешно обновлены!')
-        setOpenPopover(false); // Закрываем Popover
+        setOpenPopover(false) // Закрываем Popover
         await fetchGetOrder()
       }
     } catch (error) {
@@ -89,20 +89,14 @@ const PopoverEditViewIventory = ({setOpenPopover,fetchGetOrder,item}) => {
           )}
         />
         <Button
+          variant="default"
           onClick={handleSubmit(onSubmit)}
-          className={`${
-            isValid
-              ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-              : 'bg-[#616161]'
-          }   h-[44px] text-white rounded-2xl	px-2`}
           disabled={!isValid}
           isValid={true}
         >
           <Check />
         </Button>
       </div>
-
-
     </div>
   )
 }
