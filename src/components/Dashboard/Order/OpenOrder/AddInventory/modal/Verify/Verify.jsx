@@ -77,54 +77,56 @@ function Verify({
             Модерация рекламы
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex items-end gap-2">
-            <div className="grid w-full">
-              <Label className="text-sm	text-white">
-                Ссылка на Видео
-                <span className="text-red-500 ml-0.5">*</span>
-              </Label>
-              <Input
-                type="text"
-                placeholder="Ссылка на Видео"
-                autoComplete="off"
-                {...register('linkvideo', {
-                  required: 'Поле обезательно к заполнению',
-                })}
-                className={`border ${
-                  errors?.linkvideo ? 'border-red-500' : 'border-gray-300'
-                }   transition-all duration-300 text-sm `}
-              />
-            </div>
-            <Tooltip>
-              <TooltipTrigger>
-                {videoLink.video_content.link_to_video ? (
-                  <Link
-                    to={`${videoLink.video_content.link_to_video}&t=${videoLink.start_at}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-[#2A85FF] size-10 rounded-xl text-white hover:bg-[#2A85FF99] flex justify-center items-center "
-                  >
-                    <ExternalLink className="size-6" />
-                  </Link>
-                ) : (
-                  <Button disabled>
-                    <ExternalLink />
-                  </Button>
-                )}
-              </TooltipTrigger>
-              <TooltipContent>Ссылка на Видео для проверки</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button disabled={!isValid} variant="default" isValid={true}>
-                  <Paperclip />
+        <div className="flex items-end gap-2">
+          <Tooltip>
+            <TooltipTrigger>
+              {videoLink.video_content.link_to_video ? (
+                <Link
+                  to={`${videoLink.video_content.link_to_video}&t=${videoLink.start_at}`}
+                  target="_blank"
+                  className="bg-[#2A85FF] size-10 rounded-xl text-white hover:bg-[#2A85FF99] flex justify-center items-center "
+                >
+                  <ExternalLink className="size-6" />
+                </Link>
+              ) : (
+                <Button disabled>
+                  <ExternalLink />
                 </Button>
-              </TooltipTrigger>
-              <TooltipContent>Прикрепить</TooltipContent>
-            </Tooltip>
-          </div>
-        </form>
+              )}
+            </TooltipTrigger>
+            <TooltipContent>Ссылка на Видео для проверки</TooltipContent>
+          </Tooltip>
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <div className="flex items-end gap-2">
+              <div className="grid w-full">
+                <Label className="text-sm	text-white">
+                  Ссылка на Видео
+                  <span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  placeholder="Ссылка на Видео"
+                  autoComplete="off"
+                  {...register('linkvideo', {
+                    required: 'Поле обезательно к заполнению',
+                  })}
+                  className={`border ${
+                    errors?.linkvideo ? 'border-red-500' : 'border-gray-300'
+                  }   transition-all duration-300 text-sm `}
+                />
+              </div>
+
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button disabled={!isValid} variant="default" isValid={true}>
+                    <Paperclip />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Прикрепить</TooltipContent>
+              </Tooltip>
+            </div>
+          </form>
+        </div>
       </DialogContent>
     </>
   )
