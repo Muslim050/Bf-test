@@ -2,6 +2,7 @@ import React from 'react'
 import style from './AdvertStatus.module.scss'
 
 import { formatDate } from '@/utils/formatterDate.jsx'
+
 const statusTexts = {
   sent: 'Отправлено',
   in_review: 'Рассматривается',
@@ -29,7 +30,7 @@ const AdvertStatus = ({ status, children, endDate, className }) => {
       style={wrapperStyles}
     >
       {status === 'finished' || status === 'inactive' ? (
-        <div className='text-white'>
+        <div className="text-[var(--text)]">
           {statusText}
           &nbsp;
           {formatDate(endDate)}

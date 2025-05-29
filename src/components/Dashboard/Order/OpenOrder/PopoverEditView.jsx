@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input.jsx'
 import { Label } from '@/components/ui/label.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import Cookies from 'js-cookie'
-import axiosInstance from "@/api/api.js";
+import axiosInstance from '@/api/api.js'
 
 const PopoverEditView = ({
   setOpenPopoverIndex,
@@ -20,11 +20,10 @@ const PopoverEditView = ({
   const [cpm, setCpm] = React.useState([])
   const dispatch = useDispatch()
   const [budgett, setBudgett] = React.useState(0)
-  console.log (item)
+  console.log(item)
   const fetchCpm = async () => {
-
     const response = await axiosInstance.get(
-      `${backendURL}/order/cpm/?advertiser=${onceOrder.advertiser.id}`
+      `${backendURL}/order/cpm/?advertiser=${onceOrder.advertiser.id}`,
     )
     setCpm(response.data.data)
   }
@@ -39,8 +38,12 @@ const PopoverEditView = ({
       order: expandedRows,
       channel: item.original.channel?.id,
       format: item.original.format,
-      startdate: item.original.start_date ? item.original.start_date.substring(0, 10) : '',
-      enddate: item.original.end_date ? item.original.end_date.substring(0, 10) : '',
+      startdate: item.original.start_date
+        ? item.original.start_date.substring(0, 10)
+        : '',
+      enddate: item.original.end_date
+        ? item.original.end_date.substring(0, 10)
+        : '',
       ordered_number_of_views: '',
       budget: budgett,
       age_range: item.original.age_range,
@@ -144,12 +147,14 @@ const PopoverEditView = ({
   }, [onceOrder])
   return (
     <div>
-      <div className="text-lg	text-white border-b border-[#ffffff63]">
+      <div className="text-lg	text-[var(--text)] border-b border-[#ffffff63]">
         Редактировать показы
       </div>
 
       <div className="grid w-full relative mt-2">
-        <Label className="text-sm	text-white pb-1">Количество показов</Label>
+        <Label className="text-sm	text-[var(--text)] pb-1">
+          Количество показов
+        </Label>
         <Controller
           name="ordered_number_of_views"
           control={control}
@@ -184,7 +189,7 @@ const PopoverEditView = ({
       </div>
 
       <div className="grid w-full relative mt-3">
-        <Label className="text-sm	text-white pb-1">Бюджет</Label>
+        <Label className="text-sm	text-[var(--text)] pb-1">Бюджет</Label>
         <Input
           // className={style.input}
           type="text"
@@ -201,7 +206,7 @@ const PopoverEditView = ({
           isValid
             ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
             : 'bg-[#616161]'
-        } w-full   h-[44px] text-white rounded-2xl	mt-6`}
+        } w-full   h-[44px] text-[var(--text)] rounded-2xl	mt-6`}
         disabled={!isValid}
         isValid={true}
       >

@@ -199,7 +199,9 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
     <div className="relative rounded-[22px]">
       <div className="grid lg:grid-cols-7  md:grid-cols-4 sm:grid-cols-2  gap-1">
         <div className="grid w-full mb-4 ">
-          <Label className="text-sm text-white pb-2">Выбрать Паблишера</Label>
+          <Label className="text-sm text-[var(--text)] pb-2">
+            Выбрать Паблишера
+          </Label>
           <Controller
             name="advertiser"
             control={control}
@@ -212,7 +214,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                 defaultValue={field.value}
                 value={field.value}
               >
-                <SelectTrigger className="!text-white">
+                <SelectTrigger className="!text-[var(--text)]">
                   <SelectValue placeholder="Выбрать паблишера" />
                 </SelectTrigger>
                 <SelectContent>
@@ -232,7 +234,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
         </div>
 
         <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Выбрать канал<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Controller
@@ -246,7 +248,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                 value={field.value}
               >
                 <SelectTrigger
-                  className="!text-white"
+                  className="!text-[var(--text)]"
                   onClick={() => field.onChange('')} // сброс значения при клике
                 >
                   <SelectValue placeholder="Выбрать канал" />
@@ -296,7 +298,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
         </div>
 
         <div className=" w-full mb-4 hidden">
-          <Label className="text-sm text-white pb-2">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Выбрать формат<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Controller
@@ -314,7 +316,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                   onceOrder.format === 'top_preroll'
                 }
               >
-                <SelectTrigger className="!text-white">
+                <SelectTrigger className="!text-[var(--text)]">
                   <SelectValue placeholder="Выбрать формат" />
                 </SelectTrigger>
                 <SelectContent>
@@ -347,7 +349,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
         </div>
 
         <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Начало<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
@@ -361,7 +363,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
         </div>
 
         <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Конец<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
@@ -375,7 +377,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
         </div>
 
         <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Порог показов<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Controller
@@ -404,7 +406,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
         </div>
 
         <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Бюджет<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
@@ -417,7 +419,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
         </div>
 
         <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Текст<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
@@ -438,7 +440,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
             isValid && !isOrderCreated
               ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
               : 'bg-[#616161]'
-          }  w-auto h-[44px] text-white rounded-lg	flex gap-2 mb-4 `}
+          }  w-auto h-[44px] text-[var(--text)] rounded-lg	flex gap-2 mb-4 `}
           disabled={!isValid || isOrderCreated}
           isValid={true}
         >

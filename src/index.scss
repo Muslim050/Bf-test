@@ -13,11 +13,14 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1;
-  // font-family: 'SFProDisplay', sans-serif;
   font-family: "Roboto", sans-serif;
 }
 @layer base {
   :root {
+    --text: white;
+
+
+
     --background: #090e35;
     --foreground: 222.2 84% 4.9%;
     // font-family: 'SFProDisplay', sans-serif;

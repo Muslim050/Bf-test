@@ -98,9 +98,8 @@ export default function AddSentPublisher({
                 }}
               >
                 <Button
-                  variant="outline"
+                  variant="default"
                   onClick={() => setViewNote(!viewNote)}
-                  className="group h-[35px] px-2 gap-2 rounded-[14px] border border-brandPrimary-1 transition-all hover:bg-brandPrimary-1 hover:text-white"
                 >
                   <div className="flex items-center justify-center gap-2 ">
                     <Plus className="transform group-hover:scale-125 transition-transform" />
@@ -243,7 +242,7 @@ export default function AddSentPublisher({
                             </>
                           ))}
                           {isEditing && (
-                            <div className="rounded-3xl text-base absolute z-10 inset-0 flex items-center h-[62px] justify-center bg-[#265EB6]/90 text-white font-semibold ">
+                            <div className="rounded-3xl text-base absolute z-10 inset-0 flex items-center h-[62px] justify-center bg-[#265EB6]/90 text-[var(--text)] font-semibold ">
                               На редактирований
                             </div>
                           )}

@@ -31,12 +31,6 @@ const PopoverButtons = ({
   handleFinishOrder,
   isOver100Percent,
 }) => {
-  //нотификация на кнопке ЗАВЕРШИТЬ
-  // const isOver100Percent =
-  //   (advert.online_views / advert.expected_number_of_views) * 100 >= 100
-  const isInProgress = advert.status === 'in_progress'
-  //нотификация на кнопке ЗАВЕРШИТЬ
-
   const [currentOrder, setCurrentOrder] = React.useState(null)
   const { copyToClipboard } = useOrder(currentOrder)
   // Модальное окно OrderModal
@@ -45,15 +39,10 @@ const PopoverButtons = ({
     setOpen(false)
   }
   // Модальное окно OrderModal
-  // const { textColor } = React.useContext(ThemeContext)
 
   return (
-    <div
-      className="flex gap-2 items-center justify-between
-    "
-    >
+    <div className="flex gap-2 items-center justify-between">
       {/*Редактировать*/}
-
       <>
         {advert.status === 'accepted' || advert.status === 'sent' ? (
           <Dialog open={open} onOpenChange={setOpen}>
@@ -163,7 +152,7 @@ const PopoverButtons = ({
                   Отмена
                 </AlertDialogCancel>
                 <AlertDialogAction
-                  className="bg-red-300 hover:bg-red-500 border-2 border-red-500 "
+                  variant="destructive"
                   onClick={() => handleFinishOrder(advert.id)}
                 >
                   Завершить

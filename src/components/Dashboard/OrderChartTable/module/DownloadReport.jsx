@@ -2,15 +2,11 @@ import React from 'react'
 import axios from 'axios'
 import backendURL from '@/utils/url'
 import Cookies from 'js-cookie'
-import {Button} from '@/components/ui/button.jsx'
-import {Download} from 'lucide-react'
+import { Button } from '@/components/ui/button.jsx'
+import { Download } from 'lucide-react'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
-function DownloadReport({
-  getOrder,
-  startDate,
-  endDate,
-  setIsTooltip,
-}) {
+function DownloadReport({ getOrder, startDate, endDate, setIsTooltip }) {
   const [loading, setLoading] = React.useState(false)
   const exportExcel = async (id) => {
     try {
@@ -53,29 +49,25 @@ function DownloadReport({
 
   return (
     <>
-      <Button
-        onClick={() => exportExcel(getOrder.id)}
-        disabled={loading}
-        className="bg-brandPrimary-1 rounded-[12px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white h-[44px] w-full"
-      >
-        {' '}
-        {loading ? (
-          <div className="loaderWrapper" style={{ height: '30px' }}>
-            <div
-              className="spinner"
-              style={{
-                width: '30px',
-                height: '30px',
-                border: '3px solid #ffffff',
-                borderTopColor: '#5570f1',
-              }}
-            ></div>
-          </div>
-        ) : (
-          // <Download style={{ width: '25px', height: '30px' }} />
-          <Download />
-        )}
-      </Button>
+      <TooltipWrapper tooltipContent="Скачать">
+        <Button onClick={() => exportExcel(getOrder.id)} disabled={loading}>
+          {loading ? (
+            <div className="loaderWrapper" style={{ height: '30px' }}>
+              <div
+                className="spinner"
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  border: '3px solid #ffffff',
+                  borderTopColor: '#5570f1',
+                }}
+              ></div>
+            </div>
+          ) : (
+            <Download />
+          )}
+        </Button>
+      </TooltipWrapper>
     </>
   )
 }

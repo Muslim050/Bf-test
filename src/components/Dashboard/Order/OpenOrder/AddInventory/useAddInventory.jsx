@@ -17,8 +17,8 @@ import {
   SquareArrowOutUpRight,
   SquareCheckBig,
   Star,
-  Zap,
-  ZapOff,
+  Webhook,
+  WebhookOff,
 } from 'lucide-react'
 import Cookies from 'js-cookie'
 import { deactivateInventories } from '@/redux/orderStatus/orderStatusSlice.js'
@@ -235,7 +235,7 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
                     }}
                     className="relative flex gap-1"
                   >
-                    <Star className="size-5 text-white" />
+                    <Star className="size-5 text-[var(--text)]" />
                     {row.original.video_content.link_to_video ? (
                       <div className="bg-violet-500 w-4 h-4 rounded-full absolute -right-1.5 -top-1.5"></div>
                     ) : (
@@ -253,7 +253,7 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
                     variant="outlineDeactivate"
                     className="flex gap-1"
                   >
-                    <SquareCheckBig className="w-[20px] h-[20px] text-white" />
+                    <SquareCheckBig className="w-[20px] h-[20px] text-[var(--text)]" />
                     Завершить
                   </Button>
                 </div>
@@ -272,15 +272,15 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
             {row.original.is_automatically_deactivated === null ? null : (
               <>
                 {row.original.is_automatically_deactivated ? (
-                  <TooltipWrapper tooltipContent="Авто">
-                    <Zap
+                  <TooltipWrapper tooltipContent="Авто завершение">
+                    <Webhook
                       className="text-green-500"
                       title="Автоматический режим включен"
                     />
                   </TooltipWrapper>
                 ) : (
-                  <TooltipWrapper tooltipContent="Ручное">
-                    <ZapOff
+                  <TooltipWrapper tooltipContent="Ручное завершение">
+                    <WebhookOff
                       className="text-gray-400"
                       title="Автоматический режим выключен"
                     />

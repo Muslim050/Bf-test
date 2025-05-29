@@ -73,7 +73,7 @@ function Verify({
         }}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg	font-medium	text-white border-b border-[#F9F9F926] pb-4">
+          <DialogTitle className="text-lg	font-medium	text-[var(--text)] border-b border-[#F9F9F926] pb-4">
             Модерация рекламы
           </DialogTitle>
         </DialogHeader>
@@ -84,7 +84,7 @@ function Verify({
                 <Link
                   to={`${videoLink.video_content.link_to_video}&t=${videoLink.start_at}`}
                   target="_blank"
-                  className="bg-[#2A85FF] size-10 rounded-xl text-white hover:bg-[#2A85FF99] flex justify-center items-center "
+                  className="bg-[#2A85FF] size-10 rounded-xl text-[var(--text)] hover:bg-[#2A85FF99] flex justify-center items-center "
                 >
                   <ExternalLink className="size-6" />
                 </Link>
@@ -99,7 +99,7 @@ function Verify({
           <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="flex items-end gap-2">
               <div className="grid w-full">
-                <Label className="text-sm	text-white">
+                <Label className="text-sm	text-[var(--text)]">
                   Ссылка на Видео
                   <span className="text-red-500 ml-0.5">*</span>
                 </Label>

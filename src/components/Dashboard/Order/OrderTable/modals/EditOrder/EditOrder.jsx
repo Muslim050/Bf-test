@@ -216,14 +216,14 @@ export default function EditOrder({
         }}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg	font-medium	text-white border-b border-[#F9F9F926] pb-4">
+          <DialogTitle className="text-lg	font-medium	text-[var(--text)] border-b border-[#F9F9F926] pb-4">
             Редактировать заказ
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-4 mb-4">
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Название рекламной кампании
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -243,7 +243,7 @@ export default function EditOrder({
           </div>
           <div className="flex gap-4 mb-4">
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Начало
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -273,7 +273,7 @@ export default function EditOrder({
             </div>
 
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Конец
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -305,7 +305,7 @@ export default function EditOrder({
           {/*  */}
           <div className="flex gap-4 mb-4">
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Формат
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -314,7 +314,7 @@ export default function EditOrder({
                 onValueChange={handleFormatChange}
                 disabled={role !== 'admin'}
               >
-                <SelectTrigger className="!text-white">
+                <SelectTrigger className="!text-[var(--text)]">
                   <SelectValue placeholder="Выбрать формат" />
                 </SelectTrigger>
 
@@ -337,7 +337,7 @@ export default function EditOrder({
             </div>
             <div className="grid w-full">
               <div className="border-dashed border-2 border-sky-500 rounded-lg p-2 flex flex-col justify-between">
-                <Label className="text-sm	text-white pb-0.5">
+                <Label className="text-sm	text-[var(--text)] pb-0.5">
                   Target для РУЗ
                 </Label>
                 {/* <label
@@ -373,7 +373,7 @@ export default function EditOrder({
           {/*  */}{' '}
           <div className="flex gap-4 mb-4">
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Количество показов
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -413,7 +413,7 @@ export default function EditOrder({
               />
             </div>
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Бюджет (сум)
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -436,7 +436,9 @@ export default function EditOrder({
           </div>
           <div className="flex gap-4 mb-4">
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">Текущий ролик:</Label>
+              <Label className="text-sm	text-[var(--text)] pb-2">
+                Текущий ролик:
+              </Label>
               <a
                 href={currentOrder.promo_file}
                 target="_blank"
@@ -452,7 +454,7 @@ export default function EditOrder({
             </div>
             <div>
               <div className="grid w-[250px]">
-                <Label className="text-sm	text-white pb-0.5">
+                <Label className="text-sm	text-[var(--text)] pb-0.5">
                   Загрузить новый ролик
                 </Label>
                 <input
@@ -481,7 +483,7 @@ export default function EditOrder({
           ></textarea> */}
           <Textarea
             placeholder="Комментарий к заказу"
-            className="resize-none text-white"
+            className="resize-none text-[var(--text)]"
             // {...field}
             {...register('notes')}
           />
@@ -499,12 +501,12 @@ export default function EditOrder({
                     <AlertDialogTitle className="text-red-500">
                       Вы уверены, что хотите удалить заказ?
                     </AlertDialogTitle>
-                    <AlertDialogDescription className="text-white">
+                    <AlertDialogDescription className="text-[var(--text)]">
                       Это действие не может быть отменено.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel className="text-white">
+                    <AlertDialogCancel className="text-[var(--text)]">
                       Отмена
                     </AlertDialogCancel>
                     <AlertDialogAction

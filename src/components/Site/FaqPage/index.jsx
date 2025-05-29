@@ -4,15 +4,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import 'tailwindcss/tailwind.css'
 import { SetkaSvg, StarsSSSvg } from '@/assets/Site/site-svg.jsx'
 import Blestki from './Blestki.svg'
-import { Youtube } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger)
+import { Youtube } from 'lucide-react'
 import m from './Faq.module.scss'
 import image1 from '../../../assets/Site/SixthPage/1.png'
 import image2 from '../../../assets/Site/SixthPage/2.png'
 import image3 from '../../../assets/Site/SixthPage/3.png'
 import image4 from '../../../assets/Site/SixthPage/4.png'
 import image5 from '../../../assets/Site/SixthPage/5.png'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const items = [
   {
@@ -34,7 +34,9 @@ const items = [
   {
     title: (
       <div>
-        На каких <Youtube className="ml-1 text-red-600" /> <span className="text-white">YouTube</span>, каналах будет размещена реклама моего бренда?
+        На каких <Youtube className="ml-1 text-red-600" />{' '}
+        <span className="text-white">YouTube</span>, каналах будет размещена
+        реклама моего бренда?
       </div>
     ),
     image: image5,
@@ -123,11 +125,14 @@ const FaqPage = () => {
     //       <SetkaSvg className="absolute top-0 left-0 w-[100%] h-full -z-[5px]" />
 
     <section ref={containerRef} className="relative h-full w-full" id="">
-      <div className=""
-           style={{
-        background: "radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%",
-        filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
-      }}>
+      <div
+        className=""
+        style={{
+          background:
+            'radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%',
+          filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+        }}
+      >
         {/*<GradientBGSvg className="absolute top-0 w-[100%] h-full -z-[5px]" />*/}
         <StarsSSSvg className="absolute top-0 w-[100%] h-full -z-[5px]" />
         <SetkaSvg className="absolute top-0 w-[100%] h-full -z-[5px]" />
@@ -188,21 +193,24 @@ const FaqPage = () => {
                       {typeof item.title === 'string' ? (
                         <h2
                           className="text-xl"
-                          dangerouslySetInnerHTML={{__html: item.title}}
+                          dangerouslySetInnerHTML={{ __html: item.title }}
                         />
                       ) : (
                         <h2 className="text-xl items-center">
                           На каких
-                          <span className='text-white ml-1'>You<span
-                            className='bg-red-600 p-0.5 rounded-[10px] font-semibold'>Tube</span> </span>
-                          каналах будет размещена реклама моего
-                          бренда?
+                          <span className="text-white ml-1">
+                            You
+                            <span className="bg-red-600 p-0.5 rounded-[10px] font-semibold">
+                              Tube
+                            </span>{' '}
+                          </span>
+                          каналах будет размещена реклама моего бренда?
                         </h2>
                       )}
                     </div>
                   </div>
                   <div>
-                  <div
+                    <div
                       className={` md:w-[200px] w-full h-[110px]  flex items-center rounded-[10px] justify-center`}
                       style={{
                         background:

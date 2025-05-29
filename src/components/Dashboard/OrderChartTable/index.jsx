@@ -39,7 +39,7 @@ function OrderChart() {
     sumBudjet,
     sumView,
     isLoadingData,
-    openFilter
+    openFilter,
   } = useOrderChart()
 
   useEffect(() => {
@@ -103,10 +103,9 @@ function OrderChart() {
                   <Button
                     disabled={isLoadingData}
                     onClick={openFilter}
-                    variant="ghost"
-                    className=" px-7 bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
+                    variant="default"
                   >
-                    <SlidersHorizontal className="w-4 h-4 mr-2" /> Фильтр
+                    <SlidersHorizontal />
                   </Button>
                 </PopoverTrigger>
 
@@ -116,7 +115,7 @@ function OrderChart() {
                       <div className="w-2.5	h-6	bg-[#B5E4CA] rounded-[4px]"></div>
                       <h4 className="font-medium text-white">Фильтры</h4>
                     </div>
-                    <p className="text-xs	  py-3 border-t border-[#F9F9F9] text-white">
+                    <p className="text-xs	py-3 border-t border-[#F9F9F9] text-[var(--text)]">
                       Выберите необходимые параметры
                     </p>
                     <FilteredTooltip

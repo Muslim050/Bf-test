@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
-import { X } from 'lucide-react'
-import { AlignJustify } from 'lucide-react'
+import { AlignJustify, X } from 'lucide-react'
 import './header.scss'
 import Logo from '@/assets/Logo.png'
 import {
@@ -9,6 +8,7 @@ import {
   InstagramSvg,
   YoutubeSvg,
 } from '@/assets/Site/site-svg.jsx'
+
 const Header = () => {
   const logoRef = useRef(null)
   const borderRef = useRef(null)
