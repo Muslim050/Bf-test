@@ -16,7 +16,6 @@ import Cookies from 'js-cookie'
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip.jsx'
 import { truncate } from '@/utils/other.js'
@@ -187,24 +186,22 @@ export const useOrder = () => {
         accessorFn: (row) => row.name, // Преобразование в число
         id: 'Кампания',
         cell: ({ row }) => (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild className="cursor-pointer">
-                <a
-                  target="_blank"
-                  className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
-                  href={row.original.promo_file}
-                >
-                  {truncate(row.original.name, 20)}
-                  <SquareArrowOutUpRight className="size-4" />
-                </a>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>ID:{row?.original.id}</p>
-                <p>{row.original.name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild className="cursor-pointer">
+              <a
+                target="_blank"
+                className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                href={row.original.promo_file}
+              >
+                {truncate(row.original.name, 20)}
+                <SquareArrowOutUpRight className="size-4" />
+              </a>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>ID:{row?.original.id}</p>
+              <p>{row.original.name}</p>
+            </TooltipContent>
+          </Tooltip>
         ),
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Кампания</span>,

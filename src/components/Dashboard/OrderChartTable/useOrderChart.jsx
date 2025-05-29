@@ -9,7 +9,6 @@ import axios from 'axios'
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip.jsx'
 import { truncate } from '@/utils/other.js'
@@ -267,19 +266,17 @@ export const useOrderChart = () => {
               className="text-[#A7CCFF] underline hover:text-[#4289eb]"
               rel="noreferrer"
             >
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild className="cursor-pointer">
-                    <div className="flex items-center gap-1">
-                      {truncate(row.original.video_name, 20)}
-                      <SquareArrowOutUpRight className="size-4" />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{row.original.video_name}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <div className="flex items-center gap-1">
+                    {truncate(row.original.video_name, 20)}
+                    <SquareArrowOutUpRight className="size-4" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{row.original.video_name}</p>
+                </TooltipContent>
+              </Tooltip>
             </a>
           </>
         ),
@@ -423,6 +420,6 @@ export const useOrderChart = () => {
     sumBudjet,
     sumView,
     isLoadingData,
-     openFilter
+    openFilter,
   }
 }

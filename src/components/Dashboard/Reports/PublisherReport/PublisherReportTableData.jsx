@@ -1,17 +1,18 @@
 import React from 'react'
 import FormatterView from '../../../Labrery/formatter/FormatterView'
-import FormatterBudjet, {TiinFormatterBudget} from '../../../Labrery/formatter/FormatterBudjet'
+import FormatterBudjet, {
+  TiinFormatterBudget,
+} from '../../../Labrery/formatter/FormatterBudjet'
 import { formatDate } from '@/utils/formatterDate.jsx'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { truncate } from '@/utils/other.js'
 import { TableCell, TableRow } from '@/components/ui/table'
-import {Monitor, MonitorPlay, MonitorUp} from "lucide-react";
+import { Monitor, MonitorPlay, MonitorUp } from 'lucide-react'
 
 function PublisherReportTable({ publisherReport }) {
   const { textColor } = React.useContext(ThemeContext)
@@ -31,18 +32,16 @@ function PublisherReportTable({ publisherReport }) {
               data-label="Компания"
               className={`font-normal text-${textColor} text-sm `}
             >
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="cursor-pointer">
-                      {truncate(person.order_name, 20)}
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{person.order_name}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="cursor-pointer">
+                    {truncate(person.order_name, 20)}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{person.order_name}</p>
+                </TooltipContent>
+              </Tooltip>
             </TableCell>
             <TableCell
               data-label="Рекламодатель"
@@ -61,31 +60,26 @@ function PublisherReportTable({ publisherReport }) {
               className={`font-normal text-${textColor} text-sm `}
               style={{ width: 'inherit', color: 'blue' }}
             >
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="cursor-pointer text-[#A7CCFF] hover:[#277aec] ">
-                      {truncate(person.video_content_name, 20)}
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{person.video_content_name}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="cursor-pointer text-[#A7CCFF] hover:[#277aec] ">
+                    {truncate(person.video_content_name, 20)}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{person.video_content_name}</p>
+                </TooltipContent>
+              </Tooltip>
             </TableCell>
             <TableCell
               data-label="Формат"
               className={`font-normal text-${textColor} text-sm `}
             >
-              <div className='flex items-center gap-1'>
-                {
-                  (person.format === 'preroll' && <Monitor/>) ||
-                  (person.format === 'top_preroll' && <MonitorUp/>) ||
-                  (person.format === 'tv_preroll' && <MonitorPlay/>)
-                }
-                {
-                  (person.format === 'preroll' && 'Pre-roll') ||
+              <div className="flex items-center gap-1">
+                {(person.format === 'preroll' && <Monitor />) ||
+                  (person.format === 'top_preroll' && <MonitorUp />) ||
+                  (person.format === 'tv_preroll' && <MonitorPlay />)}
+                {(person.format === 'preroll' && 'Pre-roll') ||
                   (person.format === 'mixroll' && 'Mid-roll') ||
                   (person.format === 'midroll1' && 'Mid-roll 1') ||
                   (person.format === 'midroll2' && 'Mid-roll 2') ||
@@ -93,27 +87,25 @@ function PublisherReportTable({ publisherReport }) {
                   (person.format === 'midroll4' && 'Mid-roll 4') ||
                   (person.format === 'top_preroll' && 'Top Pre-roll') ||
                   (person.format === 'tv_preroll' && 'TV Pre-roll')}
-
-
               </div>
             </TableCell>
             <TableCell
               data-label="Начало"
               className={`font-normal text-${textColor} text-sm w-[100px]`}
             >
-              {formatDate (person.order_start_date)}
+              {formatDate(person.order_start_date)}
             </TableCell>
             <TableCell
               data-label="Конец"
               className={`font-normal text-${textColor} text-sm w-[100px]`}
             >
-              {formatDate (person.order_end_date)}
+              {formatDate(person.order_end_date)}
             </TableCell>
             <TableCell
               data-label="Показы факт"
               className={`font-normal text-${textColor} text-sm text-right`}
             >
-              <FormatterView data={person.recorded_view_count}/>
+              <FormatterView data={person.recorded_view_count} />
             </TableCell>
             <TableCell
               data-label="Бюджет компании"
@@ -131,9 +123,7 @@ function PublisherReportTable({ publisherReport }) {
               className={`font-normal text-${textColor} text-sm `}
             >
               <div style={{ display: 'flex', justifyContent: 'end' }}>
-                <TiinFormatterBudget
-                  budget={person.agency_commission_total}
-                />
+                <TiinFormatterBudget budget={person.agency_commission_total} />
               </div>
             </TableCell>
             <TableCell
@@ -151,9 +141,7 @@ function PublisherReportTable({ publisherReport }) {
               className={`font-normal text-${textColor} text-sm `}
             >
               <div style={{ display: 'flex', justifyContent: 'end' }}>
-                <TiinFormatterBudget
-                  budget={person.channel_budget_total}
-                />
+                <TiinFormatterBudget budget={person.channel_budget_total} />
               </div>
             </TableCell>
           </TableRow>

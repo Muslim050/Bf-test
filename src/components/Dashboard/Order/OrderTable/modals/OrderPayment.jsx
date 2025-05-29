@@ -5,7 +5,6 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import PaymentOrderModal from './PaymentOrder/PaymentOrder.jsx'
@@ -48,31 +47,27 @@ const OrderPayment = ({ advert }) => {
           )}
           <div className="flex items-center ">
             {advert.is_paid && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex gap-1 cursor-pointer ">
-                      <CircleCheck className="w-5	h-5" />
-                      <div className="text-sm font-medium">
-                        {/* Оплачено */}
-                      </div>
-                    </div>
-                  </TooltipTrigger>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex gap-1 cursor-pointer ">
+                    <CircleCheck className="w-5	h-5" />
+                    <div className="text-sm font-medium">{/* Оплачено */}</div>
+                  </div>
+                </TooltipTrigger>
 
-                  <TooltipContent>
+                <TooltipContent>
+                  <div>
+                    <div>{advert.payment_date?.split('T')[0]}</div>
+
                     <div>
-                      <div>{advert.payment_date?.split('T')[0]}</div>
-
-                      <div>
-                        {new Date(advert.payment_date).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </div>
+                      {new Date(advert.payment_date).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
                     </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
             )}
           </div>
         </div>

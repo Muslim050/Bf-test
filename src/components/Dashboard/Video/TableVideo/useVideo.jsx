@@ -1,23 +1,27 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react'
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
-} from '@tanstack/react-table';
-import {useSelector} from 'react-redux';
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
-import {truncate} from "@/utils/other.js";
-import {formatDate} from "@/utils/formatterDate.jsx";
-import {Button} from "@/components/ui/button.jsx";
-import {Pencil, Plus, SquareArrowOutUpRight} from "lucide-react";
-import {hasRole} from "@/utils/roleUtils.js";
-import {ThemeContext} from "@/utils/ThemeContext.jsx";
+  useReactTable,
+} from '@tanstack/react-table'
+import { useSelector } from 'react-redux'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip.jsx'
+import { truncate } from '@/utils/other.js'
+import { formatDate } from '@/utils/formatterDate.jsx'
+import { Button } from '@/components/ui/button.jsx'
+import { Pencil, Plus, SquareArrowOutUpRight } from 'lucide-react'
+import { hasRole } from '@/utils/roleUtils.js'
+import { ThemeContext } from '@/utils/ThemeContext.jsx'
 
 export const useVideo = () => {
-  const [columnFilters, setColumnFilters] = React.useState([]);
+  const [columnFilters, setColumnFilters] = React.useState([])
   const [globalFilter, setGlobalFilter] = React.useState('')
   const { videos, total_count } = useSelector((state) => state.video)
   const [selectedId, setSelectedId] = useState('')
@@ -38,14 +42,14 @@ export const useVideo = () => {
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
-  });
+  })
 
   const columns = React.useMemo(
     () => [
       {
         accessorFn: (_, index) => index + 1, // Используем индекс строки
         id: 'id',
-        cell: ({row}) => (
+        cell: ({ row }) => (
           <div className="relative flex items-center">
             <span>{row.index + 1}</span>
             {row.original.link_to_video === null && (
@@ -59,9 +63,9 @@ export const useVideo = () => {
       {
         accessorFn: (row) => row.channel?.name, // Преобразование в число
         id: 'Канал',
-        cell: info => info.getValue (),
+        cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Канал</span>
+        header: () => <span className="flex  items-center gap-1">Канал</span>,
       },
       {
         accessorFn: (row) => row.name, // Преобразование в число
@@ -80,56 +84,62 @@ export const useVideo = () => {
         //     </Tooltip>
         //   </TooltipProvider>,
 
-        cell: ({row}) =>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild className="cursor-pointer">
-                <a
-                  target="_blank"
-                  className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
-                  href={row.original.link_to_video}>{truncate(row.original.name, 20)}
-                  <SquareArrowOutUpRight className='size-4'/>
-                </a>
-
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>ID:{row?.original.id}</p>
-                <p>{row.original.name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>,
+        cell: ({ row }) => (
+          <Tooltip>
+            <TooltipTrigger asChild className="cursor-pointer">
+              <a
+                target="_blank"
+                className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                href={row.original.link_to_video}
+              >
+                {truncate(row.original.name, 20)}
+                <SquareArrowOutUpRight className="size-4" />
+              </a>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>ID:{row?.original.id}</p>
+              <p>{row.original.name}</p>
+            </TooltipContent>
+          </Tooltip>
+        ),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Название Видео</span>
+        header: () => (
+          <span className="flex  items-center gap-1">Название Видео</span>
+        ),
       },
       {
         accessorFn: (row) => formatDate(row.publication_time), // Преобразование времени публикации
         id: 'Дата публикации',
-        cell: ({row}) => <>{formatDate(row.original.publication_time)}</>,
+        cell: ({ row }) => <>{formatDate(row.original.publication_time)}</>,
         filterFn: 'includesString', // Фильтрация по строке
-        header: () => <span className='flex items-center gap-1'>Дата начала</span>,
+        header: () => (
+          <span className="flex items-center gap-1">Дата начала</span>
+        ),
       },
       {
         accessorFn: (row) => row.duration, // Преобразование в число
         id: '_',
-        cell: ({row}) =>
-        <>
-          {row.original.link_to_video === null && (
-            <Button
-              variant="link"
-              onClick={() => {
-                setSelectedId(row.id)
-                setOpen(!open)
-              }}
-              className="text-[#ff9105] flex items-center gap-1	underline underline-offset-2  hover:text-[#ffaa3e] group px-0"
-            >
-              <Plus className="w-5 h-5 " />
-              Прикрепить Видео
-            </Button>
-          ) }</>,
+        cell: ({ row }) => (
+          <>
+            {row.original.link_to_video === null && (
+              <Button
+                variant="link"
+                onClick={() => {
+                  setSelectedId(row.id)
+                  setOpen(!open)
+                }}
+                className="text-[#ff9105] flex items-center gap-1	underline underline-offset-2  hover:text-[#ffaa3e] group px-0"
+              >
+                <Plus className="w-5 h-5 " />
+                Прикрепить Видео
+              </Button>
+            )}
+          </>
+        ),
         enableSorting: false,
 
         filterFn: 'includesString', // Фильтрация по строке
-        header: () => <span className='flex items-center gap-1'></span>,
+        header: () => <span className="flex items-center gap-1"></span>,
       },
       {
         id: 'edit',
@@ -151,7 +161,7 @@ export const useVideo = () => {
         enableFiltering: false,
       },
     ],
-    []
+    [],
   )
   const table = useReactTable({
     data: videos.results || [], // Данные из Redux
@@ -164,9 +174,9 @@ export const useVideo = () => {
     onPaginationChange: (updater) => {
       setPagination((prev) => {
         const newPagination =
-          typeof updater === 'function' ? updater(prev) : updater;
-        return { ...prev, ...newPagination };
-      });
+          typeof updater === 'function' ? updater(prev) : updater
+        return { ...prev, ...newPagination }
+      })
     },
     pageCount: Math.ceil(total_count / pagination.pageSize), // Общее количество страниц
     manualPagination: true, // Указываем, что используем серверную пагинацию
@@ -174,7 +184,7 @@ export const useVideo = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  });
+  })
 
   return {
     table,
@@ -183,14 +193,14 @@ export const useVideo = () => {
     flexRender,
     globalFilter,
     setGlobalFilter,
-    setOpen, open,
+    setOpen,
+    open,
     handleClose,
     selectedId,
     edit,
     setEdit,
     handleCloseEdit,
     currentOrder,
-    pagination
-  };
-};
-
+    pagination,
+  }
+}

@@ -1,13 +1,19 @@
 import React from 'react'
-import {TableCell} from '@/components/ui/table.jsx'
-import {Info} from 'lucide-react'
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from '@/components/ui/tooltip'
+import { TableCell } from '@/components/ui/table.jsx'
+import { Info } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 function TheadAgeGeoGender({ statistic }) {
   const removeDuplicates = (arr) => Array.from(new Set(arr))
   const uniqueDevaice =
     statistic && statistic.device_type_percentages
-      ? removeDuplicates(statistic?.device_type_percentages.map((gen) => gen.device_type))
+      ? removeDuplicates(
+          statistic?.device_type_percentages.map((gen) => gen.device_type),
+        )
       : []
 
   const uniqueGenders =
@@ -27,68 +33,61 @@ function TheadAgeGeoGender({ statistic }) {
       ? removeDuplicates(statistic?.geo_percentages.map((geo) => geo.country))
       : []
 
-
   const genderColSpan = uniqueGenders.length
   const deviceColSpan = 5
   const ageColSpan = 7
   const geoColSpan = 5
   return (
     <>
-
       <TableCell className="text-white text-sm	font-bold	bg-[#FFFFFF2B] rounded-tl-[22px] ">
         <div className="flex items-center justify-center gap-3">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="cursor-pointer text-orange-300  hover:text-orange-500" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p> Предварительная Аналитика</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="cursor-pointer text-orange-300  hover:text-orange-500" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p> Предварительная Аналитика</p>
+            </TooltipContent>
+          </Tooltip>
           Показы
         </div>
       </TableCell>
 
-
-
-
       {/*{genderColSpan ? (*/}
-        <TableCell
-          className="border-x border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
-          colSpan={genderColSpan}
-        >
-          Пол
-        </TableCell>
+      <TableCell
+        className="border-x border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
+        colSpan={genderColSpan}
+      >
+        Пол
+      </TableCell>
       {/*) : null}*/}
 
       {/*{ageColSpan ? (*/}
-        <TableCell
-          className="border-x border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
-          colSpan={ageColSpan}
-        >
-          Возраст
-        </TableCell>
+      <TableCell
+        className="border-x border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
+        colSpan={ageColSpan}
+      >
+        Возраст
+      </TableCell>
       {/*) : null}*/}
 
       {/*{geoColSpan ? (*/}
-        <TableCell
-          className=" text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center "
-          colSpan={geoColSpan}
-        >
-          Гео
-        </TableCell>
+      <TableCell
+        className=" text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center "
+        colSpan={geoColSpan}
+      >
+        Гео
+      </TableCell>
       {/*) : null}*/}
       {/**/}
 
       {/*{deviceColSpan ? (*/}
-        <TableCell
-          className="rounded-tr-[22px] border-l border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
-          colSpan={deviceColSpan}
-        >
-          Девайсы
-        </TableCell>
+      <TableCell
+        className="rounded-tr-[22px] border-l border-[#ffffff1a] text-white text-sm	font-bold	bg-[#FFFFFF2B] text-center"
+        colSpan={deviceColSpan}
+      >
+        Девайсы
+      </TableCell>
       {/*) : null}*/}
     </>
   )

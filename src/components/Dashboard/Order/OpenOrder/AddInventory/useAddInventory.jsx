@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
   flexRender,
   getCoreRowModel,
@@ -8,12 +8,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip.jsx'
 import { formatDate } from '@/utils/formatterDate.jsx'
 import { FormatFormatter } from '@/utils/FormatFormatter.jsx'
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
@@ -33,12 +27,12 @@ import { fetchOrder } from '@/redux/order/orderSlice.js'
 import PlanPopoverCell from '@/components/module/Order/EditView/PlanPopoverCell.jsx'
 import { truncate } from '@/utils/other.js'
 import Avtomatick from '@/components/module/Order/Avtomatick.jsx'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   const [columnFilters, setColumnFilters] = React.useState([])
   const { total_count } = useSelector((state) => state.channel)
   const [globalFilter, setGlobalFilter] = React.useState('')
-  console.log(getOrder)
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
@@ -56,11 +50,6 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   useEffect(() => {
     fetchGetOrder()
   }, [])
-  const [setCurrentOnceOrder] = useState(onceOrder)
-
-  useEffect(() => {
-    setCurrentOnceOrder(onceOrder) // Обновляем состояние каждый раз, когда onceOrder меняется
-  }, [onceOrder])
 
   const handleDeactivateInventory = (inventory_id) => {
     const confirmDeactivate = window.confirm(
@@ -89,19 +78,12 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         id: 'id',
         cell: ({ row }) => (
           <>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <div>{row.index + 1}</div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>ID:{row.original?.id}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <TooltipWrapper tooltipContent={<p>ID:{row.original?.id}</p>}>
+              <div>{row.index + 1}</div>
+            </TooltipWrapper>
           </>
         ),
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        filterFn: 'includesStringSensitive',
         header: () => <span>№</span>,
       },
       {
@@ -109,17 +91,16 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         id: 'Канал',
         cell: ({ row }) => (
           <>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <div>{row.original?.channel?.name}</div>
-                </TooltipTrigger>
-                <TooltipContent>
+            <TooltipWrapper
+              tooltipContent={
+                <>
                   <p>{row.original?.channel?.name}</p>
-                  <p>ID:{row.original?.channel?.id}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                  <p>ID: {row.original?.channel?.id}</p>
+                </>
+              }
+            >
+              <div>{row.original?.channel?.name}</div>
+            </TooltipWrapper>
           </>
         ),
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
@@ -130,38 +111,37 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         accessorFn: (row) => row.video_content?.name, // Преобразование в число
         cell: ({ row }) => (
           <>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <a
-                    href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
-                    target="_blank"
-                    className={`underline inline-flex gap-1 items-center justify-between ${
-                      row.verified_link_with_timecode === null
-                        ? ' text-gray-500'
-                        : 'text-[#A7CCFF] hover:text-[#3282f1]'
-                    } ${
-                      row.verified_link_with_timecode === null
-                        ? 'cursor-not-allowed'
-                        : 'cursor-pointer'
-                    }`}
-                    onClick={(e) => {
-                      if (row.verified_link_with_timecode === null) {
-                        e.preventDefault()
-                      }
-                    }}
-                    rel="noreferrer"
-                  >
-                    {truncate(row.original.video_content?.name, 20)}
-                    <SquareArrowOutUpRight className="size-4" />
-                  </a>
-                </TooltipTrigger>
-                <TooltipContent>
+            <TooltipWrapper
+              tooltipContent={
+                <>
                   <p>{row.original.video_content?.name}</p>
                   <p>ID:{row.original?.video_content?.id}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                </>
+              }
+            >
+              <a
+                href={`${row.original.video_content.link_to_video}&t=${row.original.start_at}`}
+                target="_blank"
+                className={`underline inline-flex gap-1 items-center justify-between ${
+                  row.verified_link_with_timecode === null
+                    ? ' text-gray-500'
+                    : 'text-[#A7CCFF] hover:text-[#3282f1]'
+                } ${
+                  row.verified_link_with_timecode === null
+                    ? 'cursor-not-allowed'
+                    : 'cursor-pointer'
+                }`}
+                onClick={(e) => {
+                  if (row.verified_link_with_timecode === null) {
+                    e.preventDefault()
+                  }
+                }}
+                rel="noreferrer"
+              >
+                {truncate(row.original.video_content?.name, 20)}
+                <SquareArrowOutUpRight className="size-4" />
+              </a>
+            </TooltipWrapper>
           </>
         ),
         header: () => <span>Название Видео</span>,
@@ -204,7 +184,6 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         cell: ({ row }) => {
           const onlineViews = row.original.online_views
           const totalOnlineViews = row.original.total_online_views
-          console.log(onceOrder.target_country)
           // Проверка на наличие значений
           if (onlineViews || totalOnlineViews) {
             return (
@@ -238,88 +217,80 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
         accessorFn: (row) => row.status, // Преобразование в число
         id: 'Статус / Действия',
         cell: ({ row }) => (
-          <div className="flex gap-2 items-center">
-            {(role === 'admin' && row.original.status === 'in_use') ||
-            row.original.status === 'inactive' ? (
-              <AdvertStatus
-                status={row.original.status}
-                endDate={row.original.deactivation_date}
-              />
-            ) : (
-              <div style={{ width: 'fit-content' }}>
-                <Button
-                  variant="outlineViolet"
-                  onClick={() => {
-                    setOpen(true)
-                    setSelectedInventoryId(() => row.original.id)
-                  }}
-                  className="relative flex gap-1"
-                >
-                  <Star className="size-5 text-white" />
-                  {row.original.video_content.link_to_video ? (
-                    <div className="bg-violet-500 w-4 h-4 rounded-full absolute -right-1.5 -top-1.5"></div>
-                  ) : (
-                    ''
-                  )}
-                  Проверить
-                </Button>
-              </div>
-            )}
-            {row.original.status === 'in_use' ? (
-              <div>
-                <Button
-                  onClick={() => handleDeactivateInventory(row.original.id)}
-                  disabled={row.original.is_auto_deactivation_mode}
-                  variant="outlineDeactivate"
-                  className="flex gap-1"
-                >
-                  <SquareCheckBig className="w-[20px] h-[20px] text-white" />
-                  Завершить
-                </Button>
-              </div>
-            ) : (
-              ''
-            )}
-            {row.original.status === 'in_use' ? (
+          <div className="flex gap-2 justify-between items-center ">
+            <div className="flex gap-2 justify-between w-fit">
+              {(role === 'admin' && row.original.status === 'in_use') ||
+              row.original.status === 'inactive' ? (
+                <AdvertStatus
+                  status={row.original.status}
+                  endDate={row.original.deactivation_date}
+                />
+              ) : (
+                <div style={{ width: 'fit-content' }}>
+                  <Button
+                    variant="outlineViolet"
+                    onClick={() => {
+                      setOpen(true)
+                      setSelectedInventoryId(() => row.original.id)
+                    }}
+                    className="relative flex gap-1"
+                  >
+                    <Star className="size-5 text-white" />
+                    {row.original.video_content.link_to_video ? (
+                      <div className="bg-violet-500 w-4 h-4 rounded-full absolute -right-1.5 -top-1.5"></div>
+                    ) : (
+                      ''
+                    )}
+                    Проверить
+                  </Button>
+                </div>
+              )}
+              {row.original.status === 'in_use' ? (
+                <div>
+                  <Button
+                    onClick={() => handleDeactivateInventory(row.original.id)}
+                    disabled={row.original.is_auto_deactivation_mode}
+                    variant="outlineDeactivate"
+                    className="flex gap-1"
+                  >
+                    <SquareCheckBig className="w-[20px] h-[20px] text-white" />
+                    Завершить
+                  </Button>
+                </div>
+              ) : (
+                ''
+              )}
+              {row.original.status === 'in_use' && (
+                <>
+                  <Avtomatick
+                    fetchGetOrder={fetchGetOrder}
+                    row={row.original}
+                  />
+                </>
+              )}
+            </div>
+            {row.original.is_automatically_deactivated === null ? null : (
               <>
-                <Avtomatick fetchGetOrder={fetchGetOrder} row={row.original} />
-
-                {row.original.status === 'in_use' ||
-                row.original.status === 'inactive' ? (
-                  <>
-                    {row.original.is_automatically_deactivated !== null &&
-                      (row.original.is_automatically_deactivated ? (
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Zap
-                              className="text-green-500"
-                              title="Автоматический режим включен"
-                            />
-                          </TooltipTrigger>
-                          <TooltipContent className="flex flex-col gap-2">
-                            Авто
-                          </TooltipContent>
-                        </Tooltip>
-                      ) : (
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <ZapOff
-                              className="text-gray-400"
-                              title="Автоматический режим выключен"
-                            />
-                          </TooltipTrigger>
-                          <TooltipContent className="flex flex-col gap-2">
-                            Ручное
-                          </TooltipContent>
-                        </Tooltip>
-                      ))}
-                  </>
-                ) : null}
+                {row.original.is_automatically_deactivated ? (
+                  <TooltipWrapper tooltipContent="Авто">
+                    <Zap
+                      className="text-green-500"
+                      title="Автоматический режим включен"
+                    />
+                  </TooltipWrapper>
+                ) : (
+                  <TooltipWrapper tooltipContent="Ручное">
+                    <ZapOff
+                      className="text-gray-400"
+                      title="Автоматический режим выключен"
+                    />
+                  </TooltipWrapper>
+                )}
               </>
-            ) : null}
+            )}
           </div>
         ),
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        filterFn: 'includesStringSensitive',
         header: () => <span>Статус / Действия</span>,
       },
     ],
