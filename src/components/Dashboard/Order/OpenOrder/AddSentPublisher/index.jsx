@@ -10,7 +10,13 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button.jsx'
-import { ChevronDown, ChevronsUpDown, ChevronUp, Plus, X } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+  PackagePlus,
+  X,
+} from 'lucide-react'
 import EditSendPublisherModal from '@/components/Dashboard/Order/OpenOrder/AddSentPublisher/modal/EditSendPublisherModal/index.jsx'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 import Pagination from '@/components/module/Pagination/index.jsx'
@@ -52,41 +58,36 @@ export default function AddSentPublisher({
       {viewNote ? (
         <div className="flex justify-end">
           <Button
-            variant="outline"
+            variant="outlineDeactivate"
             onClick={() => setViewNote(false)}
-            className=" px-1 h-[30px] group rounded-lg  gap-2 hover:bg-red-300"
           >
-            <X className="hover:text-red-600   transform group-hover:scale-125 transition-transform" />
+            <X />
           </Button>
         </div>
       ) : null}
       {/* кнопка крестик чтобы закрыть создание записи */}
 
       <div>
-        <Table
-          className={`${style.responsive_table} border_design rounded-[22px] overflow-auto`}
+        <div
+        // className={`${style.responsive_table} border_design rounded-[22px] overflow-auto`}
         >
           {viewNote && (
             <div className="grid grid-cols-5 gap-4">
               <TableHeader className="col-span-5 grid grid-cols-5 bg-[#FFFFFF2B] rounded-t-lg"></TableHeader>
             </div>
           )}
-          <TableBody>
+          <div>
             {viewNote && (
-              <TableRow
-                initial={{ opacity: 0, x: -10, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 0.5 }}
-              >
+              <div>
                 <AddSendPublisherModal
                   expandedRows={expandedRows}
                   setViewNote={setViewNote}
                   onceOrder={onceOrder}
                 />
-              </TableRow>
+              </div>
             )}
-          </TableBody>
-        </Table>
+          </div>
+        </div>
 
         {editNote ? null : (
           <>
@@ -102,7 +103,7 @@ export default function AddSentPublisher({
                   onClick={() => setViewNote(!viewNote)}
                 >
                   <div className="flex items-center justify-center gap-2 ">
-                    <Plus className="transform group-hover:scale-125 transition-transform" />
+                    <PackagePlus />
                     Добавить запись
                   </div>
                 </Button>

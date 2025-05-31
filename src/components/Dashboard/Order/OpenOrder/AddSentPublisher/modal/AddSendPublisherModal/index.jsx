@@ -3,7 +3,6 @@ import React from 'react'
 import axios from 'axios'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-import style from './AddSendPublisherModal.module.scss'
 import 'react-datepicker/dist/react-datepicker.css'
 import { fetchPublisher } from '@/redux/publisher/publisherSlice.js'
 import { fetchOnceListSentToPublisher } from '@/redux/order/SentToPublisher.js'
@@ -20,10 +19,18 @@ import {
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { Monitor, MonitorPlay, MonitorUp, PackagePlus } from 'lucide-react'
+import {
+  Loader2,
+  Monitor,
+  MonitorPlay,
+  MonitorUp,
+  PackagePlus,
+} from 'lucide-react'
 import Cookies from 'js-cookie'
 import { fetchSingleOrder } from '@/redux/order/orderSlice.js'
 import axiosInstance from '@/api/api.js'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
+import { Badge } from '@/components/ui/badge.jsx'
 
 const format = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
@@ -196,9 +203,9 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   }, [publisherID])
 
   return (
-    <div className="relative rounded-[22px]">
-      <div className="grid lg:grid-cols-7  md:grid-cols-4 sm:grid-cols-2  gap-1">
-        <div className="grid w-full mb-4 ">
+    <div className="relative h-full rounded-[22px]">
+      <div className="flex gap-1">
+        <div className="grid w-full ">
           <Label className="text-sm text-[var(--text)] pb-2">
             Выбрать Паблишера
           </Label>
@@ -217,7 +224,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                 <SelectTrigger className="!text-[var(--text)]">
                   <SelectValue placeholder="Выбрать паблишера" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#ffffff4d]">
                   <SelectGroup>
                     <SelectLabel>Выбрать паблишера</SelectLabel>
                     {/* Assuming you have a publisher array */}
@@ -233,7 +240,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
+        <div className="grid w-full ">
           <Label className="text-sm text-[var(--text)] pb-2">
             Выбрать канал<span className="text-red-500 ml-0.5">*</span>
           </Label>
@@ -297,7 +304,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className=" w-full mb-4 hidden">
+        <div className=" w-full  hidden">
           <Label className="text-sm text-[var(--text)] pb-2">
             Выбрать формат<span className="text-red-500 ml-0.5">*</span>
           </Label>
@@ -348,12 +355,12 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
+        <div className="grid w-full ">
           <Label className="text-sm text-[var(--text)] pb-2">
             Начало<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
-            className={style.input}
+            // className={style.input}
             type="date"
             {...register('startdate', {
               required: 'Поле обязательно к заполнению',
@@ -362,12 +369,12 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
+        <div className="grid w-full ">
           <Label className="text-sm text-[var(--text)] pb-2">
             Конец<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
-            className={style.input}
+            // className={style.input}
             type="date"
             {...register('enddate', {
               required: 'Поле обязательно к заполнению',
@@ -376,9 +383,14 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-[var(--text)] pb-2">
-            Порог показов<span className="text-red-500 ml-0.5">*</span>
+        <div className="grid w-full relative">
+          <Label className="flex gap-0.5 text-sm  text-[var(--text)] pb-2">
+            <div>
+              Порог показов<span className="text-red-500 ml-0.5">*</span>
+            </div>
+            {budgett > 0 ? (
+              <Badge variant="default">{budgett.toLocaleString('en-US')}</Badge>
+            ) : null}
           </Label>
           <Controller
             name="ordered_number_of_views"
@@ -386,7 +398,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
             rules={{ required: 'Поле обязательно к заполнению' }}
             render={({ field }) => (
               <Input
-                className={style.input}
+                // className={style.input}
                 type="text"
                 value={field.value.toLocaleString('en-US')}
                 onChange={(e) => {
@@ -405,25 +417,25 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-[var(--text)] pb-2">
-            Бюджет<span className="text-red-500 ml-0.5">*</span>
-          </Label>
-          <Input
-            type="text"
-            value={budgett.toLocaleString('en-US')}
-            placeholder="Бюджет"
-            autoComplete="off"
-            disabled
-          />
-        </div>
+        {/*<div className="grid w-full ">*/}
+        {/*  <Label className="text-sm text-[var(--text)] pb-2">*/}
+        {/*    Бюджет<span className="text-red-500 ml-0.5">*</span>*/}
+        {/*  </Label>*/}
+        {/*  <Input*/}
+        {/*    type="text"*/}
+        {/*    value={budgett.toLocaleString('en-US')}*/}
+        {/*    placeholder="Бюджет"*/}
+        {/*    autoComplete="off"*/}
+        {/*    disabled*/}
+        {/*  />*/}
+        {/*</div>*/}
 
-        <div className="grid w-full mb-4">
+        <div className="grid w-full ">
           <Label className="text-sm text-[var(--text)] pb-2">
             Текст<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
-            className={style.input}
+            // className={style.input}
             type="text"
             placeholder="Введите текст"
             {...register('notes_text', {
@@ -432,28 +444,23 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
             style={{ border: errors?.notes_text ? '1px solid red' : '' }}
           />
         </div>
-      </div>
-      <div className="w-full flex justify-end ">
-        <Button
-          onClick={handleSubmit(onSubmit)}
-          className={`${
-            isValid && !isOrderCreated
-              ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-              : 'bg-[#616161]'
-          }  w-auto h-[44px] text-[var(--text)] rounded-lg	flex gap-2 mb-4 `}
-          disabled={!isValid || isOrderCreated}
-          isValid={true}
-        >
-          {isOrderCreated ? <div className="loader"></div> : <PackagePlus />}
-
-          {isOrderCreated ? (
-            <>
-              <div className={style.loaderWrapper}></div>
-            </>
-          ) : (
-            <span>Создать</span>
-          )}
-        </Button>
+        <div className="w-fit flex items-end">
+          <TooltipWrapper tooltipContent="Создать">
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              disabled={!isValid || isOrderCreated}
+              variant="default"
+              isValid={true}
+              className="h-[40px]"
+            >
+              {isOrderCreated ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <PackagePlus />
+              )}
+            </Button>
+          </TooltipWrapper>
+        </div>
       </div>
     </div>
   )
