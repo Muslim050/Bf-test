@@ -79,33 +79,22 @@ const PopoverButtons = ({
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant="link"
                     onClick={() => {
                       setCurrentOrder(advert)
                     }}
-                    className="hover:scale-125 transition-all p-0 m-0"
+                    variant="ghost"
                   >
-                    <MessageSquareText className="w-[24px] h-[24px] hover:text-green-500" />
+                    <MessageSquareText />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-full  bg-white bg-opacity-30 backdrop-blur-md rounded-xl">
-                  <div className="grid gap-4 ">
-                    <div className="w-80">
-                      <div className="pb-2 flex items-center justify-between font-medium leading-none text-white border-b-[#F9F9F926] border-b">
-                        Комментарий
-                        <Button
-                          style={{ color: 'var(--text-color)' }} // Динамическая переменная для цвета текста
-                          variant="link"
-                          className={` hover:scale-125 transition-all p-0 relative`}
-                          onClick={copyToClipboard}
-                        >
-                          <Copy />
-                        </Button>
-                      </div>
-                      <p className="text-sm text-white break-words pt-4">
-                        {advert.notes}
-                      </p>
+                <PopoverContent className=" p-4 bg-white bg-opacity-30 backdrop-blur-md">
+                  <div className="flex justify-between items-center">
+                    <div className="text-lg	font-medium	text-[var(--text)] ">
+                      Комментарий
                     </div>
+                    <Button variant="secondary" onClick={copyToClipboard}>
+                      <Copy />
+                    </Button>
                   </div>
                 </PopoverContent>
               </Popover>
@@ -120,22 +109,16 @@ const PopoverButtons = ({
         {hasRole('admin') && advert.status === 'in_progress' ? (
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button
-                variant="link"
-                className={` hover:scale-125 transition-all p-0 relative`}
-                style={{ color: 'var(--text-color)' }} // Динамическая переменная для цвета текста
-              >
+              <Button variant="outlineDeactivate" className="relative">
                 {isOver100Percent && (
-                  <div className="absolute -right-1 top-1">
+                  <div className="absolute -right-1 -top-1">
                     <span className="relative flex h-3 w-3">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
                     </span>
                   </div>
                 )}
-                <SquareCheckBig
-                  className={`${isOver100Percent && 'text-red-600'} w-[24px] h-[24px]  hover:text-red-500`}
-                />
+                <SquareCheckBig />
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

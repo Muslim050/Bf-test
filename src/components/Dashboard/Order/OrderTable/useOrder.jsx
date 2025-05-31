@@ -78,7 +78,7 @@ export const useOrder = () => {
         )
       })
       .catch((error) => {
-        toast.error(`Ошибка завершения заказа: ${error.data.error.detail}`)
+        toast.error(`${error.data.error.detail}`)
         dispatch(
           fetchOrder({
             page: pagination.pageIndex + 1, // API использует нумерацию с 1
@@ -347,10 +347,10 @@ export const useOrder = () => {
                   setExpandedRowId((prev) => (prev === row.id ? null : row.id))
                 }}
                 variant="default"
+                className={` relative ${bookedWithVideoCount > 0 ? 'bg-[#aa84ff] hover:bg-[#8b5cf6]' : ''}`}
               >
                 <OpenSvg
                   className={[
-                    bookedWithVideoCount > 0 ? 'text-[#aa84ff]' : '',
                     ' transition-all ease-in-out',
                     isExpanded ? 'rotate-90 scale-125' : 'rotate-0',
                   ].join(' ')}
@@ -358,7 +358,7 @@ export const useOrder = () => {
 
                 {/* Badge/пульс вокруг иконки, если есть видео */}
                 {bookedWithVideoCount > 0 && (
-                  <div className="absolute -top-2.5 -right-2.5">
+                  <div className="absolute -top-2 -right-2">
                     <span className="relative flex h-[17px] w-[17px]">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
                       <span className="relative inline-flex items-center rounded-full h-[17px] w-[17px] bg-violet-500 justify-center text-[12px]">

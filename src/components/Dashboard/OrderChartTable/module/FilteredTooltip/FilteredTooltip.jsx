@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Label } from '@/components/ui/label.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { SlidersHorizontal, Trash2 } from 'lucide-react'
+import { FileChartPie, Trash2 } from 'lucide-react'
 import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 function FilteredTooltip({
@@ -63,7 +63,7 @@ function FilteredTooltip({
       <div className="flex gap-2.5 mt-3 justify-end">
         <TooltipWrapper tooltipContent="Сортировать">
           <Button variant="default" onClick={handleDateStatictick}>
-            <SlidersHorizontal />
+            <FileChartPie />
           </Button>
         </TooltipWrapper>
 

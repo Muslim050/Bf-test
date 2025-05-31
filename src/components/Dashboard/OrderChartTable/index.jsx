@@ -116,7 +116,7 @@ function OrderChart() {
                     <div className="">
                       <div className="flex items-center gap-2 pb-4">
                         <div className="w-2.5	h-6	bg-[#B5E4CA] rounded-[4px]"></div>
-                        <h4 className="font-medium text-white">Фильтры</h4>
+                        <h4 className="font-medium text-white">Фильтр</h4>
                       </div>
                       <p className="text-xs	py-3 border-t border-[#F9F9F9] text-[var(--text)]">
                         Выберите необходимые параметры

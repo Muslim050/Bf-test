@@ -56,6 +56,9 @@ const Avtomatick = ({ fetchGetOrder, row }) => {
 
       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Модерация рекламы</DialogTitle>
+          </DialogHeader>
           <DialogHeader className="mb-4">
             <DialogTitle>
               {selectedRow?.is_auto_deactivation_mode
