@@ -195,7 +195,6 @@ const EditSendPublisherModal = ({
   }, [isValid, errors])
 
   React.useEffect(() => {}, [setPublisherID, setChannelID])
-  console.log(channelName)
   return (
     <>
       <div className="relative rounded-[22px]">

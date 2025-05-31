@@ -72,7 +72,6 @@ export const addOrder = createAsyncThunk(
   'order/addOrder',
   async ({ data }, { rejectWithValue }) => {
     const token = Cookies.get('token')
-    console.log(data)
     try {
       const response = await axios.post(
         `${backendURL}/order/`,
