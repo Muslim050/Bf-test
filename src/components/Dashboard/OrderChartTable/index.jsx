@@ -16,6 +16,7 @@ import PreLoadDashboard from '@/components/Dashboard/PreLoadDashboard/PreLoad.js
 import TablePagination from '@/components/module/TablePagination/index.jsx'
 import { useOrderChart } from '@/components/Dashboard/OrderChartTable/useOrderChart.jsx'
 import { Skeleton } from '@/components/ui/skeleton.jsx'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 function OrderChart() {
   const {
@@ -57,12 +58,16 @@ function OrderChart() {
         />
       ) : (
         <div>
-          <div className="flex items-center gap-4 justify-between ">
-            <div className="flex items-center gap-3">
+          <div className="flex  items-center gap-4 justify-between ">
+            <div className="flex w-full items-center gap-3 justify-between">
               <Link to={'/order'}>
-                <ChevronLeft className="w-8 h-6 hover:text-brandPrimary-1" />
+                <TooltipWrapper tooltipContent="Назад">
+                  <Button variant="default">
+                    <ChevronLeft />
+                  </Button>
+                </TooltipWrapper>
               </Link>
-              {/* </Button> */}
+
               <div className="text-lg	text-white flex">
                 <div>{orderData?.name}</div>
                 &nbsp; / &nbsp;
@@ -77,59 +82,58 @@ function OrderChart() {
                   {orderData.target_country}
                 </div>
               )}
-            </div>
-
-            <div className="flex gap-2">
-              {/* Выбранный параметры фильтра */}
-              {dataFiltered && (
-                <Button
-                  variant="link"
-                  onClick={dataFilteredClose}
-                  disabled={isLoadingData}
-                  className="text-[#A7CCFF] px-0 h-auto"
-                >
-                  Очистить
-                </Button>
-              )}
-              <SelectedFilterCart
-                dataFiltered={dataFiltered}
-                startDate={startDate}
-                endDate={endDate}
-              />
-              {/* Выбранный параметры фильтра */}
-
-              <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
+              <div className="flex gap-2">
+                {/* Выбранный параметры фильтра */}
+                {dataFiltered && (
                   <Button
+                    variant="link"
+                    onClick={dataFilteredClose}
                     disabled={isLoadingData}
-                    onClick={openFilter}
-                    variant="default"
+                    className="text-[#A7CCFF] px-0 h-auto"
                   >
-                    <SlidersHorizontal />
+                    Очистить
                   </Button>
-                </PopoverTrigger>
+                )}
+                <SelectedFilterCart
+                  dataFiltered={dataFiltered}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+                {/* Выбранный параметры фильтра */}
 
-                <PopoverContent className="w-80 mr-3.5 bg-white bg-opacity-30 backdrop-blur-md border-0 rounded-[22px]">
-                  <div className="">
-                    <div className="flex items-center gap-2 pb-4">
-                      <div className="w-2.5	h-6	bg-[#B5E4CA] rounded-[4px]"></div>
-                      <h4 className="font-medium text-white">Фильтры</h4>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      disabled={isLoadingData}
+                      onClick={openFilter}
+                      variant="default"
+                    >
+                      <SlidersHorizontal />
+                    </Button>
+                  </PopoverTrigger>
+
+                  <PopoverContent className="w-80 mr-3.5 bg-white bg-opacity-30 backdrop-blur-md border-0 rounded-[22px]">
+                    <div className="">
+                      <div className="flex items-center gap-2 pb-4">
+                        <div className="w-2.5	h-6	bg-[#B5E4CA] rounded-[4px]"></div>
+                        <h4 className="font-medium text-white">Фильтры</h4>
+                      </div>
+                      <p className="text-xs	py-3 border-t border-[#F9F9F9] text-[var(--text)]">
+                        Выберите необходимые параметры
+                      </p>
+                      <FilteredTooltip
+                        orderData={orderData}
+                        handleDateStatictick={handleDateStatictick}
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                        handleClear={handleClear}
+                      />
                     </div>
-                    <p className="text-xs	py-3 border-t border-[#F9F9F9] text-[var(--text)]">
-                      Выберите необходимые параметры
-                    </p>
-                    <FilteredTooltip
-                      orderData={orderData}
-                      handleDateStatictick={handleDateStatictick}
-                      startDate={startDate}
-                      setStartDate={setStartDate}
-                      endDate={endDate}
-                      setEndDate={setEndDate}
-                      handleClear={handleClear}
-                    />
-                  </div>
-                </PopoverContent>
-              </Popover>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
           </div>
           <div>
