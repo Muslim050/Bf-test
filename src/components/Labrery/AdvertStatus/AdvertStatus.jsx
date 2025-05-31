@@ -38,14 +38,7 @@ const AdvertStatus = ({ status, children, endDate, className }) => {
       ) : (
         <> {statusText}</>
       )}
-
       {children}
-
-      {/*{endDate && (*/}
-      {/*  <div style={{ color: 'red', fontSize: '11px', marginLeft: '5px' }}>*/}
-      {/*    <div>{endDate.split('T')[0]}</div>*/}
-      {/*  </div>*/}
-      {/*)}*/}
     </div>
   )
 }

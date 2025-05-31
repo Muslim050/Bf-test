@@ -14,9 +14,9 @@ import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import {
+  PackageCheck,
   SquareArrowOutUpRight,
   SquareCheckBig,
-  Star,
   Webhook,
   WebhookOff,
 } from 'lucide-react'
@@ -226,7 +226,7 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
                   endDate={row.original.deactivation_date}
                 />
               ) : (
-                <div style={{ width: 'fit-content' }}>
+                <TooltipWrapper tooltipContent="Проверить">
                   <Button
                     variant="outlineViolet"
                     onClick={() => {
@@ -235,15 +235,14 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
                     }}
                     className="relative flex gap-1"
                   >
-                    <Star className="size-5 text-[var(--text)]" />
+                    <PackageCheck />
                     {row.original.video_content.link_to_video ? (
                       <div className="bg-violet-500 w-4 h-4 rounded-full absolute -right-1.5 -top-1.5"></div>
                     ) : (
                       ''
                     )}
-                    Проверить
                   </Button>
-                </div>
+                </TooltipWrapper>
               )}
               {row.original.status === 'in_use' ? (
                 <div>
