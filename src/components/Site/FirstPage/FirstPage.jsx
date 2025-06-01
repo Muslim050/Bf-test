@@ -4,12 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import { useGSAP } from '@gsap/react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Navigation, Autoplay } from 'swiper/modules'
+import { Autoplay, Navigation, Pagination } from 'swiper/modules'
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'tailwindcss/tailwind.css'
-import {  SetkaSvg, StarsSSSvg } from '@/assets/Site/site-svg.jsx'
+import { SetkaSvg, StarsSSSvg } from '@/assets/Site/site-svg.jsx'
 import { sliderData } from './module/sliderData'
 import m from './FirstPage.module.scss'
 import Phone from '@/assets/Site/FirstPage/Phone.png'
@@ -99,7 +99,7 @@ const FirstPage = () => {
         },
       })
     } else {
-      gsap.killTweensOf(phoneRef.current);
+      gsap.killTweensOf(phoneRef.current)
     }
   }, [])
 
@@ -206,8 +206,9 @@ const FirstPage = () => {
         id="second-page"
         className={`relative -z-20 h-full min-h-screen py-24 custom-845:pt-0 `}
         style={{
-          background: "radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%",
-          filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
+          background:
+            'radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%',
+          filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
         }}
       >
         {/*<GradientBGSvg className="absolute top-0 left-0 w-[100%] h-full  -z-[5px]" />*/}
@@ -367,7 +368,7 @@ const FirstPage = () => {
               ref={phoneWRef}
               className={`
               animated-element
-              isSecondPagePhone relative  flex  bottom-[-120%] justify-between w-full md:left-[-38px] left-[-35px]`}
+              isSecondPagePhone relative  flex  bottom-[-120%] justify-between w-full md:left-[-50px] left-[-30px]`}
             >
               <img
                 loading="lazy"
@@ -479,10 +480,13 @@ export const FirstSection = () => {
   }, [])
 
   return (
-    <div   style={{
-      background: "radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%",
-      filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
-    }}>
+    <div
+      style={{
+        background:
+          'radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%',
+        filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+      }}
+    >
       {/*<GradientBGSvg className="absolute top-0 left-0  w-[100%] h-full -z-[5px]" />*/}
       <StarsSSSvg className="absolute top-0 left-0 w-full h-full -z-[5px]" />
       <SetkaSvg className="absolute top-0 left-0 h-auto w-full -z-[5px]" />
