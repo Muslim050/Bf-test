@@ -21,7 +21,7 @@ const buttonVariants = cva(
         //Кнопка Проверить
         outlineViolet: 'hover:bg-violet-400 bg-[#ffffff4d]  hover:text-white',
         //Кнопка Завершить
-        outlineDeactivate: 'hover:bg-red-400 bg-[#ffffff4d]  hover:text-white',
+        outlineDeactivate: 'hover:bg-red-400 bg-[#ffffff4d]  text-white',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',

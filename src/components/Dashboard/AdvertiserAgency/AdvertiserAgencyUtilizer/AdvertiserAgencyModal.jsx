@@ -16,6 +16,8 @@ import {
 import { Label } from '@/components/ui/label.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
+import { PackagePlus } from 'lucide-react'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export default function AdvertiserAgencyModal({ onClose }) {
   const dispatch = useDispatch()
@@ -142,7 +144,7 @@ export default function AdvertiserAgencyModal({ onClose }) {
             </div>
 
             <div className="flex gap-4 ">
-              <div className="grid w-full mb-4">
+              <div className="grid w-1/2">
                 <Label className="text-sm	text-white pb-2 flex gap-0.5">
                   Email<span className="text-red-500 ml-0.5">*</span>
                 </Label>
@@ -159,35 +161,38 @@ export default function AdvertiserAgencyModal({ onClose }) {
                 />
               </div>
 
-              <div className="grid w-full mb-4">
-                <Label className="text-sm	text-white pb-2 flex gap-0.5">
-                  Комиссия<span className="text-red-500 ml-0.5">*</span>
-                </Label>
-                <Input
-                  type="number"
-                  autoComplete="off"
-                  {...register('commission_rate', {
-                    required: '.',
-                  })}
-                  placeholder={'Введите комиссию'}
-                  className={`border ${
-                    errors?.commission_rate
-                      ? 'border-red-500'
-                      : 'border-gray-300'
-                  }   transition-all duration-300 text-sm `}
-                />
+              <div className="flex gap-2 items-end">
+                <div className="grid w-full">
+                  <Label className="text-sm	text-white pb-2 flex gap-0.5">
+                    Комиссия<span className="text-red-500 ml-0.5">*</span>
+                  </Label>
+                  <Input
+                    type="number"
+                    autoComplete="off"
+                    {...register('commission_rate', {
+                      required: '.',
+                    })}
+                    placeholder={'Введите комиссию'}
+                    className={`border ${
+                      errors?.commission_rate
+                        ? 'border-red-500'
+                        : 'border-gray-300'
+                    }   transition-all duration-300 text-sm `}
+                  />
+                </div>
+                <div>
+                  <TooltipWrapper tooltipContent="Создать">
+                    <Button
+                      variant="default"
+                      disabled={!isValid}
+                      className="h-[40px]"
+                    >
+                      <PackagePlus />
+                    </Button>
+                  </TooltipWrapper>
+                </div>
               </div>
             </div>
-            <Button
-              className={`${
-                isValid
-                  ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-                  : 'bg-[#616161]'
-              } w-full   h-[44px] text-white rounded-lg	mt-6`}
-              disabled={!isValid}
-            >
-              Создать
-            </Button>
           </div>
         </form>
       </DialogContent>

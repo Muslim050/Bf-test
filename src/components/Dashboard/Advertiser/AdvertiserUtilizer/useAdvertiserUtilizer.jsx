@@ -1,23 +1,24 @@
-import React, {useCallback} from 'react';
+import React, { useCallback } from 'react'
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
-} from '@tanstack/react-table';
-import {useSelector} from 'react-redux';
-import {Monitor, MonitorPlay, MonitorUp, Pencil} from "lucide-react";
-import {hasRole} from "@/utils/roleUtils.js";
-import {Button} from "@/components/ui/button.jsx";
-import backendURL from "@/utils/url.js";
-import axiosInstance from "@/api/api.js";
-import {Avatar, AvatarFallback, AvatarImage,} from "@/components/ui/avatar"
+  useReactTable,
+} from '@tanstack/react-table'
+import { useSelector } from 'react-redux'
+import { Monitor, MonitorPlay, MonitorUp, Pencil } from 'lucide-react'
+import { hasRole } from '@/utils/roleUtils.js'
+import { Button } from '@/components/ui/button.jsx'
+import backendURL from '@/utils/url.js'
+import axiosInstance from '@/api/api.js'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export const useAdvertiserUtilizer = () => {
-  const [columnFilters, setColumnFilters] = React.useState([]);
-  const { advertisers, total_count } = useSelector((state) => state.advertiser);
+  const [columnFilters, setColumnFilters] = React.useState([])
+  const { advertisers, total_count } = useSelector((state) => state.advertiser)
   const [globalFilter, setGlobalFilter] = React.useState('')
   const [currentAdv, setCurrentAdv] = React.useState(null)
   // Модальное окно OrderModal
@@ -25,7 +26,7 @@ export const useAdvertiserUtilizer = () => {
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
-  });
+  })
   const fetchCpm = useCallback(async (id) => {
     try {
       const url = `${backendURL}/order/cpm/?advertiser=${id}`
@@ -35,104 +36,122 @@ export const useAdvertiserUtilizer = () => {
     }
   }, [])
 
-
   const columns = React.useMemo(
     () => [
       {
         accessorFn: (_, index) => index + 1, // Используем индекс строки
         id: 'id',
-        cell: info => info.row.index + 1, // Начинаем с 1
+        cell: (info) => info.row.index + 1, // Начинаем с 1
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>№</span>,
       },
       {
         accessorFn: (row) => row.format, // Преобразование в число
         id: '-',
-        cell: ({ row }) =>
+        cell: ({ row }) => (
           <>
-            {row.original.logo &&
+            {row.original.logo && (
               <Avatar>
-                <AvatarImage src={row.original.logo} alt="@shadcn"/>
+                <AvatarImage src={row.original.logo} alt="@shadcn" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-            }
-          </>,
+            )}
+          </>
+        ),
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1"></span>,
         enableSorting: false,
         enableFiltering: false,
       },
       {
-        accessorFn: row => row.name,
+        accessorFn: (row) => row.name,
         id: 'Компании',
-        cell: ({ row }) =>
-            <div>{row.original.name}</div>,
+        cell: ({ row }) => <div>{row.original.name}</div>,
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>Компании</span>,
       },
       {
         accessorFn: (row) => Number(row.cpm_preroll), // Преобразование в число
         id: 'Preroll',
-        cell: info => info.getValue(),
+        cell: (info) => info.getValue(),
         filterFn: 'includesString',
         header: () =>
           hasRole('admin') ? (
-            <span className="flex items-center gap-1"><Monitor/>Preroll</span>
+            <span className="flex items-center gap-1 whitespace-nowrap">
+              <Monitor />
+              Preroll
+            </span>
           ) : null,
       },
       {
-        accessorFn: (row) => Number (row.cpm_preroll_uz), // Преобразование в число
+        accessorFn: (row) => Number(row.cpm_preroll_uz), // Преобразование в число
         id: 'Preroll UZ',
-        cell: info => info.getValue(),
+        cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () =>
           hasRole('admin') ? (
-            <span className='flex  items-center gap-1'><Monitor/> Preroll
-              <div className="rounded-[8px] px-1 pb-0.5 h-auto text-[16px] bg-[#606afc] inline">UZ</div>
+            <span className="flex  items-center gap-1">
+              <Monitor /> Preroll
+              <div className="rounded-[8px] px-1 pb-0.5 h-auto text-[16px] bg-[#606afc] inline">
+                UZ
+              </div>
             </span>
           ) : null,
       },
       {
-        accessorFn: row => row.cpm_tv_preroll,
+        accessorFn: (row) => row.cpm_tv_preroll,
         id: 'TV Preroll',
-        cell: info => info.getValue (),
+        cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () =>
           hasRole('admin') ? (
-            <span className='flex  items-center gap-1'><MonitorPlay/>TV Preroll</span>
-          ) : null,
-      },
-      {
-        accessorFn: row => row.cpm_tv_preroll_uz,
-        id: 'TV Preroll UZ',
-        cell: info => info.getValue(),
-        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () =>
-          hasRole('admin') ? (
-            <span className='flex  items-center gap-1'><Monitor/> TV Preroll
-              <div className="rounded-[8px] px-1 pb-0.5 h-auto text-[16px] bg-[#606afc] inline">UZ</div>
+            <span className="flex  items-center gap-1 whitespace-nowrap">
+              <MonitorPlay />
+              TV Preroll
             </span>
           ) : null,
       },
       {
-        accessorFn: row => row.cpm_top_preroll,
-        id: 'Top Preroll',
-        cell: info => info.getValue (),
+        accessorFn: (row) => row.cpm_tv_preroll_uz,
+        id: 'TV Preroll UZ',
+        cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () =>
           hasRole('admin') ? (
-            <span className='flex  items-center gap-1'><MonitorUp/>Top Preroll</span>
+            <span className="flex  items-center gap-1 whitespace-nowrap">
+              <Monitor /> TV Preroll
+              <div className="rounded-[8px] px-1 pb-0.5 h-auto text-[16px] bg-[#606afc] inline">
+                UZ
+              </div>
+            </span>
           ) : null,
       },
       {
-        accessorFn: row => row.cpm_top_preroll_uz,
-        id: 'Top Preroll UZ',
-        cell: info => info.getValue(),
+        accessorFn: (row) => row.cpm_top_preroll,
+        id: 'Top Preroll',
+        cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
         header: () =>
           hasRole('admin') ? (
-            <span className='flex  items-center gap-1'><MonitorUp/>Top Preroll
-              <div className="rounded-[8px] px-1 pb-0.5 h-auto text-[16px] bg-[#606afc] inline">UZ</div>
+            <span className="flex  items-center gap-1 whitespace-nowrap">
+              <MonitorUp />
+              Top Preroll
+            </span>
+          ) : null,
+      },
+      {
+        accessorFn: (row) => row.cpm_top_preroll_uz,
+        id: 'Top Preroll UZ',
+        cell: (info) => info.getValue(),
+        filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
+        header: () =>
+          hasRole('admin') ? (
+            <span className="flex  items-center gap-1 whitespace-nowrap">
+              <MonitorUp />
+              Top Preroll
+              <div className="rounded-[8px] px-1 pb-0.5 h-auto text-[16px] bg-[#606afc] inline">
+                UZ
+              </div>
             </span>
           ) : null,
       },
@@ -141,51 +160,73 @@ export const useAdvertiserUtilizer = () => {
         id: 'Email',
         cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Email</span>,
+        header: () => <span className="flex  items-center gap-1">Email</span>,
       },
       {
         accessorFn: (row) => row.phone_number,
         id: 'Телефон',
         cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Телефон</span>,
+        header: () => <span className="flex  items-center gap-1">Телефон</span>,
       },
       {
         accessorFn: (row) => row.advertising_agency?.name,
         id: 'Агенство',
         cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Агенство</span>,
+        header: () => (
+          <span className="flex  items-center gap-1">Агенство</span>
+        ),
       },
       {
         id: 'edit',
         cell: ({ row }) =>
           hasRole('admin') ? (
-            <Button
-              variant="link"
-              onClick={() => {
-                setCurrentAdv(row.original); // Передаем данные строки
-                setOpen(true); // Открываем модальное окно
-              }}
-              className="hover:scale-125 transition-all p-0"
-            >
-              <Pencil className={`w-[24px] h-[24px] text-white hover:text-orange-500`} />
-            </Button>
-          ) : null,
+            <TooltipWrapper tooltipContent="Редактировать">
+              <Button
+                variant="defaultOrange"
+                onClick={() => {
+                  setCurrentAdv(row.original) // Передаем данные строки
+                  setOpen(true) // Открываем модальное окно
+                }}
+              >
+                <Pencil />
+              </Button>
+            </TooltipWrapper>
+          ) : // <Button
+          //   variant="link"
+          //   onClick={() => {
+          //     setCurrentAdv(row.original) // Передаем данные строки
+          //     setOpen(true) // Открываем модальное окно
+          //   }}
+          //   className="hover:scale-125 transition-all p-0"
+          // >
+          //   <Pencil
+          //     className={`w-[24px] h-[24px] text-white hover:text-orange-500`}
+          //   />
+          // </Button>
+          null,
         header: () => null,
         enableSorting: false,
         enableFiltering: false,
       },
     ],
-    []
+    [],
   )
   const filteredColumns = columns.filter((column) => {
     // Если колонка зависит от роли admin, проверяем условие
-    if (column.id === 'Preroll' || column.id === 'Preroll UZ' || column.id === 'TV Preroll' || column.id === 'TV Preroll UZ' || column.id === 'Top Preroll' || column.id === 'Top Preroll UZ') {
-      return hasRole('admin');
+    if (
+      column.id === 'Preroll' ||
+      column.id === 'Preroll UZ' ||
+      column.id === 'TV Preroll' ||
+      column.id === 'TV Preroll UZ' ||
+      column.id === 'Top Preroll' ||
+      column.id === 'Top Preroll UZ'
+    ) {
+      return hasRole('admin')
     }
-    return true; // Для всех остальных колонок
-  });
+    return true // Для всех остальных колонок
+  })
 
   const table = useReactTable({
     data: advertisers.results || [], // Данные из Redux
@@ -198,9 +239,9 @@ export const useAdvertiserUtilizer = () => {
     onPaginationChange: (updater) => {
       setPagination((prev) => {
         const newPagination =
-          typeof updater === 'function' ? updater(prev) : updater;
-        return { ...prev, ...newPagination };
-      });
+          typeof updater === 'function' ? updater(prev) : updater
+        return { ...prev, ...newPagination }
+      })
     },
     pageCount: Math.ceil(total_count / pagination.pageSize), // Общее количество страниц
     manualPagination: true, // Указываем, что используем серверную пагинацию
@@ -208,8 +249,7 @@ export const useAdvertiserUtilizer = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  });
-
+  })
 
   return {
     table,
@@ -222,7 +262,6 @@ export const useAdvertiserUtilizer = () => {
     setOpen,
     currentAdv,
     fetchCpm,
-    pagination
-  };
-};
-
+    pagination,
+  }
+}

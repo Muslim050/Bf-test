@@ -9,7 +9,8 @@ import {
 } from '@/components/ui/select.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
-import {Tv, FileCog} from "lucide-react";
+import { FileChartPie, FileCog, Tv } from 'lucide-react'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 const formatV = [
   { value: 'preroll', text: 'Pre-roll' },
@@ -33,15 +34,15 @@ function Filter({
           onValueChange={handleSelectChange}
           value={selectedOptionChannel}
         >
-          <div className="bg-white bg-opacity-30 backdrop-blur-md px-2 py-2 h-[50px] rounded-2xl">
+          <div className="bg-[#ffffff4d] px-2 py-2 h-[50px] rounded-2xl">
             <div
               className="text-xs flex gap-2 "
               style={{ color: 'var(--text-color )' }}
             >
-              <Tv className='size-4'/> Канал
+              <Tv className="size-4" /> Канал
             </div>
             <SelectTrigger
-              className="rounded-none border-0 p-0 h-auto pl-[25px] "
+              className="rounded-none border-0 p-0 h-auto pl-[25px] bg-transparent"
               style={{ color: 'var(--text-color )' }}
             >
               <SelectValue placeholder="Выбрать канал" />
@@ -65,15 +66,19 @@ function Filter({
 
         {/*Выбрать формат*/}
         <Select onValueChange={handleSelectFormat} value={selectedFormat}>
-          <div className="bg-white bg-opacity-30 backdrop-blur-md px-2 py-2 h-[50px] rounded-2xl">
+          <div className="bg-[#ffffff4d] px-2 py-2 h-[50px] rounded-2xl">
             <div
               className="text-xs flex gap-2 "
               style={{ color: 'var(--text-color )' }}
             >
-              <FileCog className='size-4' style={{ color: 'var(--text-color )' }} /> Формат
+              <FileCog
+                className="size-4"
+                style={{ color: 'var(--text-color )' }}
+              />{' '}
+              Формат
             </div>
             <SelectTrigger
-              className="rounded-none border-0 p-0 h-auto pl-[25px] "
+              className="rounded-none border-0 p-0 h-auto pl-[25px] bg-transparent"
               style={{ color: 'var(--text-color )' }}
             >
               <SelectValue placeholder="Выбрать формат" />
@@ -96,13 +101,20 @@ function Filter({
         {/*Выбрать формат*/}
 
         {(selectedChannel || selectedFormat) && (
-          <Button
-            variant="ghost"
-            className="bg-brandPrimary-1 rounded-2xl hover:bg-brandPrimary-50 text-white no-underline hover:text-white h-[44px] w-full"
-            onClick={handleSearch}
-          >
-            Поиск
-          </Button>
+          // <Button
+          //   variant="ghost"
+          //   className="bg-brandPrimary-1 rounded-2xl hover:bg-brandPrimary-50 text-white no-underline hover:text-white h-[44px] w-full"
+          //   onClick={handleSearch}
+          // >
+          //   Поиск
+          // </Button>
+          <div className="flex justify-end">
+            <TooltipWrapper tooltipContent="Сортировать">
+              <Button variant="default" onClick={handleSearch}>
+                <FileChartPie />
+              </Button>
+            </TooltipWrapper>
+          </div>
         )}
       </div>
     </>
