@@ -12,6 +12,8 @@ const buttonVariants = cva(
         default:
           'bg-brandPrimary-1 text-primary-foreground hover:bg-brandPrimary-50',
         destructive: 'bg-red-500 text-destructive-foreground hover:bg-red-600',
+        defaultOrange:
+          'bg-orange-500 text-destructive-foreground hover:bg-orange-600',
 
         //полупрозрачные кнопки
         outline:

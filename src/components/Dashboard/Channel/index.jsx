@@ -2,15 +2,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ChannelTable from '@/components/Dashboard/Channel/ChannelUtilizer/ChannelTable.jsx'
 import ChannelTableUsers from '@/components/Dashboard/Channel/ChannelUsers/ChannelTableUsers.jsx'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.jsx'
-import { Plus } from 'lucide-react'
+import { PackagePlus } from 'lucide-react'
 import { Button } from '@/components/ui/button.jsx'
 import ChannelModal from '@/components/Dashboard/Channel/ChannelUtilizer/ChannelModal.jsx'
 import React from 'react'
 import Cookies from 'js-cookie'
 import ChannelModalUsers from '@/components/Dashboard/Channel/ChannelUsers/ChannelModalUsers.jsx'
-import {useChannelUser} from "@/components/Dashboard/Channel/ChannelUsers/useChannelUser.jsx";
-import {useChannelUtilizer} from "@/components/Dashboard/Channel/ChannelUtilizer/useChannelUtilizer.jsx";
-import TableSearchInput from "@/shared/TableSearchInput/index.jsx";
+import { useChannelUser } from '@/components/Dashboard/Channel/ChannelUsers/useChannelUser.jsx'
+import { useChannelUtilizer } from '@/components/Dashboard/Channel/ChannelUtilizer/useChannelUtilizer.jsx'
+import TableSearchInput from '@/shared/TableSearchInput/index.jsx'
 
 const ChannelAndUsers = () => {
   const user = Cookies.get('role')
@@ -31,22 +31,21 @@ const ChannelAndUsers = () => {
 
   const [selectedTab, setSelectedTab] = React.useState('channel')
 
-
   const {
     table, // Экземпляр таблицы
     globalFilter,
     setGlobalFilter,
     flexRender,
-    pagination
-  } = useChannelUtilizer();
+    pagination,
+  } = useChannelUtilizer()
 
   const {
     table: publisherUsersTable,
     globalFilter: usersGlobalFilter,
     setGlobalFilter: setUsersGlobalFilter,
     flexRender: flexRenderUsers,
-    pagination: paginationUsers
-  } = useChannelUser();
+    pagination: paginationUsers,
+  } = useChannelUser()
   return (
     <div className="mb-4 mt-2">
       <Tabs defaultValue="channel">
@@ -83,28 +82,27 @@ const ChannelAndUsers = () => {
                 ''
               ) : (
                 <div className="flex justify-end ">
-
-                  <div className='flex flex-wrap gap-2'>
+                  <div className="flex flex-wrap gap-2">
                     <div>
                       <TableSearchInput
                         value={globalFilter ?? ''}
-                        onChange={value => setGlobalFilter (String (value))}
+                        onChange={(value) => setGlobalFilter(String(value))}
                         className={`p-2 font-lg shadow border border-block `}
                       />
                     </div>
-                <Dialog open={channelModal} onOpenChange={setChannelModal}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="  bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
-                    >
-                      <Plus className="w-5 h-5 mr-2" /> Создать канал
-                    </Button>
-                  </DialogTrigger>
-                  {channelModal && (
-                    <ChannelModal onClose={handleCloseChannelModal} />
-                  )}
-                </Dialog>
+                    <Dialog open={channelModal} onOpenChange={setChannelModal}>
+                      <DialogTrigger asChild>
+                        <Button variant="default">
+                          <div className="flex items-center justify-center gap-2 ">
+                            <PackagePlus />
+                            Создать
+                          </div>
+                        </Button>
+                      </DialogTrigger>
+                      {channelModal && (
+                        <ChannelModal onClose={handleCloseChannelModal} />
+                      )}
+                    </Dialog>
                   </div>
                 </div>
               )}
@@ -112,41 +110,47 @@ const ChannelAndUsers = () => {
           )}
           {selectedTab === 'channel-users' && (
             <div className="flex justify-end ">
-              <div className='flex flex-wrap gap-2'>
+              <div className="flex flex-wrap gap-2">
                 <div>
                   <TableSearchInput
                     value={usersGlobalFilter ?? ''}
-                    onChange={value => setUsersGlobalFilter (String (value))}
+                    onChange={(value) => setUsersGlobalFilter(String(value))}
                     className={`p-2 font-lg shadow border border-block `}
                   />
                 </div>
-              <Dialog
-                open={channelModalUser}
-                onOpenChange={setChannelModalUser}
-              >
-                <DialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className=" bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
-                  >
-                    <Plus className="w-5 h-5 mr-2" /> Создать пользователя
-                  </Button>
-                </DialogTrigger>
-                {channelModalUser && (
-                  <ChannelModalUsers onClose={handleCloseModalUser} />
-                )}
-              </Dialog>
+                <Dialog
+                  open={channelModalUser}
+                  onOpenChange={setChannelModalUser}
+                >
+                  <DialogTrigger asChild>
+                    <Button variant="default">
+                      <div className="flex items-center justify-center gap-2 ">
+                        <PackagePlus />
+                        Создать
+                      </div>
+                    </Button>
+                  </DialogTrigger>
+                  {channelModalUser && (
+                    <ChannelModalUsers onClose={handleCloseModalUser} />
+                  )}
+                </Dialog>
               </div>
             </div>
           )}
         </div>
         <TabsContent value="channel">
-          <ChannelTable table={table} flexRender={flexRender} pagination={pagination}/>
+          <ChannelTable
+            table={table}
+            flexRender={flexRender}
+            pagination={pagination}
+          />
         </TabsContent>
         <TabsContent value="channel-users">
-          <ChannelTableUsers  flexRender={flexRenderUsers}
-                              table={publisherUsersTable}
-          pagination={paginationUsers}/>
+          <ChannelTableUsers
+            flexRender={flexRenderUsers}
+            table={publisherUsersTable}
+            pagination={paginationUsers}
+          />
         </TabsContent>
       </Tabs>
     </div>

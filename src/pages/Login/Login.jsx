@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Eye, EyeOff, Loader2 } from 'lucide-react'
+import { Eye, EyeOff, Loader2, LogIn } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
@@ -176,9 +176,10 @@ function Login() {
               <div>
                 <Button
                   variant="default"
-                  className="w-full !hover:scale-100 h-[65px]"
+                  className="w-full flex gap-1 h-[65px]"
                   disabled={!isValid || isLogin}
                 >
+                  <LogIn />
                   Войти
                   {isLogin && <Loader2 className="ml-2 h-6 w-6 animate-spin" />}
                 </Button>

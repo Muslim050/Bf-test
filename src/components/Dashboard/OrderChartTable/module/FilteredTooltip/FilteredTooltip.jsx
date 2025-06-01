@@ -61,23 +61,24 @@ function FilteredTooltip({
         </div>
       </div>
       <div className="flex gap-2.5 mt-3 justify-end">
-        <TooltipWrapper tooltipContent="Сортировать">
-          <Button variant="default" onClick={handleDateStatictick}>
-            <FileChartPie />
-          </Button>
-        </TooltipWrapper>
-
-        <TooltipWrapper tooltipContent="Удалить">
-          <Button variant="destructive" onClick={handleClear}>
-            <Trash2 />
-          </Button>
-        </TooltipWrapper>
         <DownloadReport
           getOrder={orderData}
           startDate={startDate}
           endDate={endDate}
           setIsTooltip={setIsTooltip}
         />
+
+        <TooltipWrapper tooltipContent="Удалить">
+          <Button variant="destructive" onClick={handleClear}>
+            <Trash2 />
+          </Button>
+        </TooltipWrapper>
+
+        <TooltipWrapper tooltipContent="Сортировать">
+          <Button variant="default" onClick={handleDateStatictick}>
+            <FileChartPie />
+          </Button>
+        </TooltipWrapper>
       </div>
     </>
   )

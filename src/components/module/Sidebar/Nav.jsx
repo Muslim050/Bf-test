@@ -13,7 +13,8 @@ import axios from 'axios'
 import backendURL from '@/utils/url.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { menuItems } from '@/components/module/Sidebar/MenuItems.js'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, LogOut } from 'lucide-react'
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,7 +26,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog.jsx'
-import { LogoutSvg } from '@/assets/SidebarsIcons-ui.jsx'
 import useMedia from 'use-media'
 
 const Nav = ({ links, isCollapsed, handleLogout }) => {
@@ -401,7 +401,9 @@ const Nav = ({ links, isCollapsed, handleLogout }) => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex items-center relative ">
-                        <LogoutSvg className="sm:w-[26px] sm:h-[26px] w-[20px] h-[20px] text-red-500" />
+                        <LogOut />
+
+                        {/*<LogoutSvg className="sm:w-[26px] sm:h-[26px] w-[20px] h-[20px] text-red-500" />*/}
                         {!isCollapsed ? (
                           <span
                             className={`ml-1.5 transition-opacity duration-500 ease-in-out text-white  ${

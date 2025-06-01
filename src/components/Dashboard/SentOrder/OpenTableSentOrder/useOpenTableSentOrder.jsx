@@ -245,7 +245,7 @@ export const useOpenTableSentOrder = () => {
                       className=" hover:scale-105 transition-all w-full h-auto px-4 py-1.5 rounded-2xl flex items-center gap-1.5  bg-blue-500 hover:bg-blue-400 border border-transparent hover:border-blue-600"
                     >
                       <Paperclip className="w-[20px] h-[20px] text-white" />
-                      Прикрепить Видео
+                      Прикрепить ссылку
                     </Button>
                   </DialogTrigger>
                 )}

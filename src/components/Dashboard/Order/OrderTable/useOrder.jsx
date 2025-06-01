@@ -99,8 +99,8 @@ export const useOrder = () => {
     }
   }
 
-  const columns = React.useMemo(
-    () => [
+  const columns = React.useMemo(() => {
+    const baseColumns = [
       {
         id: 'id',
         accessorFn: (_, index) => index + 1, // Используем индекс строки
@@ -208,7 +208,6 @@ export const useOrder = () => {
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Кампания</span>,
       },
-
       {
         accessorFn: (row) => row.format, // Преобразование в число
         id: 'Формат',
@@ -405,7 +404,9 @@ export const useOrder = () => {
           )
         },
       },
-      {
+    ]
+    if (role !== 'advertising_agency' && role !== 'advertiser') {
+      baseColumns.push({
         id: 'Действия',
         header: () => (
           <span className="flex items-center gap-1 w-max">Действия</span>
@@ -436,10 +437,10 @@ export const useOrder = () => {
             </div>
           )
         },
-      },
-    ],
-    [expandedRowId],
-  )
+      })
+    }
+    return baseColumns
+  }, [expandedRowId, role])
 
   const table = useReactTable({
     data: order.results || [], // Данные из Redux

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchOrder } from '@/redux/order/orderSlice'
-import { Plus } from 'lucide-react'
+import { PackagePlus } from 'lucide-react'
 import { showModalOrder } from '@/redux/modalSlice'
 import { Button } from '@/components/ui/button.jsx'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.jsx'
@@ -83,12 +83,11 @@ function OrderTable() {
               <div className="flex justify-end">
                 <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="rounded-[22px] h-auto bg-brandPrimary-1 hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
-                      onClick={handleButtonClick}
-                    >
-                      <Plus className="w-4 h-4 mr-2" /> Создать заказ
+                    <Button variant="default" onClick={handleButtonClick}>
+                      <div className="flex items-center justify-center gap-2 ">
+                        <PackagePlus />
+                        Создать
+                      </div>
                     </Button>
                   </DialogTrigger>
                   {open && <OrderModal onClose={handleClose} />}

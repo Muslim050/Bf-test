@@ -50,7 +50,7 @@ export default function LinkedVideo({ selectedId, onClose }) {
       >
         <DialogHeader>
           <DialogTitle className="text-lg	font-medium	text-white border-b border-[#F9F9F926] pb-4">
-            Прикрепить Видео
+            Прикрепить ссылку
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>

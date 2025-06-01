@@ -5,14 +5,14 @@ import React from 'react'
 import { hasRole } from '../../../utils/roleUtils'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { Plus } from 'lucide-react'
+import { PackagePlus } from 'lucide-react'
 import AdvertiserModalUsers from './AdvertiserUsers/AdvertiserModalUsers'
 import Cookies from 'js-cookie'
-import AdvertiserModal from "@/components/Dashboard/Advertiser/AdvertiserUtilizer/modal/AdvertiserModal/index.jsx";
-import {useAdvertiserUtilizer} from "@/components/Dashboard/Advertiser/AdvertiserUtilizer/useAdvertiserUtilizer.jsx";
-import EditAdvModal from "@/components/Dashboard/Advertiser/AdvertiserUtilizer/modal/EditAdvModal.jsx";
-import TableSearchInput from "@/shared/TableSearchInput/index.jsx";
-import {useAdvertiserUser} from "@/components/Dashboard/Advertiser/AdvertiserUsers/useAdvertiserUser.jsx";
+import AdvertiserModal from '@/components/Dashboard/Advertiser/AdvertiserUtilizer/modal/AdvertiserModal/index.jsx'
+import { useAdvertiserUtilizer } from '@/components/Dashboard/Advertiser/AdvertiserUtilizer/useAdvertiserUtilizer.jsx'
+import EditAdvModal from '@/components/Dashboard/Advertiser/AdvertiserUtilizer/modal/EditAdvModal.jsx'
+import TableSearchInput from '@/shared/TableSearchInput/index.jsx'
+import { useAdvertiserUser } from '@/components/Dashboard/Advertiser/AdvertiserUsers/useAdvertiserUser.jsx'
 
 const AdvertiserAndUsers = () => {
   const [selectedTab, setSelectedTab] = React.useState('advertiser')
@@ -41,8 +41,8 @@ const AdvertiserAndUsers = () => {
     fetchCpm,
     open,
     setOpen,
-    pagination
-  } = useAdvertiserUtilizer();
+    pagination,
+  } = useAdvertiserUtilizer()
 
   const {
     table: advertiserUsersTable,
@@ -50,9 +50,9 @@ const AdvertiserAndUsers = () => {
     setGlobalFilter: setUsersGlobalFilter,
     flexRender: flexRenderUsers,
     setLoading,
-    pagination:paginationUser ,
-    loading
-  } = useAdvertiserUser();
+    pagination: paginationUser,
+    loading,
+  } = useAdvertiserUser()
 
   return (
     <div className="mb-4 mt-2">
@@ -86,25 +86,27 @@ const AdvertiserAndUsers = () => {
             <div>
               {hasRole('admin') && (
                 <div className="flex justify-end ">
-                  <div className='flex flex-wrap gap-2'>
+                  <div className="flex flex-wrap gap-2">
                     <div>
                       <TableSearchInput
                         value={globalFilter ?? ''}
-                        onChange={value => setGlobalFilter (String (value))}
+                        onChange={(value) => setGlobalFilter(String(value))}
                         className={`p-2 font-lg shadow border border-block `}
                       />
                     </div>
 
                     <Dialog open={openUtilizer} onOpenChange={setOpenUtilizer}>
                       <DialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          className=" bg-brandPrimary-1 rounded-3xl hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
-                        >
-                          <Plus className="w-5 h-5 mr-2"/> Создать рекламодателя
+                        <Button variant="default">
+                          <div className="flex items-center justify-center gap-2 ">
+                            <PackagePlus />
+                            Создать
+                          </div>
                         </Button>
                       </DialogTrigger>
-                      {openUtilizer && <AdvertiserModal onClose={handleClose}/>}
+                      {openUtilizer && (
+                        <AdvertiserModal onClose={handleClose} />
+                      )}
                     </Dialog>
                   </div>
                 </div>
@@ -114,29 +116,31 @@ const AdvertiserAndUsers = () => {
 
           {selectedTab === 'advertiser-users' && (
             <div>
-              {hasRole ('admin') && (
+              {hasRole('admin') && (
                 <div className="flex justify-end ">
-                  <div className='flex flex-wrap gap-2'>
+                  <div className="flex flex-wrap gap-2">
                     <div>
                       <TableSearchInput
                         value={usersGlobalFilter ?? ''}
-                        onChange={value => setUsersGlobalFilter (String (value))}
+                        onChange={(value) =>
+                          setUsersGlobalFilter(String(value))
+                        }
                         className={`p-2 font-lg shadow border border-block `}
                       />
                     </div>
-                  <Dialog open={openUsers} onOpenChange={setOpenUsers}>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className=" bg-brandPrimary-1 rounded-3xl hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
-                      >
-                        <Plus className="w-5 h-5 mr-2"/> Создать пользователя
-                      </Button>
-                    </DialogTrigger>
-                    {openUsers && (
-                      <AdvertiserModalUsers onClose={handleCloseUsers}/>
-                    )}
-                  </Dialog>
+                    <Dialog open={openUsers} onOpenChange={setOpenUsers}>
+                      <DialogTrigger asChild>
+                        <Button variant="default">
+                          <div className="flex items-center justify-center gap-2 ">
+                            <PackagePlus />
+                            Создать
+                          </div>
+                        </Button>
+                      </DialogTrigger>
+                      {openUsers && (
+                        <AdvertiserModalUsers onClose={handleCloseUsers} />
+                      )}
+                    </Dialog>
                   </div>
                 </div>
               )}
@@ -155,12 +159,12 @@ const AdvertiserAndUsers = () => {
           <AdvertiserTableUsers
             flexRender={flexRenderUsers}
             table={advertiserUsersTable}
-            loading={loading} setLoading={setLoading}
+            loading={loading}
+            setLoading={setLoading}
             pagination={paginationUser}
           />
         </TabsContent>
       </Tabs>
-
 
       {/*Редактирование*/}
       <Dialog open={open} onOpenChange={(isOpen) => setOpen(isOpen)}>

@@ -92,19 +92,14 @@ export default function AddSentPublisher({
         {editNote ? null : (
           <>
             {viewNote ? null : (
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
+              <div className="flex justify-end">
                 <Button
                   variant="default"
                   onClick={() => setViewNote(!viewNote)}
                 >
                   <div className="flex items-center justify-center gap-2 ">
                     <PackagePlus />
-                    Добавить запись
+                    Создать
                   </div>
                 </Button>
               </div>
