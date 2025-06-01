@@ -5,7 +5,7 @@ import React from 'react'
 import { hasRole } from '../../../utils/roleUtils'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { PackagePlus } from 'lucide-react'
+import { PackagePlus, UserPlus } from 'lucide-react'
 import AdvertiserModalUsers from './AdvertiserUsers/AdvertiserModalUsers'
 import Cookies from 'js-cookie'
 import AdvertiserModal from '@/components/Dashboard/Advertiser/AdvertiserUtilizer/modal/AdvertiserModal/index.jsx'
@@ -132,7 +132,7 @@ const AdvertiserAndUsers = () => {
                       <DialogTrigger asChild>
                         <Button variant="default">
                           <div className="flex items-center justify-center gap-2 ">
-                            <PackagePlus />
+                            <UserPlus />
                             Создать
                           </div>
                         </Button>

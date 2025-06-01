@@ -60,18 +60,20 @@ function OrderChart() {
         <div>
           <div className="flex  items-center gap-4 justify-between ">
             <div className="flex w-full items-center gap-3 justify-between">
-              <Link to={'/order'}>
-                <TooltipWrapper tooltipContent="Назад">
-                  <Button variant="default">
-                    <ChevronLeft />
-                  </Button>
-                </TooltipWrapper>
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link to={'/order'}>
+                  <TooltipWrapper tooltipContent="Назад">
+                    <Button variant="default">
+                      <ChevronLeft />
+                    </Button>
+                  </TooltipWrapper>
+                </Link>
 
-              <div className="text-lg	text-white flex">
-                <div>{orderData?.name}</div>
-                &nbsp; / &nbsp;
-                <div>{orderData?.advertiser?.name}</div>
+                <div className="text-lg	text-white flex">
+                  <div>{orderData?.name}</div>
+                  &nbsp; / &nbsp;
+                  <div>{orderData?.advertiser?.name}</div>
+                </div>
               </div>
               {orderData.target_country && (
                 <div

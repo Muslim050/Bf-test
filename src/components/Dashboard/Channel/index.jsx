@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ChannelTable from '@/components/Dashboard/Channel/ChannelUtilizer/ChannelTable.jsx'
 import ChannelTableUsers from '@/components/Dashboard/Channel/ChannelUsers/ChannelTableUsers.jsx'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.jsx'
-import { PackagePlus } from 'lucide-react'
+import { PackagePlus, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button.jsx'
 import ChannelModal from '@/components/Dashboard/Channel/ChannelUtilizer/ChannelModal.jsx'
 import React from 'react'
@@ -125,7 +125,7 @@ const ChannelAndUsers = () => {
                   <DialogTrigger asChild>
                     <Button variant="default">
                       <div className="flex items-center justify-center gap-2 ">
-                        <PackagePlus />
+                        <UserPlus />
                         Создать
                       </div>
                     </Button>

@@ -92,7 +92,7 @@ export default function AddSentPublisher({
         {editNote ? null : (
           <>
             {viewNote ? null : (
-              <div className="flex justify-end">
+              <div className="flex justify-center">
                 <Button
                   variant="default"
                   onClick={() => setViewNote(!viewNote)}

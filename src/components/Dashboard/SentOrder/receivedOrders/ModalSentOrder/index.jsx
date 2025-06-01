@@ -18,7 +18,7 @@ export default function ModalSentOrder({
       <div className="">
         <div className="text-white text-xl	mb-4	font-medium	">Размещение</div>
         <Tabs defaultValue="advertiser">
-          <TabsList className="grid grid-cols-2 w-full h-auto rounded-xl my-4 bg-[var(--background)]">
+          <TabsList className="grid grid-cols-2 w-full h-auto rounded-xl my-4 bg-[#ffffff4d]">
             <TabsTrigger value="advertiser" className="h-[25px] rounded-lg	">
               Создать видео
             </TabsTrigger>

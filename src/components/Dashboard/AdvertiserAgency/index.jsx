@@ -4,7 +4,7 @@ import AdvertiserAgencyUsers from '@/components/Dashboard/AdvertiserAgency/Adver
 import React from 'react'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { PackagePlus } from 'lucide-react'
+import { PackagePlus, UserPlus } from 'lucide-react'
 import AdvertiserAgencyModalUsers from './AdvertiserAgencyUsers/AdvertiserAgencyModalUsers'
 import AdvertiserAgencyModal from './AdvertiserAgencyUtilizer/AdvertiserAgencyModal'
 import Cookies from 'js-cookie'
@@ -128,7 +128,7 @@ const AdvertiserAgencyAndUsers = () => {
                       <DialogTrigger asChild>
                         <Button variant="default">
                           <div className="flex items-center justify-center gap-2 ">
-                            <PackagePlus />
+                            <UserPlus />
                             Создать
                           </div>
                         </Button>

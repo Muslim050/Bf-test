@@ -2,8 +2,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from '@/components/ui/carousel.jsx'
 import { sliderData } from '@/pages/Login/sliderData.js'
 import { Card, CardContent } from '@/components/ui/card.jsx'
@@ -43,10 +41,6 @@ const Slider = () => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <div className="absolute -top-8 right-16">
-        <CarouselPrevious variant="default" />
-        <CarouselNext variant="default" />
-      </div>
     </Carousel>
   )
 }
