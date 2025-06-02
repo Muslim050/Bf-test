@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button.jsx' // или нужный ва�
 // Отдельный компонент для ячейки с Popover
 const PlanPopoverCell = ({ row, fetchGetOrder }) => {
   const [openPopover, setOpenPopover] = useState(false)
-
+  console.log(row)
   return (
     <div className="flex items-center gap-4">
       <div className="w-[80px]">
@@ -23,6 +23,7 @@ const PlanPopoverCell = ({ row, fetchGetOrder }) => {
           <Button
             variant="default"
             className="h-auto"
+            disabled={row.original.status === 'inactive'}
             onClick={() => setOpenPopover(true)}
           >
             <Plus className="w-4 h-4 font-semibold" />

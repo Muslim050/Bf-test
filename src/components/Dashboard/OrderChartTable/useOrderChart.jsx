@@ -27,7 +27,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import NestedStatickOrderTable from '@/components/module/TablePagination/NestedStatickOrderTable.jsx'
-import { ChevronDown, ChevronUp, SquareArrowOutUpRight } from 'lucide-react'
+import { SquareArrowOutUpRight } from 'lucide-react'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
+import { Button } from '@/components/ui/button.jsx'
+import { OpenSvg } from '@/assets/icons-ui.jsx'
 
 export const useOrderChart = () => {
   const dispatch = useDispatch()
@@ -356,23 +359,26 @@ export const useOrderChart = () => {
           const isExpanded = expandedRowId === row.id
           return (
             <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setExpandedRowId((prev) => (prev === row.id ? null : row.id)) // Переключение состояния
-                }}
-                className={`hover:scale-110 transition-all   px-[10px] py-[5px] flex rounded-[12px] hover:bg-white hover:text-[#12173c] ${
-                  isExpanded
-                    ? 'bg-white text-[#12173c]'
-                    : 'bg-[#FFFFFF2B] text-white'
-                }`}
+              {' '}
+              <TooltipWrapper
+                tooltipContent={`${isExpanded ? 'Закрыть' : 'Открыть'}`}
               >
-                {isExpanded ? 'Закрыть' : 'Показать'}
-                {isExpanded ? (
-                  <ChevronUp className="size-5" />
-                ) : (
-                  <ChevronDown className="size-5" />
-                )}
-              </button>
+                <Button
+                  onClick={() => {
+                    setExpandedRowId((prev) =>
+                      prev === row.id ? null : row.id,
+                    ) // Переключение состояния
+                  }}
+                  variant="default"
+                >
+                  <OpenSvg
+                    className={[
+                      ' transition-all ease-in-out',
+                      isExpanded ? 'rotate-90 scale-125' : 'rotate-0',
+                    ].join(' ')}
+                  />
+                </Button>
+              </TooltipWrapper>
             </div>
           )
         },

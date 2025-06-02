@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  Film,
+  FileVideo,
+  ImageDown,
   Monitor,
   MonitorPlay,
   MonitorUp,
-  Save,
+  PackagePlus,
   Trash2,
 } from 'lucide-react'
 
@@ -52,6 +53,10 @@ import {
 import { Button } from '../../../../../ui/button'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
+import { Badge } from '@/components/ui/badge.jsx'
+import { truncate } from '@/utils/other.js'
+import { Link } from 'react-router-dom'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 const formatV = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
@@ -185,6 +190,7 @@ export default function EditOrder({
       }
     }
   }
+  const inputRef = useRef(null) // Создаем ссылку на Input
 
   const handleRemoveInventory = () => {
     dispatch(deleteOrder({ id: currentOrder.id }))
@@ -220,8 +226,8 @@ export default function EditOrder({
             Редактировать заказ
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex gap-4 mb-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          <div className="flex gap-2">
             <div className="grid w-full">
               <Label className="text-sm	text-[var(--text)] pb-2">
                 Название рекламной кампании
@@ -241,8 +247,8 @@ export default function EditOrder({
               />
             </div>
           </div>
-          <div className="flex gap-4 mb-4">
-            <div className="grid w-full">
+          <div className="flex gap-2">
+            <div className="grid w-auto">
               <Label className="text-sm	text-[var(--text)] pb-2">
                 Начало
                 <span className="text-red-500 ml-0.5">*</span>
@@ -264,9 +270,6 @@ export default function EditOrder({
                     type="date"
                     onChange={onChange}
                     value={value}
-                    style={{
-                      width: '210px',
-                    }}
                   />
                 )}
               />
@@ -294,16 +297,11 @@ export default function EditOrder({
                     type="date"
                     onChange={onChange}
                     value={value}
-                    style={{
-                      width: '210px',
-                    }}
                   />
                 )}
               />
             </div>
-          </div>
-          {/*  */}
-          <div className="flex gap-4 mb-4">
+
             <div className="grid w-full">
               <Label className="text-sm	text-[var(--text)] pb-2">
                 Формат
@@ -335,25 +333,14 @@ export default function EditOrder({
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid w-full">
+          </div>
+          {/*  */}
+          <div className="flex gap-2">
+            <div className="grid w-[180px]">
               <div className="border-dashed border-2 border-sky-500 rounded-lg p-2 flex flex-col justify-between">
                 <Label className="text-sm	text-[var(--text)] pb-0.5">
                   Target для РУЗ
                 </Label>
-                {/* <label
-                  className={`${style.checkboxI} text-sky-400`}
-                  onClick={taretCheckbox}
-                >
-                  Target UZ
-                  <input
-                    type="checkbox"
-                    defaultChecked={currentOrder.target_country === 'uz'}
-                    onChange={taretCheckbox}
-                    disabled={role !== 'admin'}
-                  />
-
-                  <span className={style.checkmark}></span>
-                </label> */}
                 <label
                   className={`${style.checkboxI} text-sky-400 `}
                   onClick={taretCheckbox}
@@ -365,17 +352,18 @@ export default function EditOrder({
                     onChange={taretCheckbox}
                     defaultChecked={currentOrder.target_country === 'uz'}
                   />
-                  {/* <span className={style.checkmark}></span> */}
                 </label>
               </div>
             </div>
-          </div>
-          {/*  */}{' '}
-          <div className="flex gap-4 mb-4">
             <div className="grid w-full">
               <Label className="text-sm	text-[var(--text)] pb-2">
                 Количество показов
                 <span className="text-red-500 ml-0.5">*</span>
+                {budgett > 0 ? (
+                  <Badge variant="default" className="text-sm	ml-1">
+                    {budgett.toLocaleString('en-US')}
+                  </Badge>
+                ) : null}
               </Label>
               <Controller
                 name="expectedView"
@@ -412,87 +400,58 @@ export default function EditOrder({
                 )}
               />
             </div>
-            <div className="grid w-full">
-              <Label className="text-sm	text-[var(--text)] pb-2">
-                Бюджет (сум)
-                <span className="text-red-500 ml-0.5">*</span>
-              </Label>
-              <Input
-                className={`border ${
-                  errors?.enddate ? 'border-red-500' : 'border-gray-300'
-                }   transition-all duration-300 text-sm `}
-                type="text"
-                value={
-                  isNaN(budgett)
-                    ? currentOrder.budget.toLocaleString('en-US')
-                    : budgett.toLocaleString('en-US')
-                }
-                placeholder="Бюджет"
-                autoComplete="off"
-                disabled={true}
-              />
-            </div>
-            {/*  */}
-          </div>
-          <div className="flex gap-4 mb-4">
-            <div className="grid w-full">
-              <Label className="text-sm	text-[var(--text)] pb-2">
-                Текущий ролик:
-              </Label>
-              <a
-                href={currentOrder.promo_file}
-                target="_blank"
-                className="text-[#A7CCFF]  underline-offset-2 underline hover:text-[#0767eb]"
-                rel="noreferrer"
-              >
-                <Film />
-
-                {/*<File*/}
-                {/*  style={{width: '18px', height: '18px', marginLeft: '5px'}}*/}
-                {/*/>*/}
-              </a>
-            </div>
-            <div>
-              <div className="grid w-[250px]">
-                <Label className="text-sm	text-[var(--text)] pb-0.5">
-                  Загрузить новый ролик
-                </Label>
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  className={style.modalWindow__file}
-                  {...register('selectedFile')}
-                />
-                <span className={style.modalWindow__input_error}>
-                  {errors?.selectedFile && (
-                    <p>{errors?.selectedFile?.message}</p>
-                  )}
-                </span>
-              </div>
-            </div>
           </div>
           {/*  */}
-          {/* <textarea
-            placeholder="Комментарий к заказу"
-            autoComplete="off"
-            className={`border ${
-              errors?.enddate ? 'border-red-500' : 'border-gray-300'
-            }   transition-all duration-300 text-sm `}
-            {...register('notes')}
-            style={{ width: '100%' }}
-          ></textarea> */}
+          <div className="flex justify-between gap-3">
+            <div className={`flex justify-between items-end w-full gap-2 `}>
+              <div className="border-dashed w-full border-2 border-[#A7CCFF] rounded-xl p-2 flex flex-col justify-center items-center h-[76px] relative">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  ref={inputRef}
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="default"
+                  onClick={() => inputRef.current.click()}
+                  className="flex gap-2"
+                >
+                  <ImageDown />
+                  {selectedFile ? (
+                    <p className="text-sm text-white">
+                      Вы выбрали файл:{truncate(selectedFile.name, 20)}{' '}
+                    </p>
+                  ) : (
+                    ' Загрузить файл'
+                  )}
+                </Button>
+              </div>
+
+              <TooltipWrapper tooltipContent="Текущий ролик">
+                <Link
+                  to={currentOrder.promo_file}
+                  target="_blank"
+                  className="h-full w-[85px] bg-[#2A85FF] size-10 rounded-xl text-[var(--text)] hover:bg-[#2A85FF99] flex justify-center items-center "
+                >
+                  <FileVideo />
+                </Link>
+              </TooltipWrapper>
+            </div>
+          </div>
+
           <Textarea
             placeholder="Комментарий к заказу"
             className="resize-none text-[var(--text)]"
             // {...field}
             {...register('notes')}
           />
-          <div className="flex gap-4 mt-4">
+          <div className="flex gap-2 justify-end">
             {role === 'admin' ? (
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="destructive" className="flex gap-1 w-full">
-                    Удалить
+                  <Button variant="destructive" className="flex gap-1 ">
                     <Trash2 />
                   </Button>
                 </AlertDialogTrigger>
@@ -524,7 +483,6 @@ export default function EditOrder({
               disabled={!isValid || isOrderCreated}
               isValid={true}
               type="submit"
-              className="w-full"
             >
               {isOrderCreated ? (
                 <>
@@ -535,8 +493,7 @@ export default function EditOrder({
                 </>
               ) : (
                 <div className="flex items-center gap-1">
-                  Сохранить
-                  <Save />
+                  <PackagePlus />
                 </div>
               )}
             </Button>

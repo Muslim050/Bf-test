@@ -1,14 +1,7 @@
 import React from 'react'
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 import OrderPayment from '../modals/OrderPayment.jsx'
 import { hasRole } from '../../../../../utils/roleUtils.js'
-import { useOrder } from '../hooks/useOrder.jsx'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.jsx'
 
 import {
@@ -23,23 +16,19 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog.jsx'
 import EditOrderModal from '../modals/EditOrder/EditOrder.jsx'
-import { Copy, MessageSquareText, Pencil, SquareCheckBig } from 'lucide-react'
+import { Pencil, SquareCheckBig } from 'lucide-react'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
+import CommentPopover from '@/components/Dashboard/Shared/CommentPopover.jsx'
 
-const PopoverButtons = ({
-  advert,
-  setShowModalEditAdmin,
-  handleFinishOrder,
-  isOver100Percent,
-}) => {
+const PopoverButtons = ({ advert, handleFinishOrder, isOver100Percent }) => {
   const [currentOrder, setCurrentOrder] = React.useState(null)
-  const { copyToClipboard } = useOrder(currentOrder)
   // Модальное окно OrderModal
   const [open, setOpen] = React.useState(false)
   const handleClose = () => {
     setOpen(false)
   }
   // Модальное окно OrderModal
-
+  console.log(advert?.notes)
   return (
     <div className="flex gap-2 items-center justify-between">
       {/*Редактировать*/}
@@ -47,17 +36,17 @@ const PopoverButtons = ({
         {advert.status === 'accepted' || advert.status === 'sent' ? (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button
-                variant="link"
-                onClick={() => {
-                  setShowModalEditAdmin(true)
-                  setCurrentOrder(advert)
-                }}
-                className="hover:scale-125 transition-all p-0 "
-                style={{ color: 'var(--text-color)' }} // Динамическая переменная для цвета текста
-              >
-                <Pencil className="w-[24px] h-[24px] hover:text-orange-500" />
-              </Button>
+              <TooltipWrapper tooltipContent="Редактировать">
+                <Button
+                  variant="defaultOrange"
+                  onClick={() => {
+                    setOpen(true)
+                    setCurrentOrder(advert)
+                  }}
+                >
+                  <Pencil />
+                </Button>
+              </TooltipWrapper>
             </DialogTrigger>
             {open && (
               <EditOrderModal
@@ -74,32 +63,7 @@ const PopoverButtons = ({
       <>
         {advert.status === 'in_progress' ||
         advert.status === 'finished' ? null : (
-          <div>
-            {advert?.notes ? (
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    onClick={() => {
-                      setCurrentOrder(advert)
-                    }}
-                    variant="ghost"
-                  >
-                    <MessageSquareText />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className=" p-4 bg-white bg-opacity-30 backdrop-blur-md">
-                  <div className="flex justify-between items-center">
-                    <div className="text-lg	font-medium	text-[var(--text)] ">
-                      Комментарий
-                    </div>
-                    <Button variant="secondary" onClick={copyToClipboard}>
-                      <Copy />
-                    </Button>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            ) : null}
-          </div>
+          <CommentPopover data={advert} />
         )}
       </>
       {/*Комментарий*/}

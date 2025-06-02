@@ -9,18 +9,13 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useSelector } from 'react-redux'
-import { Copy, MessageSquareText, SquareArrowOutUpRight } from 'lucide-react'
+import { SquareArrowOutUpRight } from 'lucide-react'
 import { FormatFormatter } from '@/utils/FormatFormatter.jsx'
 import { formatDate } from '@/utils/formatterDate.jsx'
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
 import toast from 'react-hot-toast'
 import backendURL from '@/utils/url.js'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import OpenTableSentOrder from '@/components/module/TablePagination/OpenTableSentOrder.jsx'
 import { OpenSvg } from '@/assets/icons-ui.jsx'
@@ -31,6 +26,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip.jsx'
 import { truncate } from '@/utils/other.js'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
+import CommentPopover from '@/components/Dashboard/Shared/CommentPopover.jsx'
 
 export const useReceived = () => {
   const [columnFilters, setColumnFilters] = React.useState([])
@@ -182,90 +179,43 @@ export const useReceived = () => {
         id: 'Действия',
         cell: ({ row }) => (
           <div className="flex gap-2">
-            <button
-              // onClick={() => handleRowClick(item.id)}
-              onClick={() => {
-                setExpandedRowId((prev) => {
-                  return prev === row.id ? null : row.id // Переключение состояния
-                })
-              }}
-              className="relative hover:scale-125 transition-all"
+            <TooltipWrapper
+              tooltipContent={`${expandedRowId ? 'Закрыть' : 'Открыть'}`}
             >
-              <OpenSvg
-                className={`hover:text-brandPrimary-1 transition-all ease-in-out 
-                  ${row.original.order_status === 'in_review' ? null : row.original.inventory_count ? null : 'text-red-500'}
-                  ${
-                    expandedRowId === row.id
-                      ? 'rotate-90 text-brandPrimary-1 scale-125'
-                      : 'rotate-0'
-                  }`}
-              />
+              <Button
+                onClick={() => {
+                  setExpandedRowId((prev) => {
+                    return prev === row.id ? null : row.id // Переключение состояния
+                  })
+                }}
+                variant="default"
+                className={` relative`}
+              >
+                <OpenSvg
+                  className={[
+                    ' transition-all ease-in-out',
+                    expandedRowId ? 'rotate-90 scale-125' : 'rotate-0',
+                  ].join(' ')}
+                />
 
-              {
-                <>
-                  {row.original.order_status === 'in_review' ? null : (
-                    <div className="absolute -top-1.5 left-4">
-                      {row.original.inventory_count ? null : (
-                        <span className="relative flex h-3 w-3">
-                          <span className="animate-ping absolute  inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 text-[14px] items-center justify-center"></span>
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </>
-              }
-            </button>
-            {row.original.order_status === 'finished' ? null : (
-              <>
-                {row.original?.notes_text ? (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <button
-                        onClick={() => {
-                          setCurrentOrder(row.original)
-                        }}
-                        className="hover:scale-125 transition-all p-0"
-                      >
-                        <MessageSquareText className="w-[24px] h-[24px] text-white hover:text-green-500" />
-                      </button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full  bg-white bg-opacity-30 backdrop-blur-md rounded-xl">
-                      <div className="grid gap-4 ">
-                        <div className="w-80">
-                          <h4 className="pb-4 font-medium leading-none text-white border-b-[#F9F9F926] border-b">
-                            Комментарий
-                          </h4>
-                          <p className="text-sm text-white break-words pt-4">
-                            {row.original.notes_text}
-                          </p>
-
-                          {row?.original?.notes_url && (
-                            <a
-                              target="_blank"
-                              className={`no-underline text-[#A7CCFF] font-semibold hover:text-[#3282f1] hover:underline flex gap-1 mt-4`}
-                              href={row?.original?.notes_url}
-                            >
-                              {row?.original?.notes_url}
-                              <SquareArrowOutUpRight className="size-4" />
-                            </a>
-                          )}
-
-                          <div className="flex mt-10 float-right">
-                            <Button
-                              variant="link"
-                              className="text-black hover:text-[#2A85FF] "
-                              onClick={copyToClipboard}
-                            >
-                              <Copy />
-                            </Button>
-                          </div>
-                        </div>
+                {
+                  <>
+                    {row.original.order_status === 'in_review' ? null : (
+                      <div className="absolute -top-1.5 left-4">
+                        {row.original.inventory_count ? null : (
+                          <span className="relative flex h-3 w-3">
+                            <span className="animate-ping absolute  inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 text-[14px] items-center justify-center"></span>
+                          </span>
+                        )}
                       </div>
-                    </PopoverContent>
-                  </Popover>
-                ) : null}
-              </>
+                    )}
+                  </>
+                }
+              </Button>
+            </TooltipWrapper>
+            {row.original.order_status === 'finished' ? null : (
+              <CommentPopover data={row.original} />
             )}
 
             {row.original.order_status === 'in_progress' ||

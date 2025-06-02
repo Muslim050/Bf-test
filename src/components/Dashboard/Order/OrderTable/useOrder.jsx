@@ -45,7 +45,6 @@ export const useOrder = () => {
   const [searchInOrder, setSearchInOrder] = React.useState('')
 
   const role = Cookies.get('role')
-  const [showModalEditAdmin, setShowModalEditAdmin] = React.useState(false)
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
@@ -428,7 +427,6 @@ export const useOrder = () => {
                   <PopoverButtons
                     advert={row.original}
                     isOver100Percent={isOver100Percent}
-                    setShowModalEditAdmin={setShowModalEditAdmin}
                     handleFinishOrder={handleFinishOrder}
                   />
                 </div>

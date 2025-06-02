@@ -21,7 +21,6 @@ import {
 } from '@/components/ui/dialog.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Label } from '@/components/ui/label.jsx'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { hasRole } from '@/utils/roleUtils.js'
 import {
   Select,
@@ -445,14 +444,7 @@ export default function AdvertiserModal({ onClose }) {
                 Вы выбрали файл:{truncate(selectedFile.name, 20)}{' '}
               </p>
             )}
-            {preview && (
-              <div>
-                <Avatar className="size-20">
-                  <AvatarImage src={preview} alt="@shadcn" />
-                  <AvatarFallback>{preview}</AvatarFallback>
-                </Avatar>
-              </div>
-            )}
+
             <div className="flex items-end">
               {(selectedFile || preview) && (
                 <TooltipWrapper tooltipContent="Очистить">
