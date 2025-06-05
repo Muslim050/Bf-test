@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { login } from '@/redux/auth/authSlice.js'
 import { toast } from 'react-hot-toast'
-
 import Cookies from 'js-cookie'
 import Slider from '@/pages/Login/Slider.jsx'
 

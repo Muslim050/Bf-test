@@ -114,13 +114,7 @@ const PopoverButtons = ({ advert, handleFinishOrder, isOver100Percent }) => {
       {/*Кнопка ЗАвершить*/}
 
       {/*Оплата*/}
-      <div>
-        {hasRole('admin') ? (
-          <div>
-            <OrderPayment advert={advert} />
-          </div>
-        ) : null}
-      </div>
+      <>{hasRole('admin') ? <OrderPayment advert={advert} /> : null}</>
       {/*Оплата*/}
     </div>
   )
