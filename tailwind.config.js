@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import animate from 'tailwindcss-animate'
 
 module.exports = {
   darkMode: ['class'],
@@ -155,5 +154,5 @@ module.exports = {
       },
     },
   },
-  plugins: [animate()],
+  plugins: [require('tailwindcss-animate')],
 }
