@@ -26,7 +26,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import NestedStatickOrderTable from '@/components/module/TablePagination/NestedStatickOrderTable.jsx'
+import NestedStatickOrderTable from '@/module/TablePagination/NestedStatickOrderTable.jsx'
 import { SquareArrowOutUpRight } from 'lucide-react'
 import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 import { Button } from '@/components/ui/button.jsx'

@@ -1,8 +1,8 @@
-import React from "react";
-import OrderChartAge from "./StatictickAge";
-import OrderChartGender from "./StatictickGender";
-import OrderChartGeo from "./StatictickAgeGeo";
-import OrderChartDevice from "./StatictickDevice";
+import OrderChartAge from './StatictickAge'
+import OrderChartGender from './StatictickGender'
+import OrderChartGeo from './StatictickAgeGeo'
+import OrderChartDevice from './StatictickDevice'
+
 function TheadSecondWrapper({ dataChannel }) {
   return (
     <>
@@ -10,9 +10,8 @@ function TheadSecondWrapper({ dataChannel }) {
       <OrderChartAge dataChannel={dataChannel} />
       <OrderChartGeo dataChannel={dataChannel} />
       <OrderChartDevice dataChannel={dataChannel} />
-
     </>
-  );
+  )
 }
 
-export default TheadSecondWrapper;
+export default TheadSecondWrapper

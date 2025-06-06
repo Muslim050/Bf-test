@@ -24,9 +24,9 @@ import Cookies from 'js-cookie'
 import { deactivateInventories } from '@/redux/orderStatus/orderStatusSlice.js'
 import { toast } from 'react-hot-toast'
 import { fetchOrder } from '@/redux/order/orderSlice.js'
-import PlanPopoverCell from '@/components/module/Order/EditView/PlanPopoverCell.jsx'
+import PlanPopoverCell from '@/module/Order/EditView/PlanPopoverCell.jsx'
 import { truncate } from '@/utils/other.js'
-import Avtomatick from '@/components/module/Order/Avtomatick.jsx'
+import Avtomatick from '@/module/Order/Avtomatick.jsx'
 import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {

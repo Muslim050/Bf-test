@@ -7,7 +7,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { useSelector } from 'react-redux'
 import {
   Tooltip,
   TooltipContent,
@@ -19,11 +18,11 @@ import { Button } from '@/components/ui/button.jsx'
 import { Pencil, Plus, SquareArrowOutUpRight } from 'lucide-react'
 import { hasRole } from '@/utils/roleUtils.js'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
+import { fetchVideos } from '@/redux/video/videoSlice.js'
 
 export const useVideo = () => {
   const [columnFilters, setColumnFilters] = React.useState([])
   const [globalFilter, setGlobalFilter] = React.useState('')
-  const { videos, total_count } = useSelector((state) => state.video)
   const [selectedId, setSelectedId] = useState('')
   const [currentOrder, setCurrentOrder] = React.useState(null)
   const { textColor } = React.useContext(ThemeContext)
@@ -31,6 +30,22 @@ export const useVideo = () => {
   const handleClose = () => {
     setOpen(false)
   }
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0, // Начинаем с 0
+    pageSize: 20,
+  })
+  const [videos, setVideos] = useState()
+
+  React.useEffect(() => {
+    async function loadVideos() {
+      const data = await fetchVideos({
+        page: pagination.pageIndex + 1,
+        pageSize: pagination.pageSize,
+      })
+      setVideos(data)
+    }
+    loadVideos()
+  }, [pagination.pageIndex, pagination.pageSize])
 
   // Модальное окно EditVideo
   const [edit, setEdit] = React.useState(false)
@@ -38,11 +53,6 @@ export const useVideo = () => {
     setEdit(false)
   }
   // Модальное окно EditVideo
-
-  const [pagination, setPagination] = React.useState({
-    pageIndex: 0, // Начинаем с 0
-    pageSize: 20,
-  })
 
   const columns = React.useMemo(
     () => [
@@ -70,20 +80,6 @@ export const useVideo = () => {
       {
         accessorFn: (row) => row.name, // Преобразование в число
         id: 'Название Видео',
-        // cell: ({row}) =>
-        //   <TooltipProvider>
-        //     <Tooltip>
-        //       <TooltipTrigger asChild className="cursor-pointer">
-        //         <div>{truncate(row.original.name, 20)}</div>
-        //       </TooltipTrigger>
-        //       <TooltipContent>
-        //         <p>{row.original.name}</p>
-        //         <p>ID:{row.original.id}</p>
-        //
-        //       </TooltipContent>
-        //     </Tooltip>
-        //   </TooltipProvider>,
-
         cell: ({ row }) => (
           <Tooltip>
             <TooltipTrigger asChild className="cursor-pointer">
@@ -164,7 +160,7 @@ export const useVideo = () => {
     [],
   )
   const table = useReactTable({
-    data: videos.results || [], // Данные из Redux
+    data: videos?.results || [], // Данные из Redux
     columns,
     state: {
       columnFilters,
@@ -178,7 +174,7 @@ export const useVideo = () => {
         return { ...prev, ...newPagination }
       })
     },
-    pageCount: Math.ceil(total_count / pagination.pageSize), // Общее количество страниц
+    pageCount: Math.ceil(videos?.count / pagination.pageSize), // Общее количество страниц
     manualPagination: true, // Указываем, что используем серверную пагинацию
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

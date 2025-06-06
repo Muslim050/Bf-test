@@ -17,7 +17,7 @@ import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
 import toast from 'react-hot-toast'
 import backendURL from '@/utils/url.js'
 import { Button } from '@/components/ui/button.jsx'
-import OpenTableSentOrder from '@/components/module/TablePagination/OpenTableSentOrder.jsx'
+import OpenTableSentOrder from '@/module/TablePagination/OpenTableSentOrder.jsx'
 import { OpenSvg } from '@/assets/icons-ui.jsx'
 import { FormWrapperCreate } from '@/components/Dashboard/SentOrder/receivedOrders/FormWrapperCreate/index.jsx'
 import {
