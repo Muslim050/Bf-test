@@ -3,7 +3,7 @@ import axios from 'axios'
 // import axios from "src/utils/axiosInstance.js";
 import backendURL from '@/utils/url'
 import Cookies from 'js-cookie'
-import axiosInstance from "@/api/api.js";
+import axiosInstance from '@/api/api.js'
 
 const initialState = {
   // order: [],
@@ -16,14 +16,15 @@ const initialState = {
   shortListData: [],
   listsentPublisher: [],
   total_count: 0, // Изначально общее количество равно 0
-
 }
 
 //запрос на получения списка
 export const fetchOnceListSentToPublisher = createAsyncThunk(
   'sentToPublisher/sentToPublisher',
-  async ({ expandedRows, is_deactivated, page = null, pageSize = null }, { rejectWithValue }) => {
-
+  async (
+    { expandedRows, is_deactivated, page = null, pageSize = null },
+    { rejectWithValue },
+  ) => {
     let url = new URL(`${backendURL}/order/assignments/`)
     const params = new URLSearchParams()
     if (expandedRows) {
@@ -33,10 +34,10 @@ export const fetchOnceListSentToPublisher = createAsyncThunk(
       params.append('is_deactivated', is_deactivated)
     }
     if (page) {
-      params.append('page', page);
+      params.append('page', page)
     }
     if (pageSize) {
-      params.append('page_size', pageSize);
+      params.append('page_size', pageSize)
     }
     url.search = params.toString()
     try {
@@ -264,8 +265,7 @@ const sentToPublisherSlice = createSlice({
       .addCase(fetchOnceListSentToPublisher.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.listsentPublisher = action.payload
-        state.total_count = action.payload?.count; // Обновляем общее количество
-
+        state.total_count = action.payload?.count // Обновляем общее количество
       })
       .addCase(fetchOnceListSentToPublisher.rejected, (state, action) => {
         state.status = 'failed'
@@ -274,7 +274,7 @@ const sentToPublisherSlice = createSlice({
       .addCase(EditSentToPublisher.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(EditSentToPublisher.fulfilled, (state, action) => {
+      .addCase(EditSentToPublisher.fulfilled, (state) => {
         state.status = 'succeeded'
       })
       .addCase(EditSentToPublisher.rejected, (state, action) => {
@@ -284,29 +284,29 @@ const sentToPublisherSlice = createSlice({
       .addCase(sentToPublisherButton.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(sentToPublisherButton.fulfilled, (state, action) => {
+      .addCase(sentToPublisherButton.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(sentToPublisherButton.rejected, (state, action) => {
+      .addCase(sentToPublisherButton.rejected, (state) => {
         state.status = 'failed'
       })
 
       .addCase(AddSelectingVideo.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(AddSelectingVideo.fulfilled, (state, action) => {
+      .addCase(AddSelectingVideo.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(AddSelectingVideo.rejected, (state, action) => {
+      .addCase(AddSelectingVideo.rejected, (state) => {
         state.status = 'failed'
       })
       .addCase(AddNewVideo.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(AddNewVideo.fulfilled, (state, action) => {
+      .addCase(AddNewVideo.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(AddNewVideo.rejected, (state, action) => {
+      .addCase(AddNewVideo.rejected, (state) => {
         state.status = 'failed'
       })
   },

@@ -8,7 +8,7 @@ import 'tailwindcss/tailwind.css'
 import LazyVideo from './module/LazyVideo'
 import CartUnderVideo from './module/CartUnderVideo'
 
-import { Pagination, Navigation, Autoplay } from 'swiper/modules'
+import { Autoplay, Navigation, Pagination } from 'swiper/modules'
 
 const PhoneComponent = ({ isSecondPage, phoneRef, phoneWRef, sliderData }) => {
   return (
@@ -69,7 +69,7 @@ const PhoneComponent = ({ isSecondPage, phoneRef, phoneWRef, sliderData }) => {
             >
               {sliderData
                 .filter((_, index) => index === activeSlide)
-                .map((slide, index) => (
+                .map((slide) => (
                   <SwiperSlide key={slide.id}>
                     <div className="relative md:w-[205px] w-[180px]  h-[300px]">
                       <div className="flex items-center justify-center flex-col slide border-0 mx-auto">

@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@radix-ui/react-popover'
 import { Plus } from 'lucide-react'
-import PopoverEditViewIventory from '@/components/module/Order/EditView/PopoverEditViewIventory.jsx'
+import PopoverEditViewIventory from '@/module/Order/EditView/PopoverEditViewIventory.jsx'
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import { Button } from '@/components/ui/button.jsx' // или нужный вам импорт
 

@@ -316,7 +316,7 @@ const orderSlice = createSlice({
       .addCase(fetchEditOrder.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(fetchEditOrder.fulfilled, (state, action) => {
+      .addCase(fetchEditOrder.fulfilled, (state) => {
         state.status = 'succeeded'
       })
       .addCase(fetchEditOrder.rejected, (state, action) => {
@@ -327,10 +327,10 @@ const orderSlice = createSlice({
       .addCase(deleteOrder.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(deleteOrder.fulfilled, (state, action) => {
+      .addCase(deleteOrder.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(deleteOrder.rejected, (state, action) => {
+      .addCase(deleteOrder.rejected, (state) => {
         state.status = 'failed'
       })
       .addCase(fetchShortList.pending, (state) => {
@@ -340,7 +340,7 @@ const orderSlice = createSlice({
         state.status = 'succeeded'
         state.shortListData = action.payload
       })
-      .addCase(fetchShortList.rejected, (state, action) => {
+      .addCase(fetchShortList.rejected, (state) => {
         state.status = 'failed'
       })
       .addCase(fetchSingleOrder.fulfilled, (state, action) => {

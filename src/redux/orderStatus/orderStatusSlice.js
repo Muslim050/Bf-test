@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import backendURL from '@/utils/url'
@@ -28,15 +28,12 @@ export const fetchViewStatus = createAsyncThunk(
           },
         },
       )
-
       return response
     } catch (error) {
       throw error
     }
   },
 )
-
-
 
 export const confirmByChannel = createAsyncThunk(
   'order/comfirmByChannel',
@@ -211,7 +208,7 @@ const orderStatusSlice = createSlice({
         state.error = null
       })
       .addCase(removeInventories.fulfilled, (state, action) => {
-        const { expandedRows, inventory_id } = action.payload
+        const { expandedRows } = action.payload
 
         if (Array.isArray(state.expandedRows)) {
           state.expandedRows = state.expandedRows.filter(
@@ -231,7 +228,7 @@ const orderStatusSlice = createSlice({
         state.error = null
       })
       .addCase(deactivateInventories.fulfilled, (state, action) => {
-        const { expandedRows, inventory_id } = action.payload
+        const { expandedRows } = action.payload
 
         if (Array.isArray(state.expandedRows)) {
           state.expandedRows = state.expandedRows.filter(
@@ -246,24 +243,24 @@ const orderStatusSlice = createSlice({
         state.error = action.payload
       })
 
-      .addCase(confirmOrder.fulfilled, (state, action) => {
+      .addCase(confirmOrder.fulfilled, (state) => {
         state.status = 'succeeded'
         toast.success('Инвентарь подтвержден!')
       })
-      .addCase(confirmOrder.rejected, (state, action) => {
+      .addCase(confirmOrder.rejected, (state) => {
         state.status = 'failed'
         toast.error(
           'Инвентори этого заказа все еще открыты или предварительно забронированы.!',
         )
       })
-      .addCase(confirmByChannel.fulfilled, (state, action) => {
+      .addCase(confirmByChannel.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(finishOrder.fulfilled, (state, action) => {
+      .addCase(finishOrder.fulfilled, (state) => {
         state.status = 'succeeded'
         toast.success('Заказ успешно финиширован!')
       })
-      .addCase(finishOrder.rejected, (state, action) => {
+      .addCase(finishOrder.rejected, (state) => {
         state.status = 'failed'
         // Здесь обрабатываем ошибку запроса
         toast.error(
@@ -272,10 +269,10 @@ const orderStatusSlice = createSlice({
         // ...обновление состояния...
       })
 
-      .addCase(deletedComplitedOrder.fulfilled, (state, action) => {
+      .addCase(deletedComplitedOrder.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(deletedComplitedOrder.rejected, (state, action) => {
+      .addCase(deletedComplitedOrder.rejected, (state) => {
         state.status = 'failed'
       })
   },

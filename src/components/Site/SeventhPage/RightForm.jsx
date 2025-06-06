@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import style from './BuisnessModel.module.scss'
-import { useForm } from 'react-hook-form'
 import Logo from '@/assets/Logo.png'
 import emailjs from 'emailjs-com'
 import { gsap } from 'gsap'
@@ -36,7 +35,7 @@ function RightForm() {
           channel: '',
         })
       })
-      .catch((error) => {
+      .catch(() => {
         alert('Что то пошло не так!')
       })
   }

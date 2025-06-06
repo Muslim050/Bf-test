@@ -1,5 +1,4 @@
 import { Controller, useForm } from 'react-hook-form'
-import React from 'react'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import backendURL from '@/utils/url.js'

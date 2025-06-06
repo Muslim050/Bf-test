@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
@@ -11,7 +11,7 @@ const initialState = {
 
 export const fetchGetOrder = createAsyncThunk(
   'orderTableSlice/fetchGetOrder',
-  async ({ expandedRows }) => {
+  async () => {
     const token = Cookies.get('token')
 
     try {
