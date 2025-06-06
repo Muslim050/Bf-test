@@ -1,5 +1,3 @@
-import React from 'react'
-import style from '../../../StatictickChannelTable.module.scss'
 import { TableCell } from '@/components/ui/table'
 import { ShieldQuestion } from 'lucide-react'
 
@@ -9,7 +7,7 @@ function StatictickGender({ dataChannel }) {
   )
   return (
     <>
-      {uniqueGenders.map((gender, index) => (
+      {uniqueGenders.map((gender) => (
         <TableCell key={gender} className=" text-center">
           {gender === 'female' ? (
             'Ж'

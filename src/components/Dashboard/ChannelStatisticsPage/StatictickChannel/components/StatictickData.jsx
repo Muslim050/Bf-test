@@ -5,7 +5,7 @@ import FormatterView from '@/components/Labrery/formatter/FormatterView'
 import { TableCell } from '@/components/ui/table'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 
-function StatictickData({ dataChannel, handleRowClick, expandedRows }) {
+function StatictickData({ dataChannel, handleRowClick }) {
   const { textColor } = React.useContext(ThemeContext)
 
   return (

@@ -1,4 +1,3 @@
-import React from 'react'
 import style from '../../../StatictickChannelTable.module.scss'
 import { TableCell } from '@/components/ui/table'
 
@@ -8,7 +7,7 @@ function StatictickAgeGeo({ dataChannel }) {
   )
   return (
     <>
-      {uniqueGenders.map((geo, index) => (
+      {uniqueGenders.map((geo) => (
         <TableCell
           key={geo}
           className={style.tableChart__tdd}

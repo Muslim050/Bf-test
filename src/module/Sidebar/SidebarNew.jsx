@@ -2,8 +2,8 @@ import { cn } from '@/lib/utils.js'
 import { ButtonSvg } from '@/assets/SidebarsIcons-ui.jsx'
 import { ArrowRight, LogOut, Palette } from 'lucide-react'
 import Logo from '@/assets/Sidebarcopy/logo.png'
-import Nav from '@/components/module/Sidebar/Nav.jsx'
-import { menuItems } from '@/components/module/Sidebar/MenuItems.js'
+import Nav from '@/module/Sidebar/Nav.jsx'
+import { menuItems } from '@/module/Sidebar/MenuItems.js'
 import { Separator } from '@/components/ui/separator.jsx'
 import {
   Popover,

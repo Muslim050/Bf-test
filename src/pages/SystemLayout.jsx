@@ -8,13 +8,12 @@ import { TooltipProvider } from '@/components/ui/tooltip.jsx'
 import Cookies from 'js-cookie'
 import React from 'react'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
-import getTitle from '../components/module/Sidebar/MenuItems.js'
+import getTitle from '@/module/Sidebar/MenuItems.js'
 import { Outlet, useLocation } from 'react-router-dom'
-import { AppSidebar } from '@/components/module/Sidebar/sidebar/app-sidebar.jsx'
+import { AppSidebar } from '@/module/Sidebar/sidebar/app-sidebar.jsx'
 import { SidebarTrigger } from '@/components/ui/sidebar.jsx'
 
 const SystemLayout = () => {
-  const [isCollapsed, setIsCollapsed] = React.useState(true)
   const { bgColor, textColor } = React.useContext(ThemeContext)
   const route = useLocation().pathname.split('/').slice(1)
   const title = route[0]

@@ -1,10 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
-import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
 
 import backendURL from '@/utils/url'
-import log from "eslint-plugin-react/lib/util/log.js";
 
 const initialState = {
   statistics: [],
