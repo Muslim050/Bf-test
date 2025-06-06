@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import emailjs from 'emailjs-com'
-import { useForm } from 'react-hook-form'
 import style from './BuisnessModel.module.scss'
 import Logo from '@/assets/Logo.png'
 import { gsap } from 'gsap'
@@ -31,7 +30,7 @@ const ContactForm = () => {
         alert('Письмо успешно отправлено!')
         setFormData({ name: '', email: '', phone_number: '', company: '' })
       })
-      .catch((error) => {
+      .catch(() => {
         alert('Что то пошло не так!')
       })
   }

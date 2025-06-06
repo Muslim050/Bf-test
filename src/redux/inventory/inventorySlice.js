@@ -267,7 +267,7 @@ const inventorySlice = createSlice({
       .addCase(fetchEditInventory.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(fetchEditInventory.fulfilled, (state, action) => {
+      .addCase(fetchEditInventory.fulfilled, (state) => {
         state.status = 'succeeded'
       })
       .addCase(fetchEditInventory.rejected, (state, action) => {
@@ -277,7 +277,7 @@ const inventorySlice = createSlice({
       .addCase(deleteInventory.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(deleteInventory.fulfilled, (state, action) => {
+      .addCase(deleteInventory.fulfilled, (state) => {
         state.status = 'succeeded'
       })
       .addCase(deleteInventory.rejected, (state, action) => {
@@ -287,10 +287,10 @@ const inventorySlice = createSlice({
       .addCase(reloadInventory.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(reloadInventory.fulfilled, (state, action) => {
+      .addCase(reloadInventory.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(reloadInventory.rejected, (state, action) => {
+      .addCase(reloadInventory.rejected, (state) => {
         state.status = 'failed'
       })
       .addCase(fetchDiactivatedInventory.pending, (state) => {

@@ -15,27 +15,25 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { Link, NavLink } from 'react-router-dom'
-import React from 'react'
+import React, { useState } from 'react'
 import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import backendURL from '@/utils/url.js'
-import { menuItems } from '@/components/module/Sidebar/MenuItems.js'
-import { cn } from '@/lib/utils.js'
+import { menuItems } from '@/module/Sidebar/MenuItems.js'
 import { Badge } from '@/components/ui/badge.jsx'
+import { fetchVideos } from '@/redux/video/videoSlice.js'
+import { cn } from '@/lib/utils.js'
 
-export function NavMain({ items, userRole }) {
-  const filteredItems = items.filter((item) => item.roles.includes(userRole))
+export function NavMain({ userRole }) {
   const pathname = location.pathname
 
   const userRoles = userRole ? [userRole] : [] // Преобразуем строку в массив, если существует роль
   const { order } = useSelector((state) => state.order)
   const { channel } = useSelector((state) => state.channel)
-  const { videos } = useSelector((state) => state.video)
-  const { сomplitedInventories } = useSelector((state) => state.inventory)
-  const { сonfirmedInventories } = useSelector((state) => state.inventory)
   const [filteredOrders, setFilteredOrders] = React.useState('')
   const hasAccess = (roles) => {
     return roles?.some((role) => userRoles.includes(role)) // Проверяем наличие хотя бы одной роли
@@ -43,6 +41,19 @@ export function NavMain({ items, userRole }) {
   const { listsentPublisher } = useSelector((state) => state.sentToPublisher)
   const dispatch = useDispatch()
   const user = Cookies.get('role')
+
+  const [videos, setVideos] = useState()
+
+  React.useEffect(() => {
+    async function loadVideos() {
+      const data = await fetchVideos({
+        page: 1,
+        pageSize: 300,
+      })
+      setVideos(data)
+    }
+    loadVideos()
+  }, [])
   const fetchfilteredOrders = async ({ status }) => {
     const token = Cookies.get('token')
     const response = await axios.get(
@@ -136,24 +147,14 @@ export function NavMain({ items, userRole }) {
     const fetchData = async () => {
       if (user === 'admin') {
         await fetchfilteredOrders({ status: 'sent' })
-        // dispatch(fetchInventory({ status: 'open' }));
-        // dispatch(fetchChannel());
-        // dispatch(fetchVideos())
-      }
-
-      if (user === 'advertiser' || user === 'advertising_agency') {
-        // dispatch(fetchOrder());
-      }
-
-      if (['publisher', 'channel'].includes(user)) {
-        // dispatch(fetchChannel());
-        // dispatch(fetchVideos());
-        // dispatch(fetchOnceListSentToPublisher({ is_deactivated: false }))
       }
     }
 
     fetchData()
   }, [dispatch, user])
+
+  const { state } = useSidebar() // из контекста: 'expanded' или 'collapsed'
+  console.log(state)
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -203,40 +204,57 @@ export function NavMain({ items, userRole }) {
                       >
                         <div className="flex gap-2 items-center relative">
                           {item.icon && <item.icon />}
-                          <span>{item.title}</span>
-                          <div>
-                            {item.label > 0 ? (
-                              <>
-                                <span
-                                  className={cn(
-                                    'ml-auto',
-                                    item.variant === 'default' &&
-                                      'text-background dark:text-white',
-                                  )}
-                                >
-                                  <Badge
-                                    className={`px-1.5 py-0 ${item.color === 'green' ? 'bg-[#05c800]' : item.color}`}
-                                  >
-                                    {item.label}
-                                    {item.title === 'Каналы' &&
-                                      userRole === 'admin' && (
-                                        <span
-                                          className={cn(
-                                            'ml-auto',
-                                            item.variant === 'default' &&
-                                              'text-background dark:text-white',
-                                          )}
-                                        >
-                                          +
-                                          {filteredChannelIsActive.length.toString()}
-                                        </span>
-                                      )}
-                                  </Badge>
-                                </span>
-                              </>
-                            ) : null}
-                          </div>
                         </div>
+                        {state === 'collapsed' && item.label > 0 && (
+                          <span className="absolute -top-2 right-0 -translate-x-1/2 z-10">
+                            <Badge
+                              className={`px-1.5 py-0 text-xs ${
+                                item.color === 'green'
+                                  ? 'bg-[#05c800]'
+                                  : item.color
+                              }`}
+                            >
+                              {item.label}
+                            </Badge>
+                          </span>
+                        )}
+                        {state !== 'collapsed' && (
+                          <>
+                            <span className="ml-2">{item.title}</span>
+                            <div>
+                              {item.label > 0 ? (
+                                <>
+                                  <span
+                                    className={cn()(
+                                      'ml-auto',
+                                      item.variant === 'default' &&
+                                        'text-background dark:text-white',
+                                    )}
+                                  >
+                                    <Badge
+                                      className={`px-1.5 py-0 ${item.color === 'green' ? 'bg-[#05c800]' : item.color}`}
+                                    >
+                                      {item.label}
+                                      {item.title === 'Каналы' &&
+                                        userRole === 'admin' && (
+                                          <span
+                                            className={cn(
+                                              'ml-auto',
+                                              item.variant === 'default' &&
+                                                'text-background dark:text-white',
+                                            )}
+                                          >
+                                            +
+                                            {filteredChannelIsActive.length.toString()}
+                                          </span>
+                                        )}
+                                    </Badge>
+                                  </span>
+                                </>
+                              ) : null}
+                            </div>
+                          </>
+                        )}
 
                         {item.subMenu && (
                           <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

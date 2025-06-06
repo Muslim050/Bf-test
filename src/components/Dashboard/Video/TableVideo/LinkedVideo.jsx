@@ -33,8 +33,8 @@ export default function LinkedVideo({ selectedId, onClose }) {
       ).unwrap()
       toast.success('Пользователь рекламодателя успешно создан!')
       onClose()
-      setTimeout(() => {
-        dispatch(fetchVideos())
+      setTimeout(async () => {
+        await fetchVideos()
       }, 1000)
     } catch (error) {
       toast.error(error?.data?.error?.message)
