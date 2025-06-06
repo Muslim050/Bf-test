@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import EditSendPublisherModal from '@/components/Dashboard/Order/OpenOrder/AddSentPublisher/modal/EditSendPublisherModal/index.jsx'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
-import Pagination from '@/components/module/Pagination/index.jsx'
+import Pagination from '@/module/Pagination/index.jsx'
 import InfoCartSentPublisher from '@/components/Dashboard/Order/OpenOrder/AddSentPublisher/InfoCartSentPublisher.jsx'
 
 export default function AddSentPublisher({

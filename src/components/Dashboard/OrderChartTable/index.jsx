@@ -13,7 +13,7 @@ import InfoCartButton from '@/components/Dashboard/OrderChartTable/module/InfoCa
 import FilteredTooltip from '@/components/Dashboard/OrderChartTable/module/FilteredTooltip/FilteredTooltip.jsx'
 import SelectedFilterCart from './module/SelectedFilterCart/index.jsx'
 import PreLoadDashboard from '@/components/Dashboard/PreLoadDashboard/PreLoad.jsx'
-import TablePagination from '@/components/module/TablePagination/index.jsx'
+import TablePagination from '@/module/TablePagination/index.jsx'
 import { useOrderChart } from '@/components/Dashboard/OrderChartTable/useOrderChart.jsx'
 import { Skeleton } from '@/components/ui/skeleton.jsx'
 import TooltipWrapper from '@/shared/TooltipWrapper.jsx'

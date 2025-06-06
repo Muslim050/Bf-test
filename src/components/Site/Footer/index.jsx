@@ -1,12 +1,11 @@
-import {  StarsSSSvg, SetkaSvg } from '@/assets/Site/site-svg.jsx'
+import { StarsSSSvg } from '@/assets/Site/site-svg.jsx'
 import imageBranformance from './brandformance.png'
 import Logo from '../../../assets/Logo.png'
 import React, { useRef } from 'react'
 import gsap from 'gsap'
 import m from './Footer.module.scss'
+
 function Footer() {
-
-
   const cardRef = useRef(null)
   const sparkleRef = useRef(null)
   const setkaRef = useRef(null)
@@ -63,16 +62,19 @@ function Footer() {
     }
   }, [])
   return (
-    <div className="relative " id="contact"   style={{
-      background: "radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%",
-      filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
-    }}>
+    <div
+      className="relative "
+      id="contact"
+      style={{
+        background:
+          'radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%',
+        filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+      }}
+    >
       <StarsSSSvg className="absolute top-0 w-full -z-10 h-full" />
 
       <div className="max-w-[1240px] w-full mx-auto px-4 pt-28 pb-10 text-white">
-        <div
-          className=" flex justify-between flex-wrap gap-7"
-        >
+        <div className=" flex justify-between flex-wrap gap-7">
           <div className="text-base text-[#ffffffbf] w-[250px]">
             <div className="text-lg	font-bold flex gap-3 items-center">
               <img

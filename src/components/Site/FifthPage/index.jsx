@@ -20,7 +20,6 @@ gsap.registerPlugin(ScrollTrigger)
 function FifthPage() {
   const sectionRef = useRef(null)
   const triggerRef = useRef(null)
-  const swiperRef = useRef()
 
   //section2
   const sectionMainTitle = useRef(null)

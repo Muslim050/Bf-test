@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import InfoCartButton from './components/InfoCartButton.jsx'
-import TablePagination from "@/components/module/TablePagination/index.jsx";
-import Pagination from "@/components/module/Pagination/index.jsx";
-import {Dialog} from "@/components/ui/dialog.jsx";
-import Verify from "@/components/Dashboard/Order/OpenOrder/AddInventory/modal/Verify/Verify.jsx";
+import TablePagination from '@/module/TablePagination/index.jsx'
+import Pagination from '@/module/Pagination/index.jsx'
+import { Dialog } from '@/components/ui/dialog.jsx'
+import Verify from '@/components/Dashboard/Order/OpenOrder/AddInventory/modal/Verify/Verify.jsx'
 
 export default function AddInventory({
   getOrder,
@@ -16,11 +16,8 @@ export default function AddInventory({
   open,
   setOpen,
   handleClose,
-  selectedInventoryId
+  selectedInventoryId,
 }) {
-
-
-
   const [totalOnlineView, setTotalOnlineView] = React.useState(0)
   React.useEffect(() => {
     const total = getOrder.reduce(
@@ -34,7 +31,6 @@ export default function AddInventory({
     (item) => item.id === selectedInventoryId,
   )
   return (
-
     <>
       {open && (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -52,19 +48,19 @@ export default function AddInventory({
           )}
         </Dialog>
       )}
-      <div
-        className="border_container rounded-[22px] mt-3 p-[3px] glass-background flex flex-col h-full max-h-screen">
+      <div className="border_container rounded-[22px] mt-3 p-[3px] glass-background flex flex-col h-full max-h-screen">
         <div className="overflow-y-auto sm:max-h-[calc(100vh-200px)] max-h-[calc(100vh-250px)] flex-1">
-          <TablePagination table={table} flexRender={flexRender} text='создайте размещение'/>
+          <TablePagination
+            table={table}
+            flexRender={flexRender}
+            text="создайте размещение"
+          />
         </div>
-        {
-          table.getPageCount() > 1 &&
-          <Pagination table={table} pagination={pagination}/>}
+        {table.getPageCount() > 1 && (
+          <Pagination table={table} pagination={pagination} />
+        )}
       </div>
-            <InfoCartButton
-              totalOnlineView={totalOnlineView}
-              onceOrder={onceOrder}
-            />
+      <InfoCartButton totalOnlineView={totalOnlineView} onceOrder={onceOrder} />
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { SetkaSvg, StarsSSSvg } from '@/assets/Site/site-svg.jsx'
 import m from './ThirdPage.module.scss'
@@ -10,16 +10,18 @@ import svg3 from '../../../assets/Site/ThirdPage/3.webp'
 import svg4 from '../../../assets/Site/ThirdPage/4.webp'
 import svg5 from '../../../assets/Site/ThirdPage/5.webp'
 
-
 function ThirdPage() {
-
-
   return (
-    <div  className="relative" id="ThirdPage">
-      <div id="second-page" className="relative" style={{
-        background: "radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%",
-        filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
-      }}>
+    <div className="relative" id="ThirdPage">
+      <div
+        id="second-page"
+        className="relative"
+        style={{
+          background:
+            'radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%',
+          filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+        }}
+      >
         {/*<GradientBGSvg className="absolute top-0 w-full h-full -z-10" />*/}
         <StarsSSSvg className="absolute top-0 w-full h-full -z-10" />
         <SetkaSvg className="absolute top-0 w-full h-full -z-10" />
@@ -28,7 +30,6 @@ function ThirdPage() {
           <div className="text-center">
             <p className="text-white text-base font-normal">Особенности</p>
             <h2
-
               className={`text-white text-[35px] md:text-[40px] lg:text-[60px] pt-3 pb-10`}
             >
               Почему нас выбирают?
@@ -40,14 +41,12 @@ function ThirdPage() {
           >
             <div className={`${m.cardFirst} gap-4 justify-between`}>
               <Card
-
                 title="Аналитика производительности"
                 text="Отслеживайте производительность своей рекламы с помощью подробной аналитики и идей для оптимизации ваших кампаний."
                 gifSrc={svg1}
                 bgSetka
               />
               <Card
-
                 title="Оптимизация размещения рекламы"
                 text="Максимизируйте свою аудиторию и воздействие с помощью стратегий размещения рекламы, основанных на данных, на различных платформах."
                 gifSrc={svg2}
@@ -56,7 +55,6 @@ function ThirdPage() {
             </div>
 
             <Card
-
               title="Видеопроизводство высокого качества"
               text="Создавайте профессиональные видеоролики высокого качества, которые завораживают и превращают зрителей."
               gifSrc={svg3}
@@ -66,7 +64,6 @@ function ThirdPage() {
 
             <div className={`${m.cardSecond} gap-5 justify-between `}>
               <Card
-
                 title="A/B-тестирование"
                 text="Тестируйте различные версии рекламы, чтобы найти то, что работает лучше всего."
                 gifSrc={svg4}
@@ -75,7 +72,6 @@ function ThirdPage() {
                 customGifClass={'h-[280px] w-full flex'}
               />
               <Card
-
                 title="Целевая реклама"
                 text="Достигайте правильной аудитории с помощью точно настроенных видеореклам, основанных на демографии, интересах и онлайн-поведении."
                 gifSrc={svg5}
@@ -91,10 +87,15 @@ function ThirdPage() {
 }
 
 // Добавляем эффекты свечения и блесток при наведении
-const Card = (
-  { title, text, gifSrc, customClass, bgSetka, gifcustomClass, customGifClass },
-  ref,
-) => {
+const Card = ({
+  title,
+  text,
+  gifSrc,
+  customClass,
+  bgSetka,
+  gifcustomClass,
+  customGifClass,
+}) => {
   const cardRef = useRef(null)
   const sparkleRef = useRef(null)
 

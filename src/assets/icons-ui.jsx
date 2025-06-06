@@ -1,11 +1,8 @@
-import React from 'react'
-
 const SvgComponent = ({ children, className, ...props }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} {...props}>
     {children}
   </svg>
 )
-
 
 export const OpenSvg = (props) => (
   <SvgComponent
@@ -29,4 +26,3 @@ export const OpenSvg = (props) => (
     />
   </SvgComponent>
 )
-

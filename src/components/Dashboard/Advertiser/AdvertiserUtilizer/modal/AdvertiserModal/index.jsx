@@ -64,7 +64,6 @@ export default function AdvertiserModal({ onClose }) {
     handleSubmit,
     setValue,
     control,
-    watch,
   } = useForm({
     defaultValues: {
       name: '',
@@ -81,7 +80,6 @@ export default function AdvertiserModal({ onClose }) {
     },
     mode: 'onChange',
   })
-  const nameWatch = watch('name')
   const fetchCpm = async () => {
     const url = `${backendURL}/order/cpm/`
     const response = await axiosInstance.get(url)
