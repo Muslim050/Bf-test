@@ -9,8 +9,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import { NavMain } from '@/components/module/Sidebar/sidebar/nav-main.jsx'
-import { menuItems } from '@/components/module/Sidebar/MenuItems.js'
+import { NavMain } from '@/module/Sidebar/sidebar/nav-main.jsx'
+import { menuItems } from '@/module/Sidebar/MenuItems.js'
 import Cookies from 'js-cookie'
 import {
   Collapsible,
@@ -21,7 +21,7 @@ import {
   AlertDialogContent,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog.jsx'
-import LogoutDialog from '@/components/module/Sidebar/LogoutDialog.jsx'
+import LogoutDialog from '@/module/Sidebar/LogoutDialog.jsx'
 
 export function AppSidebar({ ...props }) {
   const role = Cookies.get('role')

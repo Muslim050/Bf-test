@@ -1,4 +1,3 @@
-import React from 'react'
 import style from './AdvertStatus.module.scss'
 
 import { formatDate } from '@/utils/formatterDate.jsx'

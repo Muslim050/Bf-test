@@ -1,11 +1,8 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { Controller, useForm } from 'react-hook-form'
-import {
-  addAdvertiserUsers,
-  fetchAdvertiserUsers,
-} from '@/redux/advertiserUsers/advertiserUsersSlice.js'
+import { fetchAdvertiserUsers } from '@/redux/advertiserUsers/advertiserUsersSlice.js'
 import MaskedInput from 'react-text-mask'
 import {
   DialogContent,
@@ -25,21 +22,23 @@ import {
 } from '@/components/ui/select.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
-import {fetchAdvertiser} from "@/redux/advertiser/advertiserSlice.js";
+import { fetchAdvertiser } from '@/redux/advertiser/advertiserSlice.js'
 
 export default function AdvertiserModalUsers({ onClose }) {
   const dispatch = useDispatch()
   const [showPasswordOld, setShowPasswordOld] = React.useState(false)
   const [isLogin, setIsLogin] = React.useState(false)
-  const { advertisers } = useSelector((state) => state.advertiser);
+  const { advertisers } = useSelector((state) => state.advertiser)
   const handleTogglePasswordOld = () => {
     setShowPasswordOld(!showPasswordOld)
   }
   React.useEffect(() => {
-    dispatch(fetchAdvertiser({
-      page: 1, // API использует нумерацию с 1
-      pageSize: 100,
-    }))
+    dispatch(
+      fetchAdvertiser({
+        page: 1, // API использует нумерацию с 1
+        pageSize: 100,
+      }),
+    )
   }, [dispatch])
 
   const {
@@ -60,10 +59,9 @@ export default function AdvertiserModalUsers({ onClose }) {
     mode: 'onChange',
   })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     try {
       setIsLogin(true)
-      const advertiser = await dispatch(addAdvertiserUsers({ data })).unwrap()
       toast.success('Пользователь рекламодателя успешно создан!')
       onClose()
       setTimeout(() => {
