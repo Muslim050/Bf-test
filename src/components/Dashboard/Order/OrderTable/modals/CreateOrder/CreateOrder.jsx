@@ -1,11 +1,10 @@
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { Monitor, MonitorPlay, MonitorUp } from 'lucide-react'
+import { LoaderCircle, Monitor, MonitorPlay, MonitorUp } from 'lucide-react'
 
 import { addOrder } from '../../../../../../redux/order/orderSlice'
 import 'react-datepicker/dist/react-datepicker.css'
-import style from './CreateOrder.module.scss'
 import backendURL from '@/utils/url'
 import { hideModalOrder } from '@/redux/modalSlice'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
@@ -332,7 +331,7 @@ export default function CreateOrder({ onClose }) {
                       id="terms"
                       className="size-6 rounded-lg data-[state=checked]:bg-[#5570f1] data-[state=checked]:border-[#5570f1] border-[#5570f1]"
                     />
-                    <span className={style.checkmark}></span>
+                    <span></span>
                   </label>
                 </div>
               </div>
@@ -448,7 +447,7 @@ export default function CreateOrder({ onClose }) {
               {notes.length}/{maxChars} символов
             </div>
 
-            <div className={style.btn__wrapper}>
+            <div>
               <Button
                 className={`${
                   isValid && !isOrderCreated
@@ -462,8 +461,9 @@ export default function CreateOrder({ onClose }) {
                 {isOrderCreated ? (
                   <>
                     <span>Создать</span>
-                    <div className={style.loaderWrapper}>
-                      <div className={style.spinner}></div>
+
+                    <div className="flex items-center justify-center h-[250px]">
+                      <LoaderCircle className="animate-spin text-brandPrimary-1 h-12 w-12 -scale-x-100" />
                     </div>
                   </>
                 ) : (

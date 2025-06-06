@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   FileVideo,
   ImageDown,
+  LoaderCircle,
   Monitor,
   MonitorPlay,
   MonitorUp,
@@ -24,7 +25,6 @@ import {
 } from '@/components/ui/dialog.jsx'
 import { toastConfig } from '../../../../../../utils/toastConfig'
 import 'react-datepicker/dist/react-datepicker.css'
-import style from './EditOrder.module.scss'
 import backendURL from '@/utils/url'
 import axios from 'axios'
 import { Label } from '@/components/ui/label.jsx'
@@ -64,11 +64,7 @@ const formatV = [
   { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp },
 ]
 
-export default function EditOrder({
-  setShowModalEditAdmin,
-  currentOrder,
-  onClose,
-}) {
+export default function EditOrder({ currentOrder, onClose }) {
   const dispatch = useDispatch()
   const [selectedFile, setSelectedFile] = React.useState(null)
   const [cpm, setCpm] = React.useState([])
@@ -111,8 +107,6 @@ export default function EditOrder({
   }
   const advID = Cookies.get('advertiser')
   const targetCountry = watch('target_country')
-
-  const editName = watch('name')
   // const viewValue = watch("view");
   const expectedView = watch('expectedView')
 
@@ -341,10 +335,7 @@ export default function EditOrder({
                 <Label className="text-sm	text-[var(--text)] pb-0.5">
                   Target для РУЗ
                 </Label>
-                <label
-                  className={`${style.checkboxI} text-sky-400 `}
-                  onClick={taretCheckbox}
-                >
+                <label className={` text-sky-400 `} onClick={taretCheckbox}>
                   Target UZ
                   <input
                     type="checkbox"
@@ -487,8 +478,9 @@ export default function EditOrder({
               {isOrderCreated ? (
                 <>
                   <span>Сохранить</span>
-                  <div className={style.loaderWrapper}>
-                    <div className={style.spinner}></div>
+
+                  <div className="flex items-center justify-center h-[250px]">
+                    <LoaderCircle className="animate-spin text-brandPrimary-1 h-12 w-12 -scale-x-100" />
                   </div>
                 </>
               ) : (

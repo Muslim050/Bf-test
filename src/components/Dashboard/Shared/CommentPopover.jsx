@@ -6,11 +6,11 @@ import {
 import { Button } from '@/components/ui/button.jsx'
 import { Copy, MessageSquareText, SquareArrowOutUpRight } from 'lucide-react'
 import React from 'react'
-import { useOrder } from '@/components/Dashboard/Order/OrderTable/hooks/useOrder.jsx'
+import { useCopyComment } from '@/hooks/useCopyComment.jsx'
 
 const CommentPopover = ({ data }) => {
   const [currentOrder, setCurrentOrder] = React.useState(null)
-  const { copyToClipboard } = useOrder(currentOrder)
+  const { copyToClipboard } = useCopyComment(currentOrder)
 
   return (
     <div>

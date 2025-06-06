@@ -1,6 +1,6 @@
 import { toast } from 'react-hot-toast'
 
-export const useOrder = (currentOrder) => {
+export const useCopyComment = (currentOrder) => {
   //Функция Копирования
   const copyToClipboard = () => {
     navigator.clipboard
