@@ -1,6 +1,5 @@
-import axios from 'axios'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { Controller, useForm } from 'react-hook-form'
 import MaskedInput from 'react-text-mask'
@@ -10,7 +9,6 @@ import {
   fetchChannelUsers,
 } from '../../../../redux/channelUsers/channelUsersSlice.js'
 import { Eye, EyeOff } from 'lucide-react'
-import backendURL from '@/utils/url.js'
 import {
   DialogContent,
   DialogHeader,
@@ -27,8 +25,7 @@ import {
 } from '@/components/ui/select.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
-import {fetchChannel} from "@/redux/channel/channelSlice.js";
-import {addPublisher, fetchPublisher} from "@/redux/publisher/publisherSlice.js";
+import { fetchChannel } from '@/redux/channel/channelSlice.js'
 
 export default function ChannelModalUsers({ onClose }) {
   const dispatch = useDispatch()
@@ -40,12 +37,14 @@ export default function ChannelModalUsers({ onClose }) {
   const [pagination, setPagination] = React.useState({
     pageIndex: 1, // Начинаем с 0
     pageSize: 200,
-  });
+  })
   React.useEffect(() => {
-   dispatch( fetchChannel({
-     page: pagination.pageIndex, // API использует нумерацию с 1
-     pageSize: pagination.pageSize,
-   }))
+    dispatch(
+      fetchChannel({
+        page: pagination.pageIndex, // API использует нумерацию с 1
+        pageSize: pagination.pageSize,
+      }),
+    )
   }, [pagination.pageIndex, pagination.pageSize])
 
   const {
@@ -71,16 +70,17 @@ export default function ChannelModalUsers({ onClose }) {
       toast.success('Пользователь рекламодателя успешно создан!')
       onClose()
       setTimeout(() => {
-        dispatch(fetchChannelUsers({
-          page: 1, // API использует нумерацию с 1
-          pageSize: 20,
-        }))
+        dispatch(
+          fetchChannelUsers({
+            page: 1, // API использует нумерацию с 1
+            pageSize: 20,
+          }),
+        )
       }, 1000)
     } catch (error) {
       toast.error(error?.data?.error?.message)
     }
   }
-
 
   return (
     <>

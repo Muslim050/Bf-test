@@ -1,9 +1,9 @@
-import React from 'react'
 import { TableCell } from '@/components/ui/table'
+
 function DataDopTable({ dataChannel }) {
   return (
     <>
-      {dataChannel?.gender_percentages?.map((gender, index) => (
+      {dataChannel?.gender_percentages?.map((gender) => (
         <>
           <TableCell
             key={gender.percentage}
@@ -51,13 +51,9 @@ function DataDopTable({ dataChannel }) {
               textAlign: 'center',
             }}
           >
-            {
-              geo.percentage > 0 &&
-              <div className='flex justify-center'>
-                {geo.percentage}%
-              </div>
-            }
-
+            {geo.percentage > 0 && (
+              <div className="flex justify-center">{geo.percentage}%</div>
+            )}
           </TableCell>
         </>
       ))}

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import m from '../FirstPage.module.scss'
 import { gsap } from 'gsap'
-import { Youtube } from 'lucide-react';
 
 const FirstTitleContainer = ({
   paragraphRef,
@@ -69,7 +68,14 @@ const FirstTitleContainer = ({
           ref={paragraphRef}
           className={`flex-wrap justify-center text-slate-500 text-[12px] md:text-[15px] lg:text-[18px] py-3 text-center flex items-center`}
         >
-          Разместите ваш рекламный ролик в  <span className='text-white ml-1'>You<span className='bg-red-600 p-0.5 rounded-[10px] font-semibold'>Tube</span> </span>, буквально в три клика
+          Разместите ваш рекламный ролик в{' '}
+          <span className="text-white ml-1">
+            You
+            <span className="bg-red-600 p-0.5 rounded-[10px] font-semibold">
+              Tube
+            </span>{' '}
+          </span>
+          , буквально в три клика
         </p>
       </div>
       <div className="relative sm:inline-block flex justify-center  gap-5 items-center ">

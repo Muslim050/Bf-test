@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-hot-toast'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -93,24 +93,25 @@ export default function EditVideoModal({ currentOrder, onClose }) {
       )
       toast.success('Изминения успешно обновлены!')
       onClose()
-      setTimeout(() => {
-        dispatch(fetchVideos())
+      setTimeout(async () => {
+        await fetchVideos()
       }, 1000)
     } catch (error) {
       toast.error(error?.data?.error?.message)
     }
   }
-  const handleRemoveInventory = () => {
-    dispatch(DeleteVideo({ id: currentOrder.id }))
-      .then(() => {
-        toast.success('Видео успешно удалено', toastConfig)
-        onClose()
-        dispatch(fetchVideos())
-      })
-      .catch((error) => {
-        toast.error(error.message, toastConfig)
-        dispatch(fetchVideos())
-      })
+  const handleRemoveInventory = async () => {
+    try {
+      await dispatch(DeleteVideo({ id: currentOrder.id }))
+      toast.success('Видео успешно удалено', toastConfig)
+      onClose()
+      // Важно! если используешь локальное состояние:
+      await fetchVideos()
+    } catch (error) {
+      toast.error(error.message, toastConfig)
+      // Можно тоже обновить после ошибки
+      await fetchVideos()
+    }
   }
 
   const handleTimeBlur = (event) => {
