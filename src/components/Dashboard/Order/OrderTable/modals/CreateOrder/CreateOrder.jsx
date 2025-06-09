@@ -322,10 +322,7 @@ export default function CreateOrder({ onClose }) {
                   <Label className="text-sm	text-white pb-0.5">
                     Target для РУЗ
                   </Label>
-                  <label
-                    className={`${style.checkboxI} text-sky-400`}
-                    onClick={taretCheckbox}
-                  >
+                  <label className={` text-sky-400`} onClick={taretCheckbox}>
                     Target UZ
                     <Checkbox
                       id="terms"
