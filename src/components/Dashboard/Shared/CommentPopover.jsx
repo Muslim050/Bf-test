@@ -13,7 +13,7 @@ const CommentPopover = ({ data }) => {
   const { copyToClipboard } = useCopyComment(currentOrder)
 
   return (
-    <div>
+    <>
       {data?.notes || data?.notes_text ? (
         <Popover>
           <PopoverTrigger asChild>
@@ -52,7 +52,7 @@ const CommentPopover = ({ data }) => {
           </PopoverContent>
         </Popover>
       ) : null}
-    </div>
+    </>
   )
 }
 

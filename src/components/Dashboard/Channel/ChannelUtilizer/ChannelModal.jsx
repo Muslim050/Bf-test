@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog.jsx'
 import MaskedInput from 'react-text-mask'
-import { Info } from 'lucide-react'
+import { Info, PackageCheck, Send } from 'lucide-react'
 
 import { Label } from '@/components/ui/label.jsx'
 import {
@@ -32,6 +32,7 @@ import {
 import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { fetchPublisher } from '@/redux/publisher/publisherSlice.js'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export default function ChannelModal({ onClose }) {
   const dispatch = useDispatch()
@@ -57,6 +58,7 @@ export default function ChannelModal({ onClose }) {
       phone: '',
       channelId: '',
       commission_rate: '',
+      telegram_chat_id: '',
     },
     mode: 'onChange',
   })
@@ -96,8 +98,8 @@ export default function ChannelModal({ onClose }) {
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <div className="flex gap-4 mb-4">
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-2">
               <div className="grid w-full ">
                 <Label className="text-sm	text-white pb-2">
                   Выбрать паблишера
@@ -153,7 +155,7 @@ export default function ChannelModal({ onClose }) {
             {/**/}
 
             {/**/}
-            <div className="flex gap-4 mb-4">
+            <div className="flex gap-2">
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-2">
                   Номер телефона<span className="text-red-500 ml-0.5">*</span>
@@ -235,10 +237,10 @@ export default function ChannelModal({ onClose }) {
             </div>
             {/**/}
 
-            <div className="flex gap-4 ">
-              <div className="grid w-full">
-                <Label className="text-sm	text-white pb-2">
-                  Процент комиссии канала{' '}
+            <div className="flex gap-2 ">
+              <div className="grid w-full ">
+                <Label className="text-sm	text-white pb-2 text-nowrap	">
+                  Процент комиссии
                   <span className="text-red-500 ml-0.5">*</span>
                 </Label>
                 <Input
@@ -255,7 +257,32 @@ export default function ChannelModal({ onClose }) {
                   }   transition-all duration-300 text-sm `}
                 />
               </div>
-
+              <div className="grid w-full ">
+                <Label className="text-sm	text-white pb-2 flex gap-0.5">
+                  <div className="bg-blue-500 rounded-full inline-flex h-max">
+                    <Send className="size-5  p-1" />
+                  </div>
+                  Telegram chat id
+                  <span className="text-red-500 ml-0.5">*</span>
+                  <div className="text-sm	text-red-500 ">
+                    {' '}
+                    {errors?.email && <p>{errors.email.message}</p>}
+                  </div>
+                </Label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  {...register('telegram_chat_id', {
+                    required: '.',
+                  })}
+                  placeholder={'Введите telegram chat id'}
+                  className={`border ${
+                    errors?.email ? 'border-red-500' : 'border-gray-300'
+                  }   transition-all duration-300 text-sm `}
+                />
+              </div>
+            </div>
+            <div className="flex items-end gap-2">
               <div className="grid w-full ">
                 <Label className="text-sm	text-white pb-5 flex gap-0.5">
                   Сhannel Id
@@ -307,21 +334,21 @@ export default function ChannelModal({ onClose }) {
                   } transition-all duration-300 text-sm -mt-4`}
                 />
               </div>
+              <div>
+                <TooltipWrapper tooltipContent="Создать">
+                  <Button
+                    isValid={true}
+                    variant="default"
+                    disabled={!isValid}
+                    className="h-[40px]"
+                  >
+                    <PackageCheck />
+                  </Button>
+                </TooltipWrapper>
+              </div>
             </div>
 
             {/**/}
-
-            <Button
-              isValid={true}
-              className={`${
-                isValid
-                  ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-                  : 'bg-[#616161]'
-              } w-full   h-[44px] text-white rounded-lg	mt-6`}
-              disabled={!isValid}
-            >
-              Создать
-            </Button>
           </div>
         </form>
       </DialogContent>

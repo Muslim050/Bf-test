@@ -73,7 +73,7 @@ function Login() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div
           style={{ background: 'var(--bg-color)' }}
           className="w-full lg:grid h-screen lg:grid-cols-2  p-6 "

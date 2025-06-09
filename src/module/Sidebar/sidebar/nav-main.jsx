@@ -206,7 +206,7 @@ export function NavMain({ userRole }) {
                           {item.icon && <item.icon />}
                         </div>
                         {state === 'collapsed' && item.label > 0 && (
-                          <span className="absolute -top-2 right-0 -translate-x-1/2 z-10">
+                          <span className="absolute -top-3 -right-4 -translate-x-1/2 z-10">
                             <Badge
                               className={`px-1.5 py-0 text-xs ${
                                 item.color === 'green'
@@ -225,11 +225,13 @@ export function NavMain({ userRole }) {
                               {item.label > 0 ? (
                                 <>
                                   <span
-                                    className={cn()(
+                                    className={`
                                       'ml-auto',
-                                      item.variant === 'default' &&
-                                        'text-background dark:text-white',
-                                    )}
+                                      ${
+                                        item.variant === 'default' &&
+                                        'text-background dark:text-white'
+                                      },
+                                    `}
                                   >
                                     <Badge
                                       className={`px-1.5 py-0 ${item.color === 'green' ? 'bg-[#05c800]' : item.color}`}

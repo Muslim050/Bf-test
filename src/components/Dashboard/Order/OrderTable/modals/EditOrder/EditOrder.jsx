@@ -8,7 +8,7 @@ import {
   Monitor,
   MonitorPlay,
   MonitorUp,
-  PackagePlus,
+  PackageCheck,
   Trash2,
 } from 'lucide-react'
 
@@ -485,7 +485,7 @@ export default function EditOrder({ currentOrder, onClose }) {
                 </>
               ) : (
                 <div className="flex items-center gap-1">
-                  <PackagePlus />
+                  <PackageCheck />
                 </div>
               )}
             </Button>

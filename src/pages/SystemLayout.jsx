@@ -40,7 +40,7 @@ const SystemLayout = () => {
           className="sm:pl-3 pl-0 h-screen space-y-4 overflow-hidden"
         >
           <div className="h-full flex flex-col ">
-            <div className="border_container glass-background border_design flex justify-between items-center px-4 py-2 ">
+            <div className="border_container  glass-background border_design flex justify-between items-center px-4 py-2 ">
               <div className="flex gap-2">
                 <SidebarTrigger className="-ml-1" />
 

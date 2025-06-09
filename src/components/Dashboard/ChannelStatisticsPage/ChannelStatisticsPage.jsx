@@ -1,19 +1,16 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import {
-  clearStatistics,
-  fetchChannelStatistics,
-} from '../../../redux/statisticsSlice'
+
 import StatictickChannel from './StatictickChannel/StatictickChannel'
 import { toast } from 'react-hot-toast'
 import PreLoadDashboard from '@/components/Dashboard/PreLoadDashboard/PreLoad.jsx'
+import { fetchChannelStatistics } from '@/redux/statisticsSlice.js'
 
 function ChannelStatisticsPage() {
   const dispatch = useDispatch()
   const { id } = useParams()
-  const data = useSelector((state) => state.statistics.statisticsVideo)
-  const dataChannel = useSelector((state) => state.statistics.statisticsChannel)
+  const [dataChannel, setDataChannel] = useState()
   const [loading, setLoading] = React.useState(true)
   const [channel, setLoadingChannel] = React.useState(true)
   const [error, setError] = React.useState('')
@@ -24,8 +21,9 @@ function ChannelStatisticsPage() {
         setLoading(true)
         setLoadingChannel(true)
 
-        await dispatch(clearStatistics())
-        await Promise.all([dispatch(fetchChannelStatistics({ id })).unwrap()])
+        setDataChannel(null)
+        const data = await fetchChannelStatistics({ id })
+        setDataChannel(data)
       } catch (error) {
         setError(error?.data?.error?.detail)
         console.log(error.data?.error?.detail)
@@ -55,8 +53,6 @@ function ChannelStatisticsPage() {
             channel={channel}
             error={error}
           />
-
-          {/*<StatictickVideoTable data={data} loading={loading} error={error}/>*/}
         </>
       )}
     </>

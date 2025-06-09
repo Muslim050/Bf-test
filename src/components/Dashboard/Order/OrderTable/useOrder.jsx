@@ -152,7 +152,7 @@ export const useOrder = () => {
                   {role === 'admin' && (
                     <>
                       {isOver100Percent ? (
-                        <div>
+                        <div className="flex">
                           <span className="relative inline-flex rounded-full h-5 w-2.5 bg-red-600 text-[14px] ml-2 items-center justify-center"></span>
                         </div>
                       ) : null}

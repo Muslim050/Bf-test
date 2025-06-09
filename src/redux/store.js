@@ -16,10 +16,9 @@ import channelSlice from './channel/channelSlice'
 import channelUsersSlice from './channelUsers/channelUsersSlice'
 import advertiserAgencySlice from './AgencySlice/advertiserAgency/advertiserAgencySlice'
 import advertiserAgencyUsersSlice from './AgencySlice/advertiserAgencyUsers/advertiserAgencyUsersSlice'
-import statisticsSlice from './statisticsSlice'
 import modalSlice from './modalSlice'
 import revenueSlice from './revenueSlice'
-import sentToPublisher from "@/redux/order/SentToPublisher.js";
+import sentToPublisher from '@/redux/order/SentToPublisher.js'
 
 const store = configureStore({
   reducer: {
@@ -40,11 +39,9 @@ const store = configureStore({
     channel: channelSlice,
     inventoryStatus: inventoryStatusSlice,
     orderTable: orderTableSlice,
-    statistics: statisticsSlice,
     revenue: revenueSlice,
     modal: modalSlice,
     sentToPublisher: sentToPublisher,
-
   },
 })
 

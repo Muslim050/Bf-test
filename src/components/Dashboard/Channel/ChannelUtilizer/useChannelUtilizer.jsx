@@ -12,7 +12,7 @@ import { hasRole } from '@/utils/roleUtils.js'
 import { Button } from '@/components/ui/button.jsx'
 import Cookies from 'js-cookie'
 import { Link } from 'react-router-dom'
-import { ChartColumn } from 'lucide-react'
+import { ChartColumn, Send } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
@@ -233,7 +233,8 @@ export const useChannelUtilizer = () => {
                           <g id="SVGRepo_iconCarrier">
                             {' '}
                             <title>Google-color</title>{' '}
-                            <desc>Created with Sketch.</desc> <defs> </defs>{' '}
+                            <desc>Created with Sketch.</desc>
+                            <defs></defs>{' '}
                             <g
                               id="Icons"
                               stroke="none"
@@ -330,9 +331,32 @@ export const useChannelUtilizer = () => {
         filterFn: 'includesString',
         header: () => hasRole('admin') && <span>% комиссии</span>,
       },
+      {
+        accessorFn: (row) => row.commission_rate, // Преобразование в число
+        id: 'Процент комиссии канала',
+        cell: ({ row }) => (
+          <>
+            {row.original.telegram_chat_id && (
+              <div className={`font-normal text-${textColor} text-sm `}>
+                {row.original.telegram_chat_id}
+              </div>
+            )}
+          </>
+        ),
+        enableSorting: false,
+
+        filterFn: 'includesString',
+        header: () =>
+          hasRole('admin') && (
+            <div className="bg-blue-500 rounded-full inline-flex h-max justify-center w-full">
+              <Send className="size-7  p-1.5" />
+            </div>
+          ),
+      },
     ],
     [googleAu, linkGoogle],
   )
+
   const filteredColumns = columns.filter((column) => {
     // Если колонка зависит от роли admin, проверяем условие
     if (

@@ -69,7 +69,7 @@ const PopoverButtons = ({ advert, handleFinishOrder, isOver100Percent }) => {
       {/*Комментарий*/}
 
       {/*Кнопка ЗАвершить*/}
-      <div>
+      <>
         {hasRole('admin') && advert.status === 'in_progress' ? (
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -107,10 +107,8 @@ const PopoverButtons = ({ advert, handleFinishOrder, isOver100Percent }) => {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        ) : (
-          ''
-        )}
-      </div>
+        ) : null}
+      </>
       {/*Кнопка ЗАвершить*/}
 
       {/*Оплата*/}

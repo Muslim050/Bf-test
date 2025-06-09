@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { fetchStatistics } from '../../../redux/statisticsSlice'
 import { useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
@@ -53,10 +53,10 @@ export const useOrderChart = () => {
   //table
   const [columnFilters, setColumnFilters] = React.useState([])
   const [globalFilter, setGlobalFilter] = React.useState('')
-  const data = useSelector((state) => state.statistics.statistics.results)
+  const [statistics, setStatistics] = useState()
 
-  const totalBudjet = data?.map((i) => i.budget)
-  const totalView = data?.map((i) => i.online_view_count)
+  const totalBudjet = statistics?.map((i) => i.budget)
+  const totalView = statistics?.map((i) => i.online_view_count)
 
   const sumBudjet = totalBudjet?.reduce((acc, num) => acc + num, 0)
   const sumView = totalView?.reduce((acc, num) => acc + num, 0)
@@ -82,14 +82,24 @@ export const useOrderChart = () => {
   }, [id])
 
   //Получение отчета
-  React.useEffect(() => {
-    dispatch(fetchStatistics({ order_id: id }))
-      .unwrap()
-      .then(() => setLoading(false))
-      .catch((error) => {
-        setLoading(false)
-        toast.error(error?.data?.error?.detail)
+  React.useEffect(async () => {
+    try {
+      const data = await fetchStatistics({
+        order_id: id,
       })
+      setStatistics(data) // setStatistics — это useState хук
+    } catch (error) {
+      setLoading(false)
+      toast.error(error?.data?.error?.detail)
+      // можешь показать ошибку через toast, alert и т.д.
+    }
+    // dispatch(fetchStatistics({ order_id: id }))
+    //   .unwrap()
+    //   .then(() => setLoading(false))
+    //   .catch((error) => {
+    //     setLoading(false)
+    //     toast.error(error?.data?.error?.detail)
+    //   })
   }, [dispatch, id])
   //Получение отчета
 
@@ -160,14 +170,18 @@ export const useOrderChart = () => {
 
     const toastId = toast.loading('Загрузка отчета..')
 
-    dispatch(fetchStatistics({ order_id: id }))
-      .then(() => {
+    fetchStatistics({ order_id: id })
+      .then((data) => {
         toast.success('Данные успешно обновлены', { id: toastId })
+        // здесь можешь обновить локальный state, если нужно
+        setStatistics(data)
       })
       .catch((error) => {
-        toast.error(`Failed to load statistics: ${error.message}`, {
-          id: toastId,
-        })
+        // обработка ошибок
+        toast.error(
+          `Failed to load statistics: ${error?.response?.data?.message || error.message || 'Ошибка запроса'}`,
+          { id: toastId },
+        )
       })
       .finally(() => {
         setOpen(false)
@@ -179,7 +193,7 @@ export const useOrderChart = () => {
   //При закрытий окна фильтра
 
   //Очищаем фильтр
-  const handleClear = () => {
+  const handleClear = async () => {
     setDataFiltered(false)
     setOpen(false)
 
@@ -193,23 +207,28 @@ export const useOrderChart = () => {
 
     setStartDate(minDate)
     setEndDate(maxDate)
+
     setIsLoadingData(true)
     const toastId = toast.loading('Загрузка отчета...')
 
-    dispatch(fetchStatistics({ order_id: id }))
-      .then(() => {
-        toast.success('Данные успешно обновлены', { id: toastId })
-      })
-      .catch((error) => {
-        toast.error(`Failed to load statistics: ${error.message}`, {
-          id: toastId,
-        })
-      })
-      .finally(() => {
-        setOpen(false)
-        setIsLoadingData(false)
-      })
+    try {
+      const data = await fetchStatistics({ order_id: id })
+      // setStatistics(data); // если используешь локальный state для данных
+      toast.success('Данные успешно обновлены', { id: toastId })
+      setStatistics(data)
+    } catch (error) {
+      toast.error(
+        `Failed to load statistics: ${
+          error?.response?.data?.message || error.message || 'Ошибка запроса'
+        }`,
+        { id: toastId },
+      )
+    } finally {
+      setOpen(false)
+      setIsLoadingData(false)
+    }
   }
+
   //Очищаем фильтр
 
   //Фильтрация по параметрам
@@ -388,7 +407,7 @@ export const useOrderChart = () => {
   )
 
   const table = useReactTable({
-    data: data || [], // Данные из Redux
+    data: statistics || [], // Данные из Redux
     columns,
     state: {
       columnFilters,
