@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/tooltip.jsx'
 import { googleAuth } from '@/redux/googleauth/googleauthSlice.js'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export const useChannelUtilizer = () => {
   const [columnFilters, setColumnFilters] = React.useState([])
@@ -329,7 +330,7 @@ export const useChannelUtilizer = () => {
           </>
         ),
         filterFn: 'includesString',
-        header: () => hasRole('admin') && <span>% комиссии</span>,
+        header: () => hasRole('admin') && <span>% Комиссии</span>,
       },
       {
         accessorFn: (row) => row.commission_rate, // Преобразование в число
@@ -337,21 +338,21 @@ export const useChannelUtilizer = () => {
         cell: ({ row }) => (
           <>
             {row.original.telegram_chat_id && (
-              <div className={`font-normal text-${textColor} text-sm `}>
-                {row.original.telegram_chat_id}
-              </div>
+              <TooltipWrapper tooltipContent="Telegram Id">
+                <div className="p-1 rounded-full bg-blue-500 text-white inline-flex gap-1 items-center dark:bg-blue-600">
+                  <Send className="size-4" />
+                  {row.original.telegram_chat_id}
+                </div>
+              </TooltipWrapper>
             )}
           </>
         ),
         enableSorting: false,
 
         filterFn: 'includesString',
-        header: () =>
-          hasRole('admin') && (
-            <div className="bg-blue-500 rounded-full inline-flex h-max justify-center w-full">
-              <Send className="size-7  p-1.5" />
-            </div>
-          ),
+        header: () => (
+          <div className="bg-blue-500 rounded-full inline-flex h-max justify-center w-full"></div>
+        ),
       },
     ],
     [googleAu, linkGoogle],
