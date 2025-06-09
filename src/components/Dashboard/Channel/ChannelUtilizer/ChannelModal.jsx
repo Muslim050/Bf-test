@@ -272,9 +272,7 @@ export default function ChannelModal({ onClose }) {
                 <Input
                   type="text"
                   autoComplete="off"
-                  {...register('telegram_chat_id', {
-                    required: '.',
-                  })}
+                  {...register('telegram_chat_id', {})}
                   placeholder={'Введите telegram chat id'}
                   className={`border ${
                     errors?.email ? 'border-red-500' : 'border-gray-300'
