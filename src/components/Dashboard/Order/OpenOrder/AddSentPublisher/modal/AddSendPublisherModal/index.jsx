@@ -20,6 +20,8 @@ import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import {
+  Check,
+  ChevronsUpDown,
   Loader2,
   Monitor,
   MonitorPlay,
@@ -32,11 +34,27 @@ import axiosInstance from '@/api/api.js'
 import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
 
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils.js'
+
 const format = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
   { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
   { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp },
 ]
+
 const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   const dispatch = useDispatch()
   const [channelModal, setChannelModal] = React.useState([])
@@ -46,6 +64,8 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   const [budgett, setBudgett] = React.useState(0)
   const [isOrderCreated, setIsOrderCreated] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
+  const [open, setOpen] = React.useState(false)
+
   const selectedPublisher = (value) => {
     setPublisherID(value)
   }
@@ -244,63 +264,78 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           <Label className="text-sm text-[var(--text)] pb-2">
             Выбрать канал<span className="text-red-500 ml-0.5">*</span>
           </Label>
+
           <Controller
             name="channel"
             control={control}
             rules={{ required: 'Поле обязательно' }}
-            render={({ field }) => (
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                value={field.value}
-              >
-                <SelectTrigger
-                  className="!text-[var(--text)]"
-                  onClick={() => field.onChange('')} // сброс значения при клике
-                >
-                  <SelectValue placeholder="Выбрать канал" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>
-                      <div className="flex items-center justify-between">
-                        Выбрать канал{' '}
-                        {loading && (
-                          <div
-                            className="loaderWrapper"
-                            style={{ height: '2vh' }}
-                          >
-                            <div
-                              className="spinner"
-                              style={{ width: '25px', height: '25px' }}
-                            ></div>
-                          </div>
-                        )}
-                      </div>
-                    </SelectLabel>
-                    {/* Assuming you have a channelModal array */}
-                    {channelModal?.results?.map((option) => (
-                      <SelectItem
-                        key={option.id}
-                        value={option.id.toString()}
-                        className="flex"
-                        disabled={!option.is_active || !option.is_connected}
-                      >
-                        <div className="flex items-center justify-between w-full">
-                          <div className="relative">{option.name}</div>
-                          {!option.is_active && (
-                            <div className="absolute left-0 bg-red-500 rounded-full  w-3 h-full "></div>
-                          )}
-                          {!option.is_connected && (
-                            <div className="absolute left-0 bg-red-500 w-2 h-2 rounded-[3px]"></div>
-                          )}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
+            render={({ field }) => {
+              const selected = channelModal?.results?.find(
+                (framework) => framework.id === field.value,
+              )
+              return (
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="combobox"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full border-0 h-[40px] hover:scale-100 justify-between  "
+                    >
+                      {selected ? selected.name : 'Выбрать канал'}
+                      <ChevronsUpDown className="opacity-50 size-5" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 bg-white bg-opacity-30 backdrop-blur-md">
+                    <Command>
+                      <CommandInput
+                        placeholder="Поиск канала..."
+                        className="h-9"
+                      />
+                      <CommandList>
+                        <CommandEmpty>Ничего не найдено</CommandEmpty>
+                        <CommandGroup>
+                          {channelModal?.results?.map((framework) => (
+                            <CommandItem
+                              key={framework.value}
+                              value={framework?.value} // должен быть .value, а не .id
+                              onSelect={() => {
+                                field.onChange(framework.id)
+                                setOpen(false)
+                              }}
+                              disabled={
+                                !framework.is_active || !framework.is_connected
+                              }
+                            >
+                              <div className="flex items-center justify-between pr-3 w-full">
+                                <div className="relative ">
+                                  {framework.name}
+                                </div>
+                                {!framework.is_active && (
+                                  <div className="absolute left-0 bg-red-500 rounded-full mr-2 w-3 h-full "></div>
+                                )}
+                                {!framework.is_connected && (
+                                  <div className="absolute left-0 bg-red-500 w-2 h-2 rounded-full"></div>
+                                )}
+                              </div>
+                              {/*{framework.label}*/}
+                              <Check
+                                className={cn(
+                                  'ml-auto',
+                                  field.value === framework.value
+                                    ? 'opacity-100'
+                                    : 'opacity-0',
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              )
+            }}
           />
         </div>
 

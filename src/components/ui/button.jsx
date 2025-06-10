@@ -18,6 +18,9 @@ const buttonVariants = cva(
         //полупрозрачные кнопки
         outline:
           'border border-input bg-[#ffffff4d] hover:bg-accent hover:text-accent-foreground',
+
+        combobox:
+          'border border-input bg-white bg-opacity-30 backdrop-blur-md  ',
         //Кнопка Проверить
         outlineViolet: 'hover:bg-violet-400 bg-[#ffffff4d]  hover:text-white',
         //Кнопка Завершить
