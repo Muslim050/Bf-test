@@ -1,7 +1,7 @@
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { LoaderCircle, Monitor, MonitorPlay, MonitorUp } from 'lucide-react'
+import { Loader2, Monitor, MonitorPlay, MonitorUp } from 'lucide-react'
 
 import { addOrder } from '../../../../../../redux/order/orderSlice'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -458,10 +458,7 @@ export default function CreateOrder({ onClose }) {
                 {isOrderCreated ? (
                   <>
                     <span>Создать</span>
-
-                    <div className="flex items-center justify-center h-[250px]">
-                      <LoaderCircle className="animate-spin text-brandPrimary-1 h-12 w-12 -scale-x-100" />
-                    </div>
+                    <Loader2 className="ml-2 h-6 w-6 animate-spin" />
                   </>
                 ) : (
                   <span>Создать</span>

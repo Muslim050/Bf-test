@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   FileVideo,
   ImageDown,
-  LoaderCircle,
+  Loader2,
   Monitor,
   MonitorPlay,
   MonitorUp,
@@ -477,11 +477,8 @@ export default function EditOrder({ currentOrder, onClose }) {
             >
               {isOrderCreated ? (
                 <>
-                  <span>Сохранить</span>
-
-                  <div className="flex items-center justify-center h-[250px]">
-                    <LoaderCircle className="animate-spin text-brandPrimary-1 h-12 w-12 -scale-x-100" />
-                  </div>
+                  <span>Сохранение...</span>
+                  <Loader2 className="ml-2 h-6 w-6 animate-spin" />
                 </>
               ) : (
                 <div className="flex items-center gap-1">

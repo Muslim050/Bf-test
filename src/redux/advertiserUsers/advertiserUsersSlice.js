@@ -1,13 +1,12 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import backendURL from '@/utils/url'
-import axiosInstance from "@/api/api.js";
+import axiosInstance from '@/api/api.js'
 
 const initialState = {
   advertiserUsers: [],
   status: 'idle',
   error: null,
   total_count: 0, // Изначально общее количество равно 0
-
 }
 export const fetchAdvertiserUsers = createAsyncThunk(
   'advertiserusers/fetchAdvertiserUsers',
@@ -15,13 +14,13 @@ export const fetchAdvertiserUsers = createAsyncThunk(
     try {
       const response = await axiosInstance.get(`advertiser/user/`, {
         params: { page, page_size: pageSize },
-      });
-      return response.data.data; // Предполагается, что ваш API возвращает данные в поле `data`
+      })
+      return response.data.data // Предполагается, что ваш API возвращает данные в поле `data`
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message)
     }
   },
-);
+)
 
 export const addAdvertiserUsers = createAsyncThunk(
   'advertiserusers/addAdvertiserUsers',
@@ -37,7 +36,7 @@ export const addAdvertiserUsers = createAsyncThunk(
           username: data.username,
           phone_number: data.phone,
           password: data.password,
-        }
+        },
       )
       return response.data
     } catch (error) {
@@ -57,16 +56,19 @@ const advertiserUsersSlice = createSlice({
       })
       .addCase(fetchAdvertiserUsers.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.advertiserUsers = action.payload
-        state.total_count = action.payload?.count; // Обновляем общее количество
-
+        state.advertiserUsers = action.payload.results
+        state.total_count = action.payload?.count // Обновляем общее количество
       })
       .addCase(fetchAdvertiserUsers.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(addAdvertiserUsers.fulfilled, (state, action) => {
-        state.advertiserUsers.push(action.payload.data)
+        if (Array.isArray(state.advertiserUsers)) {
+          state.advertiserUsers.push(action.payload.data)
+        } else {
+          state.advertiserUsers = [action.payload.data]
+        }
         state.status = 'succeeded'
       })
   },

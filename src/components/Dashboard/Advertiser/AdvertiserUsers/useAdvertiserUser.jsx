@@ -112,7 +112,7 @@ export const useAdvertiserUser = () => {
     [],
   )
   const table = useReactTable({
-    data: advertiserUsers.results || [], // Ensure advertisers is defined
+    data: advertiserUsers || [], // Ensure advertisers is defined
     columns,
     state: {
       columnFilters,

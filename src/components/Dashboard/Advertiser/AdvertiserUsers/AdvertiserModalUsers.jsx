@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { Controller, useForm } from 'react-hook-form'
-import { fetchAdvertiserUsers } from '@/redux/advertiserUsers/advertiserUsersSlice.js'
+import { addAdvertiserUsers } from '@/redux/advertiserUsers/advertiserUsersSlice.js'
 import MaskedInput from 'react-text-mask'
 import {
   DialogContent,
@@ -59,18 +59,51 @@ export default function AdvertiserModalUsers({ onClose }) {
     mode: 'onChange',
   })
 
-  const onSubmit = async () => {
+  // const onSubmit = async () => {
+  //   try {
+  //     setIsLogin(true)
+  //     const advertiser = await dispatch(addAdvertiserUsers({ data })).unwrap()
+  //     console.log(advertiser)
+  //     toast.success('Пользователь рекламодателя успешно создан!')
+  //     onClose()
+  //     setTimeout(() => {
+  //       dispatch(fetchAdvertiserUsers())
+  //     }, 1000)
+  //     setIsLogin(false)
+  //   } catch (error) {
+  //     setIsLogin(false)
+  //     toast.error(error?.data?.error?.message)
+  //   }
+  // }
+  const onSubmit = async (data) => {
+    setIsLogin(true)
+
     try {
-      setIsLogin(true)
+      const result = await dispatch(addAdvertiserUsers({ data })).unwrap()
+
+      // Успешный ответ
       toast.success('Пользователь рекламодателя успешно создан!')
+      console.log('✅ Пользователь создан:', result)
+
       onClose()
+
+      // Лучше использовать навигацию, чем window.location.reload()
       setTimeout(() => {
-        dispatch(fetchAdvertiserUsers())
-      }, 1000)
-      setIsLogin(false)
+        window.location.reload()
+      }, 1500)
     } catch (error) {
+      // Стандартизированное логирование
+      console.error('❌ Ошибка при создании пользователя:', error)
+
+      // Универсальный fallback + корректный разбор структуры ошибки
+      const errorMessage =
+        error?.data?.error?.message || // если rejectWithValue(error.response)
+        error?.error?.message || // если rejectWithValue(error.response.data)
+        'Произошла непредвиденная ошибка'
+
+      toast.error(errorMessage)
+    } finally {
       setIsLogin(false)
-      toast.error(error?.data?.error?.message)
     }
   }
 
