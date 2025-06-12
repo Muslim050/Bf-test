@@ -12,6 +12,7 @@ import getTitle from '@/module/Sidebar/MenuItems.js'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AppSidebar } from '@/module/Sidebar/sidebar/app-sidebar.jsx'
 import { SidebarTrigger } from '@/components/ui/sidebar.jsx'
+import { Separator } from '@radix-ui/react-select'
 
 const SystemLayout = () => {
   const { bgColor, textColor } = React.useContext(ThemeContext)
@@ -42,7 +43,11 @@ const SystemLayout = () => {
           <div className="h-full flex flex-col ">
             <div className="border_container  glass-background border_design flex justify-between items-center px-4 py-2 ">
               <div className="flex gap-2">
-                <SidebarTrigger className="-ml-1" />
+                <SidebarTrigger />
+                <Separator
+                  orientation="vertical"
+                  className="w-[1px] h-auto bg-[#f9f9f92b]"
+                />
 
                 <h1 className="sm:text-lg text-xs font-bold">
                   {transformedTitle}

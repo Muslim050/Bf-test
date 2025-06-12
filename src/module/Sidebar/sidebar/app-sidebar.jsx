@@ -22,6 +22,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog.jsx'
 import LogoutDialog from '@/module/Sidebar/LogoutDialog.jsx'
+import React from 'react'
 
 export function AppSidebar({ ...props }) {
   const role = Cookies.get('role')
@@ -44,7 +45,7 @@ export function AppSidebar({ ...props }) {
             <Collapsible asChild className="group/collapsible">
               <SidebarMenuItem className="!list-none">
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton>
+                  <SidebarMenuButton className="bg-red-500">
                     <div className="flex 	gap-2 items-center">
                       <LogOut className="size-7" />
                       <span>Выход</span>

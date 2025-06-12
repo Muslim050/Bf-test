@@ -78,60 +78,83 @@ export function NavMain({ userRole }) {
   const filtredSentPublisher = listsentPublisher.filter || []
   const filteredVideo = (videos && videos?.filter) || []
   const updateMenuItems = (items) => {
-    return items.map((item) => {
-      if (item.title === 'Заказы') {
-        if (userRole === 'advertiser' || userRole === 'advertising_agency') {
-          return {
-            ...item,
-            color: 'green',
-            label: filteredOrdersAdvertiser.length.toString(),
-          }
-        } else if (userRole === 'publisher' || userRole === 'channel') {
-          return {
-            ...item,
-            color: filtredSentPublisher.length > 0 ? 'green' : 'bg-[#ff9800]',
-            label: filtredSentPublisher.length.toString(),
-          }
-        } else if (userRole === 'admin') {
-          return {
-            ...item,
-            color: 'green',
-            label: filteredOrders.length || filteredOrders,
-          }
-        }
-      }
+    return (
+      items
+        .map((item) => {
+          // 🔹 Фильтруем подменю по ролям
+          const filteredSubMenu =
+            item.subMenu?.filter((sub) => hasAccess(sub.roles)) || []
 
-      if (item.title === 'Каналы') {
-        if (
-          userRole === 'publisher' ||
-          userRole === 'admin' ||
-          userRole === 'channel'
-        ) {
-          return {
+          // 🔸 Базовый объект меню с отфильтрованным subMenu
+          let updatedItem = {
             ...item,
-            color: 'bg-red-500',
-
-            label: filteredChannel.length.toString(),
+            subMenu: item.subMenu ? filteredSubMenu : undefined,
           }
-          // eslint-disable-next-line no-dupe-else-if
-        }
-      }
 
-      if (
-        item.title === 'Видео' &&
-        (userRole === 'publisher' ||
-          userRole === 'admin' ||
-          userRole === 'channel')
-      ) {
-        return {
-          ...item,
-          color: 'bg-red-500',
+          // 🔻 Специальная логика для заказов
+          if (item.title === 'Заказы') {
+            if (
+              userRole === 'advertiser' ||
+              userRole === 'advertising_agency'
+            ) {
+              updatedItem = {
+                ...updatedItem,
+                color: 'green',
+                label: filteredOrdersAdvertiser.length.toString(),
+              }
+            } else if (userRole === 'publisher' || userRole === 'channel') {
+              updatedItem = {
+                ...updatedItem,
+                color:
+                  filtredSentPublisher.length > 0 ? 'green' : 'bg-[#ff9800]',
+                label: filtredSentPublisher.length.toString(),
+              }
+            } else if (userRole === 'admin') {
+              updatedItem = {
+                ...updatedItem,
+                color: 'green',
+                label: filteredOrders.length || filteredOrders,
+              }
+            }
+          }
 
-          label: filteredVideo.length.toString(),
-        }
-      }
-      return item
-    })
+          if (item.title === 'Каналы') {
+            if (
+              userRole === 'publisher' ||
+              userRole === 'admin' ||
+              userRole === 'channel'
+            ) {
+              updatedItem = {
+                ...updatedItem,
+                color: 'bg-red-500',
+                label: filteredChannel.length.toString(),
+              }
+            }
+          }
+
+          if (
+            item.title === 'Видео' &&
+            (userRole === 'publisher' ||
+              userRole === 'admin' ||
+              userRole === 'channel')
+          ) {
+            updatedItem = {
+              ...updatedItem,
+              color: 'bg-red-500',
+              label: filteredVideo.length.toString(),
+            }
+          }
+
+          return updatedItem
+        })
+        // ❌ Удаляем пункты без доступа и без доступного subMenu
+        .filter((item) => {
+          const hasParentAccess = hasAccess(item.roles)
+          const hasValidSubMenu =
+            !item.subMenu || (item.subMenu && item.subMenu.length > 0)
+          return hasParentAccess && hasValidSubMenu
+        })
+    )
   }
   const updatedMenuItems = updateMenuItems(menuItems)
   const isMenuActive = (item) => {

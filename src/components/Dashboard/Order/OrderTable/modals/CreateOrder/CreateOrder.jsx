@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { Loader2, Monitor, MonitorPlay, MonitorUp } from 'lucide-react'
+import {
+  ImageDown,
+  Loader2,
+  Monitor,
+  MonitorPlay,
+  MonitorUp,
+  PackageCheck,
+} from 'lucide-react'
 
 import { addOrder } from '../../../../../../redux/order/orderSlice'
 import 'react-datepicker/dist/react-datepicker.css'
 import backendURL from '@/utils/url'
-import { hideModalOrder } from '@/redux/modalSlice'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { Textarea } from '@/components/ui/textarea.jsx'
 import {
@@ -26,10 +32,13 @@ import {
 import { Input } from '@/components/ui/input.jsx'
 import { hasRole } from '../../../../../../utils/roleUtils'
 import { Button } from '../../../../../ui/button'
-import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
 import axiosInstance from '@/api/api.js'
 import { Checkbox } from '@/components/ui/checkbox.jsx'
+import { Badge } from '@/components/ui/badge.jsx'
+import { truncate } from '@/utils/other.js'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
+import toast from 'react-hot-toast'
 
 const formatV = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
@@ -102,7 +111,9 @@ export default function CreateOrder({ onClose }) {
   }, [selectedFormat, expectedView, targetCountry])
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0])
+    const file = event.target.files[0]
+    setSelectedFile(file)
+    setValue('selectedFile', [file], { shouldValidate: true }) // <--- важно
   }
 
   const fetchCpm = async () => {
@@ -132,6 +143,25 @@ export default function CreateOrder({ onClose }) {
       fetchCpm()
     }
   }, [advID])
+  // const onSubmit = async (data) => {
+  //   try {
+  //     setIsOrderCreated(true)
+  //     const response = await dispatch(addOrder({ data }))
+  //     if (response && !response.error) {
+  //       toast.success('Заказ успешно оформлен!')
+  //       onClose()
+  //       setTimeout(() => {
+  //         window.location.reload()
+  //       }, 1500)
+  //     } else if (response.error.message) {
+  //       toast.error(response?.payload?.data?.error?.detail)
+  //       onClose()
+  //     }
+  //   } catch (error) {
+  //     setIsOrderCreated(false)
+  //     toast.error(error?.data?.error?.message)
+  //   }
+  // }
   const onSubmit = async (data) => {
     try {
       setIsOrderCreated(true)
@@ -151,7 +181,6 @@ export default function CreateOrder({ onClose }) {
       toast.error(error?.data?.error?.message)
     }
   }
-
   const [notes, setNotes] = React.useState('') // Состояние для хранения текста заметок
   const maxChars = 100 // Максимальное количество символов
 
@@ -159,13 +188,11 @@ export default function CreateOrder({ onClose }) {
     setNotes(event.target.value.substring(0, maxChars)) // Обновляем текст, обрезая его до максимальной длины
   }
 
-  const handleButtonClick = () => {
-    dispatch(hideModalOrder())
-  }
   const taretCheckbox = (event) => {
     const isChecked = event.target.checked
     setValue('target_country', isChecked ? 'uz' : '')
   }
+  const inputRef = useRef(null) // Создаем ссылку на Input
 
   return (
     <>
@@ -246,7 +273,7 @@ export default function CreateOrder({ onClose }) {
             </div>
 
             {/*  */}
-            <div className="flex gap-4 mb-2">
+            <div className="flex gap-2 mb-2">
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-0.5">
                   Начало размещения
@@ -280,11 +307,6 @@ export default function CreateOrder({ onClose }) {
                   })}
                 />
               </div>
-            </div>
-            {/*  */}
-
-            {/*  */}
-            <div className="flex gap-4 mb-2">
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-0.5">
                   Формат
@@ -316,8 +338,12 @@ export default function CreateOrder({ onClose }) {
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+            {/*  */}
 
-              <div className="grid w-full">
+            {/*  */}
+            <div className="flex gap-4 mb-2">
+              <div className="grid w-[180px]">
                 <div className="border-dashed border-2 border-[#5570f1] rounded-2xl p-2 flex flex-col justify-between">
                   <Label className="text-sm	text-white pb-0.5">
                     Target для РУЗ
@@ -326,21 +352,21 @@ export default function CreateOrder({ onClose }) {
                     Target UZ
                     <Checkbox
                       id="terms"
-                      className="size-6 rounded-lg data-[state=checked]:bg-[#5570f1] data-[state=checked]:border-[#5570f1] border-[#5570f1]"
+                      className="size-6 bg-blue-500 rounded-lg data-[state=checked]:bg-[#5570f1] data-[state=checked]:border-[#5570f1] border-[#5570f1]"
                     />
                     <span></span>
                   </label>
                 </div>
               </div>
-            </div>
-            {/*  */}
-
-            {/*  */}
-            <div className="flex gap-4 mb-2">
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-0.5">
                   Количество показов
                   <span className="text-red-500 ml-0.5">*</span>
+                  {budgett > 0 ? (
+                    <Badge variant="default" className="text-sm	ml-1">
+                      {budgett.toLocaleString('en-US')}
+                    </Badge>
+                  ) : null}
                   <div className="text-[10px]	text-red-500 ">
                     {' '}
                     {errors?.expectedView && (
@@ -386,22 +412,6 @@ export default function CreateOrder({ onClose }) {
                   )}
                 />
               </div>
-              <div className="grid w-full">
-                <Label className="text-sm	text-white pb-0.5">
-                  Бюджет (сум)
-                  <span className="text-red-500 ml-0.5">*</span>
-                </Label>
-                <Input
-                  className={`border ${
-                    errors?.startdate ? 'border-red-500' : 'border-gray-300'
-                  }   transition-all duration-300 text-sm `}
-                  type="text"
-                  value={budgett.toLocaleString('en-US')}
-                  placeholder="Бюджет"
-                  autoComplete="off"
-                  disabled={true}
-                />
-              </div>
             </div>
             {/*  */}
 
@@ -410,15 +420,39 @@ export default function CreateOrder({ onClose }) {
                 Файл
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
-              <div className="border-dashed border-2 border-[#A7CCFF] rounded-2xl p-2 flex flex-col justify-between h-[76px]">
-                <Input
+              {/*<div className="border-dashed border-2 border-[#A7CCFF] rounded-2xl p-2 flex flex-col justify-between h-[76px]">*/}
+              {/*  <Input*/}
+              {/*    type="file"*/}
+              {/*    onChange={handleFileChange}*/}
+              {/*    className={`border-none p-0 flex items-center   transition-all duration-300 text-sm h-full`}*/}
+              {/*    {...register('selectedFile', {*/}
+              {/*      required: 'Ролик обезателен',*/}
+              {/*    })}*/}
+              {/*  />*/}
+              {/*</div>*/}
+              <div className="border-dashed w-full border-2 border-[#A7CCFF] rounded-xl p-2 flex flex-col justify-center items-center h-[76px] relative">
+                <input
                   type="file"
+                  accept="image/*"
                   onChange={handleFileChange}
-                  className={`border-none p-0 flex items-center   transition-all duration-300 text-sm h-full`}
-                  {...register('selectedFile', {
-                    required: 'Ролик обезателен',
-                  })}
+                  ref={inputRef}
+                  className="hidden"
                 />
+                <Button
+                  type="button"
+                  variant="default"
+                  onClick={() => inputRef.current.click()}
+                  className="flex gap-2"
+                >
+                  <ImageDown />
+                  {selectedFile ? (
+                    <p className="text-sm text-white">
+                      Вы выбрали файл:{truncate(selectedFile.name, 20)}{' '}
+                    </p>
+                  ) : (
+                    ' Загрузить файл'
+                  )}
+                </Button>
               </div>
             </div>
             <div className="grid w-full">
@@ -444,26 +478,26 @@ export default function CreateOrder({ onClose }) {
               {notes.length}/{maxChars} символов
             </div>
 
-            <div>
-              <Button
-                className={`${
-                  isValid && !isOrderCreated
-                    ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-                    : 'bg-[#616161]'
-                } w-full   h-[44px] text-white rounded-2xl	mt-4`}
-                disabled={!isValid || isOrderCreated}
-                isValid={true}
-                type="submit"
-              >
-                {isOrderCreated ? (
-                  <>
-                    <span>Создать</span>
-                    <Loader2 className="ml-2 h-6 w-6 animate-spin" />
-                  </>
-                ) : (
-                  <span>Создать</span>
-                )}
-              </Button>
+            <div className="flex gap-2 justify-end">
+              <TooltipWrapper tooltipContent="Создать заказ">
+                <Button
+                  disabled={!isValid || isOrderCreated}
+                  isValid={true}
+                  type="submit"
+                  className="mt-4"
+                >
+                  {isOrderCreated ? (
+                    <>
+                      <span>Создание...</span>
+                      <Loader2 className="ml-2 h-6 w-6 animate-spin" />
+                    </>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <PackageCheck />
+                    </div>
+                  )}
+                </Button>
+              </TooltipWrapper>
             </div>
           </div>
         </form>

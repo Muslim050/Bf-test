@@ -82,25 +82,14 @@ export const useOrderChart = () => {
   }, [id])
 
   //Получение отчета
-  React.useEffect(async () => {
-    try {
-      const data = await fetchStatistics({
-        order_id: id,
-      })
-      setStatistics(data) // setStatistics — это useState хук
-    } catch (error) {
-      setLoading(false)
-      toast.error(error?.data?.error?.detail)
-      // можешь показать ошибку через toast, alert и т.д.
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchStatistics({ order_id: id })
+      setStatistics(data) // <- сюда приходят те самые 8 элементов
+      setLoading(false) // <- обязательно отключай загрузку
     }
-    // dispatch(fetchStatistics({ order_id: id }))
-    //   .unwrap()
-    //   .then(() => setLoading(false))
-    //   .catch((error) => {
-    //     setLoading(false)
-    //     toast.error(error?.data?.error?.detail)
-    //   })
-  }, [dispatch, id])
+    fetchData()
+  }, [id])
   //Получение отчета
 
   //Дата
@@ -414,7 +403,6 @@ export const useOrderChart = () => {
       globalFilter,
       expanded: expandedRowId ? { [expandedRowId]: true } : {}, // Управляем развернутыми строками
     },
-    manualPagination: true, // Указываем, что используем серверную пагинацию
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),

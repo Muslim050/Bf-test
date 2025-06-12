@@ -424,7 +424,9 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
               Порог показов<span className="text-red-500 ml-0.5">*</span>
             </div>
             {budgett > 0 ? (
-              <Badge variant="default">{budgett.toLocaleString('en-US')}</Badge>
+              <Badge variant="default" className="text-[15px] py-0 -mt-0.5">
+                {budgett.toLocaleString('en-US')}
+              </Badge>
             ) : null}
           </Label>
           <Controller
