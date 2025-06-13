@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import PreLoadDashboard from '@/components/Dashboard/PreLoadDashboard/PreLoad.jsx'
 import TableSearchInput from '@/shared/TableSearchInput/index.jsx'
 import { useVideo } from '@/components/Dashboard/Video/TableVideo/useVideo.jsx'
@@ -10,7 +9,7 @@ import TablePagination from '@/module/TablePagination/index.jsx'
 import Pagination from '@/module/Pagination/index.jsx'
 
 function TableVideo() {
-  const { status } = useSelector((state) => state.video)
+  // const { status } = useSelector((state) => state.video)
   const [loading, setLoading] = React.useState(true)
 
   const {
@@ -53,7 +52,7 @@ function TableVideo() {
         />
       </div>
 
-      {status === 'loading' ? (
+      {loading ? (
         <PreLoadDashboard
           onComplete={() => setLoading(false)}
           loading={loading}
