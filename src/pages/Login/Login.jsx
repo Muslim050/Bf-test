@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Eye, EyeOff, Loader2, LogIn } from 'lucide-react'
+import { Loader2, LogIn } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { login } from '@/redux/auth/authSlice.js'
 import { toast } from 'react-hot-toast'
 import Cookies from 'js-cookie'
 import Slider from '@/pages/Login/Slider.jsx'
+import InputFuild from '@/shared/Form/InputFuild.jsx'
+import PasswordInputWithToggle from '@/shared/Form/PasswordInputWithToggle.jsx'
 
 function Login() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isLogin, setIsLogin] = React.useState(false)
-  const [showPasswordOld, setShowPasswordOld] = React.useState(false)
 
   const {
     register,
@@ -27,10 +27,6 @@ function Login() {
     },
     mode: 'onChange',
   })
-
-  const handleTogglePasswordOld = () => {
-    setShowPasswordOld(!showPasswordOld)
-  }
 
   const [showForm, setShowForm] = useState(false)
   useEffect(() => {
@@ -126,52 +122,21 @@ function Login() {
                   Brandformance
                 </h1>
               </div>
-              <div className="relative">
-                <Input
-                  id="login"
-                  type="text"
-                  {...register('login', {
-                    required: 'Поле обезательно к заполнению',
-                  })}
-                  className={`border-[1px]  rounded-2xl h-[73px] p-[26px] text-white bg-[#0A0F3633] text-base ${
-                    errors.login ? 'border-red-500' : 'border-[#123057]'
-                  }`}
-                  placeholder="Логин"
-                  required
-                  autoComplete="off"
-                />
-                <span className="text-red-500 text-sm	">
-                  {errors?.login && <p>{errors?.login?.message}</p>}
-                </span>
-              </div>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPasswordOld ? 'text' : 'password'}
-                  {...register('password', {
-                    required: 'Поле обезательно к заполнению',
-                  })}
-                  className={`border-[1px]  rounded-2xl h-[73px] p-[26px] text-white bg-[#0A0F3633] text-base ${
-                    errors.password ? 'border-red-500' : 'border-[#123057]'
-                  }`}
-                  placeholder="Пароль"
-                  required
-                  autoComplete="off"
-                />
-                <span className="text-red-500 text-sm	">
-                  {errors?.password && <p>{errors?.password?.message}</p>}
-                </span>{' '}
-                <div
-                  onClick={handleTogglePasswordOld}
-                  className="absolute top-[35%] right-[26px] cursor-pointer"
-                >
-                  {showPasswordOld ? (
-                    <Eye className="text-white" />
-                  ) : (
-                    <EyeOff className="text-white" />
-                  )}
-                </div>
-              </div>
+              <InputFuild
+                id="login"
+                type="text"
+                register={register('login', {
+                  required: 'Поле обезательно к заполнению',
+                })}
+                error={errors.login}
+                placeholder="Логин"
+              />
+              <PasswordInputWithToggle
+                register={register('password', {
+                  required: 'Поле обезательно к заполнению',
+                })}
+                error={errors.password}
+              />
               <div>
                 <Button
                   variant="default"
