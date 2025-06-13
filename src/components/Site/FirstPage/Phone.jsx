@@ -43,7 +43,7 @@ const PhoneComponent = ({ isSecondPage, phoneRef, phoneWRef, sliderData }) => {
       </div>
 
       <div
-        className={`fixed top-[135%] z-10 md:left-[183px] left-[164px]  transform -translate-x-1/2 w-full max-w-[1240px]`}
+        className={`fixed top-[135%] z-10 md:left-[173px] left-[164px]  transform -translate-x-1/2 w-full max-w-[1240px]`}
       >
         <div
           className={`w-auto slider-container  ${

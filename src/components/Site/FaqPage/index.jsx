@@ -124,7 +124,7 @@ const FaqPage = () => {
     //       <StarsSSSvg className="absolute top-0 left-0 w-[100%] h-full -z-[5px]" />
     //       <SetkaSvg className="absolute top-0 left-0 w-[100%] h-full -z-[5px]" />
 
-    <section ref={containerRef} className="relative h-full w-full" id="">
+    <section ref={containerRef} className="relative h-auto w-full" id="">
       <div
         className=""
         style={{
