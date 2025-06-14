@@ -7,15 +7,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog.jsx'
-import { Input } from '@/components/ui/input.jsx'
 import { Label } from '@/components/ui/label.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import { fetchVideos } from '@/redux/video/videoSlice.js'
+import InputFuild from '@/shared/Form/InputFuild.jsx'
+import { Paperclip } from 'lucide-react'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export default function LinkedVideo({ selectedId, onClose }) {
   const dispatch = useDispatch()
   const {
-    register,
+    control,
     formState: { errors, isValid },
     handleSubmit,
   } = useForm({
@@ -23,7 +25,7 @@ export default function LinkedVideo({ selectedId, onClose }) {
       selectedId,
       linkvideo: '',
     },
-    mode: 'onBlur',
+    mode: 'onChange',
   })
 
   const onSubmit = async (data) => {
@@ -54,39 +56,32 @@ export default function LinkedVideo({ selectedId, onClose }) {
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <div>
+          <div className="flex justify-between gap-2 items-end">
+            <div className="w-full">
               <Label className="text-sm	text-white pb-2 flex gap-0.5">
                 Ссылка на Видео<span className="text-red-500 ml-0.5">*</span>
                 <div className="text-sm	text-red-500 ">
-                  {' '}
                   {errors?.email && <p>{errors.email.message}</p>}
                 </div>
               </Label>
-              <Input
-                className={`border ${
-                  errors?.email ? 'border-red-500' : 'border-gray-300'
-                }   transition-all duration-300 text-sm `}
-                type="text"
+              <InputFuild
+                name="linkvideo"
+                control={control}
+                rules={{ required: 'Поле обезательно к заполнению' }}
+                error={errors.linkvideo}
                 placeholder="Прикрепите ссылку на видео"
-                autoComplete="off"
-                {...register('linkvideo', {
-                  required: 'Поле обезательно к заполнению',
-                })}
               />
             </div>
-
-            <Button
-              isValid={true}
-              className={`${
-                isValid
-                  ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-                  : 'bg-[#616161]'
-              } w-full   h-[44px] text-white rounded-lg	mt-8`}
-              disabled={!isValid}
-            >
-              Прикрепить
-            </Button>
+            <TooltipWrapper tooltipContent="Прикрепить ссылку">
+              <Button
+                isValid={true}
+                className="h-10"
+                variant={'default'}
+                disabled={!isValid}
+              >
+                <Paperclip />
+              </Button>
+            </TooltipWrapper>
           </div>
         </form>
       </DialogContent>

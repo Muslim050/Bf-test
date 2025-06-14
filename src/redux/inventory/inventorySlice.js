@@ -145,7 +145,7 @@ export const deleteInventory = createAsyncThunk(
   'inventory/deleteInventory',
   async ({ id }) => {
     const token = Cookies.get('token')
-
+    console.log(id)
     try {
       const response = await axios.delete(
         `${backendURL}/inventory/${id}`,

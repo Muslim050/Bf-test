@@ -35,15 +35,25 @@ export const useVideo = () => {
     pageSize: 20,
   })
   const [videos, setVideos] = useState()
+  const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
     async function loadVideos() {
-      const data = await fetchVideos({
-        page: pagination.pageIndex + 1,
-        pageSize: pagination.pageSize,
-      })
-      setVideos(data)
+      setLoading(true) // Устанавливаем loading в true перед загрузкой
+      try {
+        const data = await fetchVideos({
+          page: pagination.pageIndex + 1,
+          pageSize: pagination.pageSize,
+        })
+        setVideos(data)
+      } catch (error) {
+        console.error('Ошибка загрузки видео:', error)
+        setVideos([]) // Можно задать пустой массив или обрабатывать по-другому
+      } finally {
+        setLoading(false) // Всегда ставим false в конце
+      }
     }
+
     loadVideos()
   }, [pagination.pageIndex, pagination.pageSize])
 
@@ -198,5 +208,7 @@ export const useVideo = () => {
     handleCloseEdit,
     currentOrder,
     pagination,
+    loading,
+    setLoading,
   }
 }

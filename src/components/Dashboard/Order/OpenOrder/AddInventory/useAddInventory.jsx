@@ -28,6 +28,7 @@ import PlanPopoverCell from '@/module/Order/EditView/PlanPopoverCell.jsx'
 import { truncate } from '@/utils/other.js'
 import Avtomatick from '@/module/Order/Avtomatick.jsx'
 import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
+import DeleteInventory from '@/module/Order/DeleteInventory.jsx'
 
 export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
   const [columnFilters, setColumnFilters] = React.useState([])
@@ -226,23 +227,30 @@ export const useAddInventory = (getOrder, onceOrder, fetchGetOrder) => {
                   endDate={row.original.deactivation_date}
                 />
               ) : (
-                <TooltipWrapper tooltipContent="Проверить">
-                  <Button
-                    variant="outlineViolet"
-                    onClick={() => {
-                      setOpen(true)
-                      setSelectedInventoryId(() => row.original.id)
-                    }}
-                    className="relative flex gap-1"
-                  >
-                    <PackageCheck />
-                    {row.original.video_content.link_to_video ? (
-                      <div className="bg-violet-500 w-4 h-4 rounded-full absolute -right-1.5 -top-1.5"></div>
-                    ) : (
-                      ''
-                    )}
-                  </Button>
-                </TooltipWrapper>
+                <>
+                  <TooltipWrapper tooltipContent="Проверить">
+                    <Button
+                      variant="outlineViolet"
+                      onClick={() => {
+                        setOpen(true)
+                        setSelectedInventoryId(() => row.original.id)
+                      }}
+                      className="relative flex gap-1"
+                    >
+                      <PackageCheck />
+                      {row.original.video_content.link_to_video ? (
+                        <div className="bg-violet-500 w-4 h-4 rounded-full absolute -right-1.5 -top-1.5"></div>
+                      ) : (
+                        ''
+                      )}
+                    </Button>
+                  </TooltipWrapper>
+
+                  <DeleteInventory
+                    fetchGetOrder={fetchGetOrder}
+                    row={row.original}
+                  />
+                </>
               )}
               {row.original.status === 'in_use' ? (
                 <div>
