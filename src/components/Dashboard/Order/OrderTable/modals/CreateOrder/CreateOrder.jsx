@@ -367,7 +367,7 @@ export default function CreateOrder({ onClose }) {
                       {budgett.toLocaleString('en-US')}
                     </Badge>
                   ) : null}
-                  <div className="text-[12px]	text-red-500 ">
+                  <div className="text-[15px]	text-red-500 ">
                     {' '}
                     {errors?.expectedView && (
                       <p>{errors.expectedView.message}</p>
