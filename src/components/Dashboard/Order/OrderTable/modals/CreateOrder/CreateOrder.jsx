@@ -433,7 +433,6 @@ export default function CreateOrder({ onClose }) {
               <div className="border-dashed w-full border-2 border-[#A7CCFF] rounded-xl p-2 flex flex-col justify-center items-center h-[76px] relative">
                 <input
                   type="file"
-                  accept="image/*"
                   onChange={handleFileChange}
                   ref={inputRef}
                   className="hidden"
