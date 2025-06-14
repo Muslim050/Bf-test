@@ -32,13 +32,13 @@ const SystemLayout = () => {
           backgroundColor: bgColor,
           color: textColor,
         }}
-        className="!h-screen items-stretch sm:p-3 p-0 flex flex-col sm:gap-0 gap-2"
+        className="!h-screen items-stretch md:p-3 p-0 flex flex-col md:gap-0 gap-2"
       >
         <AppSidebar />
         <ResizablePanel
           defaultSize={20}
           minSize={30}
-          className="sm:pl-3 pl-0 h-screen space-y-4 overflow-hidden"
+          className="md:pl-3 pl-0 h-screen space-y-4 overflow-hidden"
         >
           <div className="h-full flex flex-col ">
             <div className="border_container  glass-background border_design flex justify-between items-center px-4 py-2 ">
