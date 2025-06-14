@@ -367,7 +367,6 @@ export default function EditAdvModal({
                     <div className="border-dashed border-2 border-[#A7CCFF] rounded-2xl p-2 flex flex-col justify-center items-center h-[76px] relative">
                       <input
                         type="file"
-                        accept="image/*"
                         onChange={handleFileChange}
                         ref={inputRef}
                         className="hidden"

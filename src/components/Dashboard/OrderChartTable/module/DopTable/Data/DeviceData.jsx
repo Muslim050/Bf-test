@@ -29,9 +29,9 @@ function DeviceData({ statistic }) {
       ) : (
         <TableCell
           data-label="Возраст"
-          className="font-normal text-orange-600 text-sm text-center"
+          className="font-normal text-gray-400 text-sm text-center"
         >
-          Введется аналитика...
+          Ведется аналитика...
         </TableCell>
       )}
     </>

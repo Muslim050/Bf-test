@@ -74,16 +74,19 @@ function OrderChart() {
                   &nbsp; / &nbsp;
                   <div>{orderData?.advertiser?.name}</div>
                 </div>
+                {orderData.target_country && (
+                  <div
+                    className={`rounded-[6px] px-1 py-1 text-[16px]  ${
+                      orderData.target_country
+                        ? 'bg-[#606afc]'
+                        : 'bg-transparent'
+                    }`}
+                  >
+                    {orderData.target_country}
+                  </div>
+                )}
               </div>
-              {orderData.target_country && (
-                <div
-                  className={`rounded-[6px] px-1 py-1 text-[16px]  ${
-                    orderData.target_country ? 'bg-[#606afc]' : 'bg-transparent'
-                  }`}
-                >
-                  {orderData.target_country}
-                </div>
-              )}
+
               <div className="flex gap-2">
                 {/* Выбранный параметры фильтра */}
                 {dataFiltered && (

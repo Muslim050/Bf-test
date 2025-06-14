@@ -239,13 +239,13 @@ function AdvChartData({ statistic, index }) {
       ) : (
         <div style={{ position: 'relative' }}>
           <td
+            className="text-gray-400"
             style={{
               position: 'absolute',
               right: '-150%',
               fontSize: '13px',
               lineHeight: '15px',
               fontWeight: '600',
-              color: 'rgb(250, 138, 0)',
               display: 'flex',
               justifyContent: 'center',
               width: '100%',
@@ -254,7 +254,7 @@ function AdvChartData({ statistic, index }) {
               alignItems: 'center',
             }}
           >
-            Введется аналитика
+            Ведется аналитика
           </td>
         </div>
       )}
