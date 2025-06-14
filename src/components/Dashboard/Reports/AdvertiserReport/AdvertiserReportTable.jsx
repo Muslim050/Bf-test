@@ -42,7 +42,6 @@ function AdvertiserReportTable() {
     advdata,
     endDate,
   } = useAdvertiserReport()
-  console.log(statistics)
   return (
     <>
       {loading ? (

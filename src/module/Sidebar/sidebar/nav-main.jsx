@@ -177,7 +177,6 @@ export function NavMain({ userRole }) {
   }, [dispatch, user])
 
   const { state } = useSidebar() // из контекста: 'expanded' или 'collapsed'
-  console.log(state)
   return (
     <SidebarGroup>
       <SidebarMenu>

@@ -28,7 +28,6 @@ const PopoverButtons = ({ advert, handleFinishOrder, isOver100Percent }) => {
     setOpen(false)
   }
   // Модальное окно OrderModal
-  console.log(advert)
   return (
     <div className="flex gap-2 items-center justify-between">
       {/*Редактировать*/}

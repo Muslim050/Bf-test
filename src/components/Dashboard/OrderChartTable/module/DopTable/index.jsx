@@ -17,7 +17,6 @@ import DeviceData from '@/components/Dashboard/OrderChartTable/module/DopTable/D
 import GenderData from '@/components/Dashboard/OrderChartTable/module/DopTable/Data/GenderData.jsx'
 
 const DopTable = ({ statistic }) => {
-  console.log(statistic)
   return (
     <div>
       {statistic.online_view_count ? (

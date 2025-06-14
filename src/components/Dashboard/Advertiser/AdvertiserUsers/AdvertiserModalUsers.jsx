@@ -80,11 +80,8 @@ export default function AdvertiserModalUsers({ onClose }) {
 
     try {
       const result = await dispatch(addAdvertiserUsers({ data })).unwrap()
-
       // Успешный ответ
       toast.success('Пользователь рекламодателя успешно создан!')
-      console.log('✅ Пользователь создан:', result)
-
       onClose()
 
       // Лучше использовать навигацию, чем window.location.reload()

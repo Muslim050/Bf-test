@@ -19,7 +19,6 @@ export async function fetchVideos({ page = null, pageSize = null } = {}) {
   if (pageSize) params.append('page_size', pageSize)
 
   url.search = params.toString()
-  console.log(params)
   const response = await axiosInstance.get(url.href)
   return response.data.data
 }

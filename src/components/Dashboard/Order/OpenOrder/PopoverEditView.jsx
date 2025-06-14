@@ -20,7 +20,6 @@ const PopoverEditView = ({
   const [cpm, setCpm] = React.useState([])
   const dispatch = useDispatch()
   const [budgett, setBudgett] = React.useState(0)
-  console.log(item)
   const fetchCpm = async () => {
     const response = await axiosInstance.get(
       `${backendURL}/order/cpm/?advertiser=${onceOrder.advertiser.id}`,

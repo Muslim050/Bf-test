@@ -17,7 +17,6 @@ const LogoutDialog = () => {
   const handleLogout = () => {
     dispatch(logout())
     navigate('/login')
-    console.log('asdas')
   }
   return (
     <div>

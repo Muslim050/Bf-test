@@ -30,7 +30,6 @@ const EditSendPublisherModal = ({
   item,
   setEditNote,
 }) => {
-  console.log(item)
   const dispatch = useDispatch()
   const [channelModal, setChannelModal] = React.useState([])
   const { publisher } = useSelector((state) => state.publisher)

@@ -145,7 +145,6 @@ export const deleteInventory = createAsyncThunk(
   'inventory/deleteInventory',
   async ({ id }) => {
     const token = Cookies.get('token')
-    console.log(id)
     try {
       const response = await axios.delete(
         `${backendURL}/inventory/${id}`,
@@ -254,7 +253,6 @@ const inventorySlice = createSlice({
         state.status = 'succeeded'
         state.inventory = action.payload
         state.total_count = action.payload.count // Обновляем общее количество
-        console.log(action)
       })
       .addCase(fetchInventory.rejected, (state, action) => {
         state.status = 'failed'

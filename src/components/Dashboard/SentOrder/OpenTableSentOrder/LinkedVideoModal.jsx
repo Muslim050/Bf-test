@@ -16,7 +16,6 @@ import React from 'react'
 
 //Модальное окно прикрпление ссылки
 export default function LinkedVideoModal({ selectedId, onClose, setOpen }) {
-  console.log(selectedId)
   const dispatch = useDispatch()
   const {
     register,

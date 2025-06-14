@@ -26,7 +26,6 @@ function ChannelStatisticsPage() {
         setDataChannel(data)
       } catch (error) {
         setError(error?.data?.error?.detail)
-        console.log(error.data?.error?.detail)
         toast.error(
           `${error?.message} - ${error?.error.message} ||  ${error?.detail}`,
         )

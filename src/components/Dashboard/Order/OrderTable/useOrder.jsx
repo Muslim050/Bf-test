@@ -415,7 +415,6 @@ export const useOrder = () => {
           <span className="flex items-center gap-1 w-max">Действия</span>
         ),
         cell: ({ row }) => {
-          console.log(row.original)
           const isOver100Percent =
             (row.original.online_views /
               row.original.expected_number_of_views) *

@@ -58,7 +58,6 @@ export const addPublisherUsers = createAsyncThunk(
           },
         },
       )
-      console.log(response)
       return response.data
     } catch (error) {
       return rejectWithValue(error.response)

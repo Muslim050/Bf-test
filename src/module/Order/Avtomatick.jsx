@@ -24,7 +24,6 @@ const Avtomatick = ({ fetchGetOrder, row }) => {
   const [selectedRow, setSelectedRow] = React.useState(null)
 
   const handleSwitchChange = (rowData) => {
-    console.log('HANDLE SWITCH', rowData)
     dispatch(
       updateDeactivateInventory({
         inventory_id: rowData.id,
