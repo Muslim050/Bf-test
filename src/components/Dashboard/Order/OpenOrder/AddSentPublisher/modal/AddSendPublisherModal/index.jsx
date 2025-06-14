@@ -48,6 +48,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils.js'
+import InputFuild from '@/shared/Form/InputFuild.jsx'
 
 const format = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
@@ -125,6 +126,23 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   const selectedFormat = watch('format')
   const expectedView = watch('ordered_number_of_views')
 
+  const selectedOrder = watch('order')
+  const selectedchannel = watch('channel')
+  const selectedStart = watch('startdate')
+  const selectedEnd = watch('enddate')
+  const selectedView = watch('ordered_number_of_views')
+  const selectedBudget = watch('budget')
+  const selectedNote = watch('notes_text')
+
+  console.log(
+    selectedOrder,
+    selectedchannel,
+    selectedStart,
+    selectedEnd,
+    selectedView,
+    selectedBudget,
+    selectedNote,
+  )
   const onSubmit = async (data) => {
     const token = Cookies.get('token')
 
@@ -429,56 +447,26 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
               </Badge>
             ) : null}
           </Label>
-          <Controller
+          <InputFuild
             name="ordered_number_of_views"
             control={control}
             rules={{ required: 'Поле обязательно к заполнению' }}
-            render={({ field }) => (
-              <Input
-                // className={style.input}
-                type="text"
-                value={field.value.toLocaleString('en-US')}
-                onChange={(e) => {
-                  const rawValue = e.target.value.replace(/\D/g, '')
-                  field.onChange(rawValue ? parseInt(rawValue, 10) : '')
-                }}
-                placeholder="Порог показов"
-                style={{
-                  border: errors?.ordered_number_of_views
-                    ? '1px solid red'
-                    : '',
-                }}
-                autoComplete="off"
-              />
-            )}
+            error={errors.ordered_number_of_views}
+            placeholder="Порог показов"
+            formatNumber={true}
           />
         </div>
-
-        {/*<div className="grid w-full ">*/}
-        {/*  <Label className="text-sm text-[var(--text)] pb-2">*/}
-        {/*    Бюджет<span className="text-red-500 ml-0.5">*</span>*/}
-        {/*  </Label>*/}
-        {/*  <Input*/}
-        {/*    type="text"*/}
-        {/*    value={budgett.toLocaleString('en-US')}*/}
-        {/*    placeholder="Бюджет"*/}
-        {/*    autoComplete="off"*/}
-        {/*    disabled*/}
-        {/*  />*/}
-        {/*</div>*/}
 
         <div className="grid w-full ">
           <Label className="text-sm text-[var(--text)] pb-2">
             Текст<span className="text-red-500 ml-0.5">*</span>
           </Label>
-          <Input
-            // className={style.input}
-            type="text"
+          <InputFuild
+            name="notes_text"
+            control={control}
+            rules={{ required: 'Поле обязательно к заполнению' }}
+            error={errors.notes_text}
             placeholder="Введите текст"
-            {...register('notes_text', {
-              required: 'Поле обязательно к заполнению',
-            })}
-            style={{ border: errors?.notes_text ? '1px solid red' : '' }}
           />
         </div>
         <div className="w-fit flex items-end">

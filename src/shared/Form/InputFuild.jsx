@@ -10,6 +10,7 @@ const InputFuild = ({
   placeholder,
   className = '',
   type = 'text',
+  formatNumber = false,
   ...props
 }) => (
   <div className="relative">
@@ -22,6 +23,20 @@ const InputFuild = ({
           {...field}
           type={type}
           id={name}
+          value={
+            formatNumber && field.value
+              ? Number(field.value).toLocaleString('en-US')
+              : (field.value ?? '')
+          }
+          onChange={(e) => {
+            if (formatNumber) {
+              // Берём только цифры
+              const rawValue = e.target.value.replace(/\D/g, '')
+              field.onChange(rawValue ? parseInt(rawValue, 10) : '')
+            } else {
+              field.onChange(e.target.value)
+            }
+          }}
           className={`${className} border   transition-all duration-300 text-sm ${
             error ? 'border-red-500 bg-red-300' : 'border-transparent'
           }`}
@@ -31,7 +46,7 @@ const InputFuild = ({
         />
       )}
     />
-    {error && <span className="text-red-500 text-sm">{error.message}</span>}
+    {/*{error && <span className="text-red-500 text-sm">{error.message}</span>}*/}
   </div>
 )
 
