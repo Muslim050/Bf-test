@@ -447,13 +447,30 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
               </Badge>
             ) : null}
           </Label>
-          <InputFuild
+          <Controller
+            commentMore
+            actions
             name="ordered_number_of_views"
             control={control}
             rules={{ required: 'Поле обязательно к заполнению' }}
-            error={errors.ordered_number_of_views}
-            placeholder="Порог показов"
-            formatNumber={true}
+            render={({ field }) => (
+              <Input
+                // className={style.input}
+                type="text"
+                value={field.value.toLocaleString('en-US')}
+                onChange={(e) => {
+                  const rawValue = e.target.value.replace(/\D/g, '')
+                  field.onChange(rawValue ? parseInt(rawValue, 10) : '')
+                }}
+                placeholder="Порог показов"
+                style={{
+                  border: errors?.ordered_number_of_views
+                    ? '1px solid red'
+                    : '',
+                }}
+                autoComplete="off"
+              />
+            )}
           />
         </div>
 

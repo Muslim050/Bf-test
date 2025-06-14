@@ -23,11 +23,7 @@ const InputFuild = ({
           {...field}
           type={type}
           id={name}
-          value={
-            formatNumber && field.value
-              ? Number(field.value).toLocaleString('en-US')
-              : (field.value ?? '')
-          }
+          value={field.value || ''}
           onChange={(e) => {
             if (formatNumber) {
               // Берём только цифры

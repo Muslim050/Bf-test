@@ -6,6 +6,7 @@ const PasswordInputWithToggle = ({
   register,
   error,
   placeholder = 'Пароль',
+  control,
   ...props
 }) => {
   const [show, setShow] = useState(false)
@@ -17,6 +18,7 @@ const PasswordInputWithToggle = ({
         register={register}
         error={error}
         placeholder={placeholder}
+        control={control}
         {...props}
       />
       <div
