@@ -199,7 +199,7 @@ export function NavMain({ userRole }) {
                       className="flex items-center gap-2"
                     >
                       <SidebarMenuButton
-                        className="w-full"
+                        className="w-full text-white hover:text-white"
                         isActive={isActive}
                         tooltip={{
                           children: item?.subMenu ? (
@@ -240,46 +240,45 @@ export function NavMain({ userRole }) {
                             </Badge>
                           </span>
                         )}
-                        {state !== 'collapsed' && (
-                          <>
-                            <span className="ml-2">{item.title}</span>
-                            <div>
-                              {item.label > 0 ? (
-                                <>
-                                  <span
-                                    className={`
+                        {/*{state !== 'collapsed' && (*/}
+                        <>
+                          <span className="ml-2">{item.title}</span>
+                          <div>
+                            {item.label > 0 ? (
+                              <>
+                                <span
+                                  className={`
                                       'ml-auto',
                                       ${
                                         item.variant === 'default' &&
                                         'text-background dark:text-white'
                                       },
                                     `}
+                                >
+                                  <Badge
+                                    className={`px-1.5 py-0 ${item.color === 'green' ? 'bg-[#05c800]' : item.color}`}
                                   >
-                                    <Badge
-                                      className={`px-1.5 py-0 ${item.color === 'green' ? 'bg-[#05c800]' : item.color}`}
-                                    >
-                                      {item.label}
-                                      {item.title === 'Каналы' &&
-                                        userRole === 'admin' && (
-                                          <span
-                                            className={cn(
-                                              'ml-auto',
-                                              item.variant === 'default' &&
-                                                'text-background dark:text-white',
-                                            )}
-                                          >
-                                            +
-                                            {filteredChannelIsActive.length.toString()}
-                                          </span>
-                                        )}
-                                    </Badge>
-                                  </span>
-                                </>
-                              ) : null}
-                            </div>
-                          </>
-                        )}
-
+                                    {item.label}
+                                    {item.title === 'Каналы' &&
+                                      userRole === 'admin' && (
+                                        <span
+                                          className={cn(
+                                            'ml-auto',
+                                            item.variant === 'default' &&
+                                              'text-background dark:text-white',
+                                          )}
+                                        >
+                                          +
+                                          {filteredChannelIsActive.length.toString()}
+                                        </span>
+                                      )}
+                                  </Badge>
+                                </span>
+                              </>
+                            ) : null}
+                          </div>
+                        </>
+                        {/*// )}*/}
                         {item.subMenu && (
                           <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                         )}

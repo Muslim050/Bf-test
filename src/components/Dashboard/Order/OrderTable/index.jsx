@@ -78,8 +78,8 @@ function OrderTable() {
         />
       ) : (
         <div>
-          <div className="flex gap-2 justify-end pt-4 pb-1">
-            {user === 'admin' ? null : (
+          {user === 'admin' ? null : (
+            <div className="flex gap-2 justify-end pt-4 pb-1">
               <div className="flex justify-end">
                 <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger asChild>
@@ -93,8 +93,9 @@ function OrderTable() {
                   {open && <OrderModal onClose={handleClose} />}
                 </Dialog>
               </div>
-            )}
-          </div>
+            </div>
+          )}
+
           <>
             <div className="border_container rounded-[22px] mt-3 p-[3px] glass-background flex flex-col h-full max-h-screen">
               <div className="overflow-y-auto sm:max-h-[calc(100vh-200px)] max-h-[calc(100vh-250px)] flex-1">
