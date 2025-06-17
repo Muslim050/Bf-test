@@ -221,28 +221,49 @@ export const useOrderChart = () => {
   //Очищаем фильтр
 
   //Фильтрация по параметрам
-
-  const handleDateStatictick = () => {
+  const handleDateStatictick = async () => {
     const toastId = toast.loading('Фильтруем отчет...')
 
     setDataFiltered(true)
     setIsLoadingData(true)
     setOpen(false)
 
-    dispatch(fetchStatistics({ order_id: id, startDate, endDate }))
-      .then(() => {
-        toast.success('Данные успешно обновлены', { id: toastId })
+    try {
+      const data = await fetchStatistics({ order_id: id, startDate, endDate })
+      setStatistics(data)
+      toast.success('Данные успешно обновлены', { id: toastId })
+    } catch (error) {
+      toast.error(`Failed to load statistics: ${error.message}`, {
+        id: toastId,
       })
-      .catch((error) => {
-        toast.error(`Failed to load statistics: ${error.message}`, {
-          id: toastId,
-        })
-      })
-      .finally(() => {
-        setOpen(false)
-        setIsLoadingData(false)
-      })
+    } finally {
+      setOpen(false)
+      setIsLoadingData(false)
+    }
   }
+
+  // const handleDateStatictick = async () => {
+  //   const toastId = toast.loading('Фильтруем отчет...')
+  //
+  //   setDataFiltered(true)
+  //   setIsLoadingData(true)
+  //   setOpen(false)
+  //
+  //   await fetchStatistics({ order_id: id, startDate, endDate })
+  //   setStatistics(data)
+  //     .then(() => {
+  //       toast.success('Данные успешно обновлены', { id: toastId })
+  //     })
+  //     .catch((error) => {
+  //       toast.error(`Failed to load statistics: ${error.message}`, {
+  //         id: toastId,
+  //       })
+  //     })
+  //     .finally(() => {
+  //       setOpen(false)
+  //       setIsLoadingData(false)
+  //     })
+  // }
   //Фильтрация по параметрам
   const [expandedRowId, setExpandedRowId] = React.useState(null)
   const renderSubComponent = ({ row }) => {
@@ -403,6 +424,8 @@ export const useOrderChart = () => {
       globalFilter,
       expanded: expandedRowId ? { [expandedRowId]: true } : {}, // Управляем развернутыми строками
     },
+    manualPagination: true, // Указываем, что используем серверную пагинацию
+
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
