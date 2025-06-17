@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { toastConfig } from '@/utils/toastConfig'
@@ -126,7 +126,7 @@ const authSlice = createSlice({
           ? action.payload.message
           : 'Unknown error occurred.'
       })
-      .addCase(changePassword.fulfilled, (state, action) => {
+      .addCase(changePassword.fulfilled, () => {
         // localStorage.setItem("refresh_token", action.payload.data.refresh);
       })
     // .addCase(refreshAccessToken.fulfilled, (state, action) => {

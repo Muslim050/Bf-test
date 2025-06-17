@@ -80,6 +80,46 @@
 }
 
 
+
+.cardWrapper2 {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05); /* Фон карточки */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Лёгкий бордер */
+  border-radius: 16px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Тень */
+  overflow: hidden;
+  height: 150px; /* Фиксированная высота карточки */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cardWrapper2:hover {
+  transform: scale(1.05); /* Увеличение при наведении */
+  box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.3);
+}
+
+.cardWrapper2 img {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+@media (max-width: 500px) {
+  .cardWrapper img {
+    max-width: 50px;
+    max-height: 50px;
+  }
+}
+@media (max-width: 500px) {
+  .cardWrapper2 img {
+    max-width: 80px;
+    max-height: 80px;
+  }
+}
+
+
 @media (min-width: 768px) {
   .wrapperCard {
     grid-template-columns: repeat(3, 1fr); /* 3 колонки для планшетов */
@@ -104,5 +144,6 @@
   width: 50px;
   height: 50px;
 }
+
 
 

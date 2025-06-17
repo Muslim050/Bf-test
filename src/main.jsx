@@ -6,21 +6,27 @@ import { BrowserRouter } from 'react-router-dom'
 import store from '@/redux/store.js'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from '@/utils/ThemeContext.jsx'
+import { TooltipProvider } from '@/components/ui/tooltip.jsx'
+import { SidebarProvider } from '@/components/ui/sidebar.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <ThemeProvider>
-      <BrowserRouter>
-        <App />
-        <Toaster
-          position="bottom-right"
-          toastOptions={{
-            success: {
-              duration: 5000,
-            },
-          }}
-        />
-      </BrowserRouter>
+      <SidebarProvider>
+        <BrowserRouter>
+          <TooltipProvider>
+            <App />
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                success: {
+                  duration: 5000,
+                },
+              }}
+            />
+          </TooltipProvider>
+        </BrowserRouter>
+      </SidebarProvider>
     </ThemeProvider>
   </Provider>,
 )

@@ -1,16 +1,15 @@
 import React from 'react'
-import { TableCell, TableRow } from '@/components/ui/table'
+import { TableCell } from '@/components/ui/table'
 import FormatterView from '@/components/Labrery/formatter/FormatterView'
-import FormatterBudjet, {TiinFormatterBudget} from '@/components/Labrery/formatter/FormatterBudjet'
+import { TiinFormatterBudget } from '@/components/Labrery/formatter/FormatterBudjet'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip.jsx'
 import { truncate } from '@/utils/other.js'
-import {Monitor, MonitorPlay, MonitorUp} from "lucide-react";
+import { Monitor, MonitorPlay, MonitorUp } from 'lucide-react'
 
 function AdvChartData({ statistic, index }) {
   const { bgColor } = React.useContext(ThemeContext)
@@ -42,34 +41,29 @@ function AdvChartData({ statistic, index }) {
         data-label="ID"
         className={`font-normal text-${textColor} text-sm `}
       >
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="hover:text-[#4793ff] hover:underline text-[#A7CCFF]">
-                {truncate(
-                  statistic.video_name === null ? '' : statistic.video_name,
-                  20,
-                )}
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{statistic.video_name}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="hover:text-[#4793ff] hover:underline text-[#A7CCFF]">
+              {truncate(
+                statistic.video_name === null ? '' : statistic.video_name,
+                20,
+              )}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{statistic.video_name}</p>
+          </TooltipContent>
+        </Tooltip>
       </TableCell>
       <TableCell
         data-label="ID"
         className={`font-normal text-${textColor} text-sm `}
       >
-        <div className='flex items-center gap-1'>
-          {
-            (statistic.order_format === 'preroll' && <Monitor/>) ||
-            (statistic.order_format === 'top_preroll' && <MonitorUp/>) ||
-            (statistic.order_format === 'tv_preroll' && <MonitorPlay/>)
-          }
-          {
-            (statistic.order_format === 'preroll' && 'Pre-roll') ||
+        <div className="flex items-center gap-1">
+          {(statistic.order_format === 'preroll' && <Monitor />) ||
+            (statistic.order_format === 'top_preroll' && <MonitorUp />) ||
+            (statistic.order_format === 'tv_preroll' && <MonitorPlay />)}
+          {(statistic.order_format === 'preroll' && 'Pre-roll') ||
             (statistic.order_format === 'mixroll' && 'Mid-roll') ||
             (statistic.order_format === 'midroll1' && 'Mid-roll 1') ||
             (statistic.order_format === 'midroll2' && 'Mid-roll 2') ||
@@ -77,22 +71,19 @@ function AdvChartData({ statistic, index }) {
             (statistic.order_format === 'midroll4' && 'Mid-roll 4') ||
             (statistic.order_format === 'top_preroll' && 'Top Pre-roll') ||
             (statistic.order_format === 'tv_preroll' && 'TV Pre-roll')}
-
-
         </div>
-
       </TableCell>
       <TableCell
         data-label="ID"
         className={`font-normal text-${textColor} text-sm `}
       >
         <div>
-          <div style={{display: 'flex', width: '100px'}}>
+          <div style={{ display: 'flex', width: '100px' }}>
             {statistic.publication_date === null ? (
               <div>----</div>
             ) : (
               <>
-                {new Date (statistic.publication_date).toLocaleDateString (
+                {new Date(statistic.publication_date).toLocaleDateString(
                   'ru-RU',
                   {
                     day: '2-digit',
@@ -159,7 +150,7 @@ function AdvChartData({ statistic, index }) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: "end"
+            justifyContent: 'end',
           }}
         >
           {statistic.budget === 0 ? (
@@ -175,9 +166,7 @@ function AdvChartData({ statistic, index }) {
             </div>
           ) : (
             <>
-              <TiinFormatterBudget
-                budget={statistic.budget}
-              />
+              <TiinFormatterBudget budget={statistic.budget} />
             </>
           )}
         </div>
@@ -250,13 +239,13 @@ function AdvChartData({ statistic, index }) {
       ) : (
         <div style={{ position: 'relative' }}>
           <td
+            className="text-gray-400"
             style={{
               position: 'absolute',
               right: '-150%',
               fontSize: '13px',
               lineHeight: '15px',
               fontWeight: '600',
-              color: 'rgb(250, 138, 0)',
               display: 'flex',
               justifyContent: 'center',
               width: '100%',
@@ -265,7 +254,7 @@ function AdvChartData({ statistic, index }) {
               alignItems: 'center',
             }}
           >
-            Введется аналитика
+            Ведется аналитика
           </td>
         </div>
       )}

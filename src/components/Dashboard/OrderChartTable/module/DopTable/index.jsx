@@ -17,7 +17,6 @@ import DeviceData from '@/components/Dashboard/OrderChartTable/module/DopTable/D
 import GenderData from '@/components/Dashboard/OrderChartTable/module/DopTable/Data/GenderData.jsx'
 
 const DopTable = ({ statistic }) => {
-  console.log(statistic)
   return (
     <div>
       {statistic.online_view_count ? (
@@ -62,9 +61,9 @@ const DopTable = ({ statistic }) => {
       ) : (
         <div
           style={{ background: 'var(--bg-color)' }}
-          className="font-normal text-orange-600 text-sm text-center p-2  h-[100%] rounded-3xl"
+          className="font-normal text-gray-400 text-sm text-center p-2  h-[100%] rounded-3xl"
         >
-          Введется аналитика...
+          Ведется аналитика...
         </div>
       )}
     </div>

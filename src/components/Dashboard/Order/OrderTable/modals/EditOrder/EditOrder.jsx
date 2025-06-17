@@ -1,20 +1,37 @@
-import React from 'react'
-import {Controller, useForm} from 'react-hook-form'
-import {useDispatch, useSelector} from 'react-redux'
-import {Film, Monitor, MonitorPlay, MonitorUp} from 'lucide-react'
+import React, { useRef } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  FileVideo,
+  ImageDown,
+  Loader2,
+  Monitor,
+  MonitorPlay,
+  MonitorUp,
+  PackageCheck,
+  Trash2,
+} from 'lucide-react'
 
-import {deleteOrder, fetchEditOrder, fetchOrder, fetchSingleOrder,} from '../../../../../../redux/order/orderSlice'
-import {DialogContent, DialogHeader, DialogTitle,} from '@/components/ui/dialog.jsx'
-import {toastConfig} from '../../../../../../utils/toastConfig'
+import {
+  deleteOrder,
+  fetchEditOrder,
+  fetchOrder,
+  fetchSingleOrder,
+} from '../../../../../../redux/order/orderSlice'
+import {
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog.jsx'
+import { toastConfig } from '../../../../../../utils/toastConfig'
 import 'react-datepicker/dist/react-datepicker.css'
-import style from './EditOrder.module.scss'
 import backendURL from '@/utils/url'
 import axios from 'axios'
-import {Label} from '@/components/ui/label.jsx'
-import {Textarea} from '@/components/ui/textarea.jsx'
+import { Label } from '@/components/ui/label.jsx'
+import { Textarea } from '@/components/ui/textarea.jsx'
 
-import {Input} from '@/components/ui/input.jsx'
-import {SelectTrigger} from '@/components/ui/selectTrigger.jsx'
+import { Input } from '@/components/ui/input.jsx'
+import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,23 +43,28 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog.jsx'
-import {Select, SelectContent, SelectGroup, SelectItem, SelectValue,} from '@/components/ui/select.jsx'
-import {Button} from '../../../../../ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectValue,
+} from '@/components/ui/select.jsx'
+import { Button } from '../../../../../ui/button'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
-
+import { Badge } from '@/components/ui/badge.jsx'
+import { truncate } from '@/utils/other.js'
+import { Link } from 'react-router-dom'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 const formatV = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
   { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
-  { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp  },
+  { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp },
 ]
 
-export default function EditOrder({
-  setShowModalEditAdmin,
-  currentOrder,
-  onClose,
-}) {
+export default function EditOrder({ currentOrder, onClose }) {
   const dispatch = useDispatch()
   const [selectedFile, setSelectedFile] = React.useState(null)
   const [cpm, setCpm] = React.useState([])
@@ -66,7 +88,7 @@ export default function EditOrder({
     watch,
     control,
     setValue,
-    onBlur
+    onBlur,
   } = useForm({
     defaultValues: {
       name: currentOrder.name,
@@ -85,8 +107,6 @@ export default function EditOrder({
   }
   const advID = Cookies.get('advertiser')
   const targetCountry = watch('target_country')
-
-  const editName = watch('name')
   // const viewValue = watch("view");
   const expectedView = watch('expectedView')
 
@@ -150,8 +170,7 @@ export default function EditOrder({
       if (response && !response.error) {
         toast.success('Изминения успешно обновлены!')
         onClose()
-        dispatch(fetchSingleOrder(currentOrder.id));
-
+        dispatch(fetchSingleOrder(currentOrder.id))
       } else if (response.error.message) {
         toast.error('Что-то пошло не так!' + response.error.message)
         onClose()
@@ -165,6 +184,7 @@ export default function EditOrder({
       }
     }
   }
+  const inputRef = useRef(null) // Создаем ссылку на Input
 
   const handleRemoveInventory = () => {
     dispatch(deleteOrder({ id: currentOrder.id }))
@@ -176,7 +196,6 @@ export default function EditOrder({
           window.location.reload()
         }, 1500)
         dispatch(fetchOrder())
-
       })
       .catch((error) => {
         toast.error(`Ошибка завершения заказа: ${error.data.error.detail}`)
@@ -197,14 +216,14 @@ export default function EditOrder({
         }}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg	font-medium	text-white border-b border-[#F9F9F926] pb-4">
+          <DialogTitle className="text-lg	font-medium	text-[var(--text)] border-b border-[#F9F9F926] pb-4">
             Редактировать заказ
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex gap-4 mb-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          <div className="flex gap-2">
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Название рекламной кампании
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -222,9 +241,9 @@ export default function EditOrder({
               />
             </div>
           </div>
-          <div className="flex gap-4 mb-4">
-            <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+          <div className="flex gap-2">
+            <div className="grid w-auto">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Начало
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -245,16 +264,13 @@ export default function EditOrder({
                     type="date"
                     onChange={onChange}
                     value={value}
-                    style={{
-                      width: '210px',
-                    }}
                   />
                 )}
               />
             </div>
 
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Конец
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -275,18 +291,13 @@ export default function EditOrder({
                     type="date"
                     onChange={onChange}
                     value={value}
-                    style={{
-                      width: '210px',
-                    }}
                   />
                 )}
               />
             </div>
-          </div>
-          {/*  */}
-          <div className="flex gap-4 mb-4">
+
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Формат
                 <span className="text-red-500 ml-0.5">*</span>
               </Label>
@@ -295,7 +306,7 @@ export default function EditOrder({
                 onValueChange={handleFormatChange}
                 disabled={role !== 'admin'}
               >
-                <SelectTrigger className="!text-white">
+                <SelectTrigger className="!text-[var(--text)]">
                   <SelectValue placeholder="Выбрать формат" />
                 </SelectTrigger>
 
@@ -303,9 +314,9 @@ export default function EditOrder({
                   <SelectGroup>
                     {formatV.map((option, index) => (
                       <SelectItem key={index} value={option.value}>
-                        <div className='!flex items-center gap-1'>
-                          {option.icon &&
-                            <option.icon/>
+                        <div className="!flex items-center gap-1">
+                          {
+                            option.icon && <option.icon />
                             // <img src={option.icon} alt="" className='size-4'/>
                           }
                           {option.text}
@@ -316,29 +327,15 @@ export default function EditOrder({
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid w-full">
+          </div>
+          {/*  */}
+          <div className="flex gap-2">
+            <div className="grid w-[180px]">
               <div className="border-dashed border-2 border-sky-500 rounded-lg p-2 flex flex-col justify-between">
-                <Label className="text-sm	text-white pb-0.5">
+                <Label className="text-sm	text-[var(--text)] pb-0.5">
                   Target для РУЗ
                 </Label>
-                {/* <label
-                  className={`${style.checkboxI} text-sky-400`}
-                  onClick={taretCheckbox}
-                >
-                  Target UZ
-                  <input
-                    type="checkbox"
-                    defaultChecked={currentOrder.target_country === 'uz'}
-                    onChange={taretCheckbox}
-                    disabled={role !== 'admin'}
-                  />
-                  
-                  <span className={style.checkmark}></span>
-                </label> */}
-                <label
-                  className={`${style.checkboxI} text-sky-400 `}
-                  onClick={taretCheckbox}
-                >
+                <label className={` text-sky-400 `} onClick={taretCheckbox}>
                   Target UZ
                   <input
                     type="checkbox"
@@ -346,17 +343,18 @@ export default function EditOrder({
                     onChange={taretCheckbox}
                     defaultChecked={currentOrder.target_country === 'uz'}
                   />
-                  {/* <span className={style.checkmark}></span> */}
                 </label>
               </div>
             </div>
-          </div>
-          {/*  */}{' '}
-          <div className="flex gap-4 mb-4">
             <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
+              <Label className="text-sm	text-[var(--text)] pb-2">
                 Количество показов
                 <span className="text-red-500 ml-0.5">*</span>
+                {budgett > 0 ? (
+                  <Badge variant="default" className="text-sm	ml-1">
+                    {budgett.toLocaleString('en-US')}
+                  </Badge>
+                ) : null}
               </Label>
               <Controller
                 name="expectedView"
@@ -371,11 +369,15 @@ export default function EditOrder({
                       errors?.enddate ? 'border-red-500' : 'border-gray-300'
                     }   transition-all duration-300 text-sm `}
                     type="text"
-                    value={typeof value === 'number' ? value.toLocaleString('en-US') : value}
+                    value={
+                      typeof value === 'number'
+                        ? value.toLocaleString('en-US')
+                        : value
+                    }
                     onChange={(e) => {
-                      const rawValue = e.target.value.replace(/\D/g, '');
-                      const newValue = rawValue ? parseInt(rawValue, 10) : '';
-                      onChange(newValue);
+                      const rawValue = e.target.value.replace(/\D/g, '')
+                      const newValue = rawValue ? parseInt(rawValue, 10) : ''
+                      onChange(newValue)
                     }}
                     onBlur={onBlur} // Используем стандартный onBlur без повторного вызова onChange
                     name={name}
@@ -389,103 +391,58 @@ export default function EditOrder({
                 )}
               />
             </div>
-            <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">
-                Бюджет (сум)
-                <span className="text-red-500 ml-0.5">*</span>
-              </Label>
-              <Input
-                className={`border ${
-                  errors?.enddate ? 'border-red-500' : 'border-gray-300'
-                }   transition-all duration-300 text-sm `}
-                type="text"
-                value={
-                  isNaN(budgett)
-                    ? currentOrder.budget.toLocaleString('en-US')
-                    : budgett.toLocaleString('en-US')
-                }
-                placeholder="Бюджет"
-                autoComplete="off"
-                disabled={true}
-              />
-            </div>
-            {/*  */}
           </div>
-          <div className="flex gap-4 mb-4">
-            <div className="grid w-full">
-              <Label className="text-sm	text-white pb-2">Текущий ролик:</Label>
-              <a
-                href={currentOrder.promo_file}
-                target="_blank"
-                className="text-[#A7CCFF]  underline-offset-2 underline hover:text-[#0767eb]"
-                rel="noreferrer"
-              >
-                <Film />
-
-                {/*<File*/}
-                {/*  style={{width: '18px', height: '18px', marginLeft: '5px'}}*/}
-                {/*/>*/}
-              </a>
-            </div>
-            <div>
-              <div className="grid w-[250px]">
-                <Label className="text-sm	text-white pb-0.5">
-                  Загрузить новый ролик
-                </Label>
+          {/*  */}
+          <div className="flex justify-between gap-3">
+            <div className={`flex justify-between items-end w-full gap-2 `}>
+              <div className="border-dashed w-full border-2 border-[#A7CCFF] rounded-xl p-2 flex flex-col justify-center items-center h-[76px] relative">
                 <input
                   type="file"
                   onChange={handleFileChange}
-                  className={style.modalWindow__file}
-                  {...register('selectedFile')}
+                  ref={inputRef}
+                  className="hidden"
                 />
-                <span className={style.modalWindow__input_error}>
-                  {errors?.selectedFile && (
-                    <p>{errors?.selectedFile?.message}</p>
+                <Button
+                  type="button"
+                  variant="default"
+                  onClick={() => inputRef.current.click()}
+                  className="flex gap-2"
+                >
+                  <ImageDown />
+                  {selectedFile ? (
+                    <p className="text-sm text-white">
+                      Вы выбрали файл:{truncate(selectedFile.name, 20)}{' '}
+                    </p>
+                  ) : (
+                    ' Загрузить файл'
                   )}
-                </span>
+                </Button>
               </div>
+
+              <TooltipWrapper tooltipContent="Текущий ролик">
+                <Link
+                  to={currentOrder.promo_file}
+                  target="_blank"
+                  className="h-full w-[85px] bg-[#2A85FF] size-10 rounded-xl text-[var(--text)] hover:bg-[#2A85FF99] flex justify-center items-center "
+                >
+                  <FileVideo />
+                </Link>
+              </TooltipWrapper>
             </div>
           </div>
-          {/*  */}
-          {/* <textarea
-            placeholder="Комментарий к заказу"
-            autoComplete="off"
-            className={`border ${
-              errors?.enddate ? 'border-red-500' : 'border-gray-300'
-            }   transition-all duration-300 text-sm `}
-            {...register('notes')}
-            style={{ width: '100%' }}
-          ></textarea> */}
+
           <Textarea
             placeholder="Комментарий к заказу"
-            className="resize-none text-white"
+            className="resize-none text-[var(--text)]"
             // {...field}
             {...register('notes')}
           />
-          <div className="flex gap-4">
+          <div className="flex gap-2 justify-end">
             {role === 'admin' ? (
-              // <Button
-              //   className={`${
-              //     isValid && !isOrderCreated
-              //       ? 'bg-[#ff000066] hover:bg-red-500 border-2 border-red-500 hover:border-red-400'
-              //       : 'bg-[#616161]'
-              //   } w-full   h-[44px] text-white rounded-lg	mt-6`}
-              //   onClick={() => {
-              //     handleRemoveInventory()
-              //   }}
-              // >
-              //   Удалить
-              // </Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button
-                    className={`${
-                      isValid && !isOrderCreated
-                        ? 'bg-[#ff000066] hover:bg-red-500 border-2 border-red-500 hover:border-red-400'
-                        : 'bg-[#616161]'
-                    } w-full   h-[44px] text-white rounded-lg	mt-6`}
-                  >
-                    Удалить
+                  <Button variant="destructive" className="flex gap-1 ">
+                    <Trash2 />
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -493,12 +450,12 @@ export default function EditOrder({
                     <AlertDialogTitle className="text-red-500">
                       Вы уверены, что хотите удалить заказ?
                     </AlertDialogTitle>
-                    <AlertDialogDescription className="text-white">
+                    <AlertDialogDescription className="text-[var(--text)]">
                       Это действие не может быть отменено.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel className="text-white">
+                    <AlertDialogCancel className="text-[var(--text)]">
                       Отмена
                     </AlertDialogCancel>
                     <AlertDialogAction
@@ -513,47 +470,21 @@ export default function EditOrder({
             ) : null}
 
             <Button
-              className={`${
-                isValid && !isOrderCreated
-                  ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-                  : 'bg-[#616161]'
-              } w-full   h-[44px] text-white rounded-lg	mt-6`}
               disabled={!isValid || isOrderCreated}
               isValid={true}
               type="submit"
             >
               {isOrderCreated ? (
                 <>
-                  <span>Сохранить</span>
-                  <div className={style.loaderWrapper}>
-                    <div className={style.spinner}></div>
-                  </div>
+                  <span>Сохранение...</span>
+                  <Loader2 className="ml-2 h-6 w-6 animate-spin" />
                 </>
               ) : (
-                <span>Сохранить</span>
+                <div className="flex items-center gap-1">
+                  <PackageCheck />
+                </div>
               )}
             </Button>
-            {/* <button
-              style={{ display: 'flex', alignItems: 'center' }}
-              type="submit"
-              // disabled={!isValid || isOrderCreated}
-              // className={
-              //   isValid && !isOrderCreated
-              //     ? style.btn__wrapper__btn
-              //     : style.btn__wrapper__disabled
-              // }
-            >
-              {isOrderCreated ? (
-                <>
-                  <span>Сохранить</span>
-                  <div className={style.loaderWrapper}>
-                    <div className={style.spinner}></div>
-                  </div>
-                </>
-              ) : (
-                <span>Сохранить</span>
-              )}
-            </button> */}
           </div>
         </form>
       </DialogContent>

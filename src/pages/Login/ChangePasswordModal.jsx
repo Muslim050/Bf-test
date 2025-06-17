@@ -1,22 +1,18 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import style from './ChangePasswordModal.module.scss'
-import { changePassword, login, logout } from '../../redux/auth/authSlice'
+import { changePassword, logout } from '../../redux/auth/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import InputUI from '../../components/Labrery/InputUI/InputUI'
-import { X } from 'lucide-react'
-// import { ReactComponent as Show } from "src/assets/InputIcon/Show.svg";
-// import { ReactComponent as Ulock } from "src/assets/InputIcon/Ulock.svg";
+import { Eye, EyeOff, X } from 'lucide-react'
 import Cookies from 'js-cookie'
 
 import { hideModalChangePassword } from '@/redux/modalSlice'
 import toast from 'react-hot-toast'
 
-function ChangePasswordModal({ setchangePassword }) {
+function ChangePasswordModal() {
   const dispatch = useDispatch()
-  const [newPassword, setNewPassword] = React.useState('')
-  const [confirmPassword, setConfirmPassword] = React.useState('')
   const userID = Cookies.get('channelId')
   const [isOrderCreated, setIsOrderCreated] = React.useState(false)
   const [showPasswordOld, setShowPasswordOld] = React.useState(false)
@@ -29,7 +25,6 @@ function ChangePasswordModal({ setchangePassword }) {
     register,
     formState: { errors, isValid },
     handleSubmit,
-    getValues,
   } = useForm({
     defaultValues: {
       oldPassword: '',
@@ -93,9 +88,9 @@ function ChangePasswordModal({ setchangePassword }) {
                 style={{ display: 'flex' }}
               >
                 {showPasswordOld ? (
-                  <Ulock style={{ width: '20px' }} />
+                  <Eye style={{ width: '20px' }} />
                 ) : (
-                  <Show style={{ width: '20px' }} />
+                  <EyeOff style={{ width: '20px' }} />
                 )}
               </div>
             }
@@ -114,11 +109,11 @@ function ChangePasswordModal({ setchangePassword }) {
                 onClick={handleTogglePasswordNew}
                 style={{ display: 'flex' }}
               >
-                {showPasswordNew
-                  ? // <Ulock style={{ width: "20px" }} />
-                    Ulock
-                  : // <Show style={{ width: "20px" }} />
-                    Show}
+                {showPasswordNew ? (
+                  <Eye style={{ width: '20px' }} />
+                ) : (
+                  <EyeOff style={{ width: '20px' }} />
+                )}
               </div>
             }
           />
@@ -137,9 +132,9 @@ function ChangePasswordModal({ setchangePassword }) {
                 style={{ display: 'flex' }}
               >
                 {showPasswordConf ? (
-                  <Ulock style={{ width: '20px' }} />
+                  <Eye style={{ width: '20px' }} />
                 ) : (
-                  <Show style={{ width: '20px' }} />
+                  <EyeOff style={{ width: '20px' }} />
                 )}
               </div>
             }

@@ -1,5 +1,3 @@
-import React from 'react'
-import style from '../StatictickChannelTable.module.scss'
 import { TableHead, TableRow } from '@/components/ui/table'
 
 function StatictickChannelThead() {

@@ -30,7 +30,6 @@ const EditSendPublisherModal = ({
   item,
   setEditNote,
 }) => {
-  console.log(item)
   const dispatch = useDispatch()
   const [channelModal, setChannelModal] = React.useState([])
   const { publisher } = useSelector((state) => state.publisher)
@@ -195,7 +194,6 @@ const EditSendPublisherModal = ({
   }, [isValid, errors])
 
   React.useEffect(() => {}, [setPublisherID, setChannelID])
-  console.log(channelName)
   return (
     <>
       <div className="relative rounded-[22px]">

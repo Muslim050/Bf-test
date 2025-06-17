@@ -10,10 +10,16 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button.jsx'
-import { ChevronDown, ChevronsUpDown, ChevronUp, Plus, X } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+  PackagePlus,
+  X,
+} from 'lucide-react'
 import EditSendPublisherModal from '@/components/Dashboard/Order/OpenOrder/AddSentPublisher/modal/EditSendPublisherModal/index.jsx'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
-import Pagination from '@/components/module/Pagination/index.jsx'
+import Pagination from '@/module/Pagination/index.jsx'
 import InfoCartSentPublisher from '@/components/Dashboard/Order/OpenOrder/AddSentPublisher/InfoCartSentPublisher.jsx'
 
 export default function AddSentPublisher({
@@ -52,59 +58,48 @@ export default function AddSentPublisher({
       {viewNote ? (
         <div className="flex justify-end">
           <Button
-            variant="outline"
+            variant="outlineDeactivate"
             onClick={() => setViewNote(false)}
-            className=" px-1 h-[30px] group rounded-lg  gap-2 hover:bg-red-300"
           >
-            <X className="hover:text-red-600   transform group-hover:scale-125 transition-transform" />
+            <X />
           </Button>
         </div>
       ) : null}
       {/* кнопка крестик чтобы закрыть создание записи */}
 
       <div>
-        <Table
-          className={`${style.responsive_table} border_design rounded-[22px] overflow-auto`}
+        <div
+        // className={`${style.responsive_table} border_design rounded-[22px] overflow-auto`}
         >
           {viewNote && (
             <div className="grid grid-cols-5 gap-4">
               <TableHeader className="col-span-5 grid grid-cols-5 bg-[#FFFFFF2B] rounded-t-lg"></TableHeader>
             </div>
           )}
-          <TableBody>
+          <div>
             {viewNote && (
-              <TableRow
-                initial={{ opacity: 0, x: -10, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 0.5 }}
-              >
+              <div>
                 <AddSendPublisherModal
                   expandedRows={expandedRows}
                   setViewNote={setViewNote}
                   onceOrder={onceOrder}
                 />
-              </TableRow>
+              </div>
             )}
-          </TableBody>
-        </Table>
+          </div>
+        </div>
 
         {editNote ? null : (
           <>
             {viewNote ? null : (
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
+              <div className="flex justify-center">
                 <Button
-                  variant="outline"
+                  variant="default"
                   onClick={() => setViewNote(!viewNote)}
-                  className="group h-[35px] px-2 gap-2 rounded-[14px] border border-brandPrimary-1 transition-all hover:bg-brandPrimary-1 hover:text-white"
                 >
                   <div className="flex items-center justify-center gap-2 ">
-                    <Plus className="transform group-hover:scale-125 transition-transform" />
-                    Добавить запись
+                    <PackagePlus />
+                    Создать
                   </div>
                 </Button>
               </div>
@@ -243,7 +238,7 @@ export default function AddSentPublisher({
                             </>
                           ))}
                           {isEditing && (
-                            <div className="rounded-3xl text-base absolute z-10 inset-0 flex items-center h-[62px] justify-center bg-[#265EB6]/90 text-white font-semibold ">
+                            <div className="rounded-3xl text-base absolute z-10 inset-0 flex items-center h-[62px] justify-center bg-[#265EB6]/90 text-[var(--text)] font-semibold ">
                               На редактирований
                             </div>
                           )}

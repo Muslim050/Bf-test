@@ -1,9 +1,8 @@
-import {Label} from "@/components/ui/label.jsx";
-import {Input} from "@/components/ui/input.jsx";
-
+import { Label } from '@/components/ui/label.jsx'
+import { Input } from '@/components/ui/input.jsx'
 
 const InputField = ({ label, name, register, rules, placeholder, error }) => (
-  <div className="grid w-full mb-2">
+  <div className="grid w-full">
     <Label className="text-sm text-white pb-1">
       {label} <span className="text-red-500">*</span>
     </Label>
@@ -16,6 +15,6 @@ const InputField = ({ label, name, register, rules, placeholder, error }) => (
     />
     {error && <p className="text-red-500 text-sm">{error.message}</p>}
   </div>
-);
+)
 
 export default InputField

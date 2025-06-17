@@ -20,22 +20,20 @@ import { Button } from '@/components/ui/button.jsx'
 // import { fetchInventory } from '../../../../../redux/inventory/inventorySlice'
 import Cookies from 'js-cookie'
 // import {Monitor, MonitorPlay, MonitorUp} from "lucide-react";
-import axiosInstance from "@/api/api.js";
+import axiosInstance from '@/api/api.js'
+import { Loader2, PackagePlus } from 'lucide-react'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
-export default function AddVideo({
-  item,
-  setIsPopoverOpen,
-}) {
+export default function AddVideo({ item, setIsPopoverOpen }) {
   const [channelModal, setChannelModal] = React.useState([])
   const dispatch = useDispatch()
+  const [loading, setLoading] = React.useState(false)
 
   const id = Number(Cookies.get('channelId'))
   const user = Cookies.get('role')
 
   const fetchChannel = async () => {
-    const response = await axiosInstance.get(
-      `${backendURL}/publisher/channel/`
-    )
+    const response = await axiosInstance.get(`${backendURL}/publisher/channel/`)
     setChannelModal(response.data.data.results)
   }
 
@@ -55,11 +53,12 @@ export default function AddVideo({
       channel_id: user === 'channel' ? '' : id,
       video_name: '',
       publication_time: '',
-      link_to_video: ''
+      link_to_video: '',
     },
     mode: 'onSubmit',
   })
   const onSubmit = async (data) => {
+    setLoading(true)
     try {
       const response = await axiosInstance.post(
         `${backendURL}/inventory/assign-to-order-with-new-video`,
@@ -68,7 +67,7 @@ export default function AddVideo({
           ...(data.channel_id ? { channel_id: data.channel_id } : {}), // Добавляем channel_id только если он существует
           video_name: data.video_name,
           publication_time: data.publication_time,
-          ...(data.link_to_video ? { link_to_video: data.link_to_video } : {}) // Добавляем channel_id только если он существует
+          ...(data.link_to_video ? { link_to_video: data.link_to_video } : {}), // Добавляем channel_id только если он существует
         },
       )
 
@@ -102,6 +101,8 @@ export default function AddVideo({
         .join('\n') // Use '\n' to add a new line between each error message
       toast.error(errorMessages)
       setIsPopoverOpen(false)
+    } finally {
+      setLoading(false)
     }
   }
   const getThreeDaysAgo = () => {
@@ -124,7 +125,7 @@ export default function AddVideo({
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-1">
         {user === 'publisher' ? (
           <div className="grid w-full mb-4">
             <Label className="text-sm	text-white pb-2">
@@ -164,7 +165,7 @@ export default function AddVideo({
           ''
         )}
 
-        <div className="grid w-full mb-4">
+        <div className="grid w-full ">
           <Label className="text-sm	text-white pb-2">
             Название видео<span className="text-red-500 ml-0.5">*</span>
           </Label>
@@ -182,8 +183,28 @@ export default function AddVideo({
         </div>
 
         {/**/}
+
+        {/**/}
+
+        <div className="flex gap-4 items-end ">
+          {/*</div>*/}
+          <div className="grid w-full">
+            <Label className="text-sm	text-white pb-2">Прикрепить ссылку</Label>
+
+            <Input
+              type="text"
+              autoComplete="off"
+              {...register('link_to_video')}
+              placeholder={'Прикрепить ссылку '}
+              className={`border ${
+                errors?.linkToVideo ? 'border-red-500' : 'border-gray-300'
+              }   transition-all duration-300 text-sm `}
+            />
+          </div>
+        </div>
+
         <div className="flex gap-4">
-          <div className="grid w-full mb-4">
+          <div className="grid w-full ">
             <Label className="text-sm	text-white pb-2">
               Дата публикаций<span className="text-red-500 ml-0.5">*</span>
             </Label>
@@ -198,40 +219,22 @@ export default function AddVideo({
               })}
             />
           </div>
-        </div>
-        {/**/}
-
-        <div className="flex gap-4 items-end ">
-
-          {/*</div>*/}
-          <div className="grid w-full">
-            <Label className="text-sm	text-white pb-2">
-              Прикрепить ссылку
-            </Label>
-
-            <Input
-              type="text"
-              autoComplete="off"
-              {...register('link_to_video')}
-
-              placeholder={'Прикрепить ссылку '}
-              className={`border ${
-                errors?.linkToVideo ? 'border-red-500' : 'border-gray-300'
-              }   transition-all duration-300 text-sm `}
-            />
+          <div className="flex items-end ">
+            <TooltipWrapper tooltipContent="Создать">
+              <Button
+                variant="default"
+                disabled={!isValid || loading}
+                className="h-[40px]"
+              >
+                {loading ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <PackagePlus />
+                )}
+              </Button>
+            </TooltipWrapper>
           </div>
-
         </div>
-        <Button
-          className={`${
-            isValid
-              ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-              : 'bg-[#616161]'
-          } w-full   h-[40px] text-white rounded-2xl	mt-4`}
-          disabled={!isValid}
-        >
-          Создать
-        </Button>
       </form>
     </>
   )

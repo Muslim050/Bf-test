@@ -1,11 +1,11 @@
 import React from 'react'
-import style from './FilteredTooltip.module.scss'
 import DownloadReport from '../DownloadReport'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Label } from '@/components/ui/label.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { Trash2 } from 'lucide-react'
+import { FileChartPie, Trash2 } from 'lucide-react'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 function FilteredTooltip({
   handleDateStatictick,
@@ -14,7 +14,7 @@ function FilteredTooltip({
   endDate,
   setEndDate,
   setIsTooltip,
-                           orderData,
+  orderData,
   handleClear,
 }) {
   const handleStartDateChange = (date) => {
@@ -27,7 +27,7 @@ function FilteredTooltip({
 
   return (
     <>
-      <div>
+      <div className="flex gap-2">
         <div className="grid">
           <Label htmlFor="terms" className="text-white pb-1">
             Дата начало
@@ -44,7 +44,7 @@ function FilteredTooltip({
           />
         </div>
 
-        <div className="grid pt-3">
+        <div className="grid">
           <Label htmlFor="terms" className="text-white pb-1">
             Дата конец
           </Label>
@@ -59,34 +59,26 @@ function FilteredTooltip({
             className="bg-white bg-opacity-30 backdrop-blur-md px-2 py-2 h-[45px] rounded-[12px] w-full text-white"
           />
         </div>
+      </div>
+      <div className="flex gap-2.5 mt-3 justify-end">
+        <DownloadReport
+          getOrder={orderData}
+          startDate={startDate}
+          endDate={endDate}
+          setIsTooltip={setIsTooltip}
+        />
 
-        <div style={{ display: 'flex', marginTop: '10px', gap: '10px' }}>
-          <Button
-            variant="ghost"
-            className="bg-brandPrimary-1 rounded-[12px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white h-[44px] w-full"
-            onClick={handleDateStatictick}
-          >
-            Сортировать
-          </Button>
-
-          <Button
-            onClick={handleClear}
-            className="bg-red-400 rounded-[12px] hover:bg-red-500 text-white no-underline hover:text-white h-[44px] w-full"
-          >
-            {/*<Delete style={{ width: '23px', height: '23px' }} />*/}
+        <TooltipWrapper tooltipContent="Удалить">
+          <Button variant="destructive" onClick={handleClear}>
             <Trash2 />
           </Button>
-          <DownloadReport
-            getOrder={orderData}
-            startDate={startDate}
-            endDate={endDate}
-            setIsTooltip={setIsTooltip}
-          />
-        </div>
+        </TooltipWrapper>
 
-        {/*<div style={{width: '100%'}}>*/}
-
-        {/*</div>*/}
+        <TooltipWrapper tooltipContent="Сортировать">
+          <Button variant="default" onClick={handleDateStatictick}>
+            <FileChartPie />
+          </Button>
+        </TooltipWrapper>
       </div>
     </>
   )

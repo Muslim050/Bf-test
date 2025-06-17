@@ -10,11 +10,9 @@ import { formatDate } from '../../../../utils/formatterDate'
 import CircularTable from '@/components/Labrery/Circular/CircularTable.jsx'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 import { Button } from '../../../ui/button'
-import {Monitor, MonitorPlay, MonitorUp, Paperclip} from 'lucide-react'
+import { Link, Monitor, MonitorPlay, MonitorUp, Paperclip } from 'lucide-react'
 import { Dialog } from '@/components/ui/dialog.jsx'
-import { Link } from 'lucide-react'
 import Cookies from 'js-cookie'
-import log from "eslint-plugin-react/lib/util/log.js";
 
 function OpenTableSentOrderData({ data }) {
   const user = Cookies.get('role')
@@ -49,7 +47,6 @@ function OpenTableSentOrderData({ data }) {
       </Dialog>
 
       {data.map((inventor, i) => (
-        console.log(inventor),
         <>
           <TableRow className={style.table__tr}>
             <TableCell
@@ -114,14 +111,11 @@ function OpenTableSentOrderData({ data }) {
             </TableCell>
             {/**/}
             <TableCell className="text-blue-300 font-medium">
-              <div className='flex items-center gap-1'>
-                {
-                  (inventor.format === 'preroll' && <Monitor/>) ||
-                  (inventor.format === 'top_preroll' && <MonitorUp/>) ||
-                  (inventor.format === 'tv_preroll' && <MonitorPlay/>)
-                }
-                {
-                  (inventor.format === 'preroll' && 'Pre-roll') ||
+              <div className="flex items-center gap-1">
+                {(inventor.format === 'preroll' && <Monitor />) ||
+                  (inventor.format === 'top_preroll' && <MonitorUp />) ||
+                  (inventor.format === 'tv_preroll' && <MonitorPlay />)}
+                {(inventor.format === 'preroll' && 'Pre-roll') ||
                   (inventor.format === 'mixroll' && 'Mid-roll') ||
                   (inventor.format === 'midroll1' && 'Mid-roll 1') ||
                   (inventor.format === 'midroll2' && 'Mid-roll 2') ||
@@ -129,8 +123,6 @@ function OpenTableSentOrderData({ data }) {
                   (inventor.format === 'midroll4' && 'Mid-roll 4') ||
                   (inventor.format === 'top_preroll' && 'Top Pre-roll') ||
                   (inventor.format === 'tv_preroll' && 'TV Pre-roll')}
-
-
               </div>
             </TableCell>
 
@@ -138,14 +130,14 @@ function OpenTableSentOrderData({ data }) {
               data-label="ID"
               className={`font-normal text-${textColor} text-sm `}
             >
-              {formatDate (inventor.video_content?.publication_time)}
+              {formatDate(inventor.video_content?.publication_time)}
             </TableCell>
             <TableCell
               data-label="ID"
               className={`font-normal text-${textColor} text-sm `}
             >
               {inventor.online_views > 0 ? (
-                <FormatterView data={inventor.online_views}/>
+                <FormatterView data={inventor.online_views} />
               ) : (
                 <div>----</div>
               )}
@@ -154,9 +146,9 @@ function OpenTableSentOrderData({ data }) {
               data-label="ID"
               className={`font-normal text-${textColor} text-sm `}
             >
-              <AdvertStatus status={inventor.status}
-                            endDate={inventor.deactivation_date}
-
+              <AdvertStatus
+                status={inventor.status}
+                endDate={inventor.deactivation_date}
               />
             </TableCell>
 
@@ -174,7 +166,7 @@ function OpenTableSentOrderData({ data }) {
                     className=" hover:scale-105 transition-all w-full h-auto px-4 py-1 rounded-lg flex items-center gap-1.5  bg-blue-500 hover:bg-blue-400 border border-transparent hover:border-blue-600"
                   >
                     <Paperclip className="w-[20px] h-[20px] text-white" />
-                    Прикрепить Видео
+                    Прикрепить ссылку
                   </Button>
                 ) : (
                   <a

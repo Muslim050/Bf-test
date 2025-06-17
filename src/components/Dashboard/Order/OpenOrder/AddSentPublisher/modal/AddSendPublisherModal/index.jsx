@@ -3,7 +3,6 @@ import React from 'react'
 import axios from 'axios'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-import style from './AddSendPublisherModal.module.scss'
 import 'react-datepicker/dist/react-datepicker.css'
 import { fetchPublisher } from '@/redux/publisher/publisherSlice.js'
 import { fetchOnceListSentToPublisher } from '@/redux/order/SentToPublisher.js'
@@ -20,16 +19,43 @@ import {
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { Monitor, MonitorPlay, MonitorUp, PackagePlus } from 'lucide-react'
+import {
+  Check,
+  ChevronsUpDown,
+  Loader2,
+  Monitor,
+  MonitorPlay,
+  MonitorUp,
+  PackagePlus,
+} from 'lucide-react'
 import Cookies from 'js-cookie'
 import { fetchSingleOrder } from '@/redux/order/orderSlice.js'
 import axiosInstance from '@/api/api.js'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
+import { Badge } from '@/components/ui/badge.jsx'
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils.js'
+import InputFuild from '@/shared/Form/InputFuild.jsx'
 
 const format = [
   { value: 'preroll', text: 'Pre-roll', icon: Monitor },
   { value: 'tv_preroll', text: 'TV Pre-roll', icon: MonitorPlay },
   { value: 'top_preroll', text: 'Top Pre-roll', icon: MonitorUp },
 ]
+
 const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   const dispatch = useDispatch()
   const [channelModal, setChannelModal] = React.useState([])
@@ -39,6 +65,8 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   const [budgett, setBudgett] = React.useState(0)
   const [isOrderCreated, setIsOrderCreated] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
+  const [open, setOpen] = React.useState(false)
+
   const selectedPublisher = (value) => {
     setPublisherID(value)
   }
@@ -98,6 +126,23 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   const selectedFormat = watch('format')
   const expectedView = watch('ordered_number_of_views')
 
+  const selectedOrder = watch('order')
+  const selectedchannel = watch('channel')
+  const selectedStart = watch('startdate')
+  const selectedEnd = watch('enddate')
+  const selectedView = watch('ordered_number_of_views')
+  const selectedBudget = watch('budget')
+  const selectedNote = watch('notes_text')
+
+  console.log(
+    selectedOrder,
+    selectedchannel,
+    selectedStart,
+    selectedEnd,
+    selectedView,
+    selectedBudget,
+    selectedNote,
+  )
   const onSubmit = async (data) => {
     const token = Cookies.get('token')
 
@@ -196,10 +241,12 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   }, [publisherID])
 
   return (
-    <div className="relative rounded-[22px]">
-      <div className="grid lg:grid-cols-7  md:grid-cols-4 sm:grid-cols-2  gap-1">
-        <div className="grid w-full mb-4 ">
-          <Label className="text-sm text-white pb-2">Выбрать Паблишера</Label>
+    <div className="relative h-full rounded-[22px]">
+      <div className="flex gap-1">
+        <div className="grid w-full ">
+          <Label className="text-sm text-[var(--text)] pb-2">
+            Выбрать Паблишера
+          </Label>
           <Controller
             name="advertiser"
             control={control}
@@ -212,10 +259,10 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                 defaultValue={field.value}
                 value={field.value}
               >
-                <SelectTrigger className="!text-white">
+                <SelectTrigger className="!text-[var(--text)]">
                   <SelectValue placeholder="Выбрать паблишера" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#ffffff4d]">
                   <SelectGroup>
                     <SelectLabel>Выбрать паблишера</SelectLabel>
                     {/* Assuming you have a publisher array */}
@@ -231,72 +278,87 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+        <div className="grid w-full ">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Выбрать канал<span className="text-red-500 ml-0.5">*</span>
           </Label>
+
           <Controller
             name="channel"
             control={control}
             rules={{ required: 'Поле обязательно' }}
-            render={({ field }) => (
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                value={field.value}
-              >
-                <SelectTrigger
-                  className="!text-white"
-                  onClick={() => field.onChange('')} // сброс значения при клике
-                >
-                  <SelectValue placeholder="Выбрать канал" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>
-                      <div className="flex items-center justify-between">
-                        Выбрать канал{' '}
-                        {loading && (
-                          <div
-                            className="loaderWrapper"
-                            style={{ height: '2vh' }}
-                          >
-                            <div
-                              className="spinner"
-                              style={{ width: '25px', height: '25px' }}
-                            ></div>
-                          </div>
-                        )}
-                      </div>
-                    </SelectLabel>
-                    {/* Assuming you have a channelModal array */}
-                    {channelModal?.results?.map((option) => (
-                      <SelectItem
-                        key={option.id}
-                        value={option.id.toString()}
-                        className="flex"
-                        disabled={!option.is_active || !option.is_connected}
-                      >
-                        <div className="flex items-center justify-between w-full">
-                          <div className="relative">{option.name}</div>
-                          {!option.is_active && (
-                            <div className="absolute left-0 bg-red-500 rounded-full  w-3 h-full "></div>
-                          )}
-                          {!option.is_connected && (
-                            <div className="absolute left-0 bg-red-500 w-2 h-2 rounded-[3px]"></div>
-                          )}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
+            render={({ field }) => {
+              const selected = channelModal?.results?.find(
+                (framework) => framework.id === field.value,
+              )
+              return (
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="combobox"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full border-0 h-[40px] hover:scale-100 justify-between  "
+                    >
+                      {selected ? selected.name : 'Выбрать канал'}
+                      <ChevronsUpDown className="opacity-50 size-5" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 bg-white bg-opacity-30 backdrop-blur-md">
+                    <Command>
+                      <CommandInput
+                        placeholder="Поиск канала..."
+                        className="h-9"
+                      />
+                      <CommandList>
+                        <CommandEmpty>Ничего не найдено</CommandEmpty>
+                        <CommandGroup>
+                          {channelModal?.results?.map((framework) => (
+                            <CommandItem
+                              key={framework.value}
+                              value={framework?.value} // должен быть .value, а не .id
+                              onSelect={() => {
+                                field.onChange(framework.id)
+                                setOpen(false)
+                              }}
+                              disabled={
+                                !framework.is_active || !framework.is_connected
+                              }
+                            >
+                              <div className="flex items-center justify-between pr-3 w-full">
+                                <div className="relative ">
+                                  {framework.name}
+                                </div>
+                                {!framework.is_active && (
+                                  <div className="absolute left-0 bg-red-500 rounded-full mr-2 w-3 h-full "></div>
+                                )}
+                                {!framework.is_connected && (
+                                  <div className="absolute left-0 bg-red-500 w-2 h-2 rounded-full"></div>
+                                )}
+                              </div>
+                              {/*{framework.label}*/}
+                              <Check
+                                className={cn(
+                                  'ml-auto',
+                                  field.value === framework.value
+                                    ? 'opacity-100'
+                                    : 'opacity-0',
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              )
+            }}
           />
         </div>
 
-        <div className=" w-full mb-4 hidden">
-          <Label className="text-sm text-white pb-2">
+        <div className=" w-full  hidden">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Выбрать формат<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Controller
@@ -314,7 +376,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                   onceOrder.format === 'top_preroll'
                 }
               >
-                <SelectTrigger className="!text-white">
+                <SelectTrigger className="!text-[var(--text)]">
                   <SelectValue placeholder="Выбрать формат" />
                 </SelectTrigger>
                 <SelectContent>
@@ -346,12 +408,12 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+        <div className="grid w-full ">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Начало<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
-            className={style.input}
+            // className={style.input}
             type="date"
             {...register('startdate', {
               required: 'Поле обязательно к заполнению',
@@ -360,12 +422,12 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+        <div className="grid w-full ">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Конец<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <Input
-            className={style.input}
+            // className={style.input}
             type="date"
             {...register('enddate', {
               required: 'Поле обязательно к заполнению',
@@ -374,17 +436,26 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
-            Порог показов<span className="text-red-500 ml-0.5">*</span>
+        <div className="grid w-full relative">
+          <Label className="flex gap-0.5 text-sm  text-[var(--text)] pb-2">
+            <div>
+              Порог показов<span className="text-red-500 ml-0.5">*</span>
+            </div>
+            {budgett > 0 ? (
+              <Badge variant="default" className="text-[15px] py-0 -mt-0.5">
+                {budgett.toLocaleString('en-US')}
+              </Badge>
+            ) : null}
           </Label>
           <Controller
+            commentMore
+            actions
             name="ordered_number_of_views"
             control={control}
             rules={{ required: 'Поле обязательно к заполнению' }}
             render={({ field }) => (
               <Input
-                className={style.input}
+                // className={style.input}
                 type="text"
                 value={field.value.toLocaleString('en-US')}
                 onChange={(e) => {
@@ -403,55 +474,35 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
           />
         </div>
 
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
-            Бюджет<span className="text-red-500 ml-0.5">*</span>
-          </Label>
-          <Input
-            type="text"
-            value={budgett.toLocaleString('en-US')}
-            placeholder="Бюджет"
-            autoComplete="off"
-            disabled
-          />
-        </div>
-
-        <div className="grid w-full mb-4">
-          <Label className="text-sm text-white pb-2">
+        <div className="grid w-full ">
+          <Label className="text-sm text-[var(--text)] pb-2">
             Текст<span className="text-red-500 ml-0.5">*</span>
           </Label>
-          <Input
-            className={style.input}
-            type="text"
+          <InputFuild
+            name="notes_text"
+            control={control}
+            rules={{ required: 'Поле обязательно к заполнению' }}
+            error={errors.notes_text}
             placeholder="Введите текст"
-            {...register('notes_text', {
-              required: 'Поле обязательно к заполнению',
-            })}
-            style={{ border: errors?.notes_text ? '1px solid red' : '' }}
           />
         </div>
-      </div>
-      <div className="w-full flex justify-end ">
-        <Button
-          onClick={handleSubmit(onSubmit)}
-          className={`${
-            isValid && !isOrderCreated
-              ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-              : 'bg-[#616161]'
-          }  w-auto h-[44px] text-white rounded-lg	flex gap-2 mb-4 `}
-          disabled={!isValid || isOrderCreated}
-          isValid={true}
-        >
-          {isOrderCreated ? <div className="loader"></div> : <PackagePlus />}
-
-          {isOrderCreated ? (
-            <>
-              <div className={style.loaderWrapper}></div>
-            </>
-          ) : (
-            <span>Создать</span>
-          )}
-        </Button>
+        <div className="w-fit flex items-end">
+          <TooltipWrapper tooltipContent="Создать">
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              disabled={!isValid || isOrderCreated}
+              variant="default"
+              isValid={true}
+              className="h-[40px]"
+            >
+              {isOrderCreated ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <PackagePlus />
+              )}
+            </Button>
+          </TooltipWrapper>
+        </div>
       </div>
     </div>
   )

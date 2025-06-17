@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import backendURL from '@/utils/url'
@@ -86,7 +86,7 @@ const inventoryStatusSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(inventoryPrebook.fulfilled, (state, action) => {
+    builder.addCase(inventoryPrebook.fulfilled, (state) => {
       state.status = 'succeeded'
     })
   },

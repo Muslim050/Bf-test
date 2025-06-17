@@ -4,20 +4,15 @@ import AdvertiserAgencyUsers from '@/components/Dashboard/AdvertiserAgency/Adver
 import React from 'react'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import { Plus } from 'lucide-react'
+import { PackagePlus, UserPlus } from 'lucide-react'
 import AdvertiserAgencyModalUsers from './AdvertiserAgencyUsers/AdvertiserAgencyModalUsers'
 import AdvertiserAgencyModal from './AdvertiserAgencyUtilizer/AdvertiserAgencyModal'
 import Cookies from 'js-cookie'
-import {
-  useAdvertiserAgencyUtilizer
-} from "@/components/Dashboard/AdvertiserAgency/AdvertiserAgencyUtilizer/useAdvertiserAgencyUtilizer.jsx";
-import EditAdvertiserAgencyModal
-  from "@/components/Dashboard/AdvertiserAgency/AdvertiserAgencyUtilizer/EditAdvertiserAgencyModal.jsx";
-import TableSearchInput from "@/shared/TableSearchInput/index.jsx";
-import {
-  useAdvertiserAgencyUser
-} from "@/components/Dashboard/AdvertiserAgency/AdvertiserAgencyUsers/useAdvertiserAgencyUser.jsx";
-import {hasRole} from "@/utils/roleUtils.js";
+import { useAdvertiserAgencyUtilizer } from '@/components/Dashboard/AdvertiserAgency/AdvertiserAgencyUtilizer/useAdvertiserAgencyUtilizer.jsx'
+import EditAdvertiserAgencyModal from '@/components/Dashboard/AdvertiserAgency/AdvertiserAgencyUtilizer/EditAdvertiserAgencyModal.jsx'
+import TableSearchInput from '@/shared/TableSearchInput/index.jsx'
+import { useAdvertiserAgencyUser } from '@/components/Dashboard/AdvertiserAgency/AdvertiserAgencyUsers/useAdvertiserAgencyUser.jsx'
+import { hasRole } from '@/utils/roleUtils.js'
 
 const AdvertiserAgencyAndUsers = () => {
   const user = Cookies.get('role')
@@ -36,7 +31,6 @@ const AdvertiserAgencyAndUsers = () => {
   }
   // Модальное окно OrderModal
 
-
   const {
     table, // Экземпляр таблицы
     globalFilter,
@@ -46,16 +40,16 @@ const AdvertiserAgencyAndUsers = () => {
     handleCloseEdit,
     open,
     setOpen,
-    pagination
-  } = useAdvertiserAgencyUtilizer();
+    pagination,
+  } = useAdvertiserAgencyUtilizer()
 
   const {
     table: advertiserUsersTable,
     globalFilter: usersGlobalFilter,
     setGlobalFilter: setUsersGlobalFilter,
     flexRender: flexRenderUsers,
-    pagination: paginationUser ,
-  } = useAdvertiserAgencyUser();
+    pagination: paginationUser,
+  } = useAdvertiserAgencyUser()
 
   return (
     <div className="mb-4 mt-2">
@@ -89,26 +83,25 @@ const AdvertiserAgencyAndUsers = () => {
             <div>
               {hasRole('admin') && (
                 <div className="flex justify-end ">
-                  <div className='flex flex-wrap gap-2'>
+                  <div className="flex flex-wrap gap-2">
                     <div>
                       <TableSearchInput
                         value={globalFilter ?? ''}
-                        onChange={value => setGlobalFilter (String (value))}
+                        onChange={(value) => setGlobalFilter(String(value))}
                         className={`p-2 font-lg shadow border border-block `}
                       />
                     </div>
                     <Dialog open={openUtilizer} onOpenChange={setOpenUtilizer}>
                       <DialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          className=" bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
-                        >
-                          <Plus className="w-5 h-5 mr-2"/> Создать рекламное
-                          агентство
+                        <Button variant="default">
+                          <div className="flex items-center justify-center gap-2 ">
+                            <PackagePlus />
+                            Создать
+                          </div>
                         </Button>
                       </DialogTrigger>
                       {openUtilizer && (
-                        <AdvertiserAgencyModal onClose={handleCloseUtilizer}/>
+                        <AdvertiserAgencyModal onClose={handleCloseUtilizer} />
                       )}
                     </Dialog>
                   </div>
@@ -119,29 +112,31 @@ const AdvertiserAgencyAndUsers = () => {
 
           {selectedTab === 'advertiser-users' && (
             <div>
-              {hasRole ('admin') && (
+              {hasRole('admin') && (
                 <div className="flex justify-end ">
-                  <div className='flex flex-wrap gap-2'>
+                  <div className="flex flex-wrap gap-2">
                     <div>
                       <TableSearchInput
                         value={usersGlobalFilter ?? ''}
-                        onChange={value => setUsersGlobalFilter (String (value))}
+                        onChange={(value) =>
+                          setUsersGlobalFilter(String(value))
+                        }
                         className={`p-2 font-lg shadow border border-block `}
                       />
                     </div>
-                  <Dialog open={openUser} onOpenChange={setOpenUser}>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className=" bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
-                      >
-                        <Plus className="w-5 h-5 mr-2" /> Создать пользователя
-                      </Button>
-                    </DialogTrigger>
-                    {openUser && (
-                      <AdvertiserAgencyModalUsers onClose={handleClose} />
-                    )}
-                  </Dialog>
+                    <Dialog open={openUser} onOpenChange={setOpenUser}>
+                      <DialogTrigger asChild>
+                        <Button variant="default">
+                          <div className="flex items-center justify-center gap-2 ">
+                            <UserPlus />
+                            Создать
+                          </div>
+                        </Button>
+                      </DialogTrigger>
+                      {openUser && (
+                        <AdvertiserAgencyModalUsers onClose={handleClose} />
+                      )}
+                    </Dialog>
                   </div>
                 </div>
               )}
@@ -150,12 +145,17 @@ const AdvertiserAgencyAndUsers = () => {
         </div>
 
         <TabsContent value="advertiser">
-          <AdvertiserAgencyUtilizer flexRender={flexRender} table={table} pagination={pagination}/>
+          <AdvertiserAgencyUtilizer
+            flexRender={flexRender}
+            table={table}
+            pagination={pagination}
+          />
         </TabsContent>
         <TabsContent value="advertiser-users">
-          <AdvertiserAgencyUsers flexRender={flexRenderUsers}
-                 table={advertiserUsersTable}
-                                 pagination={paginationUser}
+          <AdvertiserAgencyUsers
+            flexRender={flexRenderUsers}
+            table={advertiserUsersTable}
+            pagination={paginationUser}
           />
         </TabsContent>
       </Tabs>

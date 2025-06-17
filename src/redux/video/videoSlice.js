@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import backendURL from '@/utils/url'
 import Cookies from 'js-cookie'
-import axiosInstance from "@/api/api.js";
+import axiosInstance from '@/api/api.js'
 
 const initialState = {
   videos: [],
@@ -11,24 +11,17 @@ const initialState = {
   total_count: 0, // Изначально общее количество равно 0
 }
 
-export const fetchVideos = createAsyncThunk(
-  'videos/fetchVideos',
-  async ({ page = null, pageSize = null } = {}, { rejectWithValue }) => {
-    try {
-      const url = new URL(`${backendURL}/inventory/video/`);
-      const params = new URLSearchParams();
+export async function fetchVideos({ page = null, pageSize = null } = {}) {
+  const url = new URL(`${backendURL}/inventory/video/`)
+  const params = new URLSearchParams()
 
-      if (page) params.append('page', page);
-      if (pageSize) params.append('page_size', pageSize);
+  if (page) params.append('page', page)
+  if (pageSize) params.append('page_size', pageSize)
 
-      url.search = params.toString();
-      const response = await axiosInstance.get(url.href);
-      return response.data.data
-    } catch (error) {
-      return rejectWithValue(error.response)
-    }
-  },
-)
+  url.search = params.toString()
+  const response = await axiosInstance.get(url.href)
+  return response.data.data
+}
 
 export const addVideos = createAsyncThunk(
   'videos/addVideos',
@@ -107,36 +100,7 @@ export const DeleteVideo = createAsyncThunk(
       throw new Error('Failed to fetch order')
     }
   },
-)(
-  // export const deleteInventory = createAsyncThunk(
-  //   "inventory/deleteInventory",
-  //   async ({ id }) => {
-  //     console.log("data", id);
-  //     const token = Cookies.get
-  'token',
-)
-
-//     try {
-//       const response = await axios.delete(
-//         `${backendURL}/inventory/${id}`,
-
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//             Accept: "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-//       return response.data;
-//     } catch (error) {
-//       if (error.response && error.response.status === 403) {
-//         throw new Error("Failed to fetch order");
-//       }
-//       throw error;
-//     }
-//   }
-// );
+)('token')
 
 const videoSlice = createSlice({
   name: 'video',
@@ -144,18 +108,7 @@ const videoSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchVideos.pending, (state) => {
-        state.status = 'loading'
-      })
-      .addCase(fetchVideos.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        state.videos = action.payload
-        state.total_count = action.payload?.count; // Обновляем общее количество
-      })
-      .addCase(fetchVideos.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message
-      })
+
       .addCase(addVideos.fulfilled, (state, action) => {
         state.videos.push(action.payload.data)
         state.status = 'succeeded'
@@ -163,10 +116,10 @@ const videoSlice = createSlice({
       .addCase(fetchEditVideo.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(fetchEditVideo.fulfilled, (state, action) => {
+      .addCase(fetchEditVideo.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(fetchEditVideo.rejected, (state, action) => {
+      .addCase(fetchEditVideo.rejected, (state) => {
         state.status = 'failed'
       })
   },

@@ -1,9 +1,11 @@
 import { TableCell } from '@/components/ui/table'
-import React from "react";
+
 function TheadFirst({ dataChannel }) {
   const removeDuplicates = (arr) => Array.from(new Set(arr))
   const uniqueGenders = dataChannel
-    ? removeDuplicates(dataChannel?.gender_percentages?.map((gen) => gen.gender))
+    ? removeDuplicates(
+        dataChannel?.gender_percentages?.map((gen) => gen.gender),
+      )
     : []
   const uniqueAge = dataChannel
     ? removeDuplicates(
@@ -14,7 +16,9 @@ function TheadFirst({ dataChannel }) {
     ? removeDuplicates(dataChannel?.geo_percentages?.map((geo) => geo.country))
     : []
   const uniqueDevaice = dataChannel
-    ? removeDuplicates(dataChannel?.device_type_percentages?.map((geo) => geo.device_type))
+    ? removeDuplicates(
+        dataChannel?.device_type_percentages?.map((geo) => geo.device_type),
+      )
     : []
   const genderColSpan = uniqueGenders.length
   const ageColSpan = uniqueAge.length
@@ -37,7 +41,10 @@ function TheadFirst({ dataChannel }) {
         Гео
       </TableCell>
       {deviceColSpan ? (
-        <TableCell colSpan={deviceColSpan} className="rounded-tr-[20px] text-center">
+        <TableCell
+          colSpan={deviceColSpan}
+          className="rounded-tr-[20px] text-center"
+        >
           Девайсы
         </TableCell>
       ) : null}

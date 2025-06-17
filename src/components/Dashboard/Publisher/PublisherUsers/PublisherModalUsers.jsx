@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label.jsx'
 import { Input } from '@/components/ui/input.jsx'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, PackagePlus } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { addPublisherUsers } from '@/redux/publisherUsers/publisherUsersSlice.js'
 import { fetchPublisher } from '@/redux/publisher/publisherSlice.js'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export default function PublisherModalUsers({ onClose, modalUser }) {
   const dispatch = useDispatch()
@@ -35,29 +36,7 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
 
       dispatch(fetchPublisher({ page: 1, pageSize: 200 }))
     }
-  }, [modalUser, dispatch]) // const fetchPubl = async () => {
-  //   const token = Cookies.get('token')
-  //   const response = await axios.get(
-  //     `${backendURL}/publisher/`,
-  //
-  //     {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Accept: 'application/json',
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     },
-  //   )
-  //   setPublisherModal(response.data.data.results)
-  // // }
-  // React.useEffect(() => {
-  //   dispatch(resetPublisher())
-  //
-  //   fetchPublisher({
-  //     page: 1, // API использует нумерацию с 1
-  //     pageSize: 200,
-  //   })
-  // }, [dispatch])
+  }, [modalUser, dispatch])
 
   const {
     register,
@@ -113,8 +92,8 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <div className="flex gap-4 mb-4">
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-4">
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-2">
                   Имя<span className="text-red-500 ml-0.5">*</span>
@@ -149,41 +128,24 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
               </div>
             </div>
             {/**/}
-            <div className="grid w-full mb-4">
-              <Label className="text-sm	text-white pb-2 flex gap-0.5">
-                Email<span className="text-red-500 ml-0.5">*</span>
-                <div className="text-sm	text-red-500 ">
-                  {' '}
-                  {errors?.email && <p>{errors.email.message}</p>}
-                </div>
-              </Label>
-              <Input
-                type="email"
-                autoComplete="off"
-                {...register('email', {
-                  required: '.',
-                })}
-                placeholder={'Введите email'}
-                className={`border ${
-                  errors?.email ? 'border-red-500' : 'border-gray-300'
-                }   transition-all duration-300 text-sm `}
-              />
-            </div>
-            {/**/}
-            <div className="flex gap-4 mb-4">
+            <div className="flex gap-4">
               <div className="grid w-full">
-                <Label className="text-sm	text-white pb-2">
-                  Логин<span className="text-red-500 ml-0.5">*</span>
+                <Label className="text-sm	text-white pb-2 flex gap-0.5">
+                  Email<span className="text-red-500 ml-0.5">*</span>
+                  <div className="text-sm	text-red-500 ">
+                    {' '}
+                    {errors?.email && <p>{errors.email.message}</p>}
+                  </div>
                 </Label>
                 <Input
-                  type="text"
+                  type="email"
                   autoComplete="off"
-                  {...register('username', {
-                    required: 'Поле обезательно к заполнению',
+                  {...register('email', {
+                    required: '.',
                   })}
-                  placeholder={'Введите логин'}
+                  placeholder={'Введите email'}
                   className={`border ${
-                    errors?.username ? 'border-red-500' : 'border-gray-300'
+                    errors?.email ? 'border-red-500' : 'border-gray-300'
                   }   transition-all duration-300 text-sm `}
                 />
               </div>
@@ -246,7 +208,24 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
               </div>
             </div>
 
-            <div className="flex gap-4 ">
+            {/**/}
+            <div className="flex gap-4">
+              <div className="grid w-full">
+                <Label className="text-sm	text-white pb-2">
+                  Логин<span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  {...register('username', {
+                    required: 'Поле обезательно к заполнению',
+                  })}
+                  placeholder={'Введите логин'}
+                  className={`border ${
+                    errors?.username ? 'border-red-500' : 'border-gray-300'
+                  }   transition-all duration-300 text-sm `}
+                />
+              </div>
               <div className="grid w-full relative">
                 <Label className="text-sm	text-white pb-2">
                   Пароль<span className="text-red-500 ml-0.5">*</span>
@@ -273,6 +252,9 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
                   )}
                 </div>
               </div>
+            </div>
+
+            <div className="flex gap-2 items-end ">
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-2">
                   Выбрать паблишера
@@ -308,19 +290,19 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
                   )}
                 />
               </div>
+              <div>
+                <TooltipWrapper tooltipContent="Создать">
+                  <Button
+                    disabled={!isValid}
+                    isValid={true}
+                    variant="default"
+                    className="h-[40px]"
+                  >
+                    <PackagePlus />
+                  </Button>
+                </TooltipWrapper>
+              </div>
             </div>
-
-            <Button
-              isValid={true}
-              className={`${
-                isValid
-                  ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-                  : 'bg-[#616161]'
-              } w-full   h-[44px] text-white rounded-2xl	mt-8`}
-              disabled={!isValid}
-            >
-              Создать
-            </Button>
           </div>
         </form>
       </DialogContent>

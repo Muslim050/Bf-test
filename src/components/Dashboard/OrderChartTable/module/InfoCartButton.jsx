@@ -1,7 +1,6 @@
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
-import FormatterBudjet, {TiinFormatterBudget} from '@/components/Labrery/formatter/FormatterBudjet.jsx'
-import React from 'react'
+import { TiinFormatterBudget } from '@/components/Labrery/formatter/FormatterBudjet.jsx'
 
 const InfoCartButton = ({ orderData, totalBudget, totalViews }) => {
   return (
@@ -21,22 +20,16 @@ const InfoCartButton = ({ orderData, totalBudget, totalViews }) => {
 
           {/*Остаток*/}
           {orderData.status === 'finished' ? (
-            <div
-              className="sm:flex block gap-3 bg-white bg-opacity-30 backdrop-blur-md text-white p-2.5 rounded-[22px] items-center	 justify-center text-center">
+            <div className="sm:flex block gap-3 bg-white bg-opacity-30 backdrop-blur-md text-white p-2.5 rounded-[22px] items-center	 justify-center text-center">
               <div className="sm:text-base text-xs"> Остаток</div>
               <div className="sm:text-base text-xs">
-
-                <FormatterView
-                  data="0"
-                />
+                <FormatterView data="0" />
               </div>
             </div>
           ) : (
-            <div
-              className="sm:flex block gap-3 bg-white bg-opacity-30 backdrop-blur-md text-white p-2.5 rounded-[22px] items-center	 justify-center text-center">
+            <div className="sm:flex block gap-3 bg-white bg-opacity-30 backdrop-blur-md text-white p-2.5 rounded-[22px] items-center	 justify-center text-center">
               <div className="sm:text-base text-xs"> Остаток</div>
               <div className="sm:text-base text-xs">
-
                 <FormatterView
                   data={
                     orderData.expected_number_of_views - orderData.online_views
@@ -112,8 +105,7 @@ const InfoCartButton = ({ orderData, totalBudget, totalViews }) => {
                         ' ' +
                         '%'}
                   </div>
-                ) :
-                null}
+                ) : null}
               </AdvertStatus>
             </div>
           )}

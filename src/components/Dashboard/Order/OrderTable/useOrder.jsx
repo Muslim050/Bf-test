@@ -16,7 +16,6 @@ import Cookies from 'js-cookie'
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip.jsx'
 import { truncate } from '@/utils/other.js'
@@ -26,7 +25,7 @@ import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import FormatterBudjet from '@/components/Labrery/formatter/FormatterBudjet.jsx'
 import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
 import { getProgressStyle } from '@/components/Dashboard/Order/OrderTable/components/getProgressStyle.jsx'
-import NestedTable from '@/components/module/TablePagination/nestedTable.jsx'
+import NestedTable from '@/module/TablePagination/nestedTable.jsx'
 import CircularBadge from '@/components/Labrery/Circular/CircularBadge.jsx'
 import PopoverButtons from '@/components/Dashboard/Order/OrderTable/components/PopoverButtons.jsx'
 import toast from 'react-hot-toast'
@@ -37,6 +36,8 @@ import {
 } from '@/redux/orderStatus/orderStatusSlice.js'
 import { OpenSvg } from '@/assets/icons-ui.jsx'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.jsx'
+import { Button } from '@/components/ui/button.jsx'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export const useOrder = () => {
   const [columnFilters, setColumnFilters] = React.useState([])
@@ -44,7 +45,6 @@ export const useOrder = () => {
   const [searchInOrder, setSearchInOrder] = React.useState('')
 
   const role = Cookies.get('role')
-  const [showModalEditAdmin, setShowModalEditAdmin] = React.useState(false)
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
@@ -77,7 +77,7 @@ export const useOrder = () => {
         )
       })
       .catch((error) => {
-        toast.error(`Ошибка завершения заказа: ${error.data.error.detail}`)
+        toast.error(`${error.data.error.detail}`)
         dispatch(
           fetchOrder({
             page: pagination.pageIndex + 1, // API использует нумерацию с 1
@@ -98,8 +98,8 @@ export const useOrder = () => {
     }
   }
 
-  const columns = React.useMemo(
-    () => [
+  const columns = React.useMemo(() => {
+    const baseColumns = [
       {
         id: 'id',
         accessorFn: (_, index) => index + 1, // Используем индекс строки
@@ -152,7 +152,7 @@ export const useOrder = () => {
                   {role === 'admin' && (
                     <>
                       {isOver100Percent ? (
-                        <div>
+                        <div className="flex">
                           <span className="relative inline-flex rounded-full h-5 w-2.5 bg-red-600 text-[14px] ml-2 items-center justify-center"></span>
                         </div>
                       ) : null}
@@ -187,52 +187,26 @@ export const useOrder = () => {
         accessorFn: (row) => row.name, // Преобразование в число
         id: 'Кампания',
         cell: ({ row }) => (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild className="cursor-pointer">
-                <a
-                  target="_blank"
-                  className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
-                  href={row.original.promo_file}
-                >
-                  {truncate(row.original.name, 20)}
-                  <SquareArrowOutUpRight className="size-4" />
-                </a>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>ID:{row?.original.id}</p>
-                <p>{row.original.name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild className="cursor-pointer">
+              <a
+                target="_blank"
+                className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                href={row.original.promo_file}
+              >
+                {truncate(row.original.name, 20)}
+                <SquareArrowOutUpRight className="size-4" />
+              </a>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>ID:{row?.original.id}</p>
+              <p>{row.original.name}</p>
+            </TooltipContent>
+          </Tooltip>
         ),
-        // cell: ({ row }) =>
-        //   <>
-        //
-        //
-        //     {role === 'admin' ? (
-        //       <TooltipProvider>
-        //         <Tooltip>
-        //           <TooltipTrigger asChild className="cursor-pointer">
-        //             <div className='flex items-center gap-2'>
-        //               <div>{truncate (row.original.name, 20)}</div>
-        //             </div>
-        //           </TooltipTrigger>
-        //           <TooltipContent>
-        //             <p>ID: {row.original.id}</p>
-        //             <p>Кампания: {row.original.name}</p>
-        //           </TooltipContent>
-        //         </Tooltip>
-        //       </TooltipProvider>
-        //     ) : (
-        //       <div className='flex items-center gap-2'>
-        //         <div>{truncate (row.original.name, 20)}</div>
-        //       </div>
-        //     )}</>,
         filterFn: 'includesString',
         header: () => <span className="flex items-center gap-1">Кампания</span>,
       },
-
       {
         accessorFn: (row) => row.format, // Преобразование в число
         id: 'Формат',
@@ -345,116 +319,97 @@ export const useOrder = () => {
         id: 'Детали',
         header: () => <span className="flex items-center gap-1">Детали</span>,
         cell: ({ row }) => {
+          const isAdmin = role === 'admin'
+          const { id, status, inventories } = row.original
+          const isExpanded = expandedRowId === row.id
+
+          // Сколько забронированных с видео
+          const bookedWithVideoCount = inventories.filter(
+            (item) =>
+              item.video_content.link_to_video && item.status === 'booked',
+          ).length
+
+          // Есть ли хотя бы один booked inventory
+          const hasBookedInventory = inventories.some(
+            (item) => item.status === 'booked',
+          )
+
+          // ОТКРЫТЬ
+          const renderOpenButton = () => (
+            <TooltipWrapper
+              tooltipContent={`${isExpanded ? 'Закрыть' : 'Открыть'}`}
+            >
+              <Button
+                onClick={() => {
+                  handleRowClick(id, table.options.data)
+                  setExpandedRowId((prev) => (prev === row.id ? null : row.id))
+                }}
+                variant="default"
+                className={` relative ${bookedWithVideoCount > 0 ? 'bg-[#aa84ff] hover:bg-[#8b5cf6]' : ''}`}
+              >
+                <OpenSvg
+                  className={[
+                    ' transition-all ease-in-out',
+                    isExpanded ? 'rotate-90 scale-125' : 'rotate-0',
+                  ].join(' ')}
+                />
+
+                {/* Badge/пульс вокруг иконки, если есть видео */}
+                {bookedWithVideoCount > 0 && (
+                  <div className="absolute -top-2 -right-2">
+                    <span className="relative flex h-[17px] w-[17px]">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
+                      <span className="relative inline-flex items-center rounded-full h-[17px] w-[17px] bg-violet-500 justify-center text-[12px]">
+                        {bookedWithVideoCount}
+                      </span>
+                    </span>
+                  </div>
+                )}
+                {/* Дополнительный бейдж, если статус in_review/booked и есть booked inventory */}
+                {(status === 'in_review' || status === 'booked') &&
+                  hasBookedInventory && (
+                    <CircularBadge
+                      style={{
+                        backgroundColor: '#ff7d00',
+                        width: '15px',
+                        height: '15px',
+                      }}
+                      count={status === 'booked'}
+                    />
+                  )}
+              </Button>
+            </TooltipWrapper>
+          )
+
+          // СТАТИСТИКА
+          const renderStatsButton = () => (
+            <TooltipWrapper tooltipContent="Статистика заказа">
+              <Button
+                onClick={() => redirectToTariffDetails(row.original)}
+                variant="default"
+                className="bg-green-500 hover:bg-green-400 "
+              >
+                <ChartColumnIncreasing />
+              </Button>
+            </TooltipWrapper>
+          )
+
           return (
             <div className="flex gap-2">
-              {/*кнопка открыть*/}
-
-              {role === 'admin' ? (
-                <button
-                  // onClick={() => handleRowClick(advert.id, row)}
-                  onClick={() => {
-                    handleRowClick(row.original.id, table.options.data) // Передача данных в функцию
-                    setExpandedRowId((prev) =>
-                      prev === row.id ? null : row.id,
-                    ) // Переключение состояния
-                  }}
-                  className="relative hover:scale-125 transition-all "
-                >
-                  <OpenSvg
-                    className={`
-                  ${
-                    row.original.inventories.filter(
-                      (item) =>
-                        item.video_content.link_to_video &&
-                        item.status === 'booked',
-                    ).length > 0 && 'text-[#aa84ff]'
-                  }
-                  hover:text-brandPrimary-1 transition-all ease-in-out ${
-                    expandedRowId === row.id
-                      ? 'rotate-90 text-brandPrimary-1 scale-125'
-                      : 'rotate-0'
-                  }`}
-                  />
-
-                  <span>
-                    {row.original?.inventories?.filter(
-                      (item) =>
-                        item.video_content.link_to_video &&
-                        item.status === 'booked',
-                    ).length > 0 ? (
-                      <div className="absolute -top-2.5 -right-2.5">
-                        <span className="relative flex h-[17px] w-[17px]">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
-                          <span className="relative inline-flex items-center rounded-full h-[17px] w-[17px] bg-violet-500 justify-center text-[12px]">
-                            {
-                              row.original?.inventories?.filter(
-                                (item) =>
-                                  item.video_content.link_to_video &&
-                                  item.status === 'booked',
-                              ).length
-                            }
-                          </span>
-                        </span>
-                      </div>
-                    ) : (
-                      <>
-                        {row.status === 'in_review' &&
-                        row.inventories.filter(
-                          (item) => item.status === 'booked',
-                        ).length > 0 ? (
-                          <CircularBadge
-                            style={{
-                              backgroundColor: '#ff7d00',
-                              width: '15px',
-                              height: '15px',
-                            }}
-                            count={row.original.status === 'booked'}
-                          />
-                        ) : (
-                          ''
-                        )}
-                      </>
-                    )}
-                    {row.status === 'booked' ? (
-                      <CircularBadge
-                        style={{
-                          backgroundColor: '#ff7d00',
-                          width: '15px',
-                          height: '15px',
-                        }}
-                        count={row.original.status === 'booked'}
-                      />
-                    ) : (
-                      ''
-                    )}
-                  </span>
-                </button>
-              ) : null}
-              {/*кнопка открыть*/}
-
-              {/*Статистика заказа*/}
-              {row.original.status === 'in_progress' ||
-              row.original.status === 'finished' ? (
-                <button
-                  onClick={() => redirectToTariffDetails(row.original)}
-                  // onClick={() => redirectToTariffDetails(advert)}
-                  className="hover:scale-125 transition-all"
-                >
-                  <ChartColumnIncreasing className="hover:text-green-400" />
-                </button>
-              ) : (
-                <>
-                  {role === 'advertising_agency' || role === 'advertiser'
-                    ? ''
-                    : null}
-                </>
-              )}
-              {/*Статистика заказа*/}
+              {isAdmin && renderOpenButton()}
+              {(status === 'in_progress' || status === 'finished') &&
+                renderStatsButton()}
             </div>
           )
         },
       },
-      {
+    ]
+    if (
+      role === 'admin' ||
+      role === 'advertiser' ||
+      role === 'advertising_agency'
+    ) {
+      baseColumns.push({
         id: 'Действия',
         header: () => (
           <span className="flex items-center gap-1 w-max">Действия</span>
@@ -476,7 +431,6 @@ export const useOrder = () => {
                   <PopoverButtons
                     advert={row.original}
                     isOver100Percent={isOver100Percent}
-                    setShowModalEditAdmin={setShowModalEditAdmin}
                     handleFinishOrder={handleFinishOrder}
                   />
                 </div>
@@ -485,10 +439,10 @@ export const useOrder = () => {
             </div>
           )
         },
-      },
-    ],
-    [expandedRowId],
-  )
+      })
+    }
+    return baseColumns
+  }, [expandedRowId, role])
 
   const table = useReactTable({
     data: order.results || [], // Данные из Redux

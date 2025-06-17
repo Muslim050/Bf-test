@@ -9,19 +9,13 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import {
-  TableHeader,
-  Table,
-  TableBody,
-} from '@/components/ui/table'
-import PreLoadDashboard from "@/components/Dashboard/PreLoadDashboard/PreLoad.jsx";
-import SelectedFilter from "@/components/Dashboard/Reports/AdvertiserReport/components/SelectedFilter.jsx";
-import useAdvertiserReport from "@/components/Dashboard/Reports/AdvertiserReport/useAdvertiserReport.jsx";
-import { SlidersHorizontal } from 'lucide-react';
-
+import { Table, TableBody, TableHeader } from '@/components/ui/table'
+import PreLoadDashboard from '@/components/Dashboard/PreLoadDashboard/PreLoad.jsx'
+import SelectedFilter from '@/components/Dashboard/Reports/AdvertiserReport/components/SelectedFilter.jsx'
+import useAdvertiserReport from '@/components/Dashboard/Reports/AdvertiserReport/useAdvertiserReport.jsx'
+import { SlidersHorizontal } from 'lucide-react'
 
 function AdvertiserReportTable() {
-
   let totalViews = 0
   let totalBudget = 0
   let totalAnalitickView = 0
@@ -31,7 +25,7 @@ function AdvertiserReportTable() {
     loading,
     handleDateStatictick,
     handleSelectChangeADV,
-    data,
+    statistics,
     setLoading,
     selectedOptionAdv,
     selectedAdvName,
@@ -46,31 +40,32 @@ function AdvertiserReportTable() {
     handleClear,
     selectedAdv,
     advdata,
-    endDate
-
-  } = useAdvertiserReport();
+    endDate,
+  } = useAdvertiserReport()
   return (
     <>
       {loading ? (
-
-        <PreLoadDashboard onComplete={() => setLoading(false)} loading={loading}text="Загрузка отчета" />
-
-        ) : (
+        <PreLoadDashboard
+          onComplete={() => setLoading(false)}
+          loading={loading}
+          text="Загрузка отчета"
+        />
+      ) : (
         <div className="tableWrapper" style={{ overflow: 'visible' }}>
           <div className="flex items-center justify-between w-full my-4">
             {/* Левая часть: YouTube Analytics + выбранные фильтры */}
             <div className="flex items-center gap-2">
-              {data?.length > 0 && (
+              {statistics?.length > 0 && (
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1 items-center text-lg font-semibold">
-                    You <span className="bg-red-600 px-1 py-1 rounded-xl">Tube</span>
+                    You{' '}
+                    <span className="bg-red-600 px-1 py-1 rounded-xl">
+                      Tube
+                    </span>
                     <p className="text-lg font-medium">Analytics</p>
                   </div>
-
                 </div>
               )}
-
-
             </div>
 
             {/* Правая часть: Кнопка "Фильтр" */}
@@ -91,20 +86,23 @@ function AdvertiserReportTable() {
                     variant="ghost"
                     className="flex justify-end bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white"
                   >
-                    <SlidersHorizontal className="w-4 h-4 mr-2"/> Фильтр
+                    <SlidersHorizontal className="w-4 h-4 mr-2" /> Фильтр
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-80 mr-3.5 bg-white bg-opacity-30 backdrop-blur-md border-0 rounded-[22px]">
                   <div>
                     <div className="flex items-center gap-2 pb-4">
                       <div className="w-2.5 h-6 bg-[#B5E4CA] rounded-[4px]"></div>
-                      <h4 className="font-medium" style={{color: 'var(--text-color )'}}>
+                      <h4
+                        className="font-medium"
+                        style={{ color: 'var(--text-color )' }}
+                      >
                         Фильтры
                       </h4>
                     </div>
                     <p
                       className="text-xs pt-3 pb-1 border-t border-[#F9F9F9]"
-                      style={{color: 'var(--text-color )'}}
+                      style={{ color: 'var(--text-color )' }}
                     >
                       Выберите необходимые параметры
                     </p>
@@ -136,37 +134,34 @@ function AdvertiserReportTable() {
           <div
             className={`border_container rounded-[22px] p-[3px] glass-background h-[calc(100vh-270px)]`} // Здесь используется h-screen для высоты на весь экран
           >
-            {data && data.length ? (
+            {statistics && statistics.length ? (
               <>
                 <div className="h-full overflow-y-auto">
-                  <Table
-                    className={` border_design rounded-lg overflow-auto`}
-                  >
+                  <Table className={` border_design rounded-lg overflow-auto`}>
                     {' '}
                     {/* Колонки основной таблица  */}
                     <TableHeader className="bg-[#FFFFFF2B] rounded-t-lg">
-                      <OrderChartThead statistic={tableData}/>
+                      <OrderChartThead statistic={tableData} />
                     </TableHeader>
                     {/* Колонки основной таблица  */}
                     <TableBody>
-                      {data &&
-                        data.length &&
-                        data.map ((statistic, index) => {
+                      {statistics &&
+                        statistics.length &&
+                        statistics.map((statistic, index) => {
                           totalBudget += statistic.budget
                           totalAnalitickView += statistic.online_view_count
                           totalViews += statistic.online_view_count
-                          tableData.push (statistic)
+                          tableData.push(statistic)
                           return (
                             <React.Fragment key={statistic.video_link}>
                               {/* Данные таблицы  */}
                               <tr
                                 key={index}
-                                style={{borderBottom: '1px solid #f9f9f92b'}}
+                                style={{ borderBottom: '1px solid #f9f9f92b' }}
                               >
                                 <AdvChartData
                                   statistic={statistic}
                                   index={index}
-
                                 />
                               </tr>
                             </React.Fragment>
@@ -174,7 +169,6 @@ function AdvertiserReportTable() {
                         })}
                     </TableBody>
                   </Table>
-
                 </div>
 
                 {/* Ячейки с инфо Итого:	 */}
@@ -184,7 +178,6 @@ function AdvertiserReportTable() {
                   totalAnalitickView={totalAnalitickView}
                 />
                 {/* Ячейки с инфо Итого:	 */}
-
               </>
             ) : (
               <div className="flex items-center gap-2 justify-center h-[100%] 	">

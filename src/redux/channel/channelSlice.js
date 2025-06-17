@@ -1,9 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
 import backendURL from '@/utils/url'
-import Cookies from 'js-cookie'
-import axiosInstance from "@/api/api.js";
-import log from "eslint-plugin-react/lib/util/log.js";
+import axiosInstance from '@/api/api.js'
 
 const initialState = {
   channel: [],
@@ -15,17 +12,20 @@ const initialState = {
 
 export const fetchChannel = createAsyncThunk(
   'channel/fetchChannel',
-  async ({ id = null, page = null, pageSize = null } = {}, { rejectWithValue }) => {
+  async (
+    { id = null, page = null, pageSize = null } = {},
+    { rejectWithValue },
+  ) => {
     let url = new URL(`${backendURL}/publisher/channel/`)
     const params = new URLSearchParams()
     if (id) {
       params.append('publisher_id', id)
     }
     if (page) {
-      params.append('page', page);
+      params.append('page', page)
     }
     if (pageSize) {
-      params.append('page_size', pageSize);
+      params.append('page_size', pageSize)
     }
     url.search = params.toString()
 
@@ -51,8 +51,7 @@ export const addChannel = createAsyncThunk(
           phone_number: data.phone,
           channel_id: data.channelId,
           commission_rate: data.commission_rate,
-
-        }
+        },
       )
       return response.data
     } catch (error) {
@@ -73,8 +72,7 @@ const channelSlice = createSlice({
       .addCase(fetchChannel.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.channel = action.payload
-        state.total_count = action.payload?.count; // Обновляем общее количество
-
+        state.total_count = action.payload?.count // Обновляем общее количество
       })
       .addCase(fetchChannel.rejected, (state, action) => {
         state.status = 'failed'

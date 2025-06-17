@@ -13,9 +13,10 @@ import InfoCartButton from '@/components/Dashboard/OrderChartTable/module/InfoCa
 import FilteredTooltip from '@/components/Dashboard/OrderChartTable/module/FilteredTooltip/FilteredTooltip.jsx'
 import SelectedFilterCart from './module/SelectedFilterCart/index.jsx'
 import PreLoadDashboard from '@/components/Dashboard/PreLoadDashboard/PreLoad.jsx'
-import TablePagination from '@/components/module/TablePagination/index.jsx'
+import TablePagination from '@/module/TablePagination/index.jsx'
 import { useOrderChart } from '@/components/Dashboard/OrderChartTable/useOrderChart.jsx'
 import { Skeleton } from '@/components/ui/skeleton.jsx'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 function OrderChart() {
   const {
@@ -39,7 +40,7 @@ function OrderChart() {
     sumBudjet,
     sumView,
     isLoadingData,
-    openFilter
+    openFilter,
   } = useOrderChart()
 
   useEffect(() => {
@@ -57,80 +58,87 @@ function OrderChart() {
         />
       ) : (
         <div>
-          <div className="flex items-center gap-4 justify-between ">
-            <div className="flex items-center gap-3">
-              <Link to={'/order'}>
-                <ChevronLeft className="w-8 h-6 hover:text-brandPrimary-1" />
-              </Link>
-              {/* </Button> */}
-              <div className="text-lg	text-white flex">
-                <div>{orderData?.name}</div>
-                &nbsp; / &nbsp;
-                <div>{orderData?.advertiser?.name}</div>
-              </div>
-              {orderData.target_country && (
-                <div
-                  className={`rounded-[6px] px-1 py-1 text-[16px]  ${
-                    orderData.target_country ? 'bg-[#606afc]' : 'bg-transparent'
-                  }`}
-                >
-                  {orderData.target_country}
+          <div className="flex  items-center gap-4 justify-between ">
+            <div className="flex w-full items-center gap-3 justify-between">
+              <div className="flex items-center gap-3">
+                <Link to={'/order'}>
+                  <TooltipWrapper tooltipContent="Назад">
+                    <Button variant="default">
+                      <ChevronLeft />
+                    </Button>
+                  </TooltipWrapper>
+                </Link>
+
+                <div className="text-lg	text-white flex">
+                  <div>{orderData?.name}</div>
+                  &nbsp; / &nbsp;
+                  <div>{orderData?.advertiser?.name}</div>
                 </div>
-              )}
-            </div>
-
-            <div className="flex gap-2">
-              {/* Выбранный параметры фильтра */}
-              {dataFiltered && (
-                <Button
-                  variant="link"
-                  onClick={dataFilteredClose}
-                  disabled={isLoadingData}
-                  className="text-[#A7CCFF] px-0 h-auto"
-                >
-                  Очистить
-                </Button>
-              )}
-              <SelectedFilterCart
-                dataFiltered={dataFiltered}
-                startDate={startDate}
-                endDate={endDate}
-              />
-              {/* Выбранный параметры фильтра */}
-
-              <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    disabled={isLoadingData}
-                    onClick={openFilter}
-                    variant="ghost"
-                    className=" px-7 bg-brandPrimary-1 rounded-[22px] hover:bg-brandPrimary-50 text-white no-underline hover:text-white "
+                {orderData.target_country && (
+                  <div
+                    className={`rounded-[6px] px-1 py-1 text-[16px]  ${
+                      orderData.target_country
+                        ? 'bg-[#606afc]'
+                        : 'bg-transparent'
+                    }`}
                   >
-                    <SlidersHorizontal className="w-4 h-4 mr-2" /> Фильтр
-                  </Button>
-                </PopoverTrigger>
-
-                <PopoverContent className="w-80 mr-3.5 bg-white bg-opacity-30 backdrop-blur-md border-0 rounded-[22px]">
-                  <div className="">
-                    <div className="flex items-center gap-2 pb-4">
-                      <div className="w-2.5	h-6	bg-[#B5E4CA] rounded-[4px]"></div>
-                      <h4 className="font-medium text-white">Фильтры</h4>
-                    </div>
-                    <p className="text-xs	  py-3 border-t border-[#F9F9F9] text-white">
-                      Выберите необходимые параметры
-                    </p>
-                    <FilteredTooltip
-                      orderData={orderData}
-                      handleDateStatictick={handleDateStatictick}
-                      startDate={startDate}
-                      setStartDate={setStartDate}
-                      endDate={endDate}
-                      setEndDate={setEndDate}
-                      handleClear={handleClear}
-                    />
+                    {orderData.target_country}
                   </div>
-                </PopoverContent>
-              </Popover>
+                )}
+              </div>
+
+              <div className="flex gap-2">
+                {/* Выбранный параметры фильтра */}
+                {dataFiltered && (
+                  <Button
+                    variant="link"
+                    onClick={dataFilteredClose}
+                    disabled={isLoadingData}
+                    className="text-[#A7CCFF] px-0 h-auto"
+                  >
+                    Очистить
+                  </Button>
+                )}
+                <SelectedFilterCart
+                  dataFiltered={dataFiltered}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+                {/* Выбранный параметры фильтра */}
+
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      disabled={isLoadingData}
+                      onClick={openFilter}
+                      variant="default"
+                    >
+                      <SlidersHorizontal />
+                    </Button>
+                  </PopoverTrigger>
+
+                  <PopoverContent className="w-80 mr-3.5 bg-white bg-opacity-30 backdrop-blur-md border-0 rounded-[22px]">
+                    <div className="">
+                      <div className="flex items-center gap-2 pb-4">
+                        <div className="w-2.5	h-6	bg-[#B5E4CA] rounded-[4px]"></div>
+                        <h4 className="font-medium text-white">Фильтр</h4>
+                      </div>
+                      <p className="text-xs	py-3 border-t border-[#F9F9F9] text-[var(--text)]">
+                        Выберите необходимые параметры
+                      </p>
+                      <FilteredTooltip
+                        orderData={orderData}
+                        handleDateStatictick={handleDateStatictick}
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                        handleClear={handleClear}
+                      />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
           </div>
           <div>

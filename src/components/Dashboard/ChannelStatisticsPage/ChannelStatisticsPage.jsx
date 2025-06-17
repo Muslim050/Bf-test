@@ -1,77 +1,61 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import {
-  clearStatistics,
-  fetchChannelStatistics,
-  fetchVideoStatistics,
-} from "../../../redux/statisticsSlice";
-import StatictickChannel from "./StatictickChannel/StatictickChannel";
-import StatictickVideoTable from "./StatictickVideo/StatictickVideoTable";
-import {toast} from "react-hot-toast";
-import PreLoadDashboard from "@/components/Dashboard/PreLoadDashboard/PreLoad.jsx";
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+
+import StatictickChannel from './StatictickChannel/StatictickChannel'
+import { toast } from 'react-hot-toast'
+import PreLoadDashboard from '@/components/Dashboard/PreLoadDashboard/PreLoad.jsx'
+import { fetchChannelStatistics } from '@/redux/statisticsSlice.js'
 
 function ChannelStatisticsPage() {
-  const dispatch = useDispatch();
-  const { id } = useParams();
-  const data = useSelector((state) => state.statistics.statisticsVideo);
-  const dataChannel = useSelector(
-    (state) => state.statistics.statisticsChannel
-  );
-  const [loading, setLoading] = React.useState(true);
-  const [channel, setLoadingChannel] = React.useState(true);
-  const [error, setError] = React.useState('');
+  const dispatch = useDispatch()
+  const { id } = useParams()
+  const [dataChannel, setDataChannel] = useState()
+  const [loading, setLoading] = React.useState(true)
+  const [channel, setLoadingChannel] = React.useState(true)
+  const [error, setError] = React.useState('')
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
+        setLoading(true)
         setLoadingChannel(true)
 
-        await dispatch(clearStatistics())
-        await Promise.all([
-          dispatch(fetchChannelStatistics({id})).unwrap()
-        ])
+        setDataChannel(null)
+        const data = await fetchChannelStatistics({ id })
+        setDataChannel(data)
       } catch (error) {
         setError(error?.data?.error?.detail)
-        console.log (error.data?.error?.detail)
-        toast.error(`${error?.message} - ${error?.error.message} ||  ${error?.detail}`);
+        toast.error(
+          `${error?.message} - ${error?.error.message} ||  ${error?.detail}`,
+        )
       } finally {
-        setLoading(false);
-        setLoadingChannel(false);
+        setLoading(false)
+        setLoadingChannel(false)
       }
     }
-fetchData()
-
-
-    // dispatch(clearStatistics());
-    // dispatch(fetchVideoStatistics({ id })).then(() => setLoading(false))
-    //
-    // dispatch(fetchChannelStatistics({ id }))
-    //   .then(() =>
-    //   setLoadingChannel(false)
-    // ).catch((error) => {
-    //   console.log (error)
-    //   toast.error(`Failed to load statistics: ${error}`)
-    //   })
-  }, [dispatch, id]);
+    fetchData()
+  }, [dispatch, id])
 
   return (
     <>
-
-      {
-        loading || channel ?
-          <PreLoadDashboard onComplete={() => setLoading(false)} loading={loading} text={'Загрузка статистики'} />
-          :
-          <>
-            <StatictickChannel dataChannel={dataChannel} channel={channel} error={error}/>
-
-            {/*<StatictickVideoTable data={data} loading={loading} error={error}/>*/}
-          </>
-      }
-
+      {loading || channel ? (
+        <PreLoadDashboard
+          onComplete={() => setLoading(false)}
+          loading={loading}
+          text={'Загрузка статистики'}
+        />
+      ) : (
+        <>
+          <StatictickChannel
+            dataChannel={dataChannel}
+            channel={channel}
+            error={error}
+          />
+        </>
+      )}
     </>
-  );
+  )
 }
 
-export default ChannelStatisticsPage;
+export default ChannelStatisticsPage

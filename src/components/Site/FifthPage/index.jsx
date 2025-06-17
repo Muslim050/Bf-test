@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SetkaSvg, StarsSSSvg } from '@/assets/Site/site-svg.jsx'
 import 'swiper/css'
 import 'swiper/css/pagination'
-gsap.registerPlugin(ScrollTrigger)
 import HeadeYouTube from './HeadeYouTube.png'
 import video2 from '@/assets/Site/FirstPage/Video/22.mp4'
 import video9 from '@/assets/Site/FirstPage/Video/1011.mp4'
@@ -16,10 +15,11 @@ import video4 from '@/assets/Site/FirstPage/Video/55.mp4'
 import PageTitle from '../module/PageTitle'
 
 gsap.registerPlugin(ScrollTrigger)
+
+gsap.registerPlugin(ScrollTrigger)
 function FifthPage() {
   const sectionRef = useRef(null)
   const triggerRef = useRef(null)
-  const swiperRef = useRef()
 
   //section2
   const sectionMainTitle = useRef(null)
@@ -109,10 +109,14 @@ function FifthPage() {
     <section className="overflow-hidden" id="FifthPage">
       <div className=" ">
         {/* max-w-[900px] w-full m-auto */}
-        <div   style={{
-          background: "radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%",
-          filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
-        }} className="relative  flex-col justify-between  py-20	   overflow-hidden">
+        <div
+          style={{
+            background:
+              'radial-gradient(49.2% 63.45% at 50% 45.62%, rgba(21, 61, 204, 0.08) 14.36%, rgba(5, 5, 11, 0) 100%), radial-gradient(47.78% 64.92% at 50% 44.06%, rgba(216, 236, 248, 0.04) 0%, rgba(152, 192, 239, 0.01) 50%, rgba(5, 5, 11, 0) 100%',
+            filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+          }}
+          className="relative  flex-col justify-between  py-20	   overflow-hidden"
+        >
           {/*<GradientBGSvg className="absolute top-0 left-0 w-[100%] h-full -z-[5px]" />*/}
           <StarsSSSvg className="absolute top-0 left-0 w-[100%] h-full -z-[5px]" />
           <SetkaSvg className="absolute top-0 left-0 w-[100%] h-full -z-[5px]" />

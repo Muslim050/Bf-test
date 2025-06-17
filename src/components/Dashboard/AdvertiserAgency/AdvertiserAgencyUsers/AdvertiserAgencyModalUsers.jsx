@@ -1,5 +1,5 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import {
@@ -14,7 +14,7 @@ import {
 import { Label } from '@/components/ui/label.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import MaskedInput from 'react-text-mask'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, PackagePlus } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -25,21 +25,22 @@ import {
 } from '@/components/ui/select.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
-import {fetchAdvertiserAgency} from "@/redux/AgencySlice/advertiserAgency/advertiserAgencySlice.js";
+import { fetchAdvertiserAgency } from '@/redux/AgencySlice/advertiserAgency/advertiserAgencySlice.js'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export default function AdvertiserAgencyModalUsers({ onClose }) {
   const dispatch = useDispatch()
   // const [agency, setAgency] = React.useState([])
   const [showPasswordOld, setShowPasswordOld] = React.useState(false)
-  const { advertiserAgency } = useSelector(
-    (state) => state.advertiserAgency,
-  )
+  const { advertiserAgency } = useSelector((state) => state.advertiserAgency)
 
   React.useEffect(() => {
-    dispatch(fetchAdvertiserAgency({
-      page: 1, // API использует нумерацию с 1
-      pageSize: 100,
-    }))
+    dispatch(
+      fetchAdvertiserAgency({
+        page: 1, // API использует нумерацию с 1
+        pageSize: 100,
+      }),
+    )
   }, [dispatch])
 
   const {
@@ -128,46 +129,27 @@ export default function AdvertiserAgencyModalUsers({ onClose }) {
             </div>
 
             {/**/}
-            <div className="grid w-full mb-4">
-              <Label className="text-sm	text-white pb-2 flex gap-0.5">
-                Email<span className="text-red-500 ml-0.5">*</span>
-                <div className="text-sm	text-red-500 ">
-                  {' '}
-                  {errors?.email && <p>{errors.email.message}</p>}
-                </div>
-              </Label>
-              <Input
-                type="email"
-                autoComplete="off"
-                {...register('email', {
-                  required: '.',
-                })}
-                placeholder={'Введите email'}
-                className={`border ${
-                  errors?.email ? 'border-red-500' : 'border-gray-300'
-                }   transition-all duration-300 text-sm `}
-              />
-            </div>
-            {/*  */}
-
             <div className="flex gap-4 mb-4">
               <div className="grid w-full">
-                <Label className="text-sm	text-white pb-2">
-                  UserName<span className="text-red-500 ml-0.5">*</span>
+                <Label className="text-sm	text-white pb-2 flex gap-0.5">
+                  Email<span className="text-red-500 ml-0.5">*</span>
+                  <div className="text-sm	text-red-500 ">
+                    {' '}
+                    {errors?.email && <p>{errors.email.message}</p>}
+                  </div>
                 </Label>
                 <Input
-                  type="text"
+                  type="email"
                   autoComplete="off"
-                  {...register('username', {
-                    required: 'Поле обезательно к заполнению',
+                  {...register('email', {
+                    required: '.',
                   })}
-                  placeholder={'Введите UserName'}
+                  placeholder={'Введите email'}
                   className={`border ${
-                    errors?.username ? 'border-red-500' : 'border-gray-300'
+                    errors?.email ? 'border-red-500' : 'border-gray-300'
                   }   transition-all duration-300 text-sm `}
                 />
               </div>
-
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-2">
                   Номер телефона<span className="text-red-500 ml-0.5">*</span>
@@ -227,7 +209,25 @@ export default function AdvertiserAgencyModalUsers({ onClose }) {
               </div>
             </div>
 
+            {/*  */}
+
             <div className="flex gap-4 mb-4">
+              <div className="grid w-full">
+                <Label className="text-sm	text-white pb-2">
+                  UserName<span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  {...register('username', {
+                    required: 'Поле обезательно к заполнению',
+                  })}
+                  placeholder={'Введите UserName'}
+                  className={`border ${
+                    errors?.username ? 'border-red-500' : 'border-gray-300'
+                  }   transition-all duration-300 text-sm `}
+                />
+              </div>
               <div className="grid w-full relative">
                 <Label className="text-sm	text-white pb-2">
                   Пароль<span className="text-red-500 ml-0.5">*</span>
@@ -254,6 +254,9 @@ export default function AdvertiserAgencyModalUsers({ onClose }) {
                   )}
                 </div>
               </div>
+            </div>
+
+            <div className="flex items-end gap-2 mb-4">
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-2">
                   Рекламное Агенство
@@ -287,19 +290,12 @@ export default function AdvertiserAgencyModalUsers({ onClose }) {
                   )}
                 />
               </div>
+              <TooltipWrapper tooltipContent="Создать">
+                <Button isValid={true} className="h-[40px]" disabled={!isValid}>
+                  <PackagePlus />
+                </Button>
+              </TooltipWrapper>
             </div>
-
-            <Button
-              isValid={true}
-              className={`${
-                isValid
-                  ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-                  : 'bg-[#616161]'
-              } w-full   h-[44px] text-white rounded-lg	mt-8`}
-              disabled={!isValid}
-            >
-              Создать
-            </Button>
           </div>
         </form>
       </DialogContent>

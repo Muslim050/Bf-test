@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { fetchStatistics } from '../../../redux/statisticsSlice'
 import { useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
@@ -9,7 +9,6 @@ import axios from 'axios'
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip.jsx'
 import { truncate } from '@/utils/other.js'
@@ -27,8 +26,11 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import NestedStatickOrderTable from '@/components/module/TablePagination/NestedStatickOrderTable.jsx'
-import { ChevronDown, ChevronUp, SquareArrowOutUpRight } from 'lucide-react'
+import NestedStatickOrderTable from '@/module/TablePagination/NestedStatickOrderTable.jsx'
+import { SquareArrowOutUpRight } from 'lucide-react'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
+import { Button } from '@/components/ui/button.jsx'
+import { OpenSvg } from '@/assets/icons-ui.jsx'
 
 export const useOrderChart = () => {
   const dispatch = useDispatch()
@@ -51,10 +53,10 @@ export const useOrderChart = () => {
   //table
   const [columnFilters, setColumnFilters] = React.useState([])
   const [globalFilter, setGlobalFilter] = React.useState('')
-  const data = useSelector((state) => state.statistics.statistics.results)
+  const [statistics, setStatistics] = useState()
 
-  const totalBudjet = data?.map((i) => i.budget)
-  const totalView = data?.map((i) => i.online_view_count)
+  const totalBudjet = statistics?.map((i) => i.budget)
+  const totalView = statistics?.map((i) => i.online_view_count)
 
   const sumBudjet = totalBudjet?.reduce((acc, num) => acc + num, 0)
   const sumView = totalView?.reduce((acc, num) => acc + num, 0)
@@ -81,14 +83,13 @@ export const useOrderChart = () => {
 
   //Получение отчета
   React.useEffect(() => {
-    dispatch(fetchStatistics({ order_id: id }))
-      .unwrap()
-      .then(() => setLoading(false))
-      .catch((error) => {
-        setLoading(false)
-        toast.error(error?.data?.error?.detail)
-      })
-  }, [dispatch, id])
+    const fetchData = async () => {
+      const data = await fetchStatistics({ order_id: id })
+      setStatistics(data) // <- сюда приходят те самые 8 элементов
+      setLoading(false) // <- обязательно отключай загрузку
+    }
+    fetchData()
+  }, [id])
   //Получение отчета
 
   //Дата
@@ -158,14 +159,18 @@ export const useOrderChart = () => {
 
     const toastId = toast.loading('Загрузка отчета..')
 
-    dispatch(fetchStatistics({ order_id: id }))
-      .then(() => {
+    fetchStatistics({ order_id: id })
+      .then((data) => {
         toast.success('Данные успешно обновлены', { id: toastId })
+        // здесь можешь обновить локальный state, если нужно
+        setStatistics(data)
       })
       .catch((error) => {
-        toast.error(`Failed to load statistics: ${error.message}`, {
-          id: toastId,
-        })
+        // обработка ошибок
+        toast.error(
+          `Failed to load statistics: ${error?.response?.data?.message || error.message || 'Ошибка запроса'}`,
+          { id: toastId },
+        )
       })
       .finally(() => {
         setOpen(false)
@@ -177,7 +182,7 @@ export const useOrderChart = () => {
   //При закрытий окна фильтра
 
   //Очищаем фильтр
-  const handleClear = () => {
+  const handleClear = async () => {
     setDataFiltered(false)
     setOpen(false)
 
@@ -191,23 +196,28 @@ export const useOrderChart = () => {
 
     setStartDate(minDate)
     setEndDate(maxDate)
+
     setIsLoadingData(true)
     const toastId = toast.loading('Загрузка отчета...')
 
-    dispatch(fetchStatistics({ order_id: id }))
-      .then(() => {
-        toast.success('Данные успешно обновлены', { id: toastId })
-      })
-      .catch((error) => {
-        toast.error(`Failed to load statistics: ${error.message}`, {
-          id: toastId,
-        })
-      })
-      .finally(() => {
-        setOpen(false)
-        setIsLoadingData(false)
-      })
+    try {
+      const data = await fetchStatistics({ order_id: id })
+      // setStatistics(data); // если используешь локальный state для данных
+      toast.success('Данные успешно обновлены', { id: toastId })
+      setStatistics(data)
+    } catch (error) {
+      toast.error(
+        `Failed to load statistics: ${
+          error?.response?.data?.message || error.message || 'Ошибка запроса'
+        }`,
+        { id: toastId },
+      )
+    } finally {
+      setOpen(false)
+      setIsLoadingData(false)
+    }
   }
+
   //Очищаем фильтр
 
   //Фильтрация по параметрам
@@ -267,19 +277,17 @@ export const useOrderChart = () => {
               className="text-[#A7CCFF] underline hover:text-[#4289eb]"
               rel="noreferrer"
             >
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild className="cursor-pointer">
-                    <div className="flex items-center gap-1">
-                      {truncate(row.original.video_name, 20)}
-                      <SquareArrowOutUpRight className="size-4" />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{row.original.video_name}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <div className="flex items-center gap-1">
+                    {truncate(row.original.video_name, 20)}
+                    <SquareArrowOutUpRight className="size-4" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{row.original.video_name}</p>
+                </TooltipContent>
+              </Tooltip>
             </a>
           </>
         ),
@@ -359,23 +367,26 @@ export const useOrderChart = () => {
           const isExpanded = expandedRowId === row.id
           return (
             <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setExpandedRowId((prev) => (prev === row.id ? null : row.id)) // Переключение состояния
-                }}
-                className={`hover:scale-110 transition-all   px-[10px] py-[5px] flex rounded-[12px] hover:bg-white hover:text-[#12173c] ${
-                  isExpanded
-                    ? 'bg-white text-[#12173c]'
-                    : 'bg-[#FFFFFF2B] text-white'
-                }`}
+              {' '}
+              <TooltipWrapper
+                tooltipContent={`${isExpanded ? 'Закрыть' : 'Открыть'}`}
               >
-                {isExpanded ? 'Закрыть' : 'Показать'}
-                {isExpanded ? (
-                  <ChevronUp className="size-5" />
-                ) : (
-                  <ChevronDown className="size-5" />
-                )}
-              </button>
+                <Button
+                  onClick={() => {
+                    setExpandedRowId((prev) =>
+                      prev === row.id ? null : row.id,
+                    ) // Переключение состояния
+                  }}
+                  variant="default"
+                >
+                  <OpenSvg
+                    className={[
+                      ' transition-all ease-in-out',
+                      isExpanded ? 'rotate-90 scale-125' : 'rotate-0',
+                    ].join(' ')}
+                  />
+                </Button>
+              </TooltipWrapper>
             </div>
           )
         },
@@ -385,14 +396,13 @@ export const useOrderChart = () => {
   )
 
   const table = useReactTable({
-    data: data || [], // Данные из Redux
+    data: statistics || [], // Данные из Redux
     columns,
     state: {
       columnFilters,
       globalFilter,
       expanded: expandedRowId ? { [expandedRowId]: true } : {}, // Управляем развернутыми строками
     },
-    manualPagination: true, // Указываем, что используем серверную пагинацию
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -423,6 +433,6 @@ export const useOrderChart = () => {
     sumBudjet,
     sumView,
     isLoadingData,
-     openFilter
+    openFilter,
   }
 }

@@ -1,15 +1,15 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import backendURL from '@/utils/url'
-import {toastConfig} from '../../utils/toastConfig.js'
+import { toastConfig } from '../../utils/toastConfig.js'
 import toast from 'react-hot-toast'
-import axiosInstance from "@/api/api.js";
+import axiosInstance from '@/api/api.js'
 
 const initialState = {
   inventory: [],
-  diactivatedInventory:[],
+  diactivatedInventory: [],
   status: '',
   error: null,
   total_count: 0, // Изначально общее количество равно 0
@@ -20,42 +20,37 @@ const initialState = {
 export const fetchInventory = createAsyncThunk(
   'inventory/fetchInventory',
   async (
-    {
-      id,
-      format,
-      status,
-      orderAssignmentId,
-      page = 1,
-      pageSize = 15,
-    } = {},
-    { rejectWithValue }
+    { id, format, status, orderAssignmentId, page = 1, pageSize = 15 } = {},
+    { rejectWithValue },
   ) => {
     try {
       // Создаем URL и добавляем параметры
-      const url = new URL(`${backendURL}/inventory/`);
-      const params = new URLSearchParams();
+      const url = new URL(`${backendURL}/inventory/`)
+      const params = new URLSearchParams()
 
-      params.append('page', page);
-      params.append('page_size', pageSize);
+      params.append('page', page)
+      params.append('page_size', pageSize)
 
-      if (id) params.append('channel_id', id);
-      if (format) params.append('inventory_format', format);
-      if (status) params.append('status', status);
-      if (orderAssignmentId) params.append('order_assignment_id', orderAssignmentId);
+      if (id) params.append('channel_id', id)
+      if (format) params.append('inventory_format', format)
+      if (status) params.append('status', status)
+      if (orderAssignmentId)
+        params.append('order_assignment_id', orderAssignmentId)
 
-      url.search = params.toString();
+      url.search = params.toString()
 
       // Делаем запрос
-      const response = await axiosInstance.get(url.href);
+      const response = await axiosInstance.get(url.href)
 
       // Возвращаем данные
-      return response.data.data;
+      return response.data.data
     } catch (error) {
-      return rejectWithValue(error.response?.data || { message: 'Failed to fetch inventory' });
+      return rejectWithValue(
+        error.response?.data || { message: 'Failed to fetch inventory' },
+      )
     }
-  }
-);
-
+  },
+)
 
 export const addInventory = createAsyncThunk(
   'inventory/addInventory',
@@ -118,7 +113,6 @@ export const inventoryPublish = createAsyncThunk(
   },
 )
 
-
 export const fetchEditInventory = createAsyncThunk(
   'inventory/fetchEditInventory',
   async ({ id, data }) => {
@@ -151,7 +145,6 @@ export const deleteInventory = createAsyncThunk(
   'inventory/deleteInventory',
   async ({ id }) => {
     const token = Cookies.get('token')
-
     try {
       const response = await axios.delete(
         `${backendURL}/inventory/${id}`,
@@ -202,31 +195,45 @@ export const reloadInventory = createAsyncThunk(
 
 export const fetchDiactivatedInventory = createAsyncThunk(
   'deactivateInventory/fetchInventory',
-  async (
-    {
-      page = 1,
-      pageSize = 20,
-    } = {},
-    { rejectWithValue }
-  ) => {
+  async ({ page = 1, pageSize = 20 } = {}, { rejectWithValue }) => {
     try {
       // Создаем URL и добавляем параметры
-      const url = new URL(`${backendURL}/inventory/deactivated-inventories/`);
-      const params = new URLSearchParams();
+      const url = new URL(`${backendURL}/inventory/deactivated-inventories/`)
+      const params = new URLSearchParams()
 
-      params.append('page', page);
-      params.append('page_size', pageSize);
-      url.search = params.toString();
+      params.append('page', page)
+      params.append('page_size', pageSize)
+      url.search = params.toString()
       // Делаем запрос
-      const response = await axiosInstance.get(url.href);
-      return response.data.data;
+      const response = await axiosInstance.get(url.href)
+      return response.data.data
     } catch (error) {
-      return rejectWithValue(error.response?.data || { message: 'Failed to fetch inventory' });
+      return rejectWithValue(
+        error.response?.data || { message: 'Failed to fetch inventory' },
+      )
     }
-  }
-);
-
-
+  },
+)
+export const updateDeactivateInventory = createAsyncThunk(
+  'updateDeactivateInventory/fetchInventory',
+  async ({ inventory_id, is_auto_deactivation_mode }, { rejectWithValue }) => {
+    try {
+      // Делаем запрос
+      const response = await axiosInstance.post(
+        `${backendURL}/inventory/update-deactivation-mode`,
+        {
+          inventory_id: inventory_id,
+          is_auto_deactivation_mode: is_auto_deactivation_mode,
+        },
+      )
+      return response.data
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || { message: 'Failed to fetch inventory' },
+      )
+    }
+  },
+)
 
 const inventorySlice = createSlice({
   name: 'inventory',
@@ -245,8 +252,7 @@ const inventorySlice = createSlice({
       .addCase(fetchInventory.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.inventory = action.payload
-        state.total_count = action.payload.count; // Обновляем общее количество
-        console.log (action)
+        state.total_count = action.payload.count // Обновляем общее количество
       })
       .addCase(fetchInventory.rejected, (state, action) => {
         state.status = 'failed'
@@ -259,7 +265,7 @@ const inventorySlice = createSlice({
       .addCase(fetchEditInventory.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(fetchEditInventory.fulfilled, (state, action) => {
+      .addCase(fetchEditInventory.fulfilled, (state) => {
         state.status = 'succeeded'
       })
       .addCase(fetchEditInventory.rejected, (state, action) => {
@@ -269,7 +275,7 @@ const inventorySlice = createSlice({
       .addCase(deleteInventory.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(deleteInventory.fulfilled, (state, action) => {
+      .addCase(deleteInventory.fulfilled, (state) => {
         state.status = 'succeeded'
       })
       .addCase(deleteInventory.rejected, (state, action) => {
@@ -279,10 +285,10 @@ const inventorySlice = createSlice({
       .addCase(reloadInventory.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(reloadInventory.fulfilled, (state, action) => {
+      .addCase(reloadInventory.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(reloadInventory.rejected, (state, action) => {
+      .addCase(reloadInventory.rejected, (state) => {
         state.status = 'failed'
       })
       .addCase(fetchDiactivatedInventory.pending, (state) => {
@@ -291,7 +297,7 @@ const inventorySlice = createSlice({
       .addCase(fetchDiactivatedInventory.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.diactivatedInventory = action.payload
-        state.total_count = action.payload.count; // Обновляем общее количество
+        state.total_count = action.payload.count // Обновляем общее количество
       })
       .addCase(fetchDiactivatedInventory.rejected, (state, action) => {
         state.status = 'failed'

@@ -16,7 +16,7 @@ const InfoCartSentPublisher = ({ totalOnlineView, onceOrder }) => {
           {onceOrder === 'finished' ? (
             ''
           ) : (
-            <div className="sm:flex block gap-3 bg-white bg-opacity-30 backdrop-blur-md text-white p-2.5 rounded-[22px] items-center	 justify-center text-center">
+            <div className="sm:flex block gap-3 bg-white bg-opacity-30 backdrop-blur-md text-[var(--text)] p-2.5 rounded-[22px] items-center	 justify-center text-center">
               <div className="sm:text-base text-xs	"> Итого показы:</div>
               <div className="sm:text-base text-xs">
                 <FormatterView data={totalOnlineView} />
@@ -29,7 +29,7 @@ const InfoCartSentPublisher = ({ totalOnlineView, onceOrder }) => {
           {onceOrder === 'finished' ? (
             ''
           ) : (
-            <div className="sm:flex block gap-3 bg-white bg-opacity-30 backdrop-blur-md text-white p-2.5 rounded-[22px] items-center	 justify-center text-center">
+            <div className="sm:flex block gap-3 bg-white bg-opacity-30 backdrop-blur-md text-[var(--text)] p-2.5 rounded-[22px] items-center	 justify-center text-center">
               <div className="sm:text-base text-xs	"> Остаток:</div>
               <div className="sm:text-base text-xs">
                 {onceOrder.status === 'finished' ? (
@@ -63,7 +63,8 @@ const InfoCartSentPublisher = ({ totalOnlineView, onceOrder }) => {
                       <>
                         {onceOrder.status === 'in_progress' ? (
                           <div
-                            style={{                              display: 'flex',
+                            style={{
+                              display: 'flex',
 
                               padding: '1px 5px',
                               borderRadius: '7px',

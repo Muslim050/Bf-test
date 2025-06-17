@@ -1,9 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
-import Cookies from 'js-cookie'
 
 import backendURL from '@/utils/url'
-import axiosInstance from "@/api/api.js";
+import axiosInstance from '@/api/api.js'
 
 const initialState = {
   advertiserAgency: [],
@@ -14,13 +12,16 @@ const initialState = {
 
 export const fetchAdvertiserAgency = createAsyncThunk(
   'advertiserAgency/fetchAdvertiserAgency',
-  async ({page = null, pageSize = null} = {}, { rejectWithValue }) => {
+  async ({ page = null, pageSize = null } = {}, { rejectWithValue }) => {
     try {
       const params = {
         ...(page && { page }),
         ...(pageSize && { page_size: pageSize }),
-      };
-      const response = await axiosInstance.get('/advertiser/advertising-agency/', {params})
+      }
+      const response = await axiosInstance.get(
+        '/advertiser/advertising-agency/',
+        { params },
+      )
       return response.data.data
     } catch (error) {
       return rejectWithValue(error.response)
@@ -38,7 +39,7 @@ export const addAdvertiserAgency = createAsyncThunk(
           email: data.email,
           phone_number: data.phone,
           commission_rate: data.commission_rate,
-        }
+        },
       )
       return response.data.data
     } catch (error) {
@@ -58,7 +59,7 @@ export const editAdvertiserAgency = createAsyncThunk(
           email: data.email,
           phone_number: data.phone,
           commission_rate: data.commission_rate,
-        }
+        },
       )
       return response.data.data
     } catch (error) {
@@ -78,8 +79,7 @@ const advertiserAgencySlice = createSlice({
       .addCase(fetchAdvertiserAgency.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.advertiserAgency = action.payload
-        state.total_count = action.payload?.count; // Обновляем общее количество
-
+        state.total_count = action.payload?.count // Обновляем общее количество
       })
       .addCase(fetchAdvertiserAgency.rejected, (state, action) => {
         state.status = 'failed'
@@ -92,7 +92,7 @@ const advertiserAgencySlice = createSlice({
       .addCase(editAdvertiserAgency.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(editAdvertiserAgency.fulfilled, (state, action) => {
+      .addCase(editAdvertiserAgency.fulfilled, (state) => {
         state.status = 'succeeded'
       })
       .addCase(editAdvertiserAgency.rejected, (state, action) => {

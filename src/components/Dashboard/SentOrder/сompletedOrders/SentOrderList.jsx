@@ -1,15 +1,24 @@
 import React from 'react'
 import ModalSentOrder from '../receivedOrders/ModalSentOrder/index'
 import OpenTableSentOrder from '../OpenTableSentOrder/OpenTableSentOrder'
-import {TableCell, TableRow} from '@/components/ui/table'
-import {formatDate} from '../../../../utils/formatterDate'
+import { TableCell, TableRow } from '@/components/ui/table'
+import { formatDate } from '../../../../utils/formatterDate'
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
-import {ThemeContext} from '@/utils/ThemeContext.jsx'
-import {OpenSvg} from '@/assets/icons-ui.jsx'
-import {Monitor, MonitorPlay, MonitorUp, SquareArrowOutUpRight} from "lucide-react";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
-import {truncate} from "@/utils/other.js";
+import { ThemeContext } from '@/utils/ThemeContext.jsx'
+import { OpenSvg } from '@/assets/icons-ui.jsx'
+import {
+  Monitor,
+  MonitorPlay,
+  MonitorUp,
+  SquareArrowOutUpRight,
+} from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip.jsx'
+import { truncate } from '@/utils/other.js'
 
 function SentOrderList({ listsentPublisher }) {
   const [openPopoverIndex, setOpenPopoverIndex] = React.useState(null)
@@ -48,40 +57,32 @@ function SentOrderList({ listsentPublisher }) {
               data-label="Кампания"
               className={`font-normal text-${textColor} text-sm `}
             >
-
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild className="cursor-pointer">
-                    <a
-                      target="_blank"
-                      className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
-                      href={item.promo_file}>
-                      {truncate(item.order_name, 20)}
-                      <SquareArrowOutUpRight className='size-4'/>
-                    </a>
-
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{item.order_name}</p>
-                    <p>ID:{item.id}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-
+              <Tooltip>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <a
+                    target="_blank"
+                    className={`no-underline text-[#A7CCFF] hover:text-[#3282f1] hover:underline flex gap-1`}
+                    href={item.promo_file}
+                  >
+                    {truncate(item.order_name, 20)}
+                    <SquareArrowOutUpRight className="size-4" />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{item.order_name}</p>
+                  <p>ID:{item.id}</p>
+                </TooltipContent>
+              </Tooltip>
             </TableCell>
             <TableCell
               data-label="Формат"
               className={`font-normal text-${textColor} text-sm `}
             >
-              <div className='flex items-center gap-1'>
-                {
-                  (item.format === 'preroll' && <Monitor/>) ||
-                  (item.format === 'top_preroll' && <MonitorUp/>) ||
-                  (item.format === 'tv_preroll' && <MonitorPlay/>)
-                }
-                {
-                  (item.format === 'preroll' && 'Pre-roll') ||
+              <div className="flex items-center gap-1">
+                {(item.format === 'preroll' && <Monitor />) ||
+                  (item.format === 'top_preroll' && <MonitorUp />) ||
+                  (item.format === 'tv_preroll' && <MonitorPlay />)}
+                {(item.format === 'preroll' && 'Pre-roll') ||
                   (item.format === 'preroll' && 'Pre-roll') ||
                   ('midroll1' && 'Mid-roll 1') ||
                   ('midroll2' && 'Mid-roll 2') ||
@@ -96,7 +97,7 @@ function SentOrderList({ listsentPublisher }) {
               data-label="Конец"
               className={`font-normal text-${textColor} text-sm `}
             >
-              {formatDate (item.end_date)}
+              {formatDate(item.end_date)}
             </TableCell>
 
             <TableCell
@@ -171,12 +172,14 @@ function SentOrderList({ listsentPublisher }) {
               )}
 
               <button onClick={() => handleRowClick(item.id)}>
-                <OpenSvg className={`hover:text-brandPrimary-1 transition-all ease-in-out 
+                <OpenSvg
+                  className={`hover:text-brandPrimary-1 transition-all ease-in-out 
                   ${
-                  expandedRows === item.id
-                    ? 'rotate-90 text-brandPrimary-1 scale-125'
-                    : 'rotate-0'
-                }`} />
+                    expandedRows === item.id
+                      ? 'rotate-90 text-brandPrimary-1 scale-125'
+                      : 'rotate-0'
+                  }`}
+                />
               </button>
             </TableCell>
           </TableRow>

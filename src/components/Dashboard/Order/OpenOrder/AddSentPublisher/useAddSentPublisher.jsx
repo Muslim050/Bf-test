@@ -134,7 +134,7 @@ export const useAddSentPublisher = (expandedRows, onceOrder) => {
         accessorFn: (row) => row.format, // Преобразование в число
         id: 'Конец',
         cell: ({ row }) => <>{formatDate(row.original.end_date)}</>,
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        filterFn: 'includesStringSensitive',
         header: () => <span>Конец</span>,
       },
       {
@@ -143,38 +143,9 @@ export const useAddSentPublisher = (expandedRows, onceOrder) => {
         cell: ({ row }) => (
           <div className="flex gap-2 items-center justify-between">
             <FormatterView data={row.original.ordered_number_of_views} />
-            {/*<Popover*/}
-            {/*  onOpenChange={(isOpen) => {*/}
-            {/*    if (isOpen) {*/}
-            {/*      setOpenPopoverIndex(row.original.rowIndex);*/}
-            {/*    } else {*/}
-            {/*      setOpenPopoverIndex(null);*/}
-            {/*    }*/}
-            {/*  }}*/}
-            {/*  open={openPopoverIndex === row.original.rowIndex}*/}
-            {/*>*/}
-            {/*  <PopoverTrigger asChild>*/}
-            {/*    <button*/}
-            {/*      className="bg-[#5670f1] rounded-full hover:scale-125 transition-all "*/}
-            {/*    >*/}
-            {/*      <Plus className="w-5 h-5"/>*/}
-            {/*    </button>*/}
-            {/*  </PopoverTrigger>*/}
-            {/*  /!* eslint-disable-next-line no-undef *!/*/}
-            {/*  {openPopoverIndex === row.original.rowIndex && (*/}
-            {/*    <PopoverContent className="w-80 bg-white bg-opacity-30 backdrop-blur-md rounded-2xl">*/}
-            {/*      <PopoverEditView*/}
-            {/*        item={row}*/}
-            {/*        expandedRows={expandedRows}*/}
-            {/*        setOpenPopoverIndex={setOpenPopoverIndex}*/}
-            {/*        onceOrder={onceOrder}*/}
-            {/*      />*/}
-            {/*    </PopoverContent>*/}
-            {/*  )}*/}
-            {/*</Popover>*/}
           </div>
         ),
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        filterFn: 'includesStringSensitive',
         header: () => <span>Порог</span>,
       },
       {
@@ -189,14 +160,14 @@ export const useAddSentPublisher = (expandedRows, onceOrder) => {
             )}
           </>
         ),
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        filterFn: 'includesStringSensitive',
         header: () => <span>Прогресс</span>,
       },
       {
         accessorFn: (row) => row.budget, // Преобразование в число
         id: 'Бюджет',
         cell: ({ row }) => <FormatterBudjet budget={row.original.budget} />,
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        filterFn: 'includesStringSensitive',
         header: () => <span>Бюджет</span>,
       },
       {
@@ -212,7 +183,7 @@ export const useAddSentPublisher = (expandedRows, onceOrder) => {
             <SquareArrowOutUpRight className="size-4" />
           </LinkR>
         ),
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        filterFn: 'includesStringSensitive',
         header: () => <span>Ссылка</span>,
       },
       {
@@ -230,18 +201,18 @@ export const useAddSentPublisher = (expandedRows, onceOrder) => {
                 }}
                 className="hover:scale-125 transition-all"
               >
-                <Pencil className="text-white w-6 h-6 hover:text-orange-500" />
+                <Pencil className="text-[var(--text)] w-6 h-6 hover:text-orange-500" />
               </button>
             )}
             {row.original.is_sent_to_publisher ? (
               <div className="inline-flex items-center ">
-                <BookmarkCheck className="w-6 h-6 text-[#8EB67B]" />
+                <BookmarkCheck className="w-6 h-6 text-green-500" />
               </div>
             ) : (
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <button className="hover:scale-125 transition-all">
-                    <Send className="text-white w-6 h-6 hover:text-brandPrimary-1" />
+                    <Send className="text-[var(--text)] w-6 h-6 hover:text-brandPrimary-1" />
                   </button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -254,7 +225,7 @@ export const useAddSentPublisher = (expandedRows, onceOrder) => {
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel className="text-white">
+                    <AlertDialogCancel className="text-[var(--text)]">
                       Отмена
                     </AlertDialogCancel>
                     <AlertDialogAction
@@ -269,7 +240,7 @@ export const useAddSentPublisher = (expandedRows, onceOrder) => {
             )}
           </div>
         ),
-        filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
+        filterFn: 'includesStringSensitive',
         header: () => <span>Действие</span>,
       },
     ],

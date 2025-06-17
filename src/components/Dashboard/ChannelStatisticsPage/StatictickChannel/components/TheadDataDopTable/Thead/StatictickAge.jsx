@@ -7,7 +7,7 @@ function StatictickAge({ dataChannel }) {
   return (
     <>
       {uniqueGenders.map((gender, index) => (
-        <TableCell key={gender} className="text-center">
+        <TableCell key={index} className="text-center">
           {gender.substring(3)}
         </TableCell>
       ))}

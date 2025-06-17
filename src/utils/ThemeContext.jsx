@@ -1,5 +1,5 @@
 // ThemeContext.jsx
-import React, { createContext, useState, useEffect } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 
 const ThemeContext = createContext()

@@ -1,10 +1,9 @@
-import { useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Site from '../Site/Site'
-import { Route, Routes } from 'react-router-dom'
 import React from 'react'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
 import { gsap } from 'gsap'
-import SystemLayout from '@/pages/SystemLayout.jsx';
+import SystemLayout from '@/pages/SystemLayout.jsx'
 
 const Home = () => {
   const { pathname } = useLocation()
@@ -20,7 +19,7 @@ const Home = () => {
         duration: 1.5,
       })
     }
-    }, [bgColor, textColor])
+  }, [bgColor, textColor])
   // const defaultLayout = 300 // Инициализация значением по умолчанию
 
   return (
@@ -30,8 +29,8 @@ const Home = () => {
           <Route path="/" index element={<Site />}></Route>
         </Routes>
       ) : (
-        <div>
-          <SystemLayout/>
+        <div className="w-full">
+          <SystemLayout />
         </div>
       )}
     </>

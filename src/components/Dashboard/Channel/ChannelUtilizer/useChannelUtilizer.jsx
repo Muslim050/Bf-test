@@ -1,29 +1,30 @@
-
-
-import React from 'react';
+import React from 'react'
 import {
-  useReactTable,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  flexRender, getPaginationRowModel
-} from '@tanstack/react-table';
-import {useDispatch, useSelector} from 'react-redux';
-import {hasRole} from "@/utils/roleUtils.js";
-import {Button} from "@/components/ui/button.jsx";
-import Cookies from "js-cookie";
-import {Link} from "react-router-dom";
-import { ChartColumn } from 'lucide-react';
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.jsx";
-import {googleAuth} from "@/redux/googleauth/googleauthSlice.js";
-import {TableCell} from "@/components/ui/table.jsx";
-import {ThemeContext} from "@/utils/ThemeContext.jsx";
-import CircularBadge from "@/components/Labrery/Circular/CircularBadge.jsx";
-
+  useReactTable,
+} from '@tanstack/react-table'
+import { useDispatch, useSelector } from 'react-redux'
+import { hasRole } from '@/utils/roleUtils.js'
+import { Button } from '@/components/ui/button.jsx'
+import Cookies from 'js-cookie'
+import { Link } from 'react-router-dom'
+import { ChartColumn, Send } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip.jsx'
+import { googleAuth } from '@/redux/googleauth/googleauthSlice.js'
+import { ThemeContext } from '@/utils/ThemeContext.jsx'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export const useChannelUtilizer = () => {
-  const [columnFilters, setColumnFilters] = React.useState([]);
-  const { channel,total_count } = useSelector((state) => state.channel)
+  const [columnFilters, setColumnFilters] = React.useState([])
+  const { channel, total_count } = useSelector((state) => state.channel)
   const [globalFilter, setGlobalFilter] = React.useState('')
   const user = Cookies.get('role')
   const [googleAu, setGoogleAu] = React.useState(false)
@@ -32,13 +33,12 @@ export const useChannelUtilizer = () => {
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, // Начинаем с 0
     pageSize: 20,
-  });
+  })
   const authGoogle = (pubId) => {
     dispatch(googleAuth(pubId))
     // setConnectG(false)
     setGoogleAu(true)
   }
-
 
   const { textColor } = React.useContext(ThemeContext)
 
@@ -48,129 +48,119 @@ export const useChannelUtilizer = () => {
         accessorFn: (_, index) => index + 1, // Используем индекс строки
         id: 'id',
         // cell: info => info.row.index + 1, // Начинаем с 1
-        cell: ({row}) =>
-          <div className='relative flex w-auto items-center'>
+        cell: ({ row }) => (
+          <div className="relative flex w-auto items-center">
             {!row.original.is_active && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div
-                      className="h-6 w-3	cursor-pointer hover:scale-110  bg-red-500 rounded-full top-[18px]   z-40"></div>
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-red-400 text-white font-medium relative z-40">
-                    <p>Нужно переподключить канал</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="h-6 w-3	cursor-pointer hover:scale-110  bg-red-500 rounded-full top-[18px]   z-40"></div>
+                </TooltipTrigger>
+                <TooltipContent className="bg-red-400 text-white font-medium relative z-40">
+                  <p>Нужно переподключить канал</p>
+                </TooltipContent>
+              </Tooltip>
             )}
             <div
               className={`
               
-              ${
-                !row.original.is_active ? 'ml-2' : 'ml-0'
-              }`}
+              ${!row.original.is_active ? 'ml-2' : 'ml-0'}`}
             >
               {row.index + 1}
             </div>
-            {user === 'publisher' ||
-            user === 'admin' ||
-            user === 'channel' ? (
+            {user === 'publisher' || user === 'admin' || user === 'channel' ? (
               <>
                 {row.original.is_connected === false ? (
-                  <div className='flex'>
-                      <span
-                        className=" inline-flex rounded-full h-2.5 -left-2 -top-1 absolute w-2.5 bg-red-600 text-[14px]  items-center justify-center"></span>
+                  <div className="flex">
+                    <span className=" inline-flex rounded-full h-2.5 -left-2 -top-1 absolute w-2.5 bg-red-600 text-[14px]  items-center justify-center"></span>
                   </div>
-                  ) : null}
+                ) : null}
               </>
             ) : null}
-          </div>,
+          </div>
+        ),
         filterFn: 'includesStringSensitive', //note: normal non-fuzzy filter column - case sensitive
         header: () => <span>№</span>,
       },
       {
         id: 'Канал',
         accessorFn: (row) => row.name, // Преобразование в число
-        cell: ({row}) =>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className={` ${
+        cell: ({ row }) => (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div
+                className={` ${
                   row.original.is_active ? '' : 'font-semibold text-red-500'
                 }`}
-
-                    >
-                  {row.original.name}
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>ID:{row.original.id}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>,
+              >
+                {row.original.name}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>ID:{row.original.id}</p>
+            </TooltipContent>
+          </Tooltip>
+        ),
         header: () => <span>Канал</span>,
       },
       {
         id: 'Аналитика',
         accessorFn: (row) => row.id, // Преобразование в число
-        cell: ({row}) =>
+        cell: ({ row }) => (
           <Link
             to={`/statistics-channel/${row.original.id}/${row.original.name}`}
-            state={{channel}}
-            style={{display: 'contents'}}
+            state={{ channel }}
+            style={{ display: 'contents' }}
           >
             <button className="hover:scale-125 transition-all">
-              <ChartColumn className="hover:text-green-400 "/>
+              <ChartColumn className="hover:text-green-400 " />
             </button>
-          </Link>,
-        header: () =>
-          <span>Аналитика</span>,
+          </Link>
+        ),
+        header: () => <span>Аналитика</span>,
         enableSorting: false,
         enableFiltering: false,
       },
       {
         id: 'Паблишер',
         accessorFn: (row) => row.publisher?.name, // Преобразование в число
-        cell: ({row}) =>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="cursor-pointer">
-                  {row?.original.publisher && row?.original.publisher.name
-                    ? row.original.publisher?.name
-                    : '-------'}
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>ID:{row.original.publisher?.id}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>,
-        header: () =>
-          <span>Паблишер</span>,
+        cell: ({ row }) => (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="cursor-pointer">
+                {row?.original.publisher && row?.original.publisher.name
+                  ? row.original.publisher?.name
+                  : '-------'}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>ID:{row.original.publisher?.id}</p>
+            </TooltipContent>
+          </Tooltip>
+        ),
+        header: () => <span>Паблишер</span>,
       },
       {
         accessorFn: (row) => row.email, // Преобразование в число
         id: 'Email',
-        cell: info => info.getValue(),
+        cell: (info) => info.getValue(),
         filterFn: 'includesString',
-        header: () =>
-          <span>Email</span>
+        header: () => <span>Email</span>,
       },
       {
         accessorFn: (row) => row.phone_number,
         id: 'Номер телефона',
         cell: (info) => info.getValue(),
         filterFn: 'includesString', //note: normal non-fuzzy filter column - case insensitive
-        header: () => <span className='flex  items-center gap-1'>Номер телефона</span>,
+        header: () => (
+          <span className="flex  items-center gap-1">Номер телефона</span>
+        ),
       },
       {
         accessorFn: (row) => row.channel_id, // Преобразование в число
         id: 'ID канала',
-        cell: info => info.getValue(),
+        cell: (info) => info.getValue(),
         filterFn: 'includesString',
-        header: () =>
-          <span>ID канала</span>
+        header: () => <span>ID канала</span>,
       },
       {
         accessorFn: (row) => row.channel_id, // Преобразование в число
@@ -180,9 +170,7 @@ export const useChannelUtilizer = () => {
             {user === 'admin' ? (
               ''
             ) : (
-              <div
-                className={`font-normal text-${textColor} text-sm `}
-              >
+              <div className={`font-normal text-${textColor} text-sm `}>
                 <div
                   style={{
                     display: 'inline-flex',
@@ -203,7 +191,7 @@ export const useChannelUtilizer = () => {
                 >
                   {googleAu || (
                     <div>
-                      {row.original.is_connected === false  ? (
+                      {row.original.is_connected === false ? (
                         <Button
                           className="bg-red-400 hover:bg-red-500 h-[25px] rounded-2xl"
                           onClick={() => authGoogle(row.original.id)}
@@ -234,13 +222,10 @@ export const useChannelUtilizer = () => {
                           viewBox="-0.5 0 48 48"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink"
+                          // xlink="http://www.w3.org/1999/xlink"
                           fill="#000000"
                         >
-                          <g
-                            id="SVGRepo_bgCarrier"
-                            strokeWidth="0"
-                          ></g>
+                          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                           <g
                             id="SVGRepo_tracerCarrier"
                             strokeLinecap="round"
@@ -249,8 +234,8 @@ export const useChannelUtilizer = () => {
                           <g id="SVGRepo_iconCarrier">
                             {' '}
                             <title>Google-color</title>{' '}
-                            <desc>Created with Sketch.</desc>{' '}
-                            <defs> </defs>{' '}
+                            <desc>Created with Sketch.</desc>
+                            <defs></defs>{' '}
                             <g
                               id="Icons"
                               stroke="none"
@@ -306,29 +291,21 @@ export const useChannelUtilizer = () => {
                     </a>
                   )}
                   <>
-                    {
-                      row.original.is_active === false ? null
-                        : <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                        >
-                          {row.original.is_connected ? (
-                            <div className="text-green-600 pr-2">
-                              Подключен
-                            </div>
-                          ) : (
-                            <div
-                              className={`text-red-500`}
-                            >
-                              Не Подключен
-                            </div>
-                          )}
-                        </div>
-                    }
+                    {row.original.is_active === false ? null : (
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        {row.original.is_connected ? (
+                          <div className="text-green-600 pr-2">Подключен</div>
+                        ) : (
+                          <div className={`text-red-500`}>Не Подключен</div>
+                        )}
+                      </div>
+                    )}
                   </>
-
                 </div>
               </div>
             )}
@@ -344,31 +321,57 @@ export const useChannelUtilizer = () => {
         cell: ({ row }) => (
           <>
             {user === 'admin' && (
-              <div
-                className={`font-normal text-${textColor} text-sm `}
-              >
-                {
-                  row.original?.commission_rate && <>
-                    {row.original?.commission_rate} %</>
-                }
+              <div className={`font-normal text-${textColor} text-sm `}>
+                {row.original?.commission_rate && (
+                  <>{row.original?.commission_rate} %</>
+                )}
               </div>
             )}
           </>
         ),
         filterFn: 'includesString',
-        header: () => hasRole('admin') && <span>% комиссии</span>,
+        header: () => hasRole('admin') && <span>% Комиссии</span>,
       },
+      {
+        accessorFn: (row) => row.commission_rate, // Преобразование в число
+        id: 'Процент комиссии канала',
+        cell: ({ row }) => (
+          <>
+            {row.original.telegram_chat_id && (
+              <TooltipWrapper tooltipContent="Telegram Id">
+                <div className="p-1 rounded-full bg-blue-500 text-white inline-flex gap-1 items-center dark:bg-blue-600">
+                  <Send className="size-4" />
+                  {row.original.telegram_chat_id}
+                </div>
+              </TooltipWrapper>
+            )}
+          </>
+        ),
+        enableSorting: false,
 
+        filterFn: 'includesString',
+        header: () => (
+          <div className="bg-blue-500 rounded-full inline-flex h-max justify-center w-full"></div>
+        ),
+      },
     ],
-    [googleAu, linkGoogle]
+    [googleAu, linkGoogle],
   )
+
   const filteredColumns = columns.filter((column) => {
     // Если колонка зависит от роли admin, проверяем условие
-    if (column.id === 'Preroll' || column.id === 'Preroll UZ' || column.id === 'TV Preroll' || column.id === 'TV Preroll UZ' || column.id === 'Top Preroll' || column.id === 'Top Preroll UZ') {
-      return hasRole('admin');
+    if (
+      column.id === 'Preroll' ||
+      column.id === 'Preroll UZ' ||
+      column.id === 'TV Preroll' ||
+      column.id === 'TV Preroll UZ' ||
+      column.id === 'Top Preroll' ||
+      column.id === 'Top Preroll UZ'
+    ) {
+      return hasRole('admin')
     }
-    return true; // Для всех остальных колонок
-  });
+    return true // Для всех остальных колонок
+  })
 
   const table = useReactTable({
     data: channel.results || [], // Данные из Redux
@@ -381,9 +384,9 @@ export const useChannelUtilizer = () => {
     onPaginationChange: (updater) => {
       setPagination((prev) => {
         const newPagination =
-          typeof updater === 'function' ? updater(prev) : updater;
-        return { ...prev, ...newPagination };
-      });
+          typeof updater === 'function' ? updater(prev) : updater
+        return { ...prev, ...newPagination }
+      })
     },
     pageCount: Math.ceil(total_count / pagination.pageSize), // Общее количество страниц
     manualPagination: true, // Указываем, что используем серверную пагинацию
@@ -391,7 +394,7 @@ export const useChannelUtilizer = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  });
+  })
 
   return {
     table,
@@ -400,7 +403,6 @@ export const useChannelUtilizer = () => {
     flexRender,
     globalFilter,
     setGlobalFilter,
-    pagination
-  };
-};
-
+    pagination,
+  }
+}
