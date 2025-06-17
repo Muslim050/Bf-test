@@ -492,6 +492,7 @@ export default function CreateOrder({ onClose }) {
                     </>
                   ) : (
                     <div className="flex items-center gap-1">
+                      {isValid && 'Создать заказ'}
                       <PackageCheck />
                     </div>
                   )}
