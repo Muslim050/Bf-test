@@ -329,6 +329,8 @@ export const useChannelUtilizer = () => {
             )}
           </>
         ),
+        enableSorting: false,
+        enableFiltering: false,
         filterFn: 'includesString',
         header: () => hasRole('admin') && <span>% Комиссии</span>,
       },
@@ -338,20 +340,29 @@ export const useChannelUtilizer = () => {
         cell: ({ row }) => (
           <>
             {row.original.telegram_chat_id && (
-              <TooltipWrapper tooltipContent="Telegram Id">
-                <div className="p-1 rounded-full bg-blue-500 text-white inline-flex gap-1 items-center dark:bg-blue-600">
+              <TooltipWrapper
+                tooltipContent={
+                  <>
+                    Telegram ID <br />
+                    {row.original.telegram_chat_id}
+                  </>
+                }
+              >
+                <div className="p-1 px-2 rounded-full bg-blue-500 text-white inline-flex gap-1 items-center dark:bg-blue-600">
                   <Send className="size-4" />
-                  {row.original.telegram_chat_id}
+                  Подключен
                 </div>
               </TooltipWrapper>
             )}
           </>
         ),
-        enableSorting: false,
-
+        // enableSorting: false,
+        // enableFiltering: false,
         filterFn: 'includesString',
         header: () => (
-          <div className="bg-blue-500 rounded-full inline-flex h-max justify-center w-full"></div>
+          <div className=" inline-flex h-max justify-center w-full">
+            Telegram ID
+          </div>
         ),
       },
     ],
