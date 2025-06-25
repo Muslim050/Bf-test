@@ -307,6 +307,11 @@ export default function CreateOrder({ onClose }) {
                   })}
                 />
               </div>
+            </div>
+            {/*  */}
+
+            {/*  */}
+            <div className="flex gap-2 mb-2">
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-0.5">
                   Формат
@@ -337,26 +342,6 @@ export default function CreateOrder({ onClose }) {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-              </div>
-            </div>
-            {/*  */}
-
-            {/*  */}
-            <div className="flex gap-4 mb-2">
-              <div className="grid w-[180px]">
-                <div className="border-dashed border-2 border-[#5570f1] rounded-2xl p-2 flex flex-col justify-between">
-                  <Label className="text-sm	text-white pb-0.5">
-                    Target для РУЗ
-                  </Label>
-                  <label className={` text-sky-400`} onClick={taretCheckbox}>
-                    Target UZ
-                    <Checkbox
-                      id="terms"
-                      className="size-6 bg-blue-500 rounded-lg data-[state=checked]:bg-[#5570f1] data-[state=checked]:border-[#5570f1] border-[#5570f1]"
-                    />
-                    <span></span>
-                  </label>
-                </div>
               </div>
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-0.5">
@@ -415,45 +400,63 @@ export default function CreateOrder({ onClose }) {
             </div>
             {/*  */}
 
-            <div className="grid w-full mb-2">
-              <Label className="text-sm	text-white pb-0.5">
-                Файл
-                <span className="text-red-500 ml-0.5">*</span>
-              </Label>
-              {/*<div className="border-dashed border-2 border-[#A7CCFF] rounded-2xl p-2 flex flex-col justify-between h-[76px]">*/}
-              {/*  <Input*/}
-              {/*    type="file"*/}
-              {/*    onChange={handleFileChange}*/}
-              {/*    className={`border-none p-0 flex items-center   transition-all duration-300 text-sm h-full`}*/}
-              {/*    {...register('selectedFile', {*/}
-              {/*      required: 'Ролик обезателен',*/}
-              {/*    })}*/}
-              {/*  />*/}
-              {/*</div>*/}
-              <div className="border-dashed w-full border-2 border-[#A7CCFF] rounded-xl p-2 flex flex-col justify-center items-center h-[76px] relative">
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  ref={inputRef}
-                  className="hidden"
-                />
-                <Button
-                  type="button"
-                  variant="default"
-                  onClick={() => inputRef.current.click()}
-                  className="flex gap-2"
-                >
-                  <ImageDown />
-                  {selectedFile ? (
-                    <p className="text-sm text-white">
-                      Вы выбрали файл:{truncate(selectedFile.name, 20)}{' '}
-                    </p>
-                  ) : (
-                    ' Загрузить файл'
-                  )}
-                </Button>
+            <div className="flex gap-4 mb-2 items-end">
+              <div className="grid w-[210px] h-[76px]">
+                <div className="border-dashed border-2 border-[#5570f1] rounded-2xl p-2 flex flex-col justify-between">
+                  <Label className="text-sm	text-white pb-0.5">
+                    Target для РУЗ
+                  </Label>
+                  <label className={` text-sky-400`} onClick={taretCheckbox}>
+                    Target UZ
+                    <Checkbox
+                      id="terms"
+                      className="size-6 bg-blue-500 rounded-lg data-[state=checked]:bg-[#5570f1] data-[state=checked]:border-[#5570f1] border-[#5570f1]"
+                    />
+                    <span></span>
+                  </label>
+                </div>
+              </div>
+              <div className="grid w-full">
+                <Label className="text-sm	text-white pb-0.5">
+                  Файл
+                  <span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                {/*<div className="border-dashed border-2 border-[#A7CCFF] rounded-2xl p-2 flex flex-col justify-between h-[76px]">*/}
+                {/*  <Input*/}
+                {/*    type="file"*/}
+                {/*    onChange={handleFileChange}*/}
+                {/*    className={`border-none p-0 flex items-center   transition-all duration-300 text-sm h-full`}*/}
+                {/*    {...register('selectedFile', {*/}
+                {/*      required: 'Ролик обезателен',*/}
+                {/*    })}*/}
+                {/*  />*/}
+                {/*</div>*/}
+                <div className="border-dashed w-full border-2 border-[#A7CCFF] rounded-xl p-2 flex flex-col justify-center items-center h-[76px] relative">
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    ref={inputRef}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="default"
+                    onClick={() => inputRef.current.click()}
+                    className="flex gap-2"
+                  >
+                    <ImageDown />
+                    {selectedFile ? (
+                      <p className="text-sm text-white">
+                        {truncate(selectedFile.name, 20)}{' '}
+                      </p>
+                    ) : (
+                      ' Загрузить файл'
+                    )}
+                  </Button>
+                </div>
               </div>
             </div>
+
             <div className="grid w-full">
               <Label className="text-sm	text-white pb-0.5">
                 Комментарий к заказу

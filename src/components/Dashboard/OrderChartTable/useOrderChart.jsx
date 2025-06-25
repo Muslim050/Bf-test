@@ -6,11 +6,7 @@ import { useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import backendURL from '@/utils/url.js'
 import axios from 'axios'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip.jsx'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip.jsx'
 import { truncate } from '@/utils/other.js'
 import { FormatFormatter } from '@/utils/FormatFormatter.jsx'
 import { formatDate } from '@/utils/formatterDate.jsx'
@@ -24,7 +20,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable
 } from '@tanstack/react-table'
 import NestedStatickOrderTable from '@/module/TablePagination/NestedStatickOrderTable.jsx'
 import { SquareArrowOutUpRight } from 'lucide-react'
@@ -222,7 +218,7 @@ export const useOrderChart = () => {
 
   //Фильтрация по параметрам
   const handleDateStatictick = async () => {
-    const toastId = toast.loading('Фильтруем отчет...')
+    const toastId = toast.loading('Загрузка данных...')
 
     setDataFiltered(true)
     setIsLoadingData(true)
