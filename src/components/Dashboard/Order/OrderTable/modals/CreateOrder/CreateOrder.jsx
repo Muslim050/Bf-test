@@ -311,8 +311,8 @@ export default function CreateOrder({ onClose }) {
             {/*  */}
 
             {/*  */}
-            <div className="flex gap-2 mb-2">
-              <div className="grid w-full">
+            <div className="flex gap-2 mb-2 items-end">
+              <div className="grid w-[220px]">
                 <Label className="text-sm	text-white pb-0.5">
                   Формат
                   <span className="text-red-500 ml-0.5">*</span>
@@ -345,13 +345,16 @@ export default function CreateOrder({ onClose }) {
               </div>
               <div className="grid w-full">
                 <Label className="text-sm	text-white pb-0.5">
-                  Количество показов
-                  <span className="text-red-500 ml-0.5">*</span>
                   {budgett > 0 ? (
                     <Badge variant="default" className="text-sm	ml-1">
                       {budgett.toLocaleString('en-US')}
                     </Badge>
-                  ) : null}
+                  ) : (
+                    <>
+                      Количество показов
+                      <span className="text-red-500 ml-0.5">*</span>
+                    </>
+                  )}
                   <div className="text-[15px]	text-red-500 ">
                     {' '}
                     {errors?.expectedView && (
