@@ -11,25 +11,39 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label.jsx'
 import { Input } from '@/components/ui/input.jsx'
-import { Eye, EyeOff, PackagePlus } from 'lucide-react'
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectValue,
-} from '@/components/ui/select.jsx'
+  Check,
+  ChevronsUpDown,
+  Eye,
+  EyeOff,
+  Loader2,
+  PackageCheck,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button.jsx'
-import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { addPublisherUsers } from '@/redux/publisherUsers/publisherUsersSlice.js'
 import { fetchPublisher } from '@/redux/publisher/publisherSlice.js'
 import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover.jsx'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command.jsx'
+import { cn } from '@/lib/utils.js'
 
 export default function PublisherModalUsers({ onClose, modalUser }) {
   const dispatch = useDispatch()
   const [showPasswordOld, setShowPasswordOld] = React.useState(false)
   const { publisher } = useSelector((state) => state.publisher)
+  const [isChannelCreated, setIsChannelCreated] = React.useState(false)
+
   React.useEffect(() => {
     if (modalUser) {
       // isModalOpen — состояние, контролирующее открытие модального окна
@@ -37,6 +51,7 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
       dispatch(fetchPublisher({ page: 1, pageSize: 200 }))
     }
   }, [modalUser, dispatch])
+  const [open, setOpen] = React.useState(false)
 
   const {
     register,
@@ -58,6 +73,8 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
 
   const onSubmit = async (data) => {
     try {
+      setIsChannelCreated(true)
+
       const publisher = await dispatch(addPublisherUsers({ data })).unwrap() // Попытка выполнить запрос
       toast.success('Пользователь паблишера успешно создан!') // Успех
       onClose() // Закрыть модальное окно
@@ -65,7 +82,7 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
         window.location.reload() // Перезагрузка страницы
       }, 1500)
     } catch (error) {
-      console.error('Ошибка:', error) // Диагностируйте, что именно происходит
+      setIsChannelCreated(false)
       toast.error(
         error?.data?.error?.message ||
           'Произошла ошибка при создании пользователя',
@@ -255,52 +272,135 @@ export default function PublisherModalUsers({ onClose, modalUser }) {
             </div>
 
             <div className="flex gap-2 items-end ">
-              <div className="grid w-full">
-                <Label className="text-sm	text-white pb-2">
+              {/*<div className="grid w-full">*/}
+              {/*  <Label className="text-sm	text-white pb-2">*/}
+              {/*    Выбрать паблишера*/}
+              {/*    <span className="text-red-500 ml-0.5">*</span>*/}
+              {/*  </Label>*/}
+              {/*  <Controller*/}
+              {/*    name="selectedAdvertiserId"*/}
+              {/*    {...register('publisher', {*/}
+              {/*      required: 'Поле обязательно',*/}
+              {/*    })}*/}
+              {/*    control={control}*/}
+              {/*    defaultValue=""*/}
+              {/*    render={({ field }) => (*/}
+              {/*      <Select*/}
+              {/*        onValueChange={field.onChange}*/}
+              {/*        defaultValue={field.value}*/}
+              {/*        value={field.value}*/}
+              {/*      >*/}
+              {/*        <SelectTrigger className="!text-white">*/}
+              {/*          <SelectValue placeholder="Выбрать паблишера" />*/}
+              {/*        </SelectTrigger>*/}
+              {/*        <SelectContent>*/}
+              {/*          <SelectGroup>*/}
+              {/*            <SelectLabel>Выбрать Паблишера</SelectLabel>*/}
+              {/*            {publisher?.results?.map((adv) => (*/}
+              {/*              <SelectItem key={adv.id} value={adv.id.toString()}>*/}
+              {/*                {adv.name}*/}
+              {/*              </SelectItem>*/}
+              {/*            ))}*/}
+              {/*          </SelectGroup>*/}
+              {/*        </SelectContent>*/}
+              {/*      </Select>*/}
+              {/*    )}*/}
+              {/*  />*/}
+              {/*</div>*/}
+              <div className="grid w-full ">
+                <Label className="text-sm text-[var(--text)] pb-2">
                   Выбрать паблишера
                   <span className="text-red-500 ml-0.5">*</span>
                 </Label>
+
                 <Controller
-                  name="selectedAdvertiserId"
-                  {...register('publisher', {
-                    required: 'Поле обязательно',
-                  })}
+                  name="publisher"
                   control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      value={field.value}
-                    >
-                      <SelectTrigger className="!text-white">
-                        <SelectValue placeholder="Выбрать паблишера" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Выбрать Паблишера</SelectLabel>
-                          {publisher?.results?.map((adv) => (
-                            <SelectItem key={adv.id} value={adv.id.toString()}>
-                              {adv.name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
+                  rules={{ required: 'Поле обязательно' }}
+                  render={({ field }) => {
+                    const selected = publisher?.results?.find(
+                      (framework) => framework.id === field.value,
+                    )
+                    return (
+                      <Popover open={open} onOpenChange={setOpen} modal={true}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="combobox"
+                            role="combobox"
+                            aria-expanded={open}
+                            className="w-full border-0 h-[40px] hover:scale-100 justify-between text-white"
+                          >
+                            {selected ? selected.name : 'Выбрать паблишера'}
+                            <ChevronsUpDown className="opacity-50 size-5" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 bg-white bg-opacity-30 backdrop-blur-md">
+                          <Command>
+                            <CommandInput
+                              placeholder="Поиск паблишера..."
+                              className="h-9"
+                            />
+                            <CommandList style={{ minHeight: 0 }}>
+                              <CommandEmpty>Ничего не найдено</CommandEmpty>
+                              <CommandGroup>
+                                {publisher?.results?.map((framework) => (
+                                  <CommandItem
+                                    key={framework.id}
+                                    value={framework?.id} // должен быть .value, а не .id
+                                    onSelect={() => {
+                                      field.onChange(framework.id)
+                                      setOpen(false)
+                                    }}
+                                  >
+                                    <div className="flex items-center justify-between pr-3 w-full">
+                                      <div className="relative ">
+                                        {framework.name}
+                                      </div>
+                                    </div>
+                                    {/*{framework.label}*/}
+                                    <Check
+                                      className={cn(
+                                        'ml-auto',
+                                        field.value === framework.id
+                                          ? 'opacity-100'
+                                          : 'opacity-0',
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                    )
+                  }}
                 />
               </div>
+
               <div>
-                <TooltipWrapper tooltipContent="Создать">
-                  <Button
-                    disabled={!isValid}
-                    isValid={true}
-                    variant="default"
-                    className="h-[40px]"
-                  >
-                    <PackagePlus />
-                  </Button>
-                </TooltipWrapper>
+                <div>
+                  <TooltipWrapper tooltipContent="Создать">
+                    <Button
+                      isValid={true}
+                      variant="default"
+                      disabled={!isValid || isChannelCreated}
+                      className="h-[40px]"
+                    >
+                      {isChannelCreated ? (
+                        <>
+                          <span>Создание...</span>
+                          <Loader2 className="ml-2 h-6 w-6 animate-spin" />
+                        </>
+                      ) : (
+                        <div className="flex items-center gap-1">
+                          {isValid && 'Создать'}
+                          <PackageCheck />
+                        </div>
+                      )}
+                    </Button>
+                  </TooltipWrapper>
+                </div>
               </div>
             </div>
           </div>

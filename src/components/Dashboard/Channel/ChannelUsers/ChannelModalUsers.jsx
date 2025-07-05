@@ -8,24 +8,37 @@ import {
   addChannelUsers,
   fetchChannelUsers,
 } from '../../../../redux/channelUsers/channelUsersSlice.js'
-import { Eye, EyeOff } from 'lucide-react'
+import {
+  Check,
+  ChevronsUpDown,
+  Eye,
+  EyeOff,
+  Loader2,
+  PackageCheck,
+} from 'lucide-react'
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog.jsx'
 import { Label } from '@/components/ui/label.jsx'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectValue,
-} from '@/components/ui/select.jsx'
 import { Input } from '@/components/ui/input.jsx'
-import { SelectTrigger } from '@/components/ui/selectTrigger.jsx'
 import { fetchChannel } from '@/redux/channel/channelSlice.js'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover.jsx'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command.jsx'
+import { cn } from '@/lib/utils.js'
+import TooltipWrapper from '@/shared/TooltipWrapper.jsx'
 
 export default function ChannelModalUsers({ onClose }) {
   const dispatch = useDispatch()
@@ -34,6 +47,10 @@ export default function ChannelModalUsers({ onClose }) {
   const handleTogglePasswordOld = () => {
     setShowPasswordOld(!showPasswordOld)
   }
+  const [isChannelUserCreated, setIsChannelUserCreated] = React.useState(false)
+
+  const [open, setOpen] = React.useState(false)
+
   const [pagination, setPagination] = React.useState({
     pageIndex: 1, // Начинаем с 0
     pageSize: 200,
@@ -66,6 +83,7 @@ export default function ChannelModalUsers({ onClose }) {
   })
   const onSubmit = async (data) => {
     try {
+      setIsChannelUserCreated(true)
       const pubUser = await dispatch(addChannelUsers({ data })).unwrap()
       toast.success('Пользователь рекламодателя успешно создан!')
       onClose()
@@ -78,6 +96,7 @@ export default function ChannelModalUsers({ onClose }) {
         )
       }, 1000)
     } catch (error) {
+      setIsChannelUserCreated(false)
       toast.error(error?.data?.error?.message)
     }
   }
@@ -134,43 +153,24 @@ export default function ChannelModalUsers({ onClose }) {
             </div>
 
             {/**/}
-            <div className="grid w-full mb-4">
-              <Label className="text-sm	text-white pb-2 flex gap-0.5">
-                Email<span className="text-red-500 ml-0.5">*</span>
-                <div className="text-sm	text-red-500 ">
-                  {' '}
-                  {errors?.email && <p>{errors.email.message}</p>}
-                </div>
-              </Label>
-              <Input
-                type="email"
-                autoComplete="off"
-                {...register('email', {
-                  required: '.',
-                })}
-                placeholder={'Введите email'}
-                className={`border ${
-                  errors?.email ? 'border-red-500' : 'border-gray-300'
-                }   transition-all duration-300 text-sm `}
-              />
-            </div>
-            {/**/}
-
-            {/**/}
             <div className="flex gap-4 mb-4">
               <div className="grid w-full">
-                <Label className="text-sm	text-white pb-2">
-                  Логин<span className="text-red-500 ml-0.5">*</span>
+                <Label className="text-sm	text-white pb-2 flex gap-0.5">
+                  Email<span className="text-red-500 ml-0.5">*</span>
+                  <div className="text-sm	text-red-500 ">
+                    {' '}
+                    {errors?.email && <p>{errors.email.message}</p>}
+                  </div>
                 </Label>
                 <Input
-                  type="text"
+                  type="email"
                   autoComplete="off"
-                  {...register('username', {
-                    required: 'Поле обезательно к заполнению',
+                  {...register('email', {
+                    required: '.',
                   })}
-                  placeholder={'Введите логин'}
+                  placeholder={'Введите email'}
                   className={`border ${
-                    errors?.username ? 'border-red-500' : 'border-gray-300'
+                    errors?.email ? 'border-red-500' : 'border-gray-300'
                   }   transition-all duration-300 text-sm `}
                 />
               </div>
@@ -235,7 +235,23 @@ export default function ChannelModalUsers({ onClose }) {
             {/**/}
 
             {/**/}
-            <div className="flex gap-4 ">
+            <div className="flex gap-4 mb-4">
+              <div className="grid w-full">
+                <Label className="text-sm	text-white pb-2">
+                  Логин<span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  {...register('username', {
+                    required: 'Поле обезательно к заполнению',
+                  })}
+                  placeholder={'Введите логин'}
+                  className={`border ${
+                    errors?.username ? 'border-red-500' : 'border-gray-300'
+                  }   transition-all duration-300 text-sm `}
+                />
+              </div>
               <div className="grid w-full relative">
                 <Label className="text-sm	text-white pb-2">
                   Пароль<span className="text-red-500 ml-0.5">*</span>
@@ -262,54 +278,117 @@ export default function ChannelModalUsers({ onClose }) {
                   )}
                 </div>
               </div>
-              <div className="grid w-full">
-                <Label className="text-sm	text-white pb-2">
+            </div>
+            {/**/}
+
+            {/**/}
+            <div className="flex items-end gap-2">
+              <div className="grid w-full ">
+                <Label className="text-sm text-[var(--text)] pb-2">
                   Выбрать канал<span className="text-red-500 ml-0.5">*</span>
                 </Label>
+
                 <Controller
                   name="channel"
-                  {...register('channel', {
-                    required: 'Поле обязательно',
-                  })}
                   control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      value={field.value}
-                    >
-                      <SelectTrigger className="!text-white">
-                        <SelectValue placeholder="Выбрать канал" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Выбрать канал</SelectLabel>
-                          {channel.results.map((adv) => (
-                            <SelectItem key={adv.id} value={adv.id.toString()}>
-                              {adv.name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
+                  rules={{ required: 'Поле обязательно' }}
+                  render={({ field }) => {
+                    const selected = channel?.results?.find(
+                      (framework) => framework.id === field.value,
+                    )
+                    return (
+                      <Popover open={open} onOpenChange={setOpen} modal={true}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="combobox"
+                            role="combobox"
+                            aria-expanded={open}
+                            className="w-full border-0 h-[40px] hover:scale-100 justify-between  text-white"
+                          >
+                            {selected ? selected.name : 'Выбрать канал'}
+                            <ChevronsUpDown className="opacity-50 size-5" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 bg-white bg-opacity-30 backdrop-blur-md">
+                          <Command>
+                            <CommandInput
+                              placeholder="Поиск канала..."
+                              className="h-9"
+                            />
+                            <CommandList>
+                              <CommandEmpty>Ничего не найдено</CommandEmpty>
+                              <CommandGroup>
+                                {channel?.results?.map((framework) => (
+                                  <CommandItem
+                                    key={framework.value}
+                                    value={framework?.value}
+                                    onSelect={() => {
+                                      field.onChange(framework.id)
+                                      setOpen(false)
+                                    }}
+                                  >
+                                    <div className="flex items-center justify-between pr-3 w-full">
+                                      <div className={`relative `}>
+                                        {framework.name}
+                                      </div>
+                                    </div>
+                                    {/*{framework.label}*/}
+                                    <Check
+                                      className={cn(
+                                        'ml-auto',
+                                        field.value === framework.value
+                                          ? 'opacity-100'
+                                          : 'opacity-0',
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                    )
+                  }}
                 />
+              </div>
+
+              <div>
+                <TooltipWrapper tooltipContent="Создать">
+                  <Button
+                    isValid={true}
+                    variant="default"
+                    disabled={!isValid || isChannelUserCreated}
+                    className="h-[40px]"
+                  >
+                    {isChannelUserCreated ? (
+                      <>
+                        <span>Создание...</span>
+                        <Loader2 className="ml-2 h-6 w-6 animate-spin" />
+                      </>
+                    ) : (
+                      <div className="flex items-center gap-1">
+                        {isValid && 'Создать'}
+                        <PackageCheck />
+                      </div>
+                    )}
+                  </Button>
+                </TooltipWrapper>
               </div>
             </div>
             {/**/}
 
-            <Button
-              className={`${
-                isValid
-                  ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'
-                  : 'bg-[#616161]'
-              } w-full   h-[44px] text-white rounded-lg	mt-8`}
-              disabled={!isValid}
-              isValid={true}
-            >
-              Создать
-            </Button>
+            {/*<Button*/}
+            {/*  className={`${*/}
+            {/*    isValid*/}
+            {/*      ? 'bg-[#2A85FF66] hover:bg-[#0265EA] border-2 border-[#0265EA] hover:border-[#0265EA]'*/}
+            {/*      : 'bg-[#616161]'*/}
+            {/*  } w-full   h-[44px] text-white rounded-lg	mt-8`}*/}
+            {/*  disabled={!isValid}*/}
+            {/*  isValid={true}*/}
+            {/*>*/}
+            {/*  Создать*/}
+            {/*</Button>*/}
           </div>
         </form>
       </DialogContent>

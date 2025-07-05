@@ -59,19 +59,22 @@ const format = [
 const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   const dispatch = useDispatch()
   const [channelModal, setChannelModal] = React.useState([])
+
   const { publisher } = useSelector((state) => state.publisher)
   const [publisherID, setPublisherID] = React.useState('')
   const [cpm, setCpm] = React.useState([])
   const [budgett, setBudgett] = React.useState(0)
   const [isOrderCreated, setIsOrderCreated] = React.useState(false)
-  const [loading, setLoading] = React.useState(true)
+  const [loading, setLoading] = React.useState(false)
   const [open, setOpen] = React.useState(false)
+  const [openPublisher, setOpenPublisher] = React.useState(false)
 
   const selectedPublisher = (value) => {
     setPublisherID(value)
   }
   const fetchChannel = async () => {
     try {
+      setLoading(true)
       const url = new URL(`${backendURL}/publisher/channel/`)
       const params = new URLSearchParams()
 
@@ -87,6 +90,7 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
 
       const response = await axiosInstance.get(url.toString())
       setChannelModal(response.data.data)
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching channel data:', error)
       // Обработка ошибок
@@ -125,24 +129,6 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
   })
   const selectedFormat = watch('format')
   const expectedView = watch('ordered_number_of_views')
-
-  const selectedOrder = watch('order')
-  const selectedchannel = watch('channel')
-  const selectedStart = watch('startdate')
-  const selectedEnd = watch('enddate')
-  const selectedView = watch('ordered_number_of_views')
-  const selectedBudget = watch('budget')
-  const selectedNote = watch('notes_text')
-
-  console.log(
-    selectedOrder,
-    selectedchannel,
-    selectedStart,
-    selectedEnd,
-    selectedView,
-    selectedBudget,
-    selectedNote,
-  )
   const onSubmit = async (data) => {
     const token = Cookies.get('token')
 
@@ -245,36 +231,72 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
       <div className="flex gap-1">
         <div className="grid w-full ">
           <Label className="text-sm text-[var(--text)] pb-2">
-            Выбрать Паблишера
+            Выбрать паблишера
+            <span className="text-red-500 ml-0.5">*</span>
           </Label>
+
           <Controller
             name="advertiser"
             control={control}
-            render={({ field }) => (
-              <Select
-                onValueChange={(value) => {
-                  field.onChange(value)
-                  selectedPublisher(value) // вызывать вашу функцию для обновления ID
-                }}
-                defaultValue={field.value}
-                value={field.value}
-              >
-                <SelectTrigger className="!text-[var(--text)]">
-                  <SelectValue placeholder="Выбрать паблишера" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#ffffff4d]">
-                  <SelectGroup>
-                    <SelectLabel>Выбрать паблишера</SelectLabel>
-                    {/* Assuming you have a publisher array */}
-                    {publisher?.results?.map((pub) => (
-                      <SelectItem key={pub.id} value={pub.id.toString()}>
-                        {pub.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
+            rules={{ required: 'Поле обязательно' }}
+            render={({ field }) => {
+              const selected = publisher?.results?.find(
+                (framework) => framework.id === field.value,
+              )
+              return (
+                <Popover open={openPublisher} onOpenChange={setOpenPublisher}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="combobox"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full border-0 h-[40px] hover:scale-100 justify-between text-white"
+                    >
+                      {selected ? selected.name : 'Выбрать паблишера'}
+                      <ChevronsUpDown className="opacity-50 size-5" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 bg-white bg-opacity-30 backdrop-blur-md">
+                    <Command>
+                      <CommandInput
+                        placeholder="Поиск паблишера..."
+                        className="h-9"
+                      />
+                      <CommandList style={{ minHeight: 0 }}>
+                        <CommandEmpty>Ничего не найдено</CommandEmpty>
+                        <CommandGroup>
+                          {publisher?.results?.map((framework) => (
+                            <CommandItem
+                              key={framework.id}
+                              value={framework?.id} // должен быть .value, а не .id
+                              onSelect={() => {
+                                field.onChange(framework.id)
+                                setOpenPublisher(false)
+                              }}
+                            >
+                              <div className="flex items-center justify-between pr-3 w-full">
+                                <div className="relative ">
+                                  {framework.name}
+                                </div>
+                              </div>
+                              {/*{framework.label}*/}
+                              <Check
+                                className={cn(
+                                  'ml-auto',
+                                  field.value === framework.id
+                                    ? 'opacity-100'
+                                    : 'opacity-0',
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              )
+            }}
           />
         </div>
 
@@ -311,12 +333,21 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                         className="h-9"
                       />
                       <CommandList>
-                        <CommandEmpty>Ничего не найдено</CommandEmpty>
+                        <CommandEmpty>
+                          {loading ? (
+                            <div className="flex items-center gap-3 text-white">
+                              <Loader2 className="ml-2 h-6 w-6 animate-spin" />
+                              Загрузка данных
+                            </div>
+                          ) : (
+                            'Ничего не найдено'
+                          )}
+                        </CommandEmpty>
                         <CommandGroup>
                           {channelModal?.results?.map((framework) => (
                             <CommandItem
                               key={framework.value}
-                              value={framework?.value} // должен быть .value, а не .id
+                              value={framework?.value}
                               onSelect={() => {
                                 field.onChange(framework.id)
                                 setOpen(false)
@@ -326,7 +357,9 @@ const AddSendPublisherModal = ({ setViewNote, expandedRows, onceOrder }) => {
                               }
                             >
                               <div className="flex items-center justify-between pr-3 w-full">
-                                <div className="relative ">
+                                <div
+                                  className={`relative ${!framework.is_active && 'ml-2'}`}
+                                >
                                   {framework.name}
                                 </div>
                                 {!framework.is_active && (
