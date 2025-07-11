@@ -6,8 +6,15 @@ import { formatDate } from '../../../../utils/formatterDate'
 import FormatterView from '@/components/Labrery/formatter/FormatterView.jsx'
 import AdvertStatus from '@/components/Labrery/AdvertStatus/AdvertStatus.jsx'
 import { ThemeContext } from '@/utils/ThemeContext.jsx'
-import {  OpenSvg } from '@/assets/icons-ui.jsx'
-import { MessageSquareText } from 'lucide-react';
+import { OpenSvg } from '@/assets/icons-ui.jsx'
+import {
+  Copy,
+  MessageSquareText,
+  Monitor,
+  MonitorPlay,
+  MonitorUp,
+  PackagePlus,
+} from 'lucide-react'
 
 import {
   Popover,
@@ -15,13 +22,9 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover.jsx'
 import { Button } from '@/components/ui/button.jsx'
-import {Copy, Monitor, MonitorPlay, MonitorUp} from 'lucide-react'
 import backendURL from '@/utils/url'
-
-import { PackagePlus } from 'lucide-react'
 import { hasRole } from '../../../../utils/roleUtils'
 import toast from 'react-hot-toast'
-
 
 function SentOrderList({ listsentPublisher }) {
   const { textColor } = React.useContext(ThemeContext)
@@ -53,46 +56,43 @@ function SentOrderList({ listsentPublisher }) {
   return (
     <>
       {listsentPublisher.results.map((item, i) => (
-
         <>
-
           <TableRow className="relative">
             <TableCell
               data-label="ID"
               className={`font-normal text-${textColor} text-sm `}
             >
-              <div className='flex justify-between'>
+              <div className="flex justify-between">
                 {item.order_status === 'in_review' ? (
                   // <CircularTable/>
                   <>
-                  <span className=" h-5 w-2.5 flex">
-
-                      <span
-                        className=" inline-flex rounded-full h-5 w-2.5 bg-[#05c800] text-[14px] items-center justify-center"></span>
+                    <span className=" h-5 w-2.5 flex">
+                      <span className=" inline-flex rounded-full h-5 w-2.5 bg-[#05c800] text-[14px] items-center justify-center"></span>
                     </span>
                   </>
                 ) : null}
                 {i + 1}
-                <div style={{display: 'flex', justifyContent: "space-between" }}>
-                  {item.order_status === 'in_review' ? null : <>
-                    {item.inventory_count ? null : <span className=" h-5 w-2.5">
-
-                      <span
-                        className="relative inline-flex rounded-full h-5 w-2.5 bg-red-500 text-[14px] items-center justify-center"></span>
-                    </span>}
-                  </>}
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  {item.order_status === 'in_review' ? null : (
+                    <>
+                      {item.inventory_count ? null : (
+                        <span className=" h-5 w-2.5">
+                          <span className="relative inline-flex rounded-full h-5 w-2.5 bg-red-500 text-[14px] items-center justify-center"></span>
+                        </span>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
-
             </TableCell>
             <TableCell
               data-label="Кампания"
               className={`font-normal text-${textColor} text-sm `}
             >
-              <div className='relative'>
-                <div className='absolute -left-10'>
-
-                </div>
+              <div className="relative">
+                <div className="absolute -left-10"></div>
                 {item.order_name}
               </div>
             </TableCell>
@@ -100,14 +100,11 @@ function SentOrderList({ listsentPublisher }) {
               data-label="Формат"
               className={`font-normal text-${textColor} text-sm `}
             >
-              <div className='flex items-center gap-1'>
-                {
-                  (item.format === 'preroll' && <Monitor/>) ||
-                  (item.format === 'top_preroll' && <MonitorUp/>) ||
-                  (item.format === 'tv_preroll' && <MonitorPlay/>)
-                }
-                {
-                  (item.format === 'preroll' && 'Pre-roll') ||
+              <div className="flex items-center gap-1">
+                {(item.format === 'preroll' && <Monitor />) ||
+                  (item.format === 'top_preroll' && <MonitorUp />) ||
+                  (item.format === 'tv_preroll' && <MonitorPlay />)}
+                {(item.format === 'preroll' && 'Pre-roll') ||
                   (item.format === 'mixroll' && 'Mid-roll') ||
                   (item.format === 'midroll1' && 'Mid-roll 1') ||
                   (item.format === 'midroll2' && 'Mid-roll 2') ||
@@ -115,22 +112,19 @@ function SentOrderList({ listsentPublisher }) {
                   (item.format === 'midroll4' && 'Mid-roll 4') ||
                   (item.format === 'top_preroll' && 'Top Pre-roll') ||
                   (item.format === 'tv_preroll' && 'TV Pre-roll')}
-
-
               </div>
-
             </TableCell>
             <TableCell
               data-label="Начало"
               className={`font-normal text-${textColor} text-sm `}
             >
-              {formatDate (item.start_date)}
+              {formatDate(item.start_date)}
             </TableCell>
             <TableCell
               data-label="Конец"
               className={`font-normal text-${textColor} text-sm `}
             >
-              {formatDate (item.end_date)}
+              {formatDate(item.end_date)}
             </TableCell>
             <TableCell
               data-label="Ролик"
@@ -170,39 +164,39 @@ function SentOrderList({ listsentPublisher }) {
               >
                 <OpenSvg
                   className={`hover:text-brandPrimary-1 transition-all ease-in-out 
-                  ${ item.order_status === 'in_review' ? null : item.inventory_count ? null : 'text-red-500'}
+                  ${item.order_status === 'in_review' ? null : item.inventory_count ? null : 'text-red-500'}
                   ${
                     expandedRows === item.id
                       ? 'rotate-90 text-brandPrimary-1 scale-125'
                       : 'rotate-0'
                   }`}
                 />
-
                 {
                   <>
-                    {
-                      item.order_status === 'in_review' ? null : <div className='absolute top-1.5 -left-1'>
-                        {item.inventory_count ? null : <span className="relative flex h-3 w-3">
-                      <span
-                        className="animate-ping absolute  inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                      <span
-                        className="relative inline-flex rounded-full h-3 w-3 bg-red-500 text-[14px] items-center justify-center"></span>
-                    </span>}
-                      </div>}</>
-                  }
-
-                  </button>
-                {item.order_status === 'finished' ? null : (
-                  <TableCell style={{display: 'contents'}}>
-                {item?.notes_text ? (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <button
-                        onClick={() => {
-                          setCurrentOrder (item)
-                        }}
-                        className="hover:scale-125 transition-all p-0"
-                      >
+                    {item.order_status === 'in_review' ? null : (
+                      <div className="absolute top-1.5 -left-3">
+                        {item.inventory_count ? null : (
+                          <span className="relative flex h-3 w-3">
+                            <span className="animate-ping absolute  inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 text-[14px] items-center justify-center"></span>
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </>
+                }
+              </button>
+              {item.order_status === 'finished' ? null : (
+                <TableCell style={{ display: 'contents' }}>
+                  {item?.notes_text ? (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button
+                          onClick={() => {
+                            setCurrentOrder(item)
+                          }}
+                          className="hover:scale-125 transition-all p-0"
+                        >
                           <MessageSquareText className="w-[24px] h-[24px] text-white hover:text-green-500" />
                         </button>
                       </PopoverTrigger>

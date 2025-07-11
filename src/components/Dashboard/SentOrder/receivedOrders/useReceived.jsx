@@ -52,7 +52,6 @@ export const useReceived = () => {
   const [currentOrder, setCurrentOrder] = React.useState(null)
   const copyToClipboard = () => {
     const textToCopy = `${currentOrder.notes_text}\n${currentOrder.notes_url}`
-
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
@@ -185,7 +184,7 @@ export const useReceived = () => {
               <Button
                 onClick={() => {
                   setExpandedRowId((prev) => {
-                    return prev === row.id ? null : row.id // Переключение состояния
+                    return prev === row.id ? null : row.id
                   })
                 }}
                 variant="default"
@@ -194,14 +193,16 @@ export const useReceived = () => {
                 <OpenSvg
                   className={[
                     ' transition-all ease-in-out',
-                    expandedRowId ? 'rotate-90 scale-125' : 'rotate-0',
+                    expandedRowId === row.id
+                      ? 'rotate-90 scale-125'
+                      : 'rotate-0',
                   ].join(' ')}
                 />
 
                 {
                   <>
                     {row.original.order_status === 'in_review' ? null : (
-                      <div className="absolute -top-1.5 left-4">
+                      <div className="absolute -top-1.5 left-7">
                         {row.original.inventory_count ? null : (
                           <span className="relative flex h-3 w-3">
                             <span className="animate-ping absolute  inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
