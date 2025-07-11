@@ -22,7 +22,7 @@ const ReceivedOrders = ({
         pageSize: pagination.pageSize,
       }),
     ).then(() => setLoading(false))
-  }, [dispatch])
+  }, [dispatch, pagination.pageIndex, pagination.pageSize])
 
   return (
     <>
